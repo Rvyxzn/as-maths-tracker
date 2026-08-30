@@ -1,0 +1,13 @@
+# OS clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / tooling local state
+.vscode/
+.idea/
+.claude/settings.local.json
+
+# Scratch files
+_*_tmp.*
+*.log
