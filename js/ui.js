@@ -226,7 +226,8 @@ const UI = (function () {
           (t.kind === "errors" ? '<button class="btn btn-sm btn-primary" data-action="go" data-view="weaknesses">Open error log</button>' : "") +
           '<button class="btn btn-sm" data-action="task-skip" data-id="' + esc(t.id) + '">Skip</button>' +
           '<button class="btn btn-sm" data-action="task-move" data-id="' + esc(t.id) + '">Reschedule</button>' +
-          (t.manual ? '<button class="btn btn-sm btn-danger" data-action="task-delete" data-id="' + esc(t.id) + '">Remove</button>' : "") +
+          '<button class="btn btn-sm btn-danger" data-action="task-delete" data-id="' + esc(t.id) + '" ' +
+            'title="' + (t.manual ? "Remove this task" : "Take this off the day — the planner will not put it back") + '">Remove</button>' +
         '</div>') +
       '</div></div>';
   }

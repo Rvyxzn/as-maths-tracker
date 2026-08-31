@@ -74,7 +74,8 @@ const Store = (function () {
       timer: null,                 // live session timer {label, kind, refId, startedAt, accumulated, running}
       timeLog: {},                 // { "2026-08-21": [ {label, kind, refId, minutes, at} ] }
       activity: [],                // rolling log
-      lastPlace: null              // { chapterId, step, question, at } — where you actually stopped
+      lastPlace: null,             // { chapterId, step, question, at } — where you actually stopped
+      dayDismissed: {}             // { "2026-08-31": ["ch:pu13","paper"] } — taken off that day by hand
     };
   }
 

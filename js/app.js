@@ -330,10 +330,18 @@ const App = (function () {
         render(); return;
 
       case "task-move": moveTaskModal(el.dataset.id); return;
-      case "task-delete":
-        Scheduler.removeTask(el.dataset.id);
+      case "task-delete": {
+        /* Remove takes it off the day for good. Skip, by contrast, leaves it
+           on the day as history and lets the freed time be reused. */
+        const info = Scheduler.dismissTask(el.dataset.id);
+        if (!info) return;
         Scheduler.regenerate("task removed");
+        const name = info.task.title;
+        UI.toast("Removed " + name + " from " +
+          (info.date === Metrics.today() ? "today" : Metrics.fmtDate(info.date)) +
+          (info.task.manual ? "" : " — it will not come back to that day"), "ok", 4000);
         render(); return;
+      }
 
       case "regen":
         Scheduler.regenerate("manual recalculation");

@@ -272,6 +272,7 @@ const Scheduler = (function () {
          after a skip would otherwise just respawn the exact same task and
          look like skipping did nothing. */
       function skippedToday(kind) {
+        if (isDismissed(date, kind)) return true;      // you removed it from this day
         return date === todayIso && oldDays[todayIso] && oldDays[todayIso].some(function (t) {
           return t.kind === kind && (st.taskState[t.id] || {}).status === "skipped";
         });
@@ -323,6 +324,7 @@ const Scheduler = (function () {
         const r = rows[i];
         const id = r.id;
         if (tasks.some(function (t) { return t.topicId === id; })) continue;
+        if (isDismissed(date, id)) continue;           // taken off this day by hand
         const m = subMinutes(r.p.info.sub);
         const simT = sim[id];
 
@@ -467,6 +469,50 @@ const Scheduler = (function () {
     });
   }
 
+  /* ---------- taking something off a day for good ----------
+     Deleting a generated task is not enough on its own: the next
+     regeneration would put it straight back, which is exactly what used to
+     happen with skipped past papers. So a removal is recorded against that
+     date — by topic for a topic task, by kind for a paper, error-log or
+     formula slot — and generate() honours it.
+
+     Skip and Remove are deliberately different. Skip leaves the task on the
+     day as history and frees the time for something else; Remove takes it
+     off the day altogether. */
+  function dismissedOn(dateIso) {
+    const d = Store.get().dayDismissed || {};
+    return d[dateIso] || [];
+  }
+  function isDismissed(dateIso, key) { return dismissedOn(dateIso).indexOf(key) >= 0; }
+
+  function dismiss(dateIso, key) {
+    Store.mutate(function (st) {
+      if (!st.dayDismissed) st.dayDismissed = {};
+      if (!st.dayDismissed[dateIso]) st.dayDismissed[dateIso] = [];
+      if (st.dayDismissed[dateIso].indexOf(key) < 0) st.dayDismissed[dateIso].push(key);
+    });
+  }
+  function undismiss(dateIso, key) {
+    Store.mutate(function (st) {
+      if (!st.dayDismissed || !st.dayDismissed[dateIso]) return;
+      st.dayDismissed[dateIso] = st.dayDismissed[dateIso].filter(function (k) { return k !== key; });
+    });
+  }
+
+  /* Remove a task from its day and stop it coming back there. */
+  function dismissTask(taskId) {
+    const st = Store.get();
+    let found = null, onDate = null;
+    Object.keys((st.plan && st.plan.days) || {}).forEach(function (d) {
+      st.plan.days[d].forEach(function (t) { if (t.id === taskId) { found = t; onDate = d; } });
+    });
+    if (!found) return null;
+    /* one you added yourself just goes — there is nothing to suppress */
+    if (!found.manual) dismiss(onDate, found.topicId || found.kind);
+    removeTask(taskId);
+    return { task: found, date: onDate };
+  }
+
   /* ---------- putting something on today by hand ----------
      "I want to do Integration today" — even though the planner did not pick
      it. Tasks added this way are marked manual, so a plan regeneration
@@ -495,6 +541,7 @@ const Scheduler = (function () {
     if (isOnToday(id)) return false;
     const inf = Store.info(id);
     if (!inf) return false;
+    undismiss(Metrics.today(), id);      // you changed your mind; let it back
     const covered = Metrics.isCovered(id);
     addTask(Metrics.today(), {
       kind: covered ? "retrieval" : "learn",
@@ -582,6 +629,8 @@ const Scheduler = (function () {
     KIND: KIND, priority: priority, whyText: whyText, generate: generate, regenerate: regenerate,
     tasksFor: tasksFor, setTaskStatus: setTaskStatus, rescheduleTask: rescheduleTask,
     addTask: addTask, removeTask: removeTask, whatNow: whatNow, completeSession: completeSession,
+    dismissTask: dismissTask, dismissedOn: dismissedOn, isDismissed: isDismissed,
+    undismiss: undismiss,
     todayTaskFor: todayTaskFor, isOnToday: isOnToday, addToToday: addToToday,
     removeFromToday: removeFromToday, plannedMinutesFor: plannedMinutesFor,
     budgetFor: budgetFor
