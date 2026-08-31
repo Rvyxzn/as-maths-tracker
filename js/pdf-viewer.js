@@ -444,6 +444,49 @@ const PdfViewer = (function () {
     if (container.classList.contains("pdfv-fullscreen")) exitFullscreen(container);
     else enterFullscreen(container);
   }
+  /* Going in and out of full screen moves the panel between <body> and its
+     original slot, and moving a node throws away its scroll position. The
+     width also changes, which can re-render the pages at a different size,
+     so an absolute pixel offset would not map back anyway. Remember where
+     you were as a FRACTION of the document and restore that instead — it
+     survives both the move and a re-render. */
+  function captureScroll(container, sess) {
+    const vp = container.querySelector(".pdfv-viewport");
+    if (!vp || !sess) return;
+    const max = vp.scrollHeight - vp.clientHeight;
+    sess.pendingScroll = max > 0 ? vp.scrollTop / max : 0;
+  }
+
+  /* Layout after a re-render does not settle synchronously, and how long it
+     takes varies with the document. Poll briefly for a scrollable viewport
+     rather than guessing a single delay. */
+  function restoreScrollWhenReady(container, sess) {
+    if (!sess || sess.pendingScroll == null) return;
+    let tries = 0;
+    const attempt = function () {
+      if (sessions.get(container) !== sess || sess.pendingScroll == null) return;
+      const vp = container.querySelector(".pdfv-viewport");
+      if (!vp) return;
+      const max = vp.scrollHeight - vp.clientHeight;
+      if (max > 0) { applyPendingScroll(container, sess); return; }
+      if (++tries < 20) setTimeout(attempt, 60);      // give up after ~1.2s
+      else sess.pendingScroll = null;
+    };
+    setTimeout(attempt, 0);
+  }
+
+  function applyPendingScroll(container, sess) {
+    if (!sess || sess.pendingScroll == null) return;
+    const vp = container.querySelector(".pdfv-viewport");
+    if (!vp) return;
+    const max = vp.scrollHeight - vp.clientHeight;
+    vp.scrollTop = max > 0 ? Math.round(sess.pendingScroll * max) : 0;
+    /* Always consume it. If a re-render follows (the width changed), that
+       render captures the position itself, so nothing stale is carried
+       forward into an unrelated re-render later on. */
+    sess.pendingScroll = null;
+  }
+
   function enterFullscreen(container) {
     if (!fsBackdrop) {
       fsBackdrop = document.createElement("div");
@@ -452,6 +495,7 @@ const PdfViewer = (function () {
     }
     fsBackdrop.style.display = "block";
     fsBackdrop.onclick = function () { exitFullscreen(container); };
+    captureScroll(container, sessions.get(container));
 
     /* Move the panel to be a direct child of <body>, immediately after the
        backdrop. A position:fixed element is still stacked according to
@@ -475,9 +519,13 @@ const PdfViewer = (function () {
     const btn = container.querySelector('[data-act="fullscreen"]');
     if (btn) { btn.innerHTML = UI.icon("contract"); btn.title = "Exit full screen"; }
     document.addEventListener("keydown", escExit);
-    if (sess) setPagesTransform(container, sess);   // viewport size just changed
+    if (sess) {
+      setPagesTransform(container, sess);           // viewport size just changed
+      applyPendingScroll(container, sess);          // back to where you were reading
+    }
   }
   function exitFullscreen(container) {
+    captureScroll(container, sessions.get(container));
     container.classList.remove("pdfv-fullscreen");
     container.style.width = "";
     if (fsBackdrop) fsBackdrop.style.display = "none";
@@ -500,7 +548,10 @@ const PdfViewer = (function () {
       else home.parent.appendChild(container);
     }
     const sess = sessions.get(container);
-    if (sess) setPagesTransform(container, sess);   // viewport size just changed back
+    if (sess) {
+      setPagesTransform(container, sess);           // viewport size just changed back
+      applyPendingScroll(container, sess);
+    }
   }
 
   /* ---------- rendering ---------- */
@@ -543,6 +594,12 @@ const PdfViewer = (function () {
 
   function renderDoc(container, pdf, sess) {
     const pagesEl = container.querySelector(".pdfv-pages");
+    /* If this is a re-render (a resize, or the width refit), remember where
+       the reader was before the pages are thrown away. A full-screen toggle
+       has already captured it deliberately, so do not overwrite that. */
+    if (sess.pendingScroll == null && pagesEl.querySelector(".pdfv-page")) {
+      captureScroll(container, sess);
+    }
     /* keep any pen drawing so a resize does not wipe your annotations */
     const oldAnnot = pagesEl.querySelector(".pdfv-annot");
     const carried = oldAnnot && oldAnnot.width ? { canvas: oldAnnot, w: oldAnnot.width, h: oldAnnot.height } : null;
@@ -602,6 +659,13 @@ const PdfViewer = (function () {
       }
       pagesEl.appendChild(annot);
       attachDrawing(annot, sess);
+      /* A full-screen toggle or a resize re-renders the pages at a new width;
+         put the reader back where they were. The canvases exist by now but
+         the viewport's scrollHeight has not necessarily caught up, so a
+         single deferred attempt can still land at the top. Retry briefly
+         until the viewport is actually scrollable. Timeouts rather than
+         requestAnimationFrame, because rAF is paused in a hidden tab. */
+      restoreScrollWhenReady(container, sess);
       sess.annot = annot;
     }
     next();
