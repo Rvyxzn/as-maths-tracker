@@ -7,8 +7,10 @@ Exam date preset to **1 September 2026** (changeable in Settings).
 
 ### Online (nothing to install)
 
-The site is published with GitHub Pages, so it runs in any browser — laptop or phone —
-with no download and no setup. Open the link and start.
+**https://Rvyxzn.github.io/as-maths-tracker/**
+
+Published with GitHub Pages, so it runs in any browser — laptop or phone — with no
+download and no setup. Open the link and start.
 
 Your progress is saved in **your own browser**, so two people using the same link keep
 entirely separate ratings, scores and plans. Nothing is shared and nothing is uploaded.
