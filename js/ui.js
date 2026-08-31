@@ -231,6 +231,22 @@ const UI = (function () {
       '</div></div>';
   }
 
+  /* ---------- add / remove from today ----------
+     One button that flips: + puts this topic on today's plan, − takes it
+     off again. Anything you add by hand survives the plan recalculating. */
+  function todayToggle(id, opts) {
+    opts = opts || {};
+    const on = Scheduler.isOnToday(id);
+    const mins = on ? null : Scheduler.plannedMinutesFor(id);
+    return '<button class="today-btn' + (on ? " on" : "") + (opts.compact ? " compact" : "") + '" ' +
+      'data-action="' + (on ? "remove-today" : "add-today") + '" data-id="' + esc(id) + '" ' +
+      'title="' + (on ? "Take this off today’s plan" : "Add this to today’s plan (about " + Metrics.fmtMins(mins) + ")") + '" ' +
+      'aria-label="' + (on ? "Remove from today" : "Add to today") + '">' +
+      icon(on ? "minus" : "plus") +
+      (opts.label ? '<span>' + (on ? "On today" : "Add to today") + '</span>' : "") +
+    '</button>';
+  }
+
   /* ---------- Exam-Focus dial ----------
      An overclock-style gauge: off, the needle sits left as a small tick;
      on, it sweeps clockwise to the right, grows, and the arc lights up
@@ -381,7 +397,9 @@ const UI = (function () {
     expand:    '<path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/>',
     info:      '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".9" fill="currentColor" stroke="none"/>',
     contract:  '<path d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5"/>',
-    eraser:    '<path d="M15.5 4.5 19.5 8.5c.8.8.8 2 0 2.8L13 18H8l-4.5-4.5c-.8-.8-.8-2 0-2.8l7-7c.8-.8 2-.8 2.8 0Z"/><path d="M8 18h11"/><path d="m9.5 9.5 5 5"/>'
+    eraser:    '<path d="M15.5 4.5 19.5 8.5c.8.8.8 2 0 2.8L13 18H8l-4.5-4.5c-.8-.8-.8-2 0-2.8l7-7c.8-.8 2-.8 2.8 0Z"/><path d="M8 18h11"/><path d="m9.5 9.5 5 5"/>',
+    plus:      '<path d="M12 5v14M5 12h14"/>',
+    minus:     '<path d="M5 12h14"/>'
 
   };
 
@@ -487,7 +505,7 @@ const UI = (function () {
     esc: esc, toast: toast, modal: modal, closeModal: closeModal, confirm: confirmDialog,
     ragPill: ragPill, ragDot: ragDot, ragPicker: ragPicker, bar: bar, ragBar: ragBar, ragLegend: ragLegend,
     empty: empty, accPill: accPill, lineChart: lineChart, hBars: hBars, donut: donut, taskCard: taskCard,
-    focusButton: focusButton, morph: morph, icon: icon, math: math,
+    focusButton: focusButton, morph: morph, icon: icon, math: math, todayToggle: todayToggle,
     focusDial: focusDial, timeBar: timeBar, timerChip: timerChip,
     num: num, pct: pct, RAG_EMOJI: RAG_EMOJI, RAG_LABEL: RAG_LABEL
   };

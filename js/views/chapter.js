@@ -34,7 +34,7 @@ const ChapterView = (function () {
 
     root.innerHTML =
       '<button class="btn btn-sm btn-ghost" data-action="go" data-view="topics" style="margin-bottom:14px">← All chapters</button>' +
-      header(inf, t, eff, st) +
+      header(cid, inf, t, eff, st) +
       stepper(st) +
       '<div class="stack" style="gap:16px;margin-top:16px">' +
         stepVideo(cid, inf, st) +
@@ -44,7 +44,7 @@ const ChapterView = (function () {
       '</div>';
   }
 
-  function header(inf, t, eff, st) {
+  function header(cid, inf, t, eff, st) {
     return '<div class="card">' +
       '<div class="row wrap" style="gap:10px">' +
         '<div style="flex:1;min-width:0">' +
@@ -54,6 +54,7 @@ const ChapterView = (function () {
         '</div>' +
         '<div style="text-align:right">' + UI.ragPill(eff.rag) +
           '<div class="tiny faint" style="margin-top:6px">' + st.doneCount + ' of ' + st.totalSteps + ' steps done</div>' +
+          '<div style="margin-top:8px">' + UI.todayToggle(cid, { label: true }) + '</div>' +
         '</div>' +
       '</div>' +
       (st.complete ? '<div class="focus-banner" style="margin-top:12px">' +

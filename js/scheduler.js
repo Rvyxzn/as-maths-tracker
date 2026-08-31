@@ -467,6 +467,53 @@ const Scheduler = (function () {
     });
   }
 
+  /* ---------- putting something on today by hand ----------
+     "I want to do Integration today" — even though the planner did not pick
+     it. Tasks added this way are marked manual, so a plan regeneration
+     leaves them exactly where you put them. */
+  function todayTaskFor(topicId) {
+    return tasksFor(Metrics.today()).filter(function (t) { return t.topicId === topicId; })[0] || null;
+  }
+  function isOnToday(topicId) { return !!todayTaskFor(topicId); }
+
+  /* How long this topic would take, so the day's budget stays honest */
+  function plannedMinutesFor(id) {
+    const inf = Store.info(id);
+    if (!inf) return 30;
+    const m = subMinutes(inf.sub);
+    if (Metrics.isCovered(id)) return m.retrieval;
+    let video = m.video;
+    if (typeof isChapterId === "function" && isChapterId(id)) {
+      const vm = Journey.videoMinutes(id);
+      if (vm && vm.remaining > 0) video = vm.remaining;
+      if (Journey.state(id).steps.video.done) video = 0;
+    }
+    return video + m.questions + m.review;
+  }
+
+  function addToToday(id) {
+    if (isOnToday(id)) return false;
+    const inf = Store.info(id);
+    if (!inf) return false;
+    const covered = Metrics.isCovered(id);
+    addTask(Metrics.today(), {
+      kind: covered ? "retrieval" : "learn",
+      topicId: id,
+      title: inf.sub.name,
+      minutes: plannedMinutesFor(id),
+      rag: Metrics.effectiveRag(id).rag,
+      why: "You added this to today yourself, so it stays put when the plan recalculates."
+    });
+    return true;
+  }
+
+  function removeFromToday(id) {
+    const t = todayTaskFor(id);
+    if (!t) return false;
+    removeTask(t.id);
+    return true;
+  }
+
   function removeTask(taskId) {
     Store.mutate(function (st) {
       Object.keys(st.plan.days).forEach(function (d) {
@@ -535,6 +582,8 @@ const Scheduler = (function () {
     KIND: KIND, priority: priority, whyText: whyText, generate: generate, regenerate: regenerate,
     tasksFor: tasksFor, setTaskStatus: setTaskStatus, rescheduleTask: rescheduleTask,
     addTask: addTask, removeTask: removeTask, whatNow: whatNow, completeSession: completeSession,
+    todayTaskFor: todayTaskFor, isOnToday: isOnToday, addToToday: addToToday,
+    removeFromToday: removeFromToday, plannedMinutesFor: plannedMinutesFor,
     budgetFor: budgetFor
   };
 })();

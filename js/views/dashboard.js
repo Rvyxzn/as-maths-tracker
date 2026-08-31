@@ -217,13 +217,16 @@ const DashboardView = (function () {
     const marks = r.embedded
       ? '<span class="likely-marks embedded" title="Runs through other questions rather than appearing as its own">woven in</span>'
       : '<span class="likely-marks">~' + Math.round(r.typicalMarks) + ' marks</span>';
-    return '<button class="likely-row' + (r.atRisk && !r.complete ? " risk" : "") + (r.complete ? " done" : "") + '" ' +
-        'data-action="open-chapter" data-id="' + UI.esc(r.cid) + '">' +
+    /* a div rather than a button, so the add-to-today control can live
+       inside it without nesting one button in another */
+    return '<div class="likely-row' + (r.atRisk && !r.complete ? " risk" : "") + (r.complete ? " done" : "") + '" ' +
+        'role="button" tabindex="0" data-action="open-chapter" data-id="' + UI.esc(r.cid) + '">' +
       '<span class="likely-bars" aria-hidden="true">' + weightBars(r.weight) + '</span>' +
       '<span class="likely-name">' + UI.esc(r.paper) + ' Ch ' + UI.esc(r.num) + ' · ' + UI.esc(r.name) + '</span>' +
       marks +
       (r.complete ? '<span class="pill good">done</span>' : UI.ragDot(r.rated ? r.rag : null)) +
-    '</button>';
+      (r.complete ? "" : UI.todayToggle(r.cid, { compact: true })) +
+    '</div>';
   }
 
   /* five ticks = shows up on essentially every paper, one = niche */

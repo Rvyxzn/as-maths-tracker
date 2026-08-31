@@ -237,6 +237,30 @@ const App = (function () {
 
       case "open-topic": go("topic", { id: el.dataset.id }); return;
 
+      /* put something on today, or take it off again, without leaving the
+         page you are on */
+      case "add-today": {
+        const id = el.dataset.id;
+        if (!Store.info(id)) return;
+        if (!Scheduler.addToToday(id)) { UI.toast("That is already on today's plan", "warn"); return; }
+        const t = Scheduler.todayTaskFor(id);
+        const planned = Scheduler.tasksFor(Metrics.today())
+          .filter(function (x) { return x.status !== "skipped"; })
+          .reduce(function (a, x) { return a + x.minutes; }, 0);
+        const budget = Scheduler.budgetFor(Metrics.today());
+        UI.toast("Added " + Store.info(id).sub.name + " to today" +
+          (t ? " (" + Metrics.fmtMins(t.minutes) + ")" : "") +
+          (planned > budget ? " — today is now over your " + Metrics.fmtMins(budget) + " budget" : ""),
+          planned > budget ? "warn" : "ok", 4200);
+        render(); return;
+      }
+      case "remove-today": {
+        const id = el.dataset.id;
+        if (!Scheduler.removeFromToday(id)) return;
+        UI.toast("Taken off today's plan", "ok", 2600);
+        render(); return;
+      }
+
       case "open-session": {
         /* Whatever you click — a task, a weak topic, a chapter card — the
            revision itself always happens in the chapter workflow. */

@@ -135,6 +135,7 @@ const TopicsView = (function () {
         '</div>' +
         '<div class="row wrap" style="gap:6px">' +
           UI.ragPicker(t.rag, "set-rag", cid) +
+          UI.todayToggle(cid) +
           '<button class="btn btn-sm btn-primary" data-action="open-session" data-id="' + cid + '">Revise chapter</button>' +
           '<button class="btn btn-sm" data-action="open-topic" data-id="' + cid + '">Details</button>' +
         '</div>' +
@@ -203,6 +204,7 @@ const TopicsView = (function () {
       (t.videoDone ? '<span class="pill good" title="Video watched">▶</span>' : "") +
       (t.questionSets.length ? '<span class="pill good" title="Questions done">✎</span>' : "") +
       UI.ragPicker(t.rag, "set-rag", id) +
+      UI.todayToggle(id) +
       '<button class="btn btn-sm btn-primary" data-action="open-session" data-id="' + id + '">Revise</button>' +
       '</div>';
   }
@@ -243,6 +245,7 @@ const TopicsView = (function () {
             '<ul class="reqs" style="margin-top:6px">' + inf.sub.reqs.map(function (r) { return "<li>" + UI.math(r) + "</li>"; }).join("") + '</ul>' +
             '<div class="row wrap" style="margin-top:18px;gap:8px">' +
               '<button class="btn btn-primary" data-action="open-session" data-id="' + id + '">Start revision session</button>' +
+              UI.todayToggle(id, { label: true }) +
               '<button class="btn" data-action="edit-video" data-id="' + id + '">' + (t.videoUrl ? "Edit video link" : "Add video link") + '</button>' +
               '<button class="btn" data-action="quick-questions" data-id="' + id + '">Log questions</button>' +
               '<button class="btn" data-action="topic-notes" data-id="' + id + '">Notes</button>' +

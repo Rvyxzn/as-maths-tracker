@@ -1459,3 +1459,24 @@ a:hover{opacity:.78}
   border:1px dashed var(--border-strong);background:var(--surface-2);
 }
 .exam-sep{padding-bottom:9px;font-size:12.5px;color:var(--muted)}
+
+/* ---------- add / remove from today ---------- */
+.today-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  height:30px;min-width:30px;padding:0 9px;border-radius:9px;cursor:pointer;
+  border:1px solid var(--border-strong);background:var(--surface-2);color:var(--muted);
+  font:inherit;font-size:12px;font-weight:600;transition:.14s;flex:0 0 auto;
+}
+.today-btn .ico{width:15px;height:15px;margin:0}
+.today-btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.today-btn.on{
+  border-color:var(--focus-b);color:var(--focus-b);
+  background:color-mix(in srgb,var(--focus-b) 14%,var(--surface));
+}
+.today-btn.on:hover{border-color:var(--red);color:var(--red);background:var(--red-soft)}
+.today-btn.compact{height:24px;min-width:24px;padding:0 5px}
+.today-btn.compact .ico{width:13px;height:13px}
+
+/* the "most likely" row is a div now, so it can hold the button */
+.likely-row{text-align:left;font:inherit}
+.likely-row:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
