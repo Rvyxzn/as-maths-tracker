@@ -85,7 +85,7 @@ const ChapterView = (function () {
     const custom = !!t.videoUrl;
     const pl = inf.playlist;
 
-    const cur = currentEpisode(cid, total);
+    const cur = Journey.currentEpisode(cid);
     const embed = Journey.embedSource(cid);
     const counted = Journey.countedVideos(cid);
     const skipped = Journey.skippedVideos(cid).length;
@@ -103,9 +103,10 @@ const ChapterView = (function () {
           'title="' + (off ? "Play video " + i + " (does not count towards the chapter)" : "Play video " + i) + '">' +
           (i === cur ? UI.icon("play") : "") + 'Ep ' + i + '</button>' +
         (off
-          ? '<span class="vid-check off" title="Not part of the course — does not count">–</span>'
+          ? '<span class="vid-check off" title="Not part of the course — does not count">' + UI.icon("minus") + '</span>'
           : '<button class="vid-check ' + (on ? "on" : "") + '" data-action="ch-video" data-id="' + cid + '" data-n="' + i + '" ' +
-            'title="' + (on ? "Mark video " + i + " unwatched" : "Mark video " + i + " watched") + '">✓</button>') +
+            'title="' + (on ? "Mark video " + i + " unwatched" : "Mark video " + i + " watched") + '">' +
+            UI.icon("check") + '</button>') +
       '</span>';
     }
 
@@ -149,16 +150,6 @@ const ChapterView = (function () {
       "The chapter is not video-complete until every video is ticked");
   }
 
-  /* Which episode the player is sitting on. Defaults to the first one you
-     have not ticked off, so opening a chapter resumes rather than restarts. */
-  function currentEpisode(cid, total) {
-    const t = Store.topic(cid);
-    if (t.currentEpisode && t.currentEpisode >= 1 && t.currentEpisode <= total) return t.currentEpisode;
-    const watched = t.videoWatched || [];
-    for (let i = 1; i <= total; i++) if (watched.indexOf(i) < 0) return i;
-    return 1;
-  }
-
   function episodeBar(cid, cur, total, watched) {
     const vm = Journey.videoMinutes(cid);
     const counted = Journey.countedVideos(cid);
@@ -177,11 +168,16 @@ const ChapterView = (function () {
       '</div>' +
       '<div class="ep-time">' +
         '<span class="ep-time-main">' + UI.icon("clock") +
-          'Total video time <b>' + Metrics.fmtMins(vm.total) + '</b>' +
-          (vm.estimated ? '<span class="ep-est" title="No episode lengths entered yet, so this is the app’s estimate">estimated</span>' : "") +
+          'Total video time <b>' + (vm.exact ? "" : "about ") + Metrics.fmtMins(vm.total) + '</b>' +
+          (vm.estimated
+            ? '<span class="ep-est" title="A video’s length is only known once it has been loaded. ' +
+              vm.knownCount + ' measured, ' + vm.unknownCount + ' still estimated from the average, so this figure ' +
+              'moves as you watch more.">' + vm.knownCount + '/' + vm.episodes + ' measured</span>'
+            : "") +
         '</span>' +
         (left > 0
-          ? '<span class="ep-time-left">' + Metrics.fmtMins(vm.remaining) + ' still to watch · ' + left + ' video' + (left === 1 ? "" : "s") +
+          ? '<span class="ep-time-left">' + (vm.exact ? "" : "about ") + Metrics.fmtMins(vm.remaining) +
+            ' still to watch · ' + left + ' video' + (left === 1 ? "" : "s") +
             (vm.skipped ? ' · ' + vm.skipped + ' not counted' : "") + '</span>'
           : '<span class="ep-time-left done">' + UI.icon("check") + 'All watched</span>') +
         '<div class="spacer"></div>' +

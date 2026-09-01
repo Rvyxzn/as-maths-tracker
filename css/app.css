@@ -1480,3 +1480,18 @@ a:hover{opacity:.78}
 /* the "most likely" row is a div now, so it can hold the button */
 .likely-row{text-align:left;font:inherit}
 .likely-row:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---------- watched tick: rounder, chunkier, a real check ---------- */
+.vid-check{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:30px;border:0;border-left:1px solid var(--border-strong);
+  background:none;color:var(--faint);cursor:pointer;transition:.14s;
+}
+.vid-check .ico{width:15px;height:15px;margin:0;stroke-width:2.6}
+.vid-check:hover{background:var(--ghost-hover);color:var(--text)}
+.vid-check.on{background:var(--focus-b);color:#fff;border-left-color:var(--focus-b)}
+.vid-check.on .ico{stroke-width:3}
+.vid-check.off{width:30px;color:var(--faint);cursor:default}
+.vid-check.off .ico{width:13px;height:13px;margin:0}
+.vid-tick{border-radius:11px}
+.vid-go{border-radius:11px 0 0 11px;padding:7px 11px}

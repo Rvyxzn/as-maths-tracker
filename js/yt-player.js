@@ -36,6 +36,10 @@ const YtPlayer = (function () {
     try { const pl = player.getPlaylist(); if (pl) count = pl.length; } catch (e) {}
     try { const i = player.getPlaylistIndex(); if (i >= 0) index = i + 1; } catch (e) {}
     try { const d = player.getDuration(); if (d > 0) seconds = d; } catch (e) {}
+    /* remember where the player actually is, so a later render does not
+       "correct" it and restart playback */
+    const st = players.get(host);
+    if (st && index != null) st.episode = index;
     if (count == null && seconds == null) return;
     try { metaHandler({ host: host, count: count, episode: index, seconds: seconds }); }
     catch (e) {}
@@ -69,7 +73,10 @@ const YtPlayer = (function () {
     const ep = Math.max(1, parseInt(host.dataset.ep || "1", 10));
     const existing = players.get(host);
 
-    /* already showing this exact playlist — just move to the episode */
+    /* Already showing this playlist. Only move if the episode actually
+       changed — mountAll() runs after EVERY app render, and playVideoAt()
+       starts playback, so calling it unconditionally made the video burst
+       into life whenever you ticked a question or opened a mark scheme. */
     if (existing && existing.list === (list || video)) { playAt(host, ep); return; }
 
     host.classList.add("ytp-host");
@@ -87,8 +94,10 @@ const YtPlayer = (function () {
             if (!st) return;
             st.ready = true;
             if (st.pending && st.pending > 1) {
-              try { e.target.playVideoAt(st.pending - 1); } catch (err) {}
+              try { e.target.playVideoAt(st.pending - 1); st.episode = st.pending; } catch (err) {}
               st.pending = null;
+            } else if (st.episode == null) {
+              st.episode = 1;
             }
             report(host, e.target);
           },
@@ -123,14 +132,18 @@ const YtPlayer = (function () {
     players.set(host, { player: null, list: list || video, ready: false, pending: null, failed: true });
   }
 
-  /* episode is 1-based here; the API is 0-based */
+  /* episode is 1-based here; the API is 0-based.
+     Never re-issue a jump for the episode already loaded: playVideoAt()
+     also starts playback, so a redundant call is heard as the video
+     randomly starting on its own. */
   function playAt(host, episode) {
     const st = players.get(host);
     if (!st) return false;
     host.dataset.ep = String(episode);
     if (st.failed) return false;
+    if (st.episode === episode) return true;          // already there; leave it alone
     if (!st.ready || !st.player || !st.player.playVideoAt) { st.pending = episode; return false; }
-    try { st.player.playVideoAt(episode - 1); return true; }
+    try { st.player.playVideoAt(episode - 1); st.episode = episode; return true; }
     catch (e) { st.pending = episode; return false; }
   }
 

@@ -437,6 +437,10 @@ const App = (function () {
         const cid = el.dataset.id, n = +el.dataset.n;
         Store.mutate(function (st) {
           const t = Store.topic(cid);
+          /* Pin where the player is BEFORE the tick changes what counts as
+             "first unwatched" — otherwise ticking a video slides the current
+             episode forward and the player jumps to the next one. */
+          if (t.currentEpisode == null) t.currentEpisode = Journey.currentEpisode(cid);
           const i = t.videoWatched.indexOf(n);
           if (i >= 0) t.videoWatched.splice(i, 1); else t.videoWatched.push(n);
           t.videoDone = t.videoWatched.length >= Journey.totalVideos(cid);
@@ -1850,6 +1854,14 @@ const App = (function () {
             t.videoDone = t.videoWatched.length >= meta.count;
             changed = true;
           }
+        }
+        /* Follow the player rather than fight it. If you skip videos using
+           YouTube's own controls, the app must adopt that position —
+           otherwise the next re-render would "correct" the player and yank
+           you back to where the app thought you were. */
+        if (meta.episode && t.currentEpisode !== meta.episode) {
+          t.currentEpisode = meta.episode;
+          changed = true;
         }
         if (meta.episode && meta.seconds > 0) {
           const mins = Math.max(1, Math.round(meta.seconds / 60));

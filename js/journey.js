@@ -66,47 +66,74 @@ const Journey = (function () {
 
   /* How long the chapter's videos actually take.
 
-     YouTube does not expose durations without an API key, so nothing here is
-     scraped or invented: you enter the lengths (they are on the thumbnails)
-     and they are used from then on. Until then it falls back to the app's
-     own per-chapter estimate and says so, rather than quietly presenting a
-     guess as a measurement. */
+     Lengths are learned one at a time — the player only knows the duration
+     of the video currently loaded — so most of the time some are measured
+     and the rest are not. Anything not yet measured is estimated from the
+     average of the ones that are, which means the estimate MOVES as you
+     watch more. That is unavoidable, but it must not look like a precise
+     figure that keeps changing, so this reports the measured part and the
+     estimated part separately and the UI shows which is which.
+
+     Only videos that count are included — an advert you excluded is not
+     study time. */
   function videoMinutes(cid) {
     const t = Store.topic(cid);
     const total = totalVideos(cid);
     const durations = t.videoDurations || {};
     const watched = t.videoWatched || [];
-
-    let known = 0, knownCount = 0;
-    for (let i = 1; i <= total; i++) {
-      const d = +durations[i];
-      if (d > 0) { known += d; knownCount++; }
-    }
-
-    /* Fill any gaps with the average of what you HAVE entered — much closer
-       than the generic estimate once a few are in. */
-    const fallbackEach = knownCount
-      ? known / knownCount
-      : (CHAPTER_INDEX[cid] && CHAPTER_INDEX[cid].sub.vid ? CHAPTER_INDEX[cid].sub.vid / Math.max(1, total) : 12);
-
     const skip = skippedVideos(cid);
-    let totalMins = 0, remaining = 0;
+
+    let knownMins = 0, knownCount = 0, unknownCount = 0;
+    let knownRemaining = 0, unknownRemaining = 0;
     for (let i = 1; i <= total; i++) {
-      if (skip.indexOf(i) >= 0) continue;          // adverts are not study time
-      const d = +durations[i] > 0 ? +durations[i] : fallbackEach;
-      totalMins += d;
-      if (watched.indexOf(i) < 0) remaining += d;
+      if (skip.indexOf(i) >= 0) continue;
+      const d = +durations[i];
+      const unwatched = watched.indexOf(i) < 0;
+      if (d > 0) {
+        knownMins += d; knownCount++;
+        if (unwatched) knownRemaining += d;
+      } else {
+        unknownCount++;
+        if (unwatched) unknownRemaining++;
+      }
     }
+
+    /* per-video estimate: the average of what has actually been measured,
+       falling back to the chapter's own figure before anything is known */
+    const counted = countedVideos(cid);
+    const perVideo = knownCount
+      ? knownMins / knownCount
+      : (CHAPTER_INDEX[cid] && CHAPTER_INDEX[cid].sub.vid
+          ? CHAPTER_INDEX[cid].sub.vid / Math.max(1, counted || 1) : 12);
 
     return {
-      total: Math.round(totalMins),
-      remaining: Math.round(remaining),
+      /* best overall figure — measured plus estimate for the rest */
+      total: Math.round(knownMins + unknownCount * perVideo),
+      remaining: Math.round(knownRemaining + unknownRemaining * perVideo),
+      /* the part that is actually measured, which never moves */
+      knownMins: Math.round(knownMins),
+      knownRemaining: Math.round(knownRemaining),
       knownCount: knownCount,
-      episodes: countedVideos(cid),
+      unknownCount: unknownCount,
+      episodes: counted,
       skipped: skip.length,
-      estimated: knownCount < total,
-      exact: knownCount === total && total > 0
+      estimated: unknownCount > 0,
+      exact: unknownCount === 0 && counted > 0
     };
+  }
+
+  /* Which episode the player is on. Once it is pinned — because you picked
+     one, or because the player told us where it actually is — it stays put.
+     Only an unpinned chapter falls back to "the first one not ticked off",
+     otherwise ticking video 1 would silently make video 2 current and the
+     player would jump. */
+  function currentEpisode(cid) {
+    const t = Store.topic(cid);
+    const total = totalVideos(cid);
+    if (t.currentEpisode && t.currentEpisode >= 1 && t.currentEpisode <= total) return t.currentEpisode;
+    const watched = t.videoWatched || [];
+    for (let i = 1; i <= total; i++) if (watched.indexOf(i) < 0) return i;
+    return 1;
   }
 
   function playlistUrl(cid) {
@@ -396,7 +423,7 @@ const Journey = (function () {
   return {
     PHASES: PHASES, STEPS: STEPS,
     chapterIds: chapterIds, totalVideos: totalVideos, watchedCount: watchedCount,
-    videoMinutes: videoMinutes, countedVideos: countedVideos,
+    videoMinutes: videoMinutes, countedVideos: countedVideos, currentEpisode: currentEpisode,
     skippedVideos: skippedVideos, isSkippedVideo: isSkippedVideo,
     playlistUrl: playlistUrl, parseYouTube: parseYouTube,
     episodeUrl: episodeUrl, embedSource: embedSource,
