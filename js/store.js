@@ -3,6 +3,9 @@
    ============================================================ */
 
 const STORAGE_KEY = "as-maths-tracker-v1";
+/* A copy of what was here before the last import, so restoring the wrong
+   file is not the end of your progress. */
+const ROLLBACK_KEY = "as-maths-tracker-v1-rollback";
 const SCHEMA_VERSION = 1;
 
 const Store = (function () {
@@ -38,6 +41,30 @@ const Store = (function () {
       priorityBoost: 0,      // manual override (-3..+3)
       pinned: false,
       archived: false        // user removed it from the plan
+    };
+  }
+
+  /* A plain count of what a tracker holds. Used to show what is in a backup
+     file before it replaces what you have -- restoring last month's file by
+     mistake should not be a silent loss. */
+  function describe(d) {
+    const topics = d.topics || {};
+    let rated = 0, sets = 0, attempts = 0, answers = 0;
+    Object.keys(topics).forEach(function (k) {
+      const t = topics[k] || {};
+      if (t.rag) rated++;
+      sets += (t.questionSets || []).length;
+      attempts += (t.attempts || []).length;
+      answers += Object.keys(t.answers || {}).length;
+    });
+    return {
+      rated: rated, sets: sets, attempts: attempts, answers: answers,
+      papers: (d.papers || []).length,
+      daysLogged: Object.keys(d.timeLog || {}).length,
+      createdAt: d.createdAt || null,
+      lastBackupAt: d.lastBackupAt || null,
+      examDate: (d.settings || {}).examDate || null,
+      name: (d.settings || {}).studentName || ""
     };
   }
 
@@ -406,16 +433,70 @@ const Store = (function () {
         schema: SCHEMA_VERSION, data: state
       }, null, 2);
     },
+    /* Reads a backup without applying it, so you can be told what is in the
+       file before it replaces what you have. Throws on anything that is not
+       a tracker backup. */
+    inspectJSON: function (text) {
+      let parsed;
+      /* The raw parser error ("Unexpected token 'h'...") means nothing to
+         anyone reading it, so say the useful thing instead. */
+      try { parsed = JSON.parse(text); }
+      catch (e) { throw new Error("that file is not a backup — pick the .json file the tracker saved."); }
+      const data = parsed && (parsed.data || parsed);
+      if (!data || typeof data !== "object" || !data.topics) {
+        throw new Error("that file does not have any tracker data in it.");
+      }
+      return { data: data, exportedAt: parsed.exportedAt || null, summary: describe(data) };
+    },
+
+    /* What the current tracker holds, in the same shape, so the two can be
+       put side by side before overwriting anything. */
+    currentSummary: function () { return describe(state); },
+
     importJSON: function (text) {
       const parsed = JSON.parse(text);
       const data = parsed.data || parsed;
       if (!data || typeof data !== "object" || !data.topics) throw new Error("This does not look like a tracker backup file.");
+      /* keep what is here now, so the import can be undone */
+      try { localStorage.setItem(ROLLBACK_KEY, JSON.stringify({ at: new Date().toISOString(), data: state })); }
+      catch (e) { /* out of space: the import still goes ahead, just without an undo */ }
       state = Object.assign(defaultState(), data);
       state.settings = Object.assign(defaultState().settings, data.settings || {});
       ensureTopics();
       save(true); emit();
       return true;
     },
+
+    /* ---------- undoing an import ---------- */
+    rollbackInfo: function () {
+      try {
+        const raw = localStorage.getItem(ROLLBACK_KEY);
+        if (!raw) return null;
+        const r = JSON.parse(raw);
+        if (!r || !r.data || !r.data.topics) return null;
+        return { at: r.at, summary: describe(r.data) };
+      } catch (e) { return null; }
+    },
+    undoImport: function () {
+      const raw = localStorage.getItem(ROLLBACK_KEY);
+      if (!raw) return false;
+      const r = JSON.parse(raw);
+      if (!r || !r.data || !r.data.topics) return false;
+      state = Object.assign(defaultState(), r.data);
+      state.settings = Object.assign(defaultState().settings, r.data.settings || {});
+      ensureTopics();
+      try { localStorage.removeItem(ROLLBACK_KEY); } catch (e) {}
+      save(true); emit();
+      return true;
+    },
+    clearRollback: function () { try { localStorage.removeItem(ROLLBACK_KEY); } catch (e) {} },
+
+    /* ---------- knowing whether you are actually backed up ---------- */
+    markBackedUp: function () {
+      state.lastBackupAt = new Date().toISOString();
+      save(true); emit();
+    },
+    lastBackupAt: function () { return state.lastBackupAt || null; },
     hardReset: function () {
       try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
       state = defaultState(); ensureTopics(); save(true); emit();

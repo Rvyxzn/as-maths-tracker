@@ -71,11 +71,13 @@ const SettingsView = (function () {
         '<div class="card"><div class="card-head"><div class="card-title">Your data</div></div>' +
           '<div class="tiny muted">Everything is stored in this browser only (localStorage). Nothing is uploaded anywhere. ' +
           'Clearing your browser data would erase it, so export a backup regularly.</div>' +
+          backupState() +
           '<div class="row wrap" style="gap:8px;margin-top:14px">' +
-            '<button class="btn btn-primary" data-action="export-data">⬇ Export JSON backup</button>' +
-            '<button class="btn" data-action="import-data">⬆ Import backup</button>' +
+            '<button class="btn btn-primary" data-action="export-data">⬇ Save a backup file</button>' +
+            '<button class="btn" data-action="import-data">⬆ Restore from a file</button>' +
             '<input type="file" id="importFile" accept="application/json,.json" style="display:none">' +
           '</div>' +
+          undoRow() +
           '<div class="stack" style="margin-top:16px;gap:0">' +
             dataRow("Topics tracked", String(Store.activeSubIds().length)) +
             dataRow("Question sets logged", String(countSets())) +
@@ -173,6 +175,56 @@ const SettingsView = (function () {
     App.render();
   }
 
+  /* How long since the last backup, said plainly. A backup you forgot to
+     make is the same as no backup, so this is stated up front rather than
+     left for you to remember. */
+  function backupState() {
+    const last = Store.lastBackupAt();
+    if (!last) {
+      return '<div class="backup-state warn">' + UI.icon("alert") +
+        '<span><b>No backup saved yet.</b> If this browser is cleared, everything goes with it.</span></div>';
+    }
+    const days = Math.floor((Date.now() - new Date(last).getTime()) / 86400000);
+    const when = new Date(last).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+    const stale = days >= 14;
+    return '<div class="backup-state' + (stale ? " warn" : " ok") + '">' +
+      UI.icon(stale ? "alert" : "check") +
+      '<span>Last backup <b>' + (days === 0 ? "today" : days === 1 ? "yesterday" : days + " days ago") + '</b> (' + when + ')' +
+      (stale ? ' — worth saving a fresh one.' : '') + '</span></div>';
+  }
+
+  /* Only shown when an import has actually happened, so the wrong file can
+     be walked back. */
+  function undoRow() {
+    const rb = Store.rollbackInfo();
+    if (!rb) return "";
+    const when = new Date(rb.at).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+    return '<div class="row wrap" style="gap:8px;margin-top:10px;align-items:center">' +
+      '<span class="tiny faint">Replaced ' + UI.esc(when) + ' — ' + rb.summary.rated + ' rated, ' +
+        rb.summary.sets + ' question sets, ' + rb.summary.papers + ' papers.</span>' +
+      '<div class="spacer"></div>' +
+      '<button class="btn btn-sm" data-action="undo-import">Undo that restore</button>' +
+    '</div>';
+  }
+
+  /* Both sides of the swap, in the same words, so it is obvious whether the
+     file is ahead of or behind what is already here. */
+  function compareRows(mine, theirs) {
+    const line = function (label, a, b) {
+      const diff = a === b ? "" : (b > a ? " more" : " fewer");
+      return '<tr><td>' + label + '</td><td class="num">' + a + '</td>' +
+        '<td class="num' + (b < a ? " loss" : "") + '">' + b + (diff ? '<small>' + diff + '</small>' : "") + '</td></tr>';
+    };
+    return '<table class="tbl cmp"><thead><tr><th></th><th class="num">Now</th><th class="num">In the file</th></tr></thead><tbody>' +
+      line("Chapters rated", mine.rated, theirs.rated) +
+      line("Question sets", mine.sets, theirs.sets) +
+      line("Chapter attempts", mine.attempts, theirs.attempts) +
+      line("Answers saved", mine.answers, theirs.answers) +
+      line("Past papers", mine.papers, theirs.papers) +
+      line("Days with time logged", mine.daysLogged, theirs.daysLogged) +
+    '</tbody></table>';
+  }
+
   function exportData() {
     const blob = new Blob([Store.exportJSON()], { type: "application/json" });
     const a = document.createElement("a");
@@ -180,25 +232,56 @@ const SettingsView = (function () {
     a.download = "as-maths-revision-backup-" + Metrics.today() + ".json";
     document.body.appendChild(a); a.click();
     setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
-    UI.toast("Backup downloaded", "ok");
+    Store.markBackedUp();
+    UI.toast("Backup saved to your downloads", "ok");
+    App.render();
   }
 
+  /* Restoring is destructive, so the file is read and described first. You
+     see what is in it beside what you already have, and only then decide.
+     The previous data is kept either way, so a mistake here is recoverable. */
   function handleImportFile(e) {
     const file = e.target.files[0];
     if (!file) return;
+    const clear = function () { e.target.value = ""; };
     const reader = new FileReader();
+    reader.onerror = function () { UI.toast("Could not read that file", "bad"); clear(); };
     reader.onload = function () {
-      UI.confirm("Import this backup?", "This replaces everything currently in the tracker with the contents of " + file.name + ".", "Import and replace", true)
+      let info;
+      try {
+        info = Store.inspectJSON(reader.result);
+      } catch (err) {
+        UI.toast("That is not a tracker backup: " + err.message, "bad", 5000);
+        clear(); return;
+      }
+      const mine = Store.currentSummary();
+      const theirs = info.summary;
+      const made = info.exportedAt
+        ? new Date(info.exportedAt).toLocaleString("en-GB", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })
+        : "an unknown date";
+      const losing = theirs.sets < mine.sets || theirs.papers < mine.papers || theirs.attempts < mine.attempts;
+
+      UI.confirm(
+        "Restore from " + file.name + "?",
+        { html:
+        '<div class="tiny muted">Saved on <b>' + UI.esc(made) + '</b>' +
+          (theirs.name ? ' by <b>' + UI.esc(theirs.name) + '</b>' : '') + '.</div>' +
+        compareRows(mine, theirs) +
+        (losing
+          ? '<div class="warnbox" style="margin-top:12px"><b>This file has less in it than you have now.</b>' +
+            'Restoring will replace your current progress with the older set. You can undo it straight afterwards if it was the wrong file.</div>'
+          : '<div class="tiny faint" style="margin-top:10px">Your current data is kept so you can undo this.</div>') },
+        "Restore this file", true)
         .then(function (ok) {
-          if (!ok) { e.target.value = ""; return; }
+          if (!ok) { clear(); return; }
           try {
             Store.importJSON(reader.result);
-            UI.toast("Backup restored", "ok");
+            UI.toast("Restored from " + file.name + " — you can undo this in Settings", "ok", 6000);
             App.go("dashboard");
           } catch (err) {
-            UI.toast("Import failed: " + err.message, "bad", 5000);
+            UI.toast("Restore failed: " + err.message, "bad", 5000);
           }
-          e.target.value = "";
+          clear();
         });
     };
     reader.readAsText(file);
@@ -207,6 +290,19 @@ const SettingsView = (function () {
   function handle(action, el) {
     switch (action) {
       case "save-settings": save(); return true;
+      case "undo-import": {
+        const rb = Store.rollbackInfo();
+        if (!rb) { UI.toast("Nothing to undo", "bad"); return true; }
+        UI.confirm("Undo that restore?",
+          "This puts back what was in the tracker before the file was loaded, and discards what the file brought in.",
+          "Put it back", true)
+          .then(function (ok) {
+            if (!ok) return;
+            if (Store.undoImport()) { UI.toast("Put back the way it was", "ok"); App.go("dashboard"); }
+            else UI.toast("Could not undo — the saved copy has gone", "bad");
+          });
+        return true;
+      }
       case "set-theme":
         Store.mutate(function (st) { st.settings.theme = el.dataset.val; });
         App.applyTheme(); App.render(); return true;

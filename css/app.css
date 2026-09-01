@@ -1489,6 +1489,24 @@ a:hover{opacity:.78}
 .weighted-note .pill{vertical-align:middle}
 .weighted-note .tiny{margin-top:4px}
 .warn-text{color:var(--amber)}
+
+/* whether you are actually backed up, stated where you can see it */
+.backup-state{
+  display:flex;align-items:center;gap:9px;margin-top:12px;
+  padding:10px 12px;border-radius:10px;font-size:12.5px;
+  border:1px solid var(--border);background:var(--surface-2);
+}
+.backup-state .ico{flex:0 0 auto;margin:0}
+.backup-state.warn{background:var(--amber-soft);border-color:transparent;color:var(--amber)}
+.backup-state.ok{color:var(--muted)}
+.backup-state.ok .ico{color:var(--green)}
+
+/* now vs. the file, before anything is overwritten */
+.tbl.cmp{margin-top:12px;width:100%}
+.tbl.cmp td,.tbl.cmp th{padding:7px 8px;font-size:12.5px}
+.tbl.cmp .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl.cmp td.loss{color:var(--red);font-weight:700}
+.tbl.cmp small{margin-left:5px;opacity:.75;font-weight:500}
 .exam-entry{
   display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;
   padding:11px 13px;border-radius:12px;margin-bottom:12px;

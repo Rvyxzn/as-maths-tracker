@@ -55,9 +55,15 @@ const UI = (function () {
   function confirmDialog(title, message, confirmLabel, danger) {
     return new Promise(function (resolve) {
       let settled = false;
+      /* Plain text is escaped, as it must be. A caller that genuinely needs
+         markup -- a comparison table before overwriting your data, say --
+         passes { html: "..." } and takes responsibility for escaping it. */
+      const body = (message && typeof message === "object" && message.html != null)
+        ? message.html
+        : '<div class="muted">' + esc(message) + '</div>';
       modal({
         title: title,
-        body: '<div class="muted">' + esc(message) + '</div>',
+        body: body,
         footer: '<button class="btn" data-c="0">Cancel</button>' +
                 '<button class="btn ' + (danger ? "btn-danger" : "btn-primary") + '" data-c="1">' + esc(confirmLabel || "Confirm") + '</button>',
         onClose: function () { if (!settled) { settled = true; resolve(false); } },
