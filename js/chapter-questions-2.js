@@ -47,11 +47,11 @@ const CHAPTER_QUESTIONS_2 = {
   ],
   pu4: [
     { q: "Sketch y = (x − 1)^2(x + 2), showing the behaviour at each root.", marks: 3,
-      ms: "Positive cubic  [1]\nTouches the x-axis at x = 1 (repeated root)  [1]\nCrosses at x = −2; y-intercept 2  [1]" },
+      ms: "Positive cubic  [1]\nTouches the x-axis at x = 1 (repeated root)  [1]\nCrosses at x = −2; y-intercept 2  [1]", sketch: "cubic-repeated-root" },
     { q: "The curve y = f(x) passes through (4, 0). State where y = f(x) − 3 and y = 2f(x) cross the y-axis relative to it.", marks: 3,
       ms: "y = f(x) − 3 moves every point down 3, so (4, 0) maps to (4, −3)  [1]\ny = 2f(x) doubles the y-coordinate, so (4, 0) maps to (4, 0)  [1]\nA root is unchanged by a vertical stretch  [1]" },
     { q: "Sketch y = 3/x and state the equations of its asymptotes.", marks: 3,
-      ms: "Correct reciprocal shape in the first and third quadrants  [1]\nAsymptote x = 0  [1]\nAsymptote y = 0  [1]" },
+      ms: "Correct reciprocal shape in the first and third quadrants  [1]\nAsymptote x = 0  [1]\nAsymptote y = 0  [1]", sketch: "reciprocal" },
     { q: "Find the coordinates of the points where y = x^2 − 2x and y = x + 4 intersect.", marks: 4,
       ms: "x^2 − 2x = x + 4  [1]\nx^2 − 3x − 4 = 0 ⇒ (x − 4)(x + 1) = 0  [1]\nx = 4 ⇒ y = 8  [1]\nx = −1 ⇒ y = 3  [1]" },
     { q: "Describe the two transformations mapping y = f(x) onto y = f(x + 2) − 5.", marks: 2,
@@ -167,7 +167,7 @@ const CHAPTER_QUESTIONS_2 = {
   ],
   pu14: [
     { q: "Sketch y = 2^x, stating the coordinates of the y-intercept and the equation of the asymptote.", marks: 3,
-      ms: "Correct increasing exponential shape  [1]\nPasses through (0, 1)  [1]\nAsymptote y = 0  [1]" },
+      ms: "Correct increasing exponential shape  [1]\nPasses through (0, 1)  [1]\nAsymptote y = 0  [1]", sketch: "exponential" },
     { q: "Solve 5^(2x) = 30, giving your answer to 3 significant figures.", marks: 3,
       ms: "2x ln 5 = ln 30  [1]\n2x = 2.113  [1]\nx = 1.06  [1]" },
     { q: "Express 2 log_3 x − log_3 4 as a single logarithm.", marks: 3,
@@ -217,7 +217,7 @@ const CHAPTER_QUESTIONS_2 = {
   ],
   st4: [
     { q: "Sketch a scatter diagram showing strong negative correlation and describe it in context of price against sales.", marks: 3,
-      ms: "Points lying close to a downward-sloping line  [2]\nAs price increases, sales tend to decrease  [1]" },
+      ms: "Points lying close to a downward-sloping line  [2]\nAs price increases, sales tend to decrease  [1]", sketch: "scatter-negative" },
     { q: "A regression line of y on x is y = 24 − 1.8x. Predict y when x = 5 and comment on reliability.", marks: 3,
       ms: "y = 24 − 9 = 15  [2]\nReliable only if x = 5 lies within the range of the original data  [1]" },
     { q: "Explain the difference between the explanatory and response variables.", marks: 2,
@@ -285,7 +285,7 @@ const CHAPTER_QUESTIONS_2 = {
     { q: "A stone is dropped from rest down a well and hits the water after 2.5 s. Find the depth (g = 9.8).", marks: 3,
       ms: "s = ut + 1/2 at^2 with u = 0  [1]\ns = 1/2 (9.8)(6.25)  [1]\n= 30.6 m  [1]" },
     { q: "A velocity-time graph shows a rise from 0 to 12 m/s over 4 s, constant for 6 s, then a fall to rest over 5 s. Find the total distance.", marks: 4,
-      ms: "First stage: 1/2 (4)(12) = 24 m  [1]\nSecond stage: 12 × 6 = 72 m  [1]\nThird stage: 1/2 (5)(12) = 30 m  [1]\nTotal = 126 m  [1]" },
+      ms: "First stage: 1/2 (4)(12) = 24 m  [1]\nSecond stage: 12 × 6 = 72 m  [1]\nThird stage: 1/2 (5)(12) = 30 m  [1]\nTotal = 126 m  [1]", sketch: "vt-trapezium" },
     { q: "A ball is thrown vertically upwards at 14.7 m/s from a height of 2 m. Find the time until it hits the ground (g = 9.8).", marks: 5,
       ms: "Taking up as positive: −2 = 14.7t − 4.9t^2  [1]\n4.9t^2 − 14.7t − 2 = 0  [1]\nt = [14.7 ± root(216.09 + 39.2)]/9.8  [1]\nt = (14.7 + 15.98)/9.8  [1]\nt = 3.13 s (rejecting the negative root)  [1]" }
   ],

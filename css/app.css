@@ -1504,3 +1504,17 @@ a:hover{opacity:.78}
 .frac .fn{border-bottom:1.2px solid currentColor;padding:0 .28em 1px}
 .frac .fd{padding:1px .28em 0}
 .frac .fn sup,.frac .fd sup{font-size:.72em}
+
+/* ---------- drawn answers in mark schemes ---------- */
+.qz-sketch{margin-top:12px;padding:12px;border-radius:10px;background:var(--surface);border:1px solid var(--border);text-align:center}
+.qz-sketch .tiny{margin-top:6px}
+svg.sk{width:100%;max-width:330px;height:auto}
+svg.sk .sk-ax{stroke:var(--border-strong);stroke-width:1.3}
+svg.sk .sk-cv{fill:none;stroke:var(--accent);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+svg.sk .sk-asym{stroke:var(--faint);stroke-width:1.2;stroke-dasharray:5 4}
+svg.sk .sk-guide{stroke:var(--border-strong);stroke-width:1;stroke-dasharray:3 3}
+svg.sk .sk-fill{fill:var(--accent-soft);stroke:none}
+svg.sk .sk-pt{fill:var(--accent);stroke:var(--surface);stroke-width:1.5}
+svg.sk .sk-dot{fill:var(--accent)}
+svg.sk .sk-trend{stroke:var(--amber);stroke-width:1.6;stroke-dasharray:6 4}
+svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inherit)}

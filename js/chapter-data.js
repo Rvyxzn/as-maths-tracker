@@ -65,7 +65,7 @@ const CHAPTER_DATA = {
     playlist: { id: "PLo41lMdYNV1mnrskqtpbIFJoI2zq-bd2A", count: 7, estimated: true },
     questions: [
       { q: "Sketch the curve y = x(x − 2)(x + 3), showing clearly where it meets the axes.", marks: 3,
-        ms: "Positive cubic shape  [1]\nCuts the x-axis at x = −3, 0 and 2  [1]\nPasses through the origin, so the y-intercept is 0  [1]" },
+        ms: "Positive cubic shape  [1]\nCuts the x-axis at x = −3, 0 and 2  [1]\nPasses through the origin, so the y-intercept is 0  [1]", sketch: "cubic-three-roots" },
       { q: "The curve y = f(x) has a maximum at (2, 5). State the coordinates of the maximum on y = f(x − 3) + 1.", marks: 2,
         ms: "f(x − 3) translates 3 to the right; + 1 translates 1 up  [1]\nMaximum at (5, 6)  [1]" },
       { q: "Describe fully the single transformation that maps y = f(x) onto y = f(2x).", marks: 2,
@@ -124,7 +124,7 @@ const CHAPTER_DATA = {
       { q: "Find the area of the triangle in the previous question, to 3 significant figures.", marks: 2,
         ms: "Area = ½ × 7 × 9 × sin52°  [1]\n= 31.5 × 0.7880 = 24.8 cm²  [1]" },
       { q: "Sketch y = 2 sin x for 0° ≤ x ≤ 360°, stating the coordinates of the maximum and minimum points.", marks: 3,
-        ms: "Correct sine shape, one full cycle  [1]\nMaximum at (90°, 2)  [1]\nMinimum at (270°, −2)  [1]" }
+        ms: "Correct sine shape, one full cycle  [1]\nMaximum at (90°, 2)  [1]\nMinimum at (270°, −2)  [1]", sketch: "sin-2x" }
     ]
   },
   pu10: {
@@ -168,7 +168,7 @@ const CHAPTER_DATA = {
       { q: "Evaluate ∫ from 1 to 3 of (2x + 1) dx.", marks: 3,
         ms: "[x² + x] from 1 to 3  [1]\n= (9 + 3) − (1 + 1)  [1]\n= 10  [1]" },
       { q: "Find the area of the finite region enclosed by the curve y = x(4 − x) and the x-axis.", marks: 4,
-        ms: "Curve meets the x-axis at x = 0 and x = 4  [1]\n∫ from 0 to 4 of (4x − x²) dx  [1]\n= [2x² − x³/3] from 0 to 4 = 32 − 64/3  [1]\n= 32/3  [1]" }
+        ms: "Curve meets the x-axis at x = 0 and x = 4  [1]\n∫ from 0 to 4 of (4x − x²) dx  [1]\n= [2x² − x³/3] from 0 to 4 = 32 − 64/3  [1]\n= 32/3  [1]", sketch: "area-under-parabola" }
     ]
   },
   pu14: {
