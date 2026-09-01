@@ -414,7 +414,7 @@ const SPEC = [
           "Use the notation lim (h -> 0) of [f(x + h) - f(x)] / h",
           "Differentiate x^2 and simple quadratics and cubics from first principles",
           "Set out the argument fully, including the limiting step" ]},
-        { id:"pu12-3", code:"12.3", name:"Differentiating x to the power n", importance:5, vid:14, qs:28, reqs:[
+        { id:"pu12-3", code:"12.3", name:"Differentiating x^n", importance:5, vid:14, qs:28, reqs:[
           "Know and use the rule that the derivative of x^n is n x^(n-1)",
           "Apply the rule for negative and fractional values of n",
           "Rewrite expressions in index form before differentiating" ]},
@@ -459,7 +459,7 @@ const SPEC = [
     { id: "pu13", num: "13", name: "Integration",
       desc: "Reversing differentiation, definite integrals, and areas under and between curves.",
       subs: [
-        { id:"pu13-1", code:"13.1", name:"Integrating x to the power n", importance:5, vid:14, qs:28, reqs:[
+        { id:"pu13-1", code:"13.1", name:"Integrating x^n", importance:5, vid:14, qs:28, reqs:[
           "Know that integration is the reverse of differentiation",
           "Integrate x^n for rational n, where n is not equal to -1",
           "Always include the constant of integration in an indefinite integral" ]},
@@ -491,13 +491,13 @@ const SPEC = [
       ]},
 
     { id: "pu14", num: "14", name: "Exponentials and Logarithms",
-      desc: "e to the x, logarithms and their laws, solving equations, and linearising non-linear data.",
+      desc: "e^x, logarithms and their laws, solving equations, and linearising non-linear data.",
       subs: [
         { id:"pu14-1", code:"14.1", name:"Exponential functions", importance:3, vid:12, qs:24, reqs:[
           "Know and use the function y = a^x for a > 0 and sketch its graph",
           "Know the shape, the y-intercept at (0, 1) and the asymptote y = 0",
           "Sketch transformations of exponential graphs" ]},
-        { id:"pu14-2", code:"14.2", name:"y = e to the x", importance:4, vid:14, qs:26, reqs:[
+        { id:"pu14-2", code:"14.2", name:"y = e^x", importance:4, vid:14, qs:26, reqs:[
           "Know and use the function e^x and its graph",
           "Know that the derivative of e^(kx) is k e^(kx), and why e is the natural choice of base",
           "Sketch transformations of y = e^x, showing asymptotes and intercepts" ]},

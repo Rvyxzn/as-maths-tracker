@@ -360,15 +360,54 @@ const UI = (function () {
     MATH_WORDS.forEach(function (r) { t = t.replace(r[0], r[1]); });
 
     /* superscripts: ^{...}, ^(...), ^-1, ^2, ^kx */
-    /* the token class allows vulgar fractions (x^½) and a real minus sign,
-       not just plain alphanumerics — otherwise "x^½" stayed as literal text */
+    /* The token class allows vulgar fractions (x^½) and a real minus sign,
+       not just plain alphanumerics — otherwise "x^½" stayed as literal text.
+       It deliberately does NOT include "/": "x^2/4" means x squared over
+       four, not x to the power two-quarters. A genuinely fractional power
+       is written with brackets, x^(1/2), and handled by the branch above. */
     t = t.replace(/\^\{([^}]*)\}/g, function (m, g) { return sup(g); })
          .replace(/\^\(([^)]*)\)/g, function (m, g) { return sup(g); })
-         .replace(/\^([−-]?[A-Za-z0-9¼-¾⅐-⅞/]+)/g, function (m, g) { return sup(g); });
+         .replace(/\^([−-]?[A-Za-z0-9¼-¾⅐-⅞]+)/g, function (m, g) { return sup(g); });
 
     /* subscripts: _{...}, _a, _1 */
     t = t.replace(/_\{([^}]*)\}/g, function (m, g) { return sub(g); })
          .replace(/_([A-Za-z0-9])/g, function (m, g) { return sub(g); });
+
+    /* ---------- stacked fractions ----------
+       "1/2" should look like a written fraction, not typed text. The whole
+       difficulty is everything else that contains a slash, so this is
+       deliberately conservative and was written against an audit of every
+       slash in the app's content:
+
+         stack     1/2 · 15/56 · x²/4 · (y₂ − y₁)/(x₂ − x₁) · ln 20/ln 3
+         leave     m/s · km/h · m/s²   (units)
+         leave     dy/dx · dv/dt · d²y/dx²  (written inline by convention,
+                   and that is how mark schemes write them)
+         leave     positive/negative · quicker/cheaper  (prose)
+         leave     anything inside a URL
+
+       A side may be a bracketed group, or a token of letters/digits with
+       any superscripts and subscripts already applied. */
+    if (t.indexOf("://") < 0) {
+      const UNIT_DEN = /^(?:s|h|min|hr|kg|km|cm|mm|ml|m|N|J|W|day|week|year)\d*$/i;
+      const DERIV_NUM = /^(?:d|d\d?[a-z])$/i;
+      const side = "(?:\\([^()]*\\)|[A-Za-z0-9√π]+(?:<sup>[^<]*<\\/sup>|<sub>[^<]*<\\/sub>)*)";
+      const re = new RegExp("(^|[\\s=+\\-−×÷(\\[,])(" + side + ")\\s*\\/\\s*(" + side + ")", "g");
+      t = t.replace(re, function (whole, lead, num, den) {
+        const plain = function (x) { return x.replace(/<[^>]*>/g, ""); };
+        const n = plain(num), d = plain(den);
+        const bracketed = num.charAt(0) === "(" || den.charAt(0) === "(";
+        /* digits include the Unicode super/subscript forms, so "(y₂ − y₁)"
+           is recognised as maths rather than mistaken for two words */
+        const hasDigit = /[\d²³¹⁰-₟]/.test(n + d);
+        /* both sides plain words and no brackets = prose, not a fraction */
+        if (!bracketed && !hasDigit && n.length > 1 && d.length > 1) return whole;
+        if (UNIT_DEN.test(d) && /^[A-Za-z]/.test(n)) return whole;   // m/s, km/h, m/s²
+        if (DERIV_NUM.test(n)) return whole;                          // dy/dx, d/dx
+        return lead + '<span class="frac"><span class="fn">' + num +
+               '</span><span class="fd">' + den + '</span></span>';
+      });
+    }
 
     /* a true minus sign wherever the hyphen is unambiguously arithmetic */
     /* A spaced hyphen between two maths-ish tokens is a minus sign. Letters

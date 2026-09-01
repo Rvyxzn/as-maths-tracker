@@ -287,7 +287,7 @@ const FLASHCARDS = {
     { q: "What is log_a a?", a: "1" },
     { q: "How do you solve aˣ = b?", a: "Take logs of both sides, bring the power down: x log a = log b, so x = log b ÷ log a" },
     { q: "What are ln x and eˣ?", a: "They undo each other: ln(eˣ) = x and e^(ln x) = x. ln just means log to base e." },
-    { q: "In y = Aekt, what do A and k mean?",
+    { q: "In y = Ae^(kt), what do A and k mean?",
       a: "A is the starting amount (when t = 0). If k is positive it is growing; if k is negative it is shrinking." },
     { q: "y = axⁿ — how do you linearise it?",
       a: "Take logs of both sides: log y = log a + n log x. Plotting log y against log x gives a straight line — its gradient is n and its intercept is log a." },

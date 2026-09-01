@@ -169,13 +169,13 @@ const CHAPTER_QUESTIONS_2 = {
     { q: "Sketch y = 2^x, stating the coordinates of the y-intercept and the equation of the asymptote.", marks: 3,
       ms: "Correct increasing exponential shape  [1]\nPasses through (0, 1)  [1]\nAsymptote y = 0  [1]" },
     { q: "Solve 5^(2x) = 30, giving your answer to 3 significant figures.", marks: 3,
-      ms: "2x ln5 = ln30  [1]\n2x = 2.113  [1]\nx = 1.06  [1]" },
+      ms: "2x ln 5 = ln 30  [1]\n2x = 2.113  [1]\nx = 1.06  [1]" },
     { q: "Express 2 log_3 x − log_3 4 as a single logarithm.", marks: 3,
       ms: "2 log_3 x = log_3 x^2  [1]\nlog_3 x^2 − log_3 4  [1]\n= log_3 (x^2/4)  [1]" },
     { q: "Solve ln(2x − 1) = 3, giving your answer to 3 significant figures.", marks: 3,
       ms: "2x − 1 = e^3  [1]\n2x = 21.086  [1]\nx = 10.5  [1]" },
     { q: "A radioactive mass is modelled by M = 50e^(−0.02t) grams. Find the half-life to 3 significant figures.", marks: 4,
-      ms: "Half-life when M = 25  [1]\ne^(−0.02t) = 0.5  [1]\n−0.02t = ln0.5 = −0.6931  [1]\nt = 34.7 years  [1]" }
+      ms: "Half-life when M = 25  [1]\ne^(−0.02t) = 0.5  [1]\n−0.02t = ln 0.5 = −0.6931  [1]\nt = 34.7 years  [1]" }
   ],
 
   /* ===================== STATISTICS ===================== */
