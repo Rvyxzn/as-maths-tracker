@@ -175,7 +175,7 @@ const CHAPTER_DATA = {
     playlist: { id: "PLo41lMdYNV1lo5znVdjcSF8KpGPBSe7hO", count: 8, estimated: true },
     questions: [
       { q: "Solve 3^x = 20, giving your answer to 3 significant figures.", marks: 2,
-        ms: "x = log₃20 = ln 20/ln 3  [1]\n= 2.73  [1]" },
+        ms: "x = log₃20 = (ln 20)/(ln 3)  [1]\n= 2.73  [1]" },
       { q: "Write log₂8 + log₂5 − log₂10 as a single logarithm and hence evaluate it.", marks: 3,
         ms: "= log₂(8 × 5 ÷ 10)  [1]\n= log₂4  [1]\n= 2  [1]" },
       { q: "The population is modelled by P = 200e^(0.05t), where t is in years. Find the value of t when P = 500, to 3 significant figures.", marks: 3,

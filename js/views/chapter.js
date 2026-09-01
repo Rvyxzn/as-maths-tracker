@@ -226,7 +226,7 @@ const ChapterView = (function () {
             UI.esc(a.work || "") + '</textarea></div>' +
           (a.revealed
             ? '<div class="qz-ms"><div class="qz-ms-h">' + UI.icon("check") + 'Mark scheme</div>' +
-              '<pre class="qz-ms-b">' + UI.math(q.ms) + '</pre>' +
+              UI.markScheme(q.ms) +
               (q.sketch && SKETCH.has(q.sketch)
                 ? '<div class="qz-sketch">' + SKETCH.render(q.sketch) +
                   '<div class="tiny faint">What the sketch should look like.</div></div>'

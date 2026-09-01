@@ -310,6 +310,11 @@ const PdfViewer = (function () {
      also turns drawing mode on, since choosing one clearly means you want
      to use it straight away. */
   function wirePenPopover(container, sess) {
+    /* Click to open, not hover. A hover popover is fiddly: it closes the
+       moment the pointer strays off the path between the button and the
+       panel, which is exactly what happens when you reach for the colour
+       wheel. Press the pen, then press a colour. */
+    const wrap = container.querySelector(".pdfv-pen-wrap");
     const wheel = container.querySelector(".pdfv-wheel");
     const dot = container.querySelector(".pdfv-wheel-dot");
     const sizeRange = container.querySelector(".pdfv-size-range");
@@ -348,6 +353,21 @@ const PdfViewer = (function () {
     setSize(sess.lineWidth);
     sizeRange.addEventListener("input", function () { setSize(+sizeRange.value); });
 
+    if (wrap) {
+      const penButton = wrap.querySelector('[data-act="pen"]');
+      penButton.addEventListener("click", function (e) {
+        e.stopPropagation();
+        wrap.classList.toggle("open");
+      });
+      /* keep clicks inside the panel from closing it */
+      wrap.querySelector(".pdfv-pen-pop").addEventListener("click", function (e) { e.stopPropagation(); });
+      /* anywhere else closes it */
+      document.addEventListener("click", function () { wrap.classList.remove("open"); });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") wrap.classList.remove("open");
+      });
+    }
+
     container.querySelectorAll('[data-act="tool"]').forEach(function (btn) {
       btn.addEventListener("click", function () {
         sess.tool = btn.dataset.tool; penDefault.tool = btn.dataset.tool;
@@ -385,22 +405,11 @@ const PdfViewer = (function () {
       ctx.lineWidth = widthFor();
     }
 
-    annot.addEventListener("pointerdown", function (e) {
-      if (!sess.pen) return;
-      drawing = true;
-      const p = { x: e.offsetX, y: e.offsetY };
-      points = [p];
-      readyContext();
-      /* a plain tap/click still leaves a mark, before any move happens */
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, widthFor() / 2, 0, Math.PI * 2);
-      ctx.fill();
-      try { annot.setPointerCapture(e.pointerId); } catch (err) {}
-      e.preventDefault();
-    });
-    annot.addEventListener("pointermove", function (e) {
-      if (!drawing) return;
-      points.push({ x: e.offsetX, y: e.offsetY });
+    /* Draw through the points with a quadratic curve whose control point is
+       the sampled point and whose ends are the midpoints of neighbouring
+       pairs. That is what turns a chain of straight segments into a smooth
+       line. */
+    function drawSegment() {
       const n = points.length;
       if (n < 3) return;
       const p0 = points[n - 3], p1 = points[n - 2], p2 = points[n - 1];
@@ -411,12 +420,79 @@ const PdfViewer = (function () {
       ctx.moveTo(m1.x, m1.y);
       ctx.quadraticCurveTo(p1.x, p1.y, m2.x, m2.y);
       ctx.stroke();
+    }
+
+    function addPoint(x, y) { points.push({ x: x, y: y }); drawSegment(); }
+
+    annot.addEventListener("pointerdown", function (e) {
+      if (!sess.pen) return;
+      drawing = true;
+      points = [{ x: e.offsetX, y: e.offsetY }];
+      readyContext();
+      /* a plain tap still leaves a mark, before any move happens */
+      ctx.beginPath();
+      ctx.arc(e.offsetX, e.offsetY, widthFor() / 2, 0, Math.PI * 2);
+      ctx.fill();
+      try { annot.setPointerCapture(e.pointerId); } catch (err) {}
+      e.preventDefault();
     });
-    const end = function () { drawing = false; points = []; ctx.globalCompositeOperation = "source-over"; };
-    annot.addEventListener("pointerup", end);
-    annot.addEventListener("pointerleave", end);
-    annot.addEventListener("pointercancel", end);
+
+    annot.addEventListener("pointermove", function (e) {
+      if (!drawing) return;
+      e.preventDefault();
+      /* A browser batches several physical samples into one pointermove when
+         the pen moves quickly. Without asking for the coalesced ones, those
+         samples are lost and a fast stroke comes out visibly faceted. */
+      let evts = [e];
+      if (typeof e.getCoalescedEvents === "function") {
+        const c = e.getCoalescedEvents();
+        if (c && c.length) evts = c;
+      }
+      const box = annot.getBoundingClientRect();
+      for (let i = 0; i < evts.length; i++) {
+        const ev = evts[i];
+        /* A coalesced event has no offsetX/offsetY, so derive it from the
+           element box — the canvas is sized 1:1 with its CSS box, so this
+           matches what offsetX would have given. */
+        addPoint(ev.clientX - box.left, ev.clientY - box.top);
+      }
+    });
+
+    /* Finish the stroke at the point where the pen actually lifted. The
+       curve above stops at the midpoint of the last two samples, so without
+       this the tail of every stroke is quietly cut short. */
+    function finish(e) {
+      if (!drawing) return;
+      /* The lift itself carries a position, and it is usually a little past
+         the last pointermove. Record it so the tail ends where the pen
+         actually came up. */
+      if (e && typeof e.clientX === "number") {
+        const box = annot.getBoundingClientRect();
+        const lx = e.clientX - box.left, ly = e.clientY - box.top;
+        const last = points[points.length - 1];
+        if (!last || Math.abs(last.x - lx) > 0.5 || Math.abs(last.y - ly) > 0.5) {
+          addPoint(lx, ly);
+        }
+      }
+      const n = points.length;
+      if (n >= 2) {
+        const p1 = points[n - 2], p2 = points[n - 1];
+        const m1 = { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 };
+        readyContext();
+        ctx.beginPath();
+        ctx.moveTo(m1.x, m1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+      drawing = false;
+      points = [];
+      ctx.globalCompositeOperation = "source-over";
+    }
+    annot.addEventListener("pointerup", finish);
+    annot.addEventListener("pointerleave", finish);
+    annot.addEventListener("pointercancel", finish);
   }
+
 
   /* ---------- full screen (in-app, not the OS/browser one) ---------- */
   let fsBackdrop = null;

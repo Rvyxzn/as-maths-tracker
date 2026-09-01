@@ -261,23 +261,29 @@ const UI = (function () {
   }
 
   function focusButton(on, compact) {
+    /* A gauge that sweeps from left to right as the mode comes on. The
+       viewBox is 44x30 and the rendered box keeps that exact ratio, so the
+       dial actually sits centred in its pill — the old one was 48x34 drawn
+       into a 38x28 box, which pulled it off centre. Chunky rounded arc,
+       capsule needle, solid hub. */
     return '<button class="focus-toggle' + (on ? " on" : "") + (compact ? " compact" : "") + '" ' +
         'data-action="toggle-focus" aria-pressed="' + (on ? "true" : "false") + '" ' +
         'title="Exam-Focus mode — revise a whole chapter at a time instead of section by section">' +
-      '<svg class="dial" viewBox="0 0 48 34" aria-hidden="true">' +
+      '<svg class="dial" viewBox="0 0 44 30" aria-hidden="true">' +
         '<defs><linearGradient id="dialGrad" x1="0" y1="1" x2="1" y2="0">' +
           '<stop offset="0%" stop-color="var(--focus-a)"/>' +
           '<stop offset="55%" stop-color="var(--focus-b)"/>' +
           '<stop offset="100%" stop-color="var(--focus-c)"/>' +
         '</linearGradient></defs>' +
-        '<path class="dial-track" d="M7 27 A17 17 0 0 1 41 27"/>' +
-        '<path class="dial-fill" d="M7 27 A17 17 0 0 1 41 27"/>' +
-        '<g class="dial-needle"><rect x="23.1" y="9" width="1.8" height="10" rx=".9"/></g>' +
-        '<circle class="dial-hub" cx="24" cy="27" r="2.6"/>' +
+        '<path class="dial-track" d="M8 24 A14 14 0 0 1 36 24"/>' +
+        '<path class="dial-fill"  d="M8 24 A14 14 0 0 1 36 24"/>' +
+        '<g class="dial-needle"><rect x="20.6" y="11" width="2.8" height="13.5" rx="1.4"/></g>' +
+        '<circle class="dial-hub" cx="22" cy="24" r="3.4"/>' +
       '</svg>' +
       (compact ? "" : '<span class="focus-text"><b>Exam-Focus</b></span>') +
     '</button>';
   }
+
 
   /* ---------- animated time bar ----------
      Fills as you log time. When a live timer is running it keeps creeping
@@ -393,10 +399,16 @@ const UI = (function () {
       const DERIV_NUM = /^(?:d|d\d?[a-z])$/i;
       const side = "(?:\\([^()]*\\)|[A-Za-z0-9√π]+(?:<sup>[^<]*<\\/sup>|<sub>[^<]*<\\/sub>)*)";
       const re = new RegExp("(^|[\\s=+\\-−×÷(\\[,])(" + side + ")\\s*\\/\\s*(" + side + ")", "g");
-      t = t.replace(re, function (whole, lead, num, den) {
+      t = t.replace(re, function (whole, lead, num, den, offset, full) {
+        const before = full.slice(0, offset + lead.length);
         const plain = function (x) { return x.replace(/<[^>]*>/g, ""); };
         const n = plain(num), d = plain(den);
         const bracketed = num.charAt(0) === "(" || den.charAt(0) === "(";
+        /* "ln 20/ln 3" must not split as 20-over-ln: if the numerator is
+           preceded by a function name then it is that function's argument,
+           not a numerator on its own. Such cases are written with brackets
+           in the content, which takes the branch above. */
+        if (/(?:ln|log|sin|cos|tan)\s*$/i.test(before)) return whole;
         /* digits include the Unicode super/subscript forms, so "(y₂ − y₁)"
            is recognised as maths rather than mistaken for two words */
         const hasDigit = /[\d²³¹⁰-₟]/.test(n + d);
@@ -417,6 +429,40 @@ const UI = (function () {
     t = t.replace(/(\d|\)|\]|[A-Za-z]|<\/sup>|<\/sub>)\s-\s(?=[\d(\[A-Za-z])/g, "$1 \u2212 ");
 
     return '<span class="math">' + t + "</span>";
+  }
+
+  /* ---------- mark scheme, laid out like a real one ----------
+     Edexcel mark schemes are a table: the working down the left, the marks
+     right-aligned in their own narrow column, in a serif face. Rendering
+     them as a wall of text with "[1]" trailing each line reads nothing like
+     the sheet you mark yourself against, so this splits each step out and
+     puts the marks where you expect to find them.
+
+     The marks column shows the number, not an M1/A1/B1 code: the real codes
+     say whether a mark is for method or accuracy, and that is not recorded
+     in the question bank — inventing it would be worse than omitting it. */
+  function markScheme(text) {
+    const lines = String(text == null ? "" : text).split("\n");
+    let total = 0;
+    const rows = lines.map(function (line) {
+      const t = line.trim();
+      if (!t) return "";
+      const m = t.match(/\[(\d+)\]\s*$/);
+      const marks = m ? parseInt(m[1], 10) : null;
+      if (marks) total += marks;
+      const work = m ? t.slice(0, m.index).trim() : t;
+      return '<div class="ms-row">' +
+        '<span class="ms-step">' + math(work) + '</span>' +
+        '<span class="ms-mk">' + (marks ? marks : "") + '</span>' +
+      '</div>';
+    }).join("");
+
+    return '<div class="ms-sheet">' +
+      '<div class="ms-head"><span>Scheme</span><span class="ms-mk">Marks</span></div>' +
+      rows +
+      (total ? '<div class="ms-total"><span class="ms-total-l">Total</span>' +
+               '<span class="ms-mk">' + total + '</span></div>' : "") +
+    '</div>';
   }
 
   /* ---------- icons ----------
@@ -546,6 +592,7 @@ const UI = (function () {
     ragPill: ragPill, ragDot: ragDot, ragPicker: ragPicker, bar: bar, ragBar: ragBar, ragLegend: ragLegend,
     empty: empty, accPill: accPill, lineChart: lineChart, hBars: hBars, donut: donut, taskCard: taskCard,
     focusButton: focusButton, morph: morph, icon: icon, math: math, todayToggle: todayToggle,
+    markScheme: markScheme,
     focusDial: focusDial, timeBar: timeBar, timerChip: timerChip,
     num: num, pct: pct, RAG_EMOJI: RAG_EMOJI, RAG_LABEL: RAG_LABEL
   };

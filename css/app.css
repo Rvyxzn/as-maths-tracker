@@ -455,22 +455,23 @@ textarea.input{resize:vertical;min-height:66px;line-height:1.5}
   background:color-mix(in srgb,var(--focus-b) 12%,var(--surface));
   box-shadow:0 0 0 3px color-mix(in srgb,var(--focus-b) 16%,transparent);
 }
-.dial{width:38px;height:28px;flex:0 0 auto;overflow:visible}
-.focus-toggle.on .dial{transform:scale(1.26)}
-.dial-track{fill:none;stroke:var(--border-strong);stroke-width:3.4;stroke-linecap:round}
+/* box matches the 44x30 viewBox ratio exactly, so it sits centred */
+.dial{width:41px;height:28px;flex:0 0 auto;overflow:visible}
+.focus-toggle.on .dial{transform:scale(1.1)}
+.dial-track{fill:none;stroke:var(--border-strong);stroke-width:4.6;stroke-linecap:round}
 .dial-fill{
-  fill:none;stroke:url(#dialGrad);stroke-width:3.6;stroke-linecap:round;
-  stroke-dasharray:53.4;stroke-dashoffset:53.4;
+  fill:none;stroke:url(#dialGrad);stroke-width:4.6;stroke-linecap:round;
+  stroke-dasharray:44;stroke-dashoffset:44;    /* pi x r = pi x 14 */
 }
 .focus-toggle.on .dial-fill{stroke-dashoffset:0}
-.dial-needle{transform-origin:24px 27px;transform:rotate(-72deg)}
-.focus-toggle.on .dial-needle{transform:rotate(72deg)}
-.dial-needle rect{fill:var(--faint);transform-origin:24px 19px;transform:scaleY(.5)}
+.dial-needle{transform-origin:22px 24px;transform:rotate(-68deg)}
+.focus-toggle.on .dial-needle{transform:rotate(68deg)}
+.dial-needle rect{fill:var(--faint);transform-origin:22px 24px;transform:scaleY(.62)}
 .focus-toggle.on .dial-needle rect{
-  fill:var(--focus-c);transform:scaleY(1.2);
-  filter:drop-shadow(0 0 6px color-mix(in srgb,var(--focus-c) 80%,transparent));
+  fill:var(--focus-c);transform:scaleY(1);
+  filter:drop-shadow(0 0 5px color-mix(in srgb,var(--focus-c) 70%,transparent));
 }
-.dial-hub{fill:var(--border-strong);transition:fill .3s}
+.dial-hub{fill:var(--border-strong);stroke:var(--surface);stroke-width:1.4;transition:fill .3s}
 .focus-toggle.on .dial-hub{fill:var(--focus-b)}
 .focus-text{display:flex;flex-direction:column;line-height:1.15;text-align:left}
 .focus-text b{font-size:12.5px;font-weight:700;letter-spacing:-.01em}
@@ -1145,8 +1146,7 @@ a:hover{opacity:.78}
   transition:opacity .16s ease,transform .16s cubic-bezier(.2,.9,.3,1),visibility .16s;
   display:flex;flex-direction:column;gap:10px;
 }
-.pdfv-pen-wrap:hover .pdfv-pen-pop,
-.pdfv-pen-wrap:focus-within .pdfv-pen-pop{
+.pdfv-pen-wrap.open .pdfv-pen-pop{
   opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1);
 }
 .pdfv-pen-tools{display:flex;gap:6px}
@@ -1497,13 +1497,19 @@ a:hover{opacity:.78}
 .vid-go{border-radius:11px 0 0 11px;padding:7px 11px}
 
 /* ---------- stacked fractions ---------- */
+/* An inline-flex box takes its baseline from its FIRST line — the
+   numerator — so the whole fraction hangs below the surrounding text.
+   inline-block with vertical-align:middle centres it on the line instead,
+   which is what a written fraction should do. Kept small and tight so it
+   does not push the lines of a mark scheme apart. */
 .frac{
-  display:inline-flex;flex-direction:column;align-items:center;
-  vertical-align:-0.42em;margin:0 .16em;line-height:1.12;
+  display:inline-block;vertical-align:middle;text-align:center;
+  margin:0 .2em;font-size:.9em;line-height:1.05;
 }
-.frac .fn{border-bottom:1.2px solid currentColor;padding:0 .28em 1px}
-.frac .fd{padding:1px .28em 0}
-.frac .fn sup,.frac .fd sup{font-size:.72em}
+.frac .fn,.frac .fd{display:block;padding:0 .3em}
+.frac .fn{border-bottom:1.3px solid currentColor;padding-bottom:.06em}
+.frac .fd{padding-top:.06em}
+.frac sup,.frac sub{font-size:.7em}
 
 /* ---------- drawn answers in mark schemes ---------- */
 .qz-sketch{margin-top:12px;padding:12px;border-radius:10px;background:var(--surface);border:1px solid var(--border);text-align:center}
@@ -1518,3 +1524,40 @@ svg.sk .sk-pt{fill:var(--accent);stroke:var(--surface);stroke-width:1.5}
 svg.sk .sk-dot{fill:var(--accent)}
 svg.sk .sk-trend{stroke:var(--amber);stroke-width:1.6;stroke-dasharray:6 4}
 svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inherit)}
+
+/* drawing must never scroll the page under your finger */
+.pdfv-annot{touch-action:none}
+
+/* ---------- mark scheme laid out like the real thing ---------- */
+.ms-sheet{
+  padding:0 0 4px;
+  font-family:"STIX Two Math","Cambria Math","Latin Modern Math","Times New Roman",Cambria,Georgia,serif;
+  font-size:14.5px;line-height:1.55;
+  font-variant-numeric:lining-nums tabular-nums;
+}
+.ms-head > span:first-child,.ms-total > span:first-child{flex:1;min-width:0}
+.ms-head{
+  display:flex;align-items:baseline;gap:12px;padding:8px 14px 6px;
+  font-family:var(--font-body);font-size:10.5px;font-weight:800;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--faint);
+  border-bottom:1px solid color-mix(in srgb,var(--focus-b) 26%,transparent);
+}
+.ms-row{
+  display:flex;align-items:baseline;gap:12px;padding:5px 14px;
+  border-bottom:1px solid color-mix(in srgb,var(--focus-b) 10%,transparent);
+}
+.ms-row:last-of-type{border-bottom:0}
+.ms-step{flex:1;min-width:0}
+.ms-mk{
+  flex:0 0 44px;text-align:right;font-family:var(--font-body);
+  font-size:12px;font-weight:700;color:var(--focus-b);
+}
+.ms-head .ms-mk{color:var(--faint);font-weight:800}
+.ms-total{
+  display:flex;align-items:baseline;gap:12px;padding:7px 14px 2px;margin-top:2px;
+  border-top:1.5px solid color-mix(in srgb,var(--focus-b) 30%,transparent);
+}
+.ms-total .ms-mk{font-size:13px}
+.ms-sheet .math{font-size:1em}
+.ms-total-l{flex:1;font-family:var(--font-body);font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--faint)}
