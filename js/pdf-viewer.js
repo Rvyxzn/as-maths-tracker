@@ -208,6 +208,73 @@ const PdfViewer = (function () {
     }, { passive: false });
 
     attachPanning(viewport);
+    attachTouchZoom(container, sess, viewport);
+  }
+
+  /* Pinch zooms the PDF rather than the whole site. Left to itself a phone
+     takes any two-finger gesture and scales the entire page, so the toolbar
+     and the rest of the app blow up along with the paper. The CSS hands the
+     gesture over (touch-action on the viewport); one finger still scrolls
+     normally. A double tap toggles between fit and 2x at the spot you
+     tapped, the way every PDF app on a phone behaves. */
+  function attachTouchZoom(container, sess, viewport) {
+    const pts = new Map();
+    let pinch = null, lastTap = 0, lastX = 0, lastY = 0;
+
+    viewport.addEventListener("pointerdown", function (e) {
+      if (e.pointerType !== "touch") return;
+      pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pts.size !== 2) return;
+      /* A second finger means this was never a stroke — drop whatever the
+         pen had started so a pinch does not leave a stray line behind. */
+      const annot = container.querySelector(".pdfv-annot");
+      if (annot) {
+        try { annot.dispatchEvent(new PointerEvent("pointercancel", { pointerId: e.pointerId, bubbles: false })); }
+        catch (err) { /* the stroke simply ends where it was */ }
+      }
+      const a = Array.from(pts.values());
+      const rect = viewport.getBoundingClientRect();
+      pinch = {
+        dist: Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y) || 1,
+        scale: sess.scale,
+        mx: (a[0].x + a[1].x) / 2 - rect.left,
+        my: (a[0].y + a[1].y) / 2 - rect.top
+      };
+    }, { passive: true });
+
+    viewport.addEventListener("pointermove", function (e) {
+      if (e.pointerType !== "touch" || !pts.has(e.pointerId)) return;
+      pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (!pinch || pts.size !== 2) return;
+      e.preventDefault();
+      const a = Array.from(pts.values());
+      const dist = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y) || 1;
+      applyZoom(container, sess, pinch.scale * (dist / pinch.dist), pinch.mx, pinch.my);
+    }, { passive: false });
+
+    function release(e) {
+      if (e.pointerType !== "touch") return;
+      pts.delete(e.pointerId);
+      if (pts.size < 2) pinch = null;
+    }
+
+    viewport.addEventListener("pointerup", function (e) {
+      if (e.pointerType === "touch" && !pinch && pts.size === 1) {
+        const now = Date.now();
+        const quick = now - lastTap < 300;
+        const samePlace = Math.abs(e.clientX - lastX) < 30 && Math.abs(e.clientY - lastY) < 30;
+        if (quick && samePlace) {
+          const rect = viewport.getBoundingClientRect();
+          applyZoom(container, sess, sess.scale > 1.2 ? 1 : 2, e.clientX - rect.left, e.clientY - rect.top);
+          lastTap = 0;
+        } else {
+          lastTap = now; lastX = e.clientX; lastY = e.clientY;
+        }
+      }
+      release(e);
+    }, { passive: true });
+
+    viewport.addEventListener("pointercancel", release, { passive: true });
   }
 
   /* Right mouse button drag pans the viewport — handy once you are
@@ -426,6 +493,8 @@ const PdfViewer = (function () {
 
     annot.addEventListener("pointerdown", function (e) {
       if (!sess.pen) return;
+      /* The second finger of a pinch must not start a line of its own. */
+      if (e.pointerType === "touch" && e.isPrimary === false) return;
       drawing = true;
       points = [{ x: e.offsetX, y: e.offsetY }];
       readyContext();
@@ -680,6 +749,14 @@ const PdfViewer = (function () {
     const oldAnnot = pagesEl.querySelector(".pdfv-annot");
     const carried = oldAnnot && oldAnnot.width ? { canvas: oldAnnot, w: oldAnnot.width, h: oldAnnot.height } : null;
     pagesEl.innerHTML = "";
+    /* Rotating a phone can start a second render while the first is still
+       walking the pages. Clearing the list does not stop that earlier loop,
+       which then carries on appending its own pages at the old width, so the
+       reader ends up with two documents interleaved. Each run takes a token
+       and stops as soon as a newer one starts. */
+    sess.renderToken = (sess.renderToken || 0) + 1;
+    const token = sess.renderToken;
+    function stale() { return sessions.get(container) !== sess || sess.renderToken !== token; }
     const viewport = container.querySelector(".pdfv-viewport");
     const width = viewport.clientWidth || 700;
     sess.renderedWidth = width;
@@ -688,10 +765,10 @@ const PdfViewer = (function () {
 
     let p = 1;
     function next() {
-      if (sessions.get(container) !== sess) return;
+      if (stale()) return;
       if (p > n) { finish(); return; }
       pdf.getPage(p).then(function (page) {
-        if (sessions.get(container) !== sess) return;
+        if (stale()) return;
         const base = page.getViewport({ scale: 1 });
         const fit = Math.max(0.6, (width - 4) / base.width);
         const dpr = window.devicePixelRatio || 1;
@@ -711,7 +788,7 @@ const PdfViewer = (function () {
       }).catch(function () { p++; next(); });
     }
     function finish() {
-      if (sessions.get(container) !== sess) return;
+      if (stale()) return;
       setPagesTransform(container, sess);   // centre the freshly-rendered pages if narrower than the panel
       let maxW = 0;
       pagesEl.querySelectorAll(".pdfv-page").forEach(function (c) {
