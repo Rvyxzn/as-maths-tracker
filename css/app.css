@@ -1479,6 +1479,16 @@ a:hover{opacity:.78}
   border:1px solid var(--border);background:var(--surface-2);
 }
 .score-block .score-strip{gap:7px}
+
+/* the weighted total, sitting just under the plain one */
+.weighted-note{
+  margin:-4px 0 4px;padding:10px 12px;border-radius:10px;
+  border:1px dashed var(--border-strong);background:var(--surface-2);
+}
+.weighted-note>b{font-family:var(--font-display);font-size:17px;margin-right:6px}
+.weighted-note .pill{vertical-align:middle}
+.weighted-note .tiny{margin-top:4px}
+.warn-text{color:var(--amber)}
 .exam-entry{
   display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;
   padding:11px 13px;border-radius:12px;margin-bottom:12px;

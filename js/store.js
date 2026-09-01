@@ -365,6 +365,33 @@ const Store = (function () {
     clearTimeLog: function (dateIso) { delete state.timeLog[dateIso]; },
     timeEntriesOn: function (dateIso) { return state.timeLog[dateIso] || []; },
 
+    /* Time logged against one chapter on a given day. Entries record the
+       chapter they came from (refId), so time put on the wrong topic can be
+       taken back off that topic without hunting through the whole day. */
+    timeEntriesForTopic: function (dateIso, topicId) {
+      return (state.timeLog[dateIso] || []).filter(function (e) { return e.refId === topicId; });
+    },
+    timeLoggedForTopic: function (dateIso, topicId) {
+      return (state.timeLog[dateIso] || []).reduce(function (n, e) {
+        return n + (e.refId === topicId ? (e.minutes || 0) : 0);
+      }, 0);
+    },
+    /* Removes every entry for that chapter on that day and reports how many
+       minutes went. Filtering rather than splicing in a loop keeps the
+       indices from shifting underneath. */
+    removeTimeForTopic: function (dateIso, topicId) {
+      const list = state.timeLog[dateIso];
+      if (!list) return 0;
+      let mins = 0;
+      const kept = list.filter(function (e) {
+        if (e.refId !== topicId) return true;
+        mins += (e.minutes || 0);
+        return false;
+      });
+      if (kept.length) state.timeLog[dateIso] = kept; else delete state.timeLog[dateIso];
+      return mins;
+    },
+
     addTimeEntry: function (label, kind, refId, minutes, taskId) {
       const d = todayISO();
       if (!state.timeLog[d]) state.timeLog[d] = [];

@@ -82,26 +82,58 @@ const Metrics = (function () {
      rating you correctly set to AMBER. Marks first, then a recorded pct,
      and only fall back to the fully-correct count when nothing better
      exists (older records, and the quick-log modal which has no marks). */
+  /* A percentage means little without knowing how many marks it came off.
+     GREEN needs at least a fair sample before it is offered. */
+  const NOMINAL_SET_MARKS = 10;    // assumed size of an old record with no marks
+  const FAIR_MARKS = 12;
+  const SOLID_MARKS = 30;
+  const GREEN_MIN_MARKS = 20;
+
+  /* Exam questions are real paper questions: harder, and much closer to what
+     the exam actually asks than the in-app topic bank. They therefore pull
+     more weight in a chapter's combined figure. Each source still reports
+     its own plain percentage -- only the combined one is weighted, and it is
+     always labelled as weighted so the numbers never disagree silently. */
+  const EXAM_WEIGHT = 1.5;
+
   function accuracy(id) {
     const t = Store.topic(id);
     const sets = t.questionSets;
     if (!sets.length) return null;
     const recent = sets.slice(-3);
+    /* Marks are the honest unit. Averaging the percentages instead let a
+       2-mark set count the same as a 40-mark one, so getting two easy
+       questions right looked exactly as good as a long set done well. */
     let mAvail = 0, mGot = 0;
-    const pcts = [];
     recent.forEach(function (s) {
       if (s.marksAvailable > 0 && s.marksAchieved != null) {
         mAvail += s.marksAvailable; mGot += s.marksAchieved;
-      } else if (s.pct != null) {
-        pcts.push(s.pct);
-      } else if (s.attempted) {
-        pcts.push(s.correct / s.attempted * 100);
+        return;
       }
+      /* older records kept only a percentage; give those a typical set's
+         worth of marks so they still count, without guessing a size */
+      const p = s.pct != null ? s.pct : (s.attempted ? s.correct / s.attempted * 100 : null);
+      if (p != null) { mAvail += NOMINAL_SET_MARKS; mGot += NOMINAL_SET_MARKS * p / 100; }
     });
-    if (mAvail > 0) pcts.push(mGot / mAvail * 100);
-    if (!pcts.length) return null;
-    const sum = pcts.reduce(function (a, b) { return a + b; }, 0);
-    return Math.round(sum / pcts.length);
+    if (!mAvail) return null;
+    return Math.round(mGot / mAvail * 100);
+  }
+
+  /* How much evidence there is behind a topic's percentage. A score off a
+     handful of marks is a hint; a score off most of a paper's worth of
+     marks is a finding. Thresholds are in marks because that is what the
+     exam is measured in. */
+  function marksAttempted(id) {
+    let marks = 0;
+    (Store.topic(id).questionSets || []).forEach(function (s) {
+      marks += (s.marksAvailable > 0 ? s.marksAvailable : NOMINAL_SET_MARKS);
+    });
+    return marks;
+  }
+  function confidenceOf(marks) {
+    if (marks >= SOLID_MARKS) return { level: "solid", marks: marks, label: "solid evidence" };
+    if (marks >= FAIR_MARKS)  return { level: "fair",  marks: marks, label: "a fair amount to go on" };
+    return { level: "thin", marks: marks, label: "only " + marks + " mark" + (marks === 1 ? "" : "s") + " so far" };
   }
   function lastAccuracy(id) {
     const sets = Store.topic(id).questionSets;
@@ -329,6 +361,19 @@ const Metrics = (function () {
     const exam = part(eGot, eAvail, eAvail > 0 ? 1 : 0);
     const overall = part(tGot + eGot, tAvail + eAvail, tCount + (eAvail > 0 ? 1 : 0));
     overall.sources = (topic.has ? 1 : 0) + (exam.has ? 1 : 0);
+
+    /* The weighted view, kept separate from the raw one so the fraction on
+       screen always matches the percentage next to it. */
+    const wAvail = tAvail + eAvail * EXAM_WEIGHT;
+    const wGot = tGot + eGot * EXAM_WEIGHT;
+    overall.weighted = topic.has && exam.has;
+    overall.weightedPct = wAvail > 0 ? Math.round(wGot / wAvail * 100) : null;
+    overall.weightedGrade = overall.weightedPct == null ? null : estimateGrade(overall.weightedPct);
+    overall.examWeight = EXAM_WEIGHT;
+    /* the figure a judgement should be made on: weighted when there is
+       something to weigh, plain otherwise */
+    overall.judgePct = overall.weighted ? overall.weightedPct : overall.pct;
+    overall.confidence = confidenceOf(tAvail + eAvail);
     return { topic: topic, exam: exam, overall: overall };
   }
 
@@ -364,6 +409,14 @@ const Metrics = (function () {
     if (rag === "green" && opts.attemptNumber > 1 && pct < 85) {
       rag = "amber";
       why = "that is an A, but on questions you have already seen — stay AMBER until you can do it on new ones";
+    }
+
+    /* Two questions right is not the same evidence as eight. A high score
+       off a handful of marks is encouraging, not proof, so GREEN waits
+       until there is enough behind it. */
+    if (rag === "green" && opts.marks != null && opts.marks < GREEN_MIN_MARKS) {
+      rag = "amber";
+      why = "that is an A, but off only " + opts.marks + " marks — do a few more before calling it GREEN";
     }
 
     /* Being slow matters even when the marks are there. */
@@ -633,7 +686,7 @@ const Metrics = (function () {
     coverage: coverage, nextReviewDate: nextReviewDate, isDue: isDue, daysSinceRevised: daysSinceRevised,
     paperStats: paperStats, estimateGrade: estimateGrade,
     gradeDetail: gradeDetail, recommendRag: recommendRag, relativeTime: relativeTime,
-    chapterScore: chapterScore,
+    chapterScore: chapterScore, marksAttempted: marksAttempted, confidenceOf: confidenceOf,
     likelyTopics: likelyTopics, priorityTopics: priorityTopics,
     chapterExamValue: chapterExamValue, PAPER_MARKS: PAPER_MARKS,
     AS_BOUNDARIES: AS_BOUNDARIES, AS_MAX_MARK: AS_MAX_MARK,

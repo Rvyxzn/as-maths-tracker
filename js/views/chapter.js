@@ -57,9 +57,28 @@ const ChapterView = (function () {
           '<div style="margin-top:8px">' + UI.todayToggle(cid, { label: true }) + '</div>' +
         '</div>' +
       '</div>' +
+      timeToday(cid) +
       (st.complete ? '<div class="focus-banner" style="margin-top:12px">' +
         '<b>Chapter complete.</b> Playlist watched, questions marked and confidence updated. ' +
         'It will still come back for retrieval practice.</div>' : "") +
+    '</div>';
+  }
+
+  /* Time logged against this chapter today, with a way to take it back off.
+     Time gets logged automatically when a session or a task finishes, so it
+     is easy to end up with minutes on a chapter you only opened by mistake
+     -- and once it is in, it counts towards the day whether you did the work
+     or not. */
+  function timeToday(cid) {
+    const mins = Store.timeLoggedForTopic(Metrics.today(), cid);
+    if (!mins) return "";
+    const n = Store.timeEntriesForTopic(Metrics.today(), cid).length;
+    return '<div class="row wrap time-today" style="margin-top:12px;gap:8px">' +
+      '<span class="tiny">' + UI.icon("clock") + '<b>' + Metrics.fmtMins(mins) + '</b> logged on this chapter today' +
+        (n > 1 ? ' <span class="faint">(' + n + ' entries)</span>' : '') + '</span>' +
+      '<div class="spacer"></div>' +
+      '<button class="btn btn-sm btn-danger" data-action="ch-drop-time" data-id="' + cid + '">' +
+        'Remove from today</button>' +
     '</div>';
   }
 
@@ -510,7 +529,38 @@ const ChapterView = (function () {
     }
     return scoreBlock("Whole chapter", sc.overall,
       "topic questions + exam questions",
-      '<span class="pill acc">combined</span>');
+      '<span class="pill acc">combined</span>') +
+      weightedNote(sc.overall) + confidenceNote(sc.overall.confidence);
+  }
+
+  /* The plain total above treats every mark the same. Exam questions are
+     real paper questions and harder, so they count for more when deciding
+     how well you actually know the chapter. Both numbers are shown, and
+     which one the rating uses is said outright -- a percentage that does
+     not match the fraction beside it is exactly how you end up mistrusting
+     your own tracker. */
+  function weightedNote(o) {
+    if (!o.weighted || o.weightedPct == null) return "";
+    const same = o.weightedPct === o.pct;
+    return '<div class="weighted-note">' +
+      '<b>' + o.weightedPct + '%</b> counting exam questions ' + o.examWeight + '× ' +
+      '<span class="pill grade-' + String(o.weightedGrade).toLowerCase() + '">grade ' + o.weightedGrade + '</span>' +
+      '<div class="tiny muted">Exam questions come from real papers, so they say more about how you would do than the topic bank does. ' +
+      (same
+        ? 'Here it works out the same either way.'
+        : 'Your rating below is based on this figure, not the flat ' + o.pct + '%.') +
+      '</div></div>';
+  }
+
+  /* A percentage off four marks and a percentage off forty are not the
+     same claim, so say how much is behind it. */
+  function confidenceNote(c) {
+    if (!c) return "";
+    return '<div class="tiny ' + (c.level === "thin" ? "warn-text" : "faint") + '" style="margin:2px 0 12px">' +
+      (c.level === "solid"  ? 'Based on ' + c.marks + ' marks — enough to trust.'
+     : c.level === "fair"   ? 'Based on ' + c.marks + ' marks — a fair amount to go on.'
+     : 'Based on ' + c.marks + ' mark' + (c.marks === 1 ? '' : 's') + ' only. Do a few more before reading much into it.') +
+    '</div>';
   }
 
   function scoreBox(v, label) {
@@ -565,16 +615,20 @@ const ChapterView = (function () {
         "Locked until the score is recorded");
     }
     const last = (t.attempts || [])[t.attempts.length - 1];
-    const pct = last ? last.pct : null;
+    /* judge on the weighted score where there is one, falling back to the
+       plain score for records made before weighting existed */
+    const pct = last ? (last.judgePct != null ? last.judgePct : last.pct) : null;
+    const weighted = !!(last && last.judgeWeighted && last.judgePct !== last.pct);
     const rec = Metrics.recommendRag(pct, {
       attemptNumber: (t.attempts || []).length,
-      difficulty: last ? last.difficulty : null
+      difficulty: last ? last.difficulty : null,
+      marks: last ? (last.marksAvailable || null) : null
     });
     const chosen = t.ragAfterChapter || t.rag;
     const eff = Metrics.effectiveRag(cid);
 
     return card(4, "Update your confidence", st.steps.rag.done,
-      (rec ? recommendation(cid, rec, pct, chosen) : "") +
+      (rec ? recommendation(cid, rec, pct, chosen, weighted) : "") +
       UI.ragPicker(chosen, "ch-rag", cid, true) +
       (st.steps.rag.done
         ? '<div class="row wrap" style="gap:8px"><span class="pill good">' + UI.icon("check") + 'Chapter complete</span>' +
@@ -588,7 +642,7 @@ const ChapterView = (function () {
   /* The rating the evidence points to, offered as one click. You can still
      pick anything — but if you overrule it, it says so rather than letting
      an optimistic rating pass unremarked. */
-  function recommendation(cid, rec, pct, chosen) {
+  function recommendation(cid, rec, pct, chosen, weighted) {
     const label = { red: "RED", amber: "AMBER", green: "GREEN" }[rec.rag];
     const disagrees = chosen && chosen !== rec.rag;
 
@@ -596,7 +650,10 @@ const ChapterView = (function () {
       '<div class="rag-rec-main">' +
         '<div class="rag-rec-head">' + UI.ragDot(rec.rag) +
           '<b>Recommended: ' + label + '</b></div>' +
-        '<div class="tiny muted">You scored ' + pct + '% — ' + UI.esc(rec.why) + '.</div>' +
+        '<div class="tiny muted">' +
+          (weighted ? 'Counting exam questions more heavily, that is ' + pct + '%'
+                    : 'You scored ' + pct + '%') +
+          ' — ' + UI.esc(rec.why) + '.</div>' +
       '</div>' +
       (chosen === rec.rag
         ? '<span class="pill good">' + UI.icon("check") + 'matches your rating</span>'

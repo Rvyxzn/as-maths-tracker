@@ -597,6 +597,27 @@ const App = (function () {
         render(); return;
       }
       case "ch-record": { recordChapter(el.dataset.id); return; }
+
+      /* Take today's logged time back off one chapter. Confirmed, because
+         the minutes are gone from the day's total once they go. */
+      case "ch-drop-time": {
+        const cid = el.dataset.id;
+        const d = Metrics.today();
+        const mins = Store.timeLoggedForTopic(d, cid);
+        if (!mins) { UI.toast("No time logged on this chapter today", "bad"); return; }
+        const name = Store.info(cid).chapter.name;
+        UI.confirm("Remove " + Metrics.fmtMins(mins) + " from " + name + "?",
+                   "It comes off today's total as well. Your answers, score and rating are untouched.",
+                   "Remove the time", true)
+          .then(function (ok) {
+            if (!ok) return;
+            let gone = 0;
+            Store.mutate(function () { gone = Store.removeTimeForTopic(d, cid); });
+            UI.toast("Removed " + Metrics.fmtMins(gone) + " from " + name, "ok");
+            render();
+          });
+        return;
+      }
       case "ch-rag": {
         const cid = el.dataset.id, v = el.dataset.v;
         Store.mutate(function (st) {
@@ -1389,6 +1410,9 @@ const App = (function () {
       const t = Store.topic(cid);
       t.attempts.push({ date: Metrics.today(), questions: n, correct: correct,
         marksAvailable: avail, marksAchieved: got, pct: pct,
+        /* the same score with exam questions weighted up -- what the rating
+           is judged on, kept beside the plain one rather than replacing it */
+        judgePct: sc.overall.judgePct, judgeWeighted: !!sc.overall.weighted,
         topicMarks: sc.topic.has ? { got: sc.topic.got, avail: sc.topic.avail, pct: sc.topic.pct } : null,
         examMarks: sc.exam.has ? { got: sc.exam.got, avail: sc.exam.avail, pct: sc.exam.pct } : null,
         minutes: mins, difficulty: diff, mistakes: mistakes, notes: notes });
