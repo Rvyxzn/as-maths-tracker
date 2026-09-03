@@ -27,7 +27,7 @@
 
 const GEO_SPEC = [
 {
-  id: "geo-t1", paper: "Topic 1 Tectonics", short: "T1",
+  id: "geo-t1", paper: "Topic 1 Tectonics", short: "T1", group: "Physical",
   name: "Topic 1: Tectonic Processes and Hazards",
   code: "9GE0/01", book: "Physical geography, Paper 1",
   examMinutes: 135, marks: 105, flatNumbering: true,
@@ -93,7 +93,7 @@ const GEO_SPEC = [
   ]
 },
 {
-  id: "geo-t2b", paper: "Topic 2B Coasts", short: "T2B",
+  id: "geo-t2b", paper: "Topic 2B Coasts", short: "T2B", group: "Physical",
   name: "Topic 2B: Coastal Landscapes and Change",
   code: "9GE0/01", book: "Physical geography, Paper 1 (option 2B)",
   examMinutes: 135, marks: 105, flatNumbering: true,
@@ -172,7 +172,7 @@ const GEO_SPEC = [
   ]
 },
 {
-  id: "geo-t5", paper: "Topic 5 Water", short: "T5",
+  id: "geo-t5", paper: "Topic 5 Water", short: "T5", group: "Physical",
   name: "Topic 5: The Water Cycle and Water Insecurity",
   code: "9GE0/01", book: "Physical geography, Paper 1",
   examMinutes: 135, marks: 105, flatNumbering: true,
@@ -228,7 +228,7 @@ const GEO_SPEC = [
   ]
 },
 {
-  id: "geo-t6", paper: "Topic 6 Carbon", short: "T6",
+  id: "geo-t6", paper: "Topic 6 Carbon", short: "T6", group: "Physical",
   name: "Topic 6: The Carbon Cycle and Energy Security",
   code: "9GE0/01", book: "Physical geography, Paper 1",
   examMinutes: 135, marks: 105, flatNumbering: true,
@@ -284,7 +284,7 @@ const GEO_SPEC = [
   ]
 },
 {
-  id: "geo-t3", paper: "Topic 3 Globalisation", short: "T3",
+  id: "geo-t3", paper: "Topic 3 Globalisation", short: "T3", group: "Human",
   name: "Topic 3: Globalisation",
   code: "9GE0/02", book: "Human geography, Paper 2",
   examMinutes: 135, marks: 105, flatNumbering: true,
@@ -342,7 +342,7 @@ const GEO_SPEC = [
   ]
 },
 {
-  id: "geo-t4a", paper: "Topic 4A Regenerating Places", short: "T4A",
+  id: "geo-t4a", paper: "Topic 4A Regenerating Places", short: "T4A", group: "Human",
   name: "Topic 4A: Regenerating Places",
   code: "9GE0/02", book: "Human geography, Paper 2 (option 4A)",
   examMinutes: 135, marks: 105, flatNumbering: true,
@@ -411,7 +411,7 @@ const GEO_SPEC = [
   ]
 },
 {
-  id: "geo-t7", paper: "Topic 7 Superpowers", short: "T7",
+  id: "geo-t7", paper: "Topic 7 Superpowers", short: "T7", group: "Human",
   name: "Topic 7: Superpowers",
   code: "9GE0/02", book: "Human geography, Paper 2",
   examMinutes: 135, marks: 105, flatNumbering: true,
@@ -467,7 +467,7 @@ const GEO_SPEC = [
   ]
 },
 {
-  id: "geo-t8a", paper: "Topic 8A Health & Human Rights", short: "T8A",
+  id: "geo-t8a", paper: "Topic 8A Health & Human Rights", short: "T8A", group: "Human",
   name: "Topic 8A: Health, Human Rights and Intervention",
   code: "9GE0/02", book: "Human geography, Paper 2 (option 8A)",
   examMinutes: 135, marks: 105, flatNumbering: true,
@@ -528,7 +528,7 @@ const GEO_SPEC = [
   ]
 },
 {
-  id: "geo-t8b", paper: "Topic 8B Migration & Sovereignty", short: "T8B",
+  id: "geo-t8b", paper: "Topic 8B Migration & Sovereignty", short: "T8B", group: "Human",
   name: "Topic 8B: Migration, Identity and Sovereignty",
   code: "9GE0/02", book: "Human geography, Paper 2 (option 8B)",
   examMinutes: 135, marks: 105, flatNumbering: true,
@@ -585,7 +585,7 @@ const GEO_SPEC = [
   ]
 },
 {
-  id: "geo-skills", paper: "Skills & NEA", short: "Skills",
+  id: "geo-skills", paper: "Skills & NEA", short: "Skills", group: "Skills & NEA",
   name: "Paper 3, skills and the Independent Investigation",
   code: "9GE0/03 and 9GE0/04", book: "Assessed across Paper 3 and the NEA",
   examMinutes: 135, marks: 70, flatNumbering: true,

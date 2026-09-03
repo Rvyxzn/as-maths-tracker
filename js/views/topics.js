@@ -25,10 +25,20 @@ const TopicsView = (function () {
         '<div class="row wrap" style="gap:16px;margin-top:12px">' +
           /* Built from the active spec, so a subject's own papers or themes
              appear rather than the Maths ones. */
+          /* One chip per paper, unless the spec groups them. Geography has ten
+             topics, which is too many to sit as a row of filters, so it groups
+             them into Physical, Human and Skills the way the papers do. */
           (function () {
-            const vals = ["all"].concat(SPEC.map(function (p) { return p.id; }));
+            const groups = paperGroups();
             const labels = { all: "All " + Subjects.current().papersLabel.toLowerCase() };
-            SPEC.forEach(function (p) { labels[p.id] = p.paper; });
+            let vals;
+            if (groups.length) {
+              vals = ["all"].concat(groups);
+              groups.forEach(function (g) { labels[g] = g; });
+            } else {
+              vals = ["all"].concat(SPEC.map(function (p) { return p.id; }));
+              SPEC.forEach(function (p) { labels[p.id] = p.paper; });
+            }
             return chipGroup("paper", vals, labels);
           })() +
           (Subjects.current().usesYears
@@ -52,6 +62,16 @@ const TopicsView = (function () {
 
   function opt(v, label, cur) { return '<option value="' + v + '"' + (cur === v ? " selected" : "") + '>' + label + '</option>'; }
 
+  /* The distinct groups this spec defines, in spec order. Empty unless every
+     paper carries a group, so a half-tagged spec falls back to per-paper
+     chips rather than silently hiding the untagged ones. */
+  function paperGroups() {
+    if (!SPEC.length || !SPEC.every(function (p) { return !!p.group; })) return [];
+    const seen = [];
+    SPEC.forEach(function (p) { if (seen.indexOf(p.group) < 0) seen.push(p.group); });
+    return seen.length > 1 ? seen : [];
+  }
+
   function chipGroup(key, values, labels) {
     return '<div class="chips">' + values.map(function (v) {
       return '<button class="chip' + (filters[key] === v ? " on" : "") + '" data-action="filter" data-key="' + key + '" data-val="' + v + '">' + labels[v] + '</button>';
@@ -62,7 +82,10 @@ const TopicsView = (function () {
     const q = filters.q.trim().toLowerCase();
     return ids.filter(function (id) {
       const inf = Store.info(id), t = Store.topic(id);
-      if (filters.paper !== "all" && inf.paper.id !== filters.paper) return false;
+      /* The chip value is a paper id, or a group name when the spec groups
+         its papers. Match either, so both layouts filter correctly. */
+      if (filters.paper !== "all" &&
+          inf.paper.id !== filters.paper && inf.paper.group !== filters.paper) return false;
       if (!yearPasses(inf.year || (inf.section && inf.section.year), filters.year)) return false;
       const eff = Metrics.effectiveRag(id).rag;
       if (filters.rag === "unrated" && t.rag) return false;
@@ -374,5 +397,15 @@ const TopicsView = (function () {
 
   function setFilter(k, v) { filters[k] = v; }
 
-  return { render: render, renderDetail: renderDetail, handle: handle, setFilter: setFilter, setSearch: setSearch };
+  /* A paper or group filter from one subject means nothing in the next, and
+     would leave the list showing nothing at all. Clear the spec-dependent
+     filters on a subject switch; the RAG and status ones still apply. */
+  function resetFilters() {
+    filters.paper = "all";
+    filters.year = "all";
+    filters.q = "";
+  }
+
+  return { render: render, renderDetail: renderDetail, handle: handle, setFilter: setFilter,
+           resetFilters: resetFilters, setSearch: setSearch };
 })();

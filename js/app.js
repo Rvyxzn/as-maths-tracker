@@ -1996,7 +1996,10 @@ function setSidebar(open) {
     renderBrand();
     /* Keep the corner in step with the subject however it was switched, not
        only when the switch came from the menu. */
-    Subjects.onChange(renderBrand);
+    Subjects.onChange(function () {
+      renderBrand();
+      TopicsView.resetFilters();
+    });
 
     /* A Supabase session outlives a refresh, and Google sign-in comes back
        through a redirect, so both are resolved after the first paint rather
