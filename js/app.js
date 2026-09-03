@@ -205,7 +205,7 @@ function setSidebar(open) {
     const s = Subjects.current();
     const mark = document.getElementById("brandMark");
     const title = document.getElementById("brandTitle");
-    if (mark) { mark.textContent = s.mark; mark.setAttribute("data-subject", s.id); }
+    if (mark) { mark.innerHTML = Subjects.markHtml(s); mark.setAttribute("data-subject", s.id); }
     if (title) title.textContent = s.name;
   }
 
@@ -221,7 +221,7 @@ function setSidebar(open) {
             const on = s.id === cur;
             const st = Metrics.subjectSummary(s.id);
             return '<button class="subject-row' + (on ? " on" : "") + '" data-pick-subject="' + s.id + '">' +
-              '<span class="subject-mark" data-subject="' + s.id + '">' + UI.esc(s.mark) + '</span>' +
+              '<span class="subject-mark" data-subject="' + s.id + '">' + Subjects.markHtml(s) + '</span>' +
               '<span class="subject-meta">' +
                 '<b>' + UI.esc(s.name) + '</b>' +
                 '<small>' + UI.esc(s.qualification) + '</small>' +

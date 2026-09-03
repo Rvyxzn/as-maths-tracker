@@ -1745,3 +1745,6 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 [data-theme="light"] .subject-mark[data-subject="economics"]{--subject-fg:#0d7a52}
 [data-theme="light"] .brand-mark[data-subject="geography"],
 [data-theme="light"] .subject-mark[data-subject="geography"]{--subject-fg:#a35a11}
+
+/* an SVG subject icon fills its tile rather than sitting on a text baseline */
+.brand-mark svg,.subject-mark svg{display:block}

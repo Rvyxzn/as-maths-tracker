@@ -88,7 +88,7 @@ const DashboardView = (function () {
     }
 
     return '<div class="card" style="margin-top:18px">' +
-    '<div class="card-head"><div class="card-title">My A-Level Maths journey</div>' +
+    '<div class="card-head"><div class="card-title">My ' + UI.esc(Subjects.current().name) + ' journey</div>' +
         '<div class="right"><button class="btn btn-primary" data-action="continue-revision">' +
           UI.icon("play") + 'Continue revision</button></div></div>' +
       '<div class="journey-strip">' + phaseRow + '</div>' +

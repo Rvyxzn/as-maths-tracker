@@ -50,7 +50,7 @@ const LoginView = (function () {
         '<div class="login-card">' +
           '<div class="login-brand">' +
             '<div class="brand-mark login-mark" data-subject="' + Subjects.currentId() + '">' +
-              UI.esc(Subjects.current().mark) + '</div>' +
+              Subjects.markHtml() + '</div>' +
             '<div><div class="login-title">Revision Tracker</div>' +
               '<div class="login-sub">' + UI.esc(Subjects.list().map(function (x) { return x.short; }).join(" · ")) + '</div></div>' +
           '</div>' +

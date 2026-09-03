@@ -15,11 +15,14 @@ Journey, the revision method, in order.
 
 const Journey = (function () {
 
-  const PHASES = [
-    { id: "pure", label: "Pure", paper: "pure" },
-    { id: "stats", label: "Statistics", paper: "stats" },
-    { id: "mech", label: "Mechanics", paper: "mech" }
-  ];
+  /* The strands of the journey are whatever the active subject's spec calls
+     its papers or themes, not a fixed Maths list. Read fresh each time,
+     because the spec is swapped when the subject changes. */
+  function phases() {
+    return SPEC.map(function (p) {
+      return { id: p.id, label: p.paper, paper: p.id };
+    });
+  }
 
   const STEPS = [
     { key: "video", label: "Watch the playlist" },
@@ -302,8 +305,8 @@ mediums and a hard, or whatever mix you want, and only the ones you
   }
 
   function allPhases() {
-    return PHASES.filter(function (p) { return paperOn(p.paper); })
-                 .map(function (p) { return Object.assign({}, p, phaseProgress(p.paper)); });
+    return phases().filter(function (p) { return paperOn(p.paper); })
+                   .map(function (p) { return Object.assign({}, p, phaseProgress(p.paper)); });
   }
 
   /* Have you rated everything yet? The method starts with the RAG map. */
@@ -421,7 +424,7 @@ mediums and a hard, or whatever mix you want, and only the ones you
   }
 
   return {
-    PHASES: PHASES, STEPS: STEPS,
+    phases: phases, STEPS: STEPS,
     chapterIds: chapterIds, totalVideos: totalVideos, watchedCount: watchedCount,
     videoMinutes: videoMinutes, countedVideos: countedVideos, currentEpisode: currentEpisode,
     skippedVideos: skippedVideos, isSkippedVideo: isSkippedVideo,

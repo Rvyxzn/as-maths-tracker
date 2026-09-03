@@ -70,7 +70,17 @@ const Subjects = (function () {
       id: "geography",
       name: "A-Level Geography",
       short: "Geog",
-      mark: "◐",                       // globe-ish
+      mark: "◐",                       // fallback if the SVG cannot render
+      /* An open book with the left page shaded and the right page drawn as
+         an outline. Uses currentColor so it follows the per-subject colour
+         and flips correctly between light and dark mode. */
+      markSvg:
+        '<svg viewBox="0 0 24 24" width="60%" height="60%" aria-hidden="true" focusable="false">' +
+          '<path fill="currentColor" d="M11.3 6.1C9.2 4.7 6.7 4.1 4 4.1c-.6 0-1 .4-1 1v12.4c0 .6.4 1 1 1 ' +
+            '2.5 0 4.8.5 6.8 1.7.2.1.5 0 .5-.3V6.1z"/>' +
+          '<path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" ' +
+            'd="M12.7 6.1c2.1-1.4 4.6-2 7.3-2 .6 0 1 .4 1 1v12.4c0 .6-.4 1-1 1-2.5 0-4.8.5-6.8 1.7-.2.1-.5 0-.5-.3V6.1z"/>' +
+        '</svg>',
       qualification: "Pearson Edexcel A level Geography (9GE0)",
       unit: "enquiry question",
       unitPlural: "enquiry questions",
@@ -89,6 +99,15 @@ const Subjects = (function () {
 
   function list() {
     return Object.keys(REGISTRY).map(function (k) { return REGISTRY[k]; });
+  }
+
+  /* The icon for a subject, as markup. An SVG where one is defined, otherwise
+     the character. Both come from this file, never from user input, so the
+     SVG is safe to insert as markup. */
+  function markHtml(subject) {
+    const s = subject || current();
+    if (s.markSvg) return s.markSvg;
+    return (typeof UI !== "undefined" ? UI.esc(s.mark) : s.mark);
   }
 
   function get(id) { return REGISTRY[id] || null; }
@@ -151,6 +170,7 @@ const Subjects = (function () {
 
   return {
     list: list,
+    markHtml: markHtml,
     get: get,
     current: current,
     currentId: currentIdOf,
