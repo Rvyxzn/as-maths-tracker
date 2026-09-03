@@ -436,7 +436,9 @@ widths, where the sidebar is a permanent column and never "open". */
   color:var(--text);font-size:13.5px}
 .warnbox.bad{border-color:var(--red);background:var(--red-soft)}
 .warnbox.info{border-color:var(--accent);background:var(--accent-soft)}
-.warnbox b{display:block;margin-bottom:4px;font-size:13.5px}
+/* Only the leading <b> is the box's heading. Any later one is emphasis inside
+   a sentence and has to stay inline, or the sentence breaks across lines. */
+.warnbox > b:first-child{display:block;margin-bottom:4px;font-size:13.5px}
 .warnbox ol,.warnbox ul{margin:7px 0 0;padding-left:20px}
 .view > .warnbox{color:var(--text)}
 
@@ -1748,3 +1750,5 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 
 /* an SVG subject icon fills its tile rather than sitting on a text baseline */
 .brand-mark svg,.subject-mark svg{display:block}
+
+.guest-block{margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}

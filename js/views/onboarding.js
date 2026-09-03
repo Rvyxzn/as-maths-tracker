@@ -117,13 +117,18 @@ const OnboardingView = (function () {
             '<input class="input" type="date" id="obExam" value="' + s.examDate + '"></div>' +
           '<div class="field"><label class="label">Qualification</label>' +
             '<input class="input" id="obQual" value="' + UI.esc(s.qualification) + '"></div>' +
-          '<div class="field"><label class="label">Your name (optional)</label>' +
-            '<input class="input" id="obName" placeholder="e.g. Rayan" value="' + UI.esc(s.studentName) + '"></div>' +
-          '<div class="field"><label class="label">Papers you are sitting</label>' +
+          /* An account already asked for your name, so do not ask twice.
+             Guests have no account to have given it, so they still see it. */
+          (Auth.isCloud()
+            ? ""
+            : '<div class="field"><label class="label">Your name (optional)</label>' +
+                '<input class="input" id="obName" placeholder="e.g. Rayan" value="' + UI.esc(s.studentName) + '"></div>') +
+          /* Built from the active spec, so an Economics or Geography student
+             is asked about their own papers rather than Pure and Mechanics. */
+          '<div class="field"><label class="label">' +
+            UI.esc(Subjects.current().papersLabel) + ' you are sitting</label>' +
             '<div class="row wrap" style="gap:14px;margin-top:4px">' +
-            paperToggle("pure", "Papers 1 & 2: Pure", s.papers.pure) +
-            paperToggle("stats", "Paper 3: Statistics", s.papers.stats) +
-            paperToggle("mech", "Paper 3: Mechanics", s.papers.mech) +
+            SPEC.map(function (p) { return paperToggle(p.id, p.name, paperOn(p.id)); }).join("") +
             '</div></div>' +
           '<div class="field"><label class="label">How much can you usually study per day?</label>' +
             '<select class="input" id="obDaily">' +
@@ -131,14 +136,16 @@ const OnboardingView = (function () {
                 return '<option value="' + m + '"' + (s.dailyMinutes === m ? " selected" : "") + '>' + Metrics.fmtMins(m) + '</option>';
               }).join("") +
             '</select><div class="tiny faint" style="margin-top:5px">You can change this any day, the planner never schedules more than the time you have.</div></div>' +
-            '<div class="field"><label class="label">Which content are you revising right now?</label>' +
-            '<select class="input" id="obYear">' +
-            ['all|Both years, the full A level', '1|Year 1 only (AS content)', '2|Year 2 only'].map(function (o) {
-              const p = o.split("|");
-              return '<option value="' + p[0] + '"' + (String(s.yearFilter || "all") === p[0] ? " selected" : "") + '>' + p[1] + '</option>';
-            }).join("") +
-          '</select><div class="tiny faint" style="margin-top:5px">Pick Year 1 if you have not been taught Year 2 yet. ' +
-          'You can switch this any time in Settings, or filter year by year in Topics.</div></div>' +
+          (Subjects.current().usesYears
+            ? '<div class="field"><label class="label">Which content are you revising right now?</label>' +
+              '<select class="input" id="obYear">' +
+              ['all|Both years, the full A level', '1|Year 1 only (AS content)', '2|Year 2 only'].map(function (o) {
+                const p = o.split("|");
+                return '<option value="' + p[0] + '"' + (String(s.yearFilter || "all") === p[0] ? " selected" : "") + '>' + p[1] + '</option>';
+              }).join("") +
+              '</select><div class="tiny faint" style="margin-top:5px">Pick Year 1 if you have not been taught Year 2 yet. ' +
+              'You can switch this any time in Settings, or filter year by year in Topics.</div></div>'
+            : "") +
         '</div>' +
         '<div class="row" style="margin-top:24px">' +
           '<button class="btn" data-action="ob-back">Back</button><div class="spacer"></div>' +
@@ -307,14 +314,27 @@ const OnboardingView = (function () {
       }
 
       case "ob-save-setup": {
-        const exam = document.getElementById("obExam").value;
-        const qual = document.getElementById("obQual").value;
-        const name = document.getElementById("obName").value;
-        const daily = parseInt(document.getElementById("obDaily").value, 10);
-        const yearFilter = document.getElementById("obYear").value;
+        const val = function (id, fallback) {
+          const el = document.getElementById(id);
+          return el ? el.value : fallback;
+        };
+        const exam = val("obExam", Store.settings().examDate);
+        const qual = val("obQual", Store.settings().qualification);
+        /* Cloud accounts already gave a name at sign-up, so the field is not
+           shown and the account's name is used instead. */
+        const name = Auth.isCloud()
+          ? (Auth.current().name || "")
+          : val("obName", Store.settings().studentName);
+        const daily = parseInt(val("obDaily", Store.settings().dailyMinutes), 10);
+        const yearFilter = val("obYear", Store.settings().yearFilter || "all");
+
         const papers = {};
         document.querySelectorAll("[data-paper]").forEach(function (cb) { papers[cb.dataset.paper] = cb.checked; });
-        if (!papers.pure && !papers.stats && !papers.mech) { UI.toast("Select at least one paper", "bad"); return true; }
+        /* At least one of THIS subject's papers, not a fixed Maths trio. */
+        if (!Object.keys(papers).some(function (k) { return papers[k]; })) {
+          UI.toast("Select at least one " + Subjects.current().papersLabel.toLowerCase().replace(/s$/, ""), "bad");
+          return true;
+        }
         if (!exam) { UI.toast("Enter your exam date", "bad"); return true; }
         Store.mutate(function (s) {
           s.settings.examDate = exam; s.settings.qualification = qual; s.settings.studentName = name;

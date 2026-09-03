@@ -105,14 +105,7 @@ const LoginView = (function () {
       '</div>' +
 
       googleBlock() +
-
-      /* Device profiles must stay reachable with accounts switched on, or
-         progress saved before you had an account becomes unopenable, and the
-         app stops working at all when the server is unreachable. */
-      (Auth.profiles().filter(function (p) { return p.provider !== "cloud"; }).length
-        ? '<button class="btn btn-ghost btn-sm btn-block" data-action="login-mode" data-mode="pick" ' +
-            'style="margin-top:14px">Use a profile on this device instead</button>'
-        : "");
+      guestBlock();
   }
 
   /* ---------- cloud: sign up ---------- */
@@ -151,7 +144,22 @@ const LoginView = (function () {
       '<button class="btn btn-ghost btn-block" data-action="login-mode" data-mode="signin" ' +
         'style="margin-top:8px">I already have an account</button>' +
 
-      googleBlock();
+      googleBlock() +
+      guestBlock();
+  }
+
+  /* Carrying on without an account. Offered plainly rather than buried,
+     but with the trade-off stated before it is chosen, not after. */
+  function guestBlock() {
+    const existing = Auth.profiles().filter(function (p) { return p.provider !== "cloud"; });
+    return '<div class="guest-block">' +
+      '<button class="btn btn-ghost btn-sm btn-block" data-action="guest-start">' +
+        'Continue as a guest, on this device only</button>' +
+      (existing.length
+        ? '<button class="btn btn-ghost btn-sm btn-block" data-action="login-mode" data-mode="pick" ' +
+            'style="margin-top:6px">Open an existing device profile</button>'
+        : "") +
+      '</div>';
   }
 
   /* ---------- cloud: password reset ---------- */
@@ -424,6 +432,27 @@ const LoginView = (function () {
     return el ? el.value.trim() : "";
   }
 
+  /* Reuse the guest profile if there already is one, so choosing guest twice
+     reopens the same progress instead of quietly starting a second empty
+     tracker beside it. */
+  function startGuest() {
+    const existing = Auth.profiles().filter(function (p) {
+      return p.provider !== "cloud" && p.id === "guest";
+    })[0];
+
+    const go = existing
+      ? Auth.signInLocal("guest")
+      : Auth.createLocal("Guest").then(function () {
+          /* The first profile on a device inherits any pre-profiles save. */
+          if (Auth.profiles().length === 1) Auth.adoptLegacySave("guest");
+          return Auth.signInLocal("guest");
+        });
+
+    go.then(afterSignIn).catch(function (e) {
+      error = e.message; App.render();
+    });
+  }
+
   function handle(action, el) {
     if (action === "login-mode") {
       mode = el.dataset.mode; error = ""; notice = ""; busy = false; App.render(); return true;
@@ -481,6 +510,33 @@ const LoginView = (function () {
          by App.boot, so there is nothing to resolve here. */
       Cloud.signInWithGoogle()
         .catch(function (e) { busy = false; error = e.message; App.render(); });
+      return true;
+    }
+
+    if (action === "guest-start") {
+      UI.modal({
+        title: "Continue as a guest",
+        body:
+          '<div class="warnbox" style="margin-top:0"><b>Your progress will be saved on this device only</b>' +
+            'It stays in this browser. It will <b>not</b> sync to your phone or another computer, and it will ' +
+            'not be waiting for you if you use a different browser or clear your browsing data.</div>' +
+          '<div class="warnbox info tiny"><b>Moving it yourself</b>' +
+            'To carry your progress to another device, or to keep a backup, use ' +
+            '<b>Settings &rsaquo; Save a backup file</b>, then <b>Restore from a file</b> on the other device. ' +
+            'That is the only way progress moves between devices without an account.</div>' +
+          '<div class="tiny faint">You can create an account later and bring this progress with you: signing in ' +
+            'offers to copy it across.</div>',
+        footer:
+          '<button class="btn" data-guest-cancel>Back</button>' +
+          '<button class="btn btn-primary" data-guest-go>I understand, continue</button>',
+        onMount: function (box) {
+          box.querySelector("[data-guest-cancel]").onclick = UI.closeModal;
+          box.querySelector("[data-guest-go]").onclick = function () {
+            UI.closeModal();
+            startGuest();
+          };
+        }
+      });
       return true;
     }
 

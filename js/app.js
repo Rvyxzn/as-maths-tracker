@@ -277,6 +277,14 @@ function setSidebar(open) {
      would be worse than a label: the whole point of an account is knowing
      your work is safe, so say when it is not. */
   function syncChipHtml() {
+    /* A guest has no account to sync to. Say so where the sync status would
+       otherwise sit, so "this device only" stays visible rather than being a
+       warning seen once at sign-in and then forgotten. */
+    if (typeof Auth !== "undefined" && Auth.isSignedIn() && !Auth.isCloud() && Cloud.configured()) {
+      return '<button class="sync-chip warn" data-action="go" data-view="settings" ' +
+        'title="Guest progress is saved in this browser only. Use Settings to export a backup or move it to another device.">' +
+        'This device only</button>';
+    }
     if (typeof Sync === "undefined" || !Sync.enabled()) return "";
     const s = Sync.state();
     const map = {
