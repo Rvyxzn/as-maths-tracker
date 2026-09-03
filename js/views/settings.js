@@ -16,7 +16,7 @@ const SettingsView = (function () {
 
         '<div class="card"><div class="card-head"><div class="card-title">Exam and qualification</div></div>' +
           '<div class="stack">' +
-            field("Exam date", '<input class="input" type="date" data-set="examDate" value="' + s.examDate + '">') +
+            field("Exam date", UI.dateField({ id: "examDateField", value: s.examDate })) +
             field("Qualification", '<input class="input" data-set="qualification" value="' + UI.esc(s.qualification) + '">') +
             field("Your name", '<input class="input" data-set="studentName" value="' + UI.esc(s.studentName) + '">') +
             '<div class="field"><label class="label">Papers</label><div class="stack" style="gap:9px;margin-top:4px">' +
@@ -213,8 +213,14 @@ const SettingsView = (function () {
     document.querySelectorAll("[data-paper]").forEach(function (cb) { papers[cb.dataset.paper] = cb.checked; });
     if (!papers.pure && !papers.stats && !papers.mech) { UI.toast("Keep at least one paper enabled", "bad"); return; }
 
+    /* The exam date is committed on blur by the field itself, so by the time
+       Save runs it is already in settings. Re-read the box anyway, in case
+       Save was clicked straight from the field without it losing focus. */
+    const dateEl = document.getElementById("examDateField");
+    const typed = dateEl ? UI.parseLooseDate(dateEl.value, Store.settings().examDate) : null;
+
     Store.mutate(function (st) {
-      st.settings.examDate = get("examDate") || st.settings.examDate;
+      if (typed) st.settings.examDate = typed.iso;
       st.settings.qualification = get("qualification");
       st.settings.studentName = get("studentName");
       st.settings.dailyMinutes = parseInt(get("dailyMinutes"), 10);

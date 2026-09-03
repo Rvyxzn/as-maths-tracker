@@ -1900,6 +1900,34 @@ function setSidebar(open) {
     });
   }
 
+  /* Commit a loose date entry. Anything unparseable is put back to the stored
+     value rather than left sitting there looking accepted, and the plan is
+     regenerated because every deadline in it is measured from this date. */
+  function commitExamDate(fieldId, text) {
+    const stored = Store.settings().examDate;
+    const parsed = UI.parseLooseDate(text, stored);
+    const box = document.getElementById(fieldId);
+    const pick = document.getElementById(fieldId + "-pick");
+    const hint = document.getElementById(fieldId + "-hint");
+
+    if (!parsed) {
+      if (box) box.value = UI.fmtLoose(stored);
+      if (hint) hint.textContent = UI.hintFor(stored);
+      if (String(text || "").trim()) UI.toast("Could not read that as a date, so it was left unchanged", "warn", 4000);
+      return;
+    }
+
+    if (box) box.value = UI.fmtLoose(parsed.iso);
+    if (pick) pick.value = parsed.iso;
+    if (hint) hint.textContent = UI.hintFor(parsed.iso);
+
+    if (parsed.iso === stored) return;          // nothing actually changed
+    Store.mutate(function (st) { st.settings.examDate = parsed.iso; });
+    Scheduler.regenerate("exam date changed");
+    UI.toast("Exam date set to " + UI.fmtLoose(parsed.iso) + ", plan recalculated", "ok", 4000);
+    renderCountdown();
+  }
+
   /* ---------- boot ---------- */
   function boot() {
     /* Auth first: it decides which save file Store.init() opens. */
@@ -1938,9 +1966,32 @@ function setSidebar(open) {
     document.addEventListener("change", function (e) {
       const el = e.target;
       if (el.id === "importFile") { SettingsView.importFile(e); return; }
+      /* The native picker beside a loose date field: mirror it back. */
+      if (el.id && el.id.endsWith("-pick")) { commitExamDate(el.id.replace("-pick", ""), el.value); return; }
       if (el.dataset && el.dataset.s) {
         SessionView.setField(el.dataset.s, el.type === "checkbox" ? el.checked : el.value);
         return;
+      }
+    });
+
+    /* Clicking away from a date field commits what was typed, so a half
+       finished entry is completed rather than thrown away. focusout is used
+       rather than blur because blur does not bubble to the document. */
+    document.addEventListener("focusout", function (e) {
+      const el = e.target;
+      if (!el || !el.id) return;
+      const wrap = el.closest && el.closest("[data-datefield]");
+      if (wrap && el.type === "text") commitExamDate(el.id, el.value);
+    });
+
+    /* Enter should commit too, without waiting for focus to move. */
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Enter") return;
+      const el = e.target;
+      if (el && el.closest && el.closest("[data-datefield]") && el.type === "text") {
+        e.preventDefault();
+        commitExamDate(el.id, el.value);
+        el.blur();
       }
     });
     document.addEventListener("keydown", function (e) {

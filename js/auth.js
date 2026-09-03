@@ -295,6 +295,28 @@ const Auth = (function () {
     try { return !!localStorage.getItem(LEGACY_KEY); } catch (e) { return false; }
   }
 
+  /* Device profiles that actually hold work, biggest first. Used when signing
+     into a cloud account for the first time on a machine that already has
+     progress saved under a local profile: without this that work would be
+     stranded under a key nothing opens any more. */
+  function localProfilesWithData() {
+    return profiles()
+      .filter(function (p) { return p.provider !== "cloud" && profileSize(p.id) > 2000; })
+      .map(function (p) { return { id: p.id, name: p.name, size: profileSize(p.id) }; })
+      .sort(function (a, b) { return b.size - a.size; });
+  }
+
+  /* Copy a local profile's saved document into the profile that is signed in
+     now. The source is left untouched, so this is a copy and never a move. */
+  function copyProfileData(fromId, toId) {
+    try {
+      const raw = localStorage.getItem(storageKeyFor(fromId));
+      if (!raw) return false;
+      localStorage.setItem(storageKeyFor(toId), raw);
+      return true;
+    } catch (e) { return false; }
+  }
+
   function init() {
     const s = readJSON(SESSION_KEY, null);
     if (s && s.id) {
@@ -371,7 +393,9 @@ const Auth = (function () {
     signOut: signOut,
 
     hasLegacySave: hasLegacySave,
-    adoptLegacySave: adoptLegacySave
+    adoptLegacySave: adoptLegacySave,
+    localProfilesWithData: localProfilesWithData,
+    copyProfileData: copyProfileData
   };
 })();
 

@@ -1688,3 +1688,11 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .sync-chip.ok{color:var(--green)}
 .sync-chip.warn{color:var(--amber);border-color:var(--amber)}
 .sync-chip.bad{color:var(--red);border-color:var(--red)}
+
+/* ---------- loose date field ---------- */
+.datefield{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.datefield .date-pick{width:42px;padding:9px 6px;flex:0 0 auto;color:transparent}
+.datefield .date-pick::-webkit-datetime-edit{display:none}
+.datefield .date-pick::-webkit-calendar-picker-indicator{opacity:.65;cursor:pointer;margin:0}
+.datefield .date-pick:hover::-webkit-calendar-picker-indicator{opacity:1}
+.datefield-hint{grid-column:1 / -1;margin-top:-2px}

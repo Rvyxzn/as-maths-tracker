@@ -66,14 +66,23 @@ const LoginView = (function () {
   }
 
   function body(list) {
+    /* The device-profile screens are reachable in both modes: with accounts
+       on they are the way back to progress saved before you had one. */
+    if (mode === "pick")   return pickForm(list) + backToAccounts();
+    if (mode === "create") return createForm(list) + backToAccounts();
+    if (mode === "unlock") return unlockForm();
     if (cloud()) {
       if (mode === "signup") return signUpForm();
       if (mode === "reset")  return resetForm();
       return signInForm();
     }
-    if (mode === "create") return createForm(list);
-    if (mode === "unlock") return unlockForm();
     return pickForm(list);
+  }
+
+  function backToAccounts() {
+    if (!cloud()) return "";
+    return '<button class="btn btn-ghost btn-sm btn-block" data-action="login-mode" data-mode="signin" ' +
+      'style="margin-top:14px">Back to signing in with an account</button>';
   }
 
   /* ---------- cloud: sign in ---------- */
@@ -94,7 +103,15 @@ const LoginView = (function () {
         '<button class="btn btn-ghost btn-sm" data-action="login-mode" data-mode="reset">Forgot password</button>' +
       '</div>' +
 
-      googleBlock();
+      googleBlock() +
+
+      /* Device profiles must stay reachable with accounts switched on, or
+         progress saved before you had an account becomes unopenable, and the
+         app stops working at all when the server is unreachable. */
+      (Auth.profiles().filter(function (p) { return p.provider !== "cloud"; }).length
+        ? '<button class="btn btn-ghost btn-sm btn-block" data-action="login-mode" data-mode="pick" ' +
+            'style="margin-top:14px">Use a profile on this device instead</button>'
+        : "");
   }
 
   /* ---------- cloud: sign up ---------- */
@@ -287,6 +304,16 @@ const LoginView = (function () {
     mode = null; error = ""; notice = ""; busy = false;
     App.go("dashboard");
 
+    /* Signing into a fresh account on a device that already has work saved
+       under a device profile. That work is not visible from a cloud account,
+       so offer to bring it in rather than leaving it stranded. */
+    const incoming = Sync.countWork(Store.get());
+    const local = Auth.localProfilesWithData();
+    if (incoming === 0 && local.length) {
+      offerLocalImport(local, user);
+      return;
+    }
+
     Sync.pullOnSignIn(user.id).then(function (r) {
       if (r.action === "conflict") return askConflict(r);
       if (r.action === "pulled") {
@@ -298,6 +325,52 @@ const LoginView = (function () {
         UI.toast("Signed in, but syncing failed: " + r.error, "bad", 7000);
       } else {
         UI.toast("Signed in as " + (Auth.current() || {}).name, "ok");
+      }
+    });
+  }
+
+  /* Existing device progress, and a brand new account. Ask before moving it:
+     it is the user's work, and silently hoovering it into an account is as
+     wrong as silently leaving it behind. */
+  function offerLocalImport(local, user) {
+    const p = local[0];
+    const stateDoc = (function () {
+      try { return JSON.parse(localStorage.getItem("as-maths-tracker-v1::" + p.id) || "null"); }
+      catch (e) { return null; }
+    })();
+    const summary = stateDoc ? Sync.describe(stateDoc) : Math.round(p.size / 1024) + " KB";
+
+    UI.modal({
+      title: "Bring your existing progress into this account?",
+      body:
+        '<p class="muted" style="margin-top:0">This device already has progress saved under the profile ' +
+        '<b>' + UI.esc(p.name) + '</b>, from before you had an account.</p>' +
+        '<div class="card" style="margin:0 0 14px"><b>' + UI.esc(p.name) + '</b>' +
+          '<div class="tiny muted" style="margin-top:6px">' + UI.esc(summary) + '</div></div>' +
+        '<div class="tiny faint">Copied, not moved: the ' + UI.esc(p.name) + ' profile keeps its own copy either way. ' +
+        'Once copied it syncs to your account and follows you to your other devices.</div>',
+      footer:
+        '<button class="btn" data-skip>Start fresh</button>' +
+        '<button class="btn btn-primary" data-bring>Bring it in</button>',
+      onMount: function (box) {
+        const finish = function (r) {
+          UI.closeModal();
+          App.render();
+          if (r === "brought") UI.toast("Your progress is now in your account and syncing", "ok", 5000);
+        };
+        box.querySelector("[data-skip]").onclick = function () {
+          Sync.pullOnSignIn(user.id).then(function () { finish("fresh"); });
+        };
+        box.querySelector("[data-bring]").onclick = function () {
+          const cur = Auth.current();
+          if (cur && Auth.copyProfileData(p.id, cur.id)) {
+            Store.reloadForUser();
+            Sync.pushNow().then(function () { finish("brought"); });
+          } else {
+            UI.toast("Could not copy that profile", "bad");
+            finish("fresh");
+          }
+        };
       }
     });
   }

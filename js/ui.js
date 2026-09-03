@@ -80,6 +80,120 @@ const UI = (function () {
   const RAG_LABEL = { red: "RED", amber: "AMBER", green: "GREEN" };
   const RAG_EMOJI = { red: "🔴", amber: "🟠", green: "🟢" };
 
+  /* ---------- loose date parsing ----------
+     A native <input type="date"> reports an empty value until every part of
+     the date is filled in, so a half-typed entry reads as "nothing" and gets
+     silently discarded. This accepts what people actually type and fills the
+     gaps from the date already set, so "june" changes the month and leaves
+     the rest alone.
+
+     Day-first throughout, because this is a UK exam tracker: 6/7 is the 6th
+     of July, never the 7th of June. */
+  const MONTHS = ["january", "february", "march", "april", "may", "june",
+                  "july", "august", "september", "october", "november", "december"];
+
+  function parseLooseDate(text, fallbackISO) {
+    const raw = String(text || "").trim().toLowerCase();
+    if (!raw) return null;
+
+    const fb = /^\d{4}-\d{2}-\d{2}$/.test(fallbackISO || "")
+      ? fallbackISO.split("-").map(Number)
+      : (function () { const d = new Date(); return [d.getFullYear(), d.getMonth() + 1, d.getDate()]; })();
+    let [year, month, day] = fb;
+    let sawAny = false;
+
+    /* An exact ISO date is taken as-is. */
+    const iso = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if (iso) {
+      year = +iso[1]; month = +iso[2]; day = +iso[3];
+      return finish(year, month, day);
+    }
+
+    /* A month name anywhere in the string, full or abbreviated. */
+    const nameMatch = raw.match(/[a-z]{3,}/);
+    if (nameMatch) {
+      const i = MONTHS.findIndex(function (m) { return m.indexOf(nameMatch[0]) === 0; });
+      if (i < 0) return null;              // a word that is not a month: reject
+      month = i + 1; sawAny = true;
+    }
+
+    /* Remaining numbers, in order. Their meaning depends on how many there
+       are and whether a month name already claimed the month slot. */
+    const nums = (raw.match(/\d+/g) || []).map(Number);
+
+    if (nums.length === 1) {
+      const n = nums[0];
+      if (n >= 1000)      { year = n; }                          // "2027"
+      else if (sawAny)    { day = n; }                           // "june 6"
+      else if (n <= 12)   { month = n; }                         // "6" -> June
+      else if (n <= 31)   { day = n; }                           // "24"
+      else                { year = 2000 + n; }                   // "27"
+      sawAny = true;
+    } else if (nums.length === 2) {
+      if (sawAny) {                                              // month named
+        const [a, b] = nums;
+        if (a >= 1000) { year = a; day = fb[2]; }
+        else { day = a; year = b >= 1000 ? b : 2000 + b; }
+      } else {
+        const [a, b] = nums;
+        if (b >= 1000)      { month = a; year = b; }             // "6/2027"
+        else if (a >= 1000) { year = a; month = b; }             // "2027/6"
+        else                { day = a; month = b; }              // "6/7" day-first
+      }
+      sawAny = true;
+    } else if (nums.length >= 3) {
+      const [a, b, c] = nums;
+      if (a >= 1000) { year = a; month = b; day = c; }           // 2027 6 1
+      else { day = a; month = b; year = c >= 1000 ? c : 2000 + c; }
+      sawAny = true;
+    }
+
+    if (!sawAny) return null;
+    return finish(year, month, day);
+  }
+
+  function finish(year, month, day) {
+    if (!(month >= 1 && month <= 12)) return null;
+    if (!(year >= 1900 && year <= 2200)) return null;
+    /* Clamp rather than reject: changing the month from the 31st to a shorter
+       month should land on that month's last day, not throw the entry away. */
+    const last = new Date(year, month, 0).getDate();
+    if (day < 1) day = 1;
+    if (day > last) day = last;
+    const p = function (n) { return (n < 10 ? "0" : "") + n; };
+    return { iso: year + "-" + p(month) + "-" + p(day), year: year, month: month, day: day };
+  }
+
+  /* An exam date field that accepts typing. Text box for loose entry plus the
+     native picker for anyone who would rather click, kept in step with each
+     other. Saves on blur, so clicking away commits it. */
+  function dateField(opts) {
+    const id = opts.id;
+    const value = opts.value || "";
+    return '<div class="datefield" data-datefield="' + id + '">' +
+      '<input class="input" id="' + id + '" type="text" autocomplete="off" spellcheck="false" ' +
+        'placeholder="e.g. 1 June 2027, 6/2027, june" value="' + esc(fmtLoose(value)) + '">' +
+      '<input class="input date-pick" id="' + id + '-pick" type="date" value="' + esc(value) + '" ' +
+        'aria-label="Pick a date">' +
+      '<div class="tiny faint datefield-hint" id="' + id + '-hint">' + esc(hintFor(value)) + '</div>' +
+      '</div>';
+  }
+
+  function fmtLoose(iso) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso || "")) return "";
+    const [y, m, d] = iso.split("-").map(Number);
+    return d + " " + MONTHS[m - 1].charAt(0).toUpperCase() + MONTHS[m - 1].slice(1) + " " + y;
+  }
+
+  function hintFor(iso) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso || "")) return "";
+    const d = new Date(iso + "T00:00:00");
+    const days = Math.round((d - new Date(new Date().toDateString())) / 86400000);
+    return d.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" }) +
+      (days > 0 ? "  ·  " + days + " day" + (days === 1 ? "" : "s") + " away"
+                : days === 0 ? "  ·  today" : "  ·  in the past");
+  }
+
   function ragPill(rag, extra) {
     if (!rag) return '<span class="rag rag-none"><i class="dot dot-none"></i>NOT RATED</span>';
     return '<span class="rag rag-' + rag + '"><i class="dot dot-' + rag + '"></i>' + RAG_LABEL[rag] + (extra ? " " + esc(extra) : "") + '</span>';
@@ -602,6 +716,7 @@ canvas-rendered PDF being the case in point, must be treated as
   return {
     esc: esc, toast: toast, modal: modal, closeModal: closeModal, confirm: confirmDialog,
     ragPill: ragPill, yearPill: yearPill, ragDot: ragDot, ragPicker: ragPicker, bar: bar, ragBar: ragBar, ragLegend: ragLegend,
+    parseLooseDate: parseLooseDate, dateField: dateField, fmtLoose: fmtLoose, hintFor: hintFor,
     empty: empty, accPill: accPill, lineChart: lineChart, hBars: hBars, donut: donut, taskCard: taskCard,
     focusButton: focusButton, morph: morph, icon: icon, math: math, todayToggle: todayToggle,
     markScheme: markScheme,
