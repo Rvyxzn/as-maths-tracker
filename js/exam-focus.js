@@ -28,7 +28,7 @@ Exam-Focus data, chapter-level revision
 
 const PMT = "https://www.physicsandmathstutor.com/maths-revision/a-level-edexcel/";
 
-const EXAM_FOCUS = {
+const MATHS_EXAM_FOCUS = {
 
   /* ---------------- PURE ---------------- */
   pu1: {
@@ -848,21 +848,31 @@ qUrl: PMT + "kinematics/"
   }
 };
 
-/* Merge chapter exam data into SPEC, and build a chapter index */
+/* Merge chapter exam data into the active spec, and build a chapter index.
+   Rebuilt on every subject switch, so these are `let`. */
 const CHAPTER_PREFIX = "ch:";
-const CHAPTER_INDEX = (function () {
+let EXAM_FOCUS = {};
+let CHAPTER_INDEX = {};
+let ALL_CHAPTER_IDS = [];
+
+function buildChapterIndex(spec, focus) {
   const map = {};
-  SPEC.forEach(function (paper) {
+  spec.forEach(function (paper) {
     paper.sections.forEach(function (sec) {
-      sec.exam = EXAM_FOCUS[sec.id] || null;
+      sec.exam = focus[sec.id] || null;
       const id = CHAPTER_PREFIX + sec.id;
       const mins = chapterMinutes(sec);
+      /* Maths restarts chapter numbers each year, so its labels carry the
+         year. Subjects whose section numbers are already unique (Economics
+         1.1, 1.2, ...) read better without it. */
+      const flat = !!sec.flatNumbering;
+      const yr = sec.year || 1;
       map[id] = {
-        id: id, chapter: sec, paper: paper, year: sec.year || 1,
+        id: id, chapter: sec, paper: paper, year: yr,
         sub: {
           id: id,
-          code: "Ch " + sec.num,
-          year: sec.year || 1,
+          code: flat ? sec.num : "Ch " + sec.num,
+          year: yr,
           name: sec.name,
           reqs: sec.exam ? sec.exam.core : sec.subs.map(function (s) { return s.name; }),
           traps: sec.exam ? sec.exam.traps : [],
@@ -876,15 +886,14 @@ const CHAPTER_INDEX = (function () {
         },
         section: sec, paper_: paper,
         chapterLabel: chapterLabelFor(sec),
-        path: paper.short + " / Y" + (sec.year || 1) + " Ch " + sec.num,
-        fullName: "Y" + (sec.year || 1) + " Chapter " + sec.num + ", " + sec.name
+        path: paper.short + " / " + (flat ? sec.num : "Y" + yr + " Ch " + sec.num),
+        fullName: flat ? sec.num + " " + sec.name
+                       : "Y" + yr + " Chapter " + sec.num + ", " + sec.name
       };
     });
   });
   return map;
-})();
-
-const ALL_CHAPTER_IDS = Object.keys(CHAPTER_INDEX);
+}
 
 /* A chapter session is a summary + a mixed question set, deliberately
    not the sum of its sections, which would defeat the point. */

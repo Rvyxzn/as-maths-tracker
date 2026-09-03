@@ -199,6 +199,62 @@ function setSidebar(open) {
     renderWhoAmI();
   }
 
+  /* The sigma in the corner is the subject switcher, so it has to show the
+     subject you are actually in. */
+  function renderBrand() {
+    const s = Subjects.current();
+    const mark = document.getElementById("brandMark");
+    const title = document.getElementById("brandTitle");
+    if (mark) mark.textContent = s.mark;
+    if (title) title.textContent = s.name;
+  }
+
+  function subjectMenu() {
+    const cur = Subjects.currentId();
+    UI.modal({
+      title: "Switch subject",
+      body:
+        '<p class="muted" style="margin-top:0">Each subject keeps its own ratings, plan, past papers and school ' +
+        'tests. Switching does not affect the other.</p>' +
+        '<div class="subject-list">' +
+          Subjects.list().map(function (s) {
+            const on = s.id === cur;
+            const st = Metrics.subjectSummary(s.id);
+            return '<button class="subject-row' + (on ? " on" : "") + '" data-pick-subject="' + s.id + '">' +
+              '<span class="subject-mark">' + UI.esc(s.mark) + '</span>' +
+              '<span class="subject-meta">' +
+                '<b>' + UI.esc(s.name) + '</b>' +
+                '<small>' + UI.esc(s.qualification) + '</small>' +
+                '<small>' + st.sections + " " + UI.esc(s.unitPlural) + ", " + st.subs + " subtopics" +
+                  (st.rated ? " · " + st.rated + " rated" : " · not rated yet") +
+                  (s.hasResources ? "" : " · no videos or questions yet") + '</small>' +
+              '</span>' +
+              (on ? '<span class="subject-current">current</span>' : '<span class="profile-go">→</span>') +
+              '</button>';
+          }).join("") +
+        '</div>',
+      footer: '<button class="btn" data-close-subject>Close</button>',
+      /* Modal content is wired here rather than through the delegated
+         data-action handler: UI.modal stops click propagation inside the box,
+         so document-level delegation never sees it. */
+      onMount: function (box) {
+        box.querySelector("[data-close-subject]").onclick = UI.closeModal;
+        box.querySelectorAll("[data-pick-subject]").forEach(function (b) {
+          b.onclick = function () {
+            const id = b.dataset.pickSubject;
+            UI.closeModal();
+            if (id === Subjects.currentId()) return;
+            const s = Subjects.switchTo(id);
+            renderBrand();
+            current = "dashboard";
+            render();
+            UI.toast("Switched to " + s.name, "ok");
+          };
+        });
+      }
+    });
+  }
+
   /* Whose progress is on screen. Worth stating plainly once a browser can
      hold several profiles: it is how you notice you are in the wrong one. */
   function renderWhoAmI() {
@@ -302,6 +358,7 @@ function setSidebar(open) {
     if (CalendarView.handle(action, el)) return;
     if (PapersView.handle(action, el)) return;
     if (AssessmentsView.handle(action, el)) return;
+    if (action === "switch-subject") { subjectMenu(); return; }
     if (action === "sync-now") {
       UI.toast("Syncing…", "info", 1500);
       Sync.pushNow().then(function (ok) {
@@ -1424,7 +1481,7 @@ function setSidebar(open) {
           opt("stale", "Going stale", "Not revised in 5+ days, or never", nStale) +
         '</div>' +
         '<div class="field"><label class="label">\u2026or just one paper</label>' +
-          '<div class="chips">' + SPEC.filter(function (p) { return Store.settings().papers[p.id]; }).map(function (p) {
+          '<div class="chips">' + SPEC.filter(function (p) { return paperOn(p.id); }).map(function (p) {
             return '<button class="chip" data-scope="paper" data-paper="' + p.id + '">' + UI.esc(p.short) + '</button>';
           }).join("") + '</div></div>' +
         (hist.length ? '<div style="border-top:1px solid var(--border);padding-top:14px">' +
@@ -1930,10 +1987,13 @@ function setSidebar(open) {
 
   /* ---------- boot ---------- */
   function boot() {
-    /* Auth first: it decides which save file Store.init() opens. */
+    /* Order matters. Subjects builds the spec globals everything reads, and
+       Auth decides which profile's save file Store.init() then opens. */
+    Subjects.activate(Subjects.remembered());
     Auth.init();
     Store.init();
     applyTheme();
+    renderBrand();
 
     /* A Supabase session outlives a refresh, and Google sign-in comes back
        through a redirect, so both are resolved after the first paint rather

@@ -30,7 +30,7 @@ Covers the FULL A level: Year 1/AS content and Year 2 content.
 
 /* importance: 1 = niche, 5 = appears on virtually every paper */
 
-const SPEC = [
+const MATHS_SPEC = [
 {
   id: "pure", paper: "Pure", short: "Pure",
   name: "Papers 1 & 2: Pure Mathematics", code: "9MA0/01 & 9MA0/02",
@@ -1510,18 +1510,30 @@ const SPEC = [
 
 /* ---------- derived helpers ---------- */
 
-/* Chapter heading used everywhere: "Y1 Ch 4 · Graphs and Transformations".
-Both years restart their chapter numbering, so the year prefix is what
-stops Pure Y1 Ch 2 and Pure Y2 Ch 2 reading as the same chapter. */
+/* Chapter heading. Maths numbers its chapters per year and restarts, so
+   "Y1 Ch 2" and "Y2 Ch 2" have to be told apart. Subjects that already carry
+   a unique number in the section itself (Economics themes are 1.1, 1.2, ...)
+   set `flatNumbering` and are labelled with that number alone. */
 function chapterLabelFor(sec) {
+  if (sec.flatNumbering) return sec.num + " " + sec.name;
   return "Y" + (sec.year || 1) + " Ch " + sec.num + " · " + sec.name;
 }
 
-const SPEC_INDEX = (function () {
+/* These are rebuilt whenever the active subject changes, so they are `let`
+   rather than `const`. Subjects.activate() is what assigns them; nothing
+   should read them before that has run once. */
+let SPEC = [];
+let SPEC_INDEX = {};
+let ALL_SUB_IDS = [];
+let ALL_SECTIONS = [];
+
+/* Build the lookup tables for one subject's specification. */
+function buildSpecIndex(spec) {
   const map = {};
-  SPEC.forEach(function (paper) {
+  spec.forEach(function (paper) {
     paper.sections.forEach(function (sec) {
       if (!sec.year) sec.year = 1; // sections default to Year 1
+      if (paper.flatNumbering) sec.flatNumbering = true;
       sec.subs.forEach(function (sub) {
         sub.year = sec.year; // subtopics inherit their chapter's year
         map[sub.id] = {
@@ -1534,18 +1546,15 @@ const SPEC_INDEX = (function () {
     });
   });
   return map;
-})();
+}
 
-const ALL_SUB_IDS = Object.keys(SPEC_INDEX);
-
-/* Every section in the order the app should present it, with its year. */
-const ALL_SECTIONS = (function () {
+function buildAllSections(spec) {
   const out = [];
-  SPEC.forEach(function (paper) {
+  spec.forEach(function (paper) {
     paper.sections.forEach(function (sec) { out.push({ sec: sec, paper: paper }); });
   });
-return out;
-})();
+  return out;
+}
 
 /* Does this year pass the current Year filter? filter is "all" | "1" | "2" */
 function yearPasses(year, filter) {

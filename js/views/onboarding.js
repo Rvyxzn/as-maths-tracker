@@ -255,7 +255,7 @@ const OnboardingView = (function () {
         UI.ragBar(c) + UI.ragLegend(c) +
         '<div class="grid g3" style="margin-top:20px">' +
           SPEC.map(function (p) {
-            if (!Store.settings().papers[p.id]) return "";
+            if (!paperOn(p.id)) return "";
             const pc = Metrics.coverage(p.id);
             return '<div class="card" style="box-shadow:none"><div class="card-title" style="margin-bottom:9px">' + UI.esc(p.short) + '</div>' +
               UI.ragBar(pc) + '<div class="tiny muted" style="margin-top:8px">' + pc.total + ' subtopics · ' + pc.red + ' red</div></div>';

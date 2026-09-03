@@ -21,7 +21,7 @@ const SettingsView = (function () {
             field("Your name", '<input class="input" data-set="studentName" value="' + UI.esc(s.studentName) + '">') +
             '<div class="field"><label class="label">Papers</label><div class="stack" style="gap:9px;margin-top:4px">' +
               SPEC.map(function (p) {
-                return '<label class="switch"><input type="checkbox" data-paper="' + p.id + '"' + (s.papers[p.id] ? " checked" : "") + '><i></i>' +
+                return '<label class="switch"><input type="checkbox" data-paper="' + p.id + '"' + (paperOn(p.id) ? " checked" : "") + '><i></i>' +
                   '<span>' + UI.esc(p.name) + '</span></label>';
               }).join("") + '</div></div>' +
             '<div class="field"><label class="label">Content in your plan</label>' +

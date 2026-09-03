@@ -201,7 +201,7 @@ const PapersView = (function () {
     const lost = errs.reduce(function (a, e) { return a + (+e.marks || 0); }, 0);
 
     const topicOptions = '<option value=""> - choose a topic - </option>' +
-      SPEC.filter(function (sp) { return Store.settings().papers[sp.id]; }).map(function (sp) {
+      SPEC.filter(function (sp) { return paperOn(sp.id); }).map(function (sp) {
         /* Every topic stays selectable here regardless of the Year filter, a
         mistake in a paper must be attributable even if that year is hidden. */
         return '<optgroup label="' + UI.esc(sp.short) + '">' + sp.sections.map(function (sec) {

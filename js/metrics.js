@@ -291,6 +291,34 @@ const Metrics = (function () {
     };
   }
 
+  /* A one-line picture of a subject without switching to it, for the subject
+     menu. Reads that subject's saved file directly rather than activating it,
+     because activation would swap the globals under the running view. */
+  function subjectSummary(subjectId) {
+    const s = Subjects.get(subjectId);
+    if (!s) return { sections: 0, subs: 0, rated: 0 };
+
+    const spec = s.spec();
+    let sections = 0, subs = 0;
+    spec.forEach(function (p) {
+      sections += p.sections.length;
+      p.sections.forEach(function (sec) { subs += sec.subs.length; });
+    });
+
+    let rated = 0;
+    try {
+      const base = (typeof Auth !== "undefined" && Auth.isSignedIn())
+        ? Auth.storageKey() : STORAGE_KEY_BASE;
+      const raw = localStorage.getItem(base + Subjects.storageSuffix(subjectId));
+      if (raw) {
+        const topics = (JSON.parse(raw) || {}).topics || {};
+        Object.keys(topics).forEach(function (k) { if (topics[k] && topics[k].rag) rated++; });
+      }
+    } catch (e) { rated = 0; }
+
+    return { sections: sections, subs: subs, rated: rated };
+  }
+
   /* ---------- grade boundaries ----------
   A level Mathematics (9MA0) is marked out of 300: Paper 1 Pure 100,
   Paper 2 Pure 100, Paper 3 Statistics & Mechanics 100.
@@ -579,9 +607,8 @@ const Metrics = (function () {
 
   /* Weakness rows at chapter grain, usable whichever mode you are in */
   function weaknessesByChapter(limit) {
-    const enabled = Store.settings().papers;
     const rows = ALL_CHAPTER_IDS.filter(function (cid) {
-      return enabled[CHAPTER_INDEX[cid].paper.id];
+      return paperOn(CHAPTER_INDEX[cid].paper.id);
     }).map(function (cid) {
       const r = chapterRollup(cid);
       let score = 0;
@@ -710,7 +737,7 @@ const Metrics = (function () {
     accuracy: accuracy, lastAccuracy: lastAccuracy, bestAccuracy: bestAccuracy, paperLoss: paperLoss,
     effectiveRag: effectiveRag, checklist: checklist, checklistScore: checklistScore, isCovered: isCovered,
     coverage: coverage, nextReviewDate: nextReviewDate, isDue: isDue, daysSinceRevised: daysSinceRevised,
-    paperStats: paperStats, estimateGrade: estimateGrade,
+    paperStats: paperStats, estimateGrade: estimateGrade, subjectSummary: subjectSummary,
     gradeDetail: gradeDetail, recommendRag: recommendRag, relativeTime: relativeTime,
     chapterScore: chapterScore, marksAttempted: marksAttempted, confidenceOf: confidenceOf,
     likelyTopics: likelyTopics, priorityTopics: priorityTopics,

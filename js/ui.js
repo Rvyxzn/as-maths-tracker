@@ -201,10 +201,14 @@ const UI = (function () {
 
 /* Which year of the A level a topic belongs to. Both years restart their
 chapter numbering, so this badge is what keeps them apart at a glance. */
-function yearPill(year) {
-  const y = Number(year) === 2 ? 2 : 1;
-  return '<span class="yr yr-' + y + '" title="Pure/Stats/Mechanics Year ' + y + ' content">Y' + y + '</span>';
-}
+  /* Only meaningful for a subject taught in two numbered years that restarts
+     its chapter numbering. Others get nothing, rather than a badge stamping
+     "Y1" on every single topic. */
+  function yearPill(year) {
+    if (typeof Subjects !== "undefined" && !Subjects.current().usesYears) return "";
+    const y = Number(year) === 2 ? 2 : 1;
+    return '<span class="yr yr-' + y + '" title="Year ' + y + ' content">Y' + y + '</span>';
+  }
   function ragDot(rag) { return '<i class="dot dot-' + (rag || "none") + '"></i>'; }
 
   function bar(pct, cls) {

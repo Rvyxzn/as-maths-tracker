@@ -29,7 +29,7 @@
 
 const YT_CHANNEL = "https://www.youtube.com/@zeeshanzamurred9280";
 
-const CHAPTER_DATA = {
+const MATHS_CHAPTER_DATA = {
 
   /* ================= PURE ================= */
   pu1: {
@@ -545,15 +545,21 @@ me2c8: {
   }
 };
 
-/* Attach to the chapter index so views can reach it directly */
-(function () {
+/* Hang each chapter's playlist and question bank off the chapter index, so
+   views can reach them without a second lookup. Re-run on every subject
+   switch, since the index is rebuilt each time. A subject with no learning
+   data yet simply gets no playlist and an empty bank. */
+let CHAPTER_DATA = {};
+
+function attachChapterData(data) {
+  CHAPTER_DATA = data || {};
   ALL_CHAPTER_IDS.forEach(function (cid) {
     const inf = CHAPTER_INDEX[cid];
     const d = CHAPTER_DATA[inf.chapter.id];
     inf.playlist = d && d.playlist ? d.playlist : null;
     inf.bank = d && d.questions ? d.questions : [];
   });
-})();
+}
 
 /* Official Pearson landing page for past papers (papers themselves are
   PDFs you add yourself, see the Past Papers section). */

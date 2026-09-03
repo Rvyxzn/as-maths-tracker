@@ -237,7 +237,7 @@ const DashboardView = (function () {
   }
 
   function paperBreakdown() {
-    const rows = SPEC.filter(function (p) { return Store.settings().papers[p.id]; }).map(function (p) {
+    const rows = SPEC.filter(function (p) { return paperOn(p.id); }).map(function (p) {
       const pc = Metrics.coverage(p.id);
       return '<div style="padding:13px 0;border-bottom:1px solid var(--border)">' +
         '<div class="row" style="margin-bottom:8px"><b style="font-size:13.5px">' + UI.esc(p.name) + '</b>' +

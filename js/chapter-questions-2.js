@@ -315,18 +315,14 @@ const CHAPTER_QUESTIONS_2 = {
   ]
 };
 
-/* Append to each chapter's bank */
+/* Merge this second bank into the maths chapter data once, at load, before
+   any subject is activated. Attaching to the index is done by
+   attachChapterData() during activation, so it is not repeated here. */
 (function () {
   Object.keys(CHAPTER_QUESTIONS_2).forEach(function (chId) {
-    if (CHAPTER_DATA[chId]) {
-      CHAPTER_DATA[chId].questions =
-        CHAPTER_DATA[chId].questions.concat(CHAPTER_QUESTIONS_2[chId]);
+    if (MATHS_CHAPTER_DATA[chId]) {
+      MATHS_CHAPTER_DATA[chId].questions =
+        MATHS_CHAPTER_DATA[chId].questions.concat(CHAPTER_QUESTIONS_2[chId]);
     }
-  });
-  /* refresh the index built in chapter-data.js */
-  ALL_CHAPTER_IDS.forEach(function (cid) {
-    const inf = CHAPTER_INDEX[cid];
-    const d = CHAPTER_DATA[inf.chapter.id];
-    inf.bank = d && d.questions ? d.questions : [];
   });
 })();

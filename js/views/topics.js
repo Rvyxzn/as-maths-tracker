@@ -15,7 +15,7 @@ const TopicsView = (function () {
     root.innerHTML =
       '<div class="card" style="margin-bottom:18px">' +
         '<div class="row wrap" style="gap:10px">' +
-          '<input class="input" id="topicSearch" placeholder="Search topics, e.g. binomial, suvat, hypothesis…" value="' + UI.esc(filters.q) + '" style="flex:1;min-width:220px">' +
+          '<input class="input" id="topicSearch" placeholder="' + UI.esc(Subjects.current().searchHint) + '" value="' + UI.esc(filters.q) + '" style="flex:1;min-width:220px">' +
           '<select class="input" data-filter="sort" style="width:auto">' +
             opt("spec", "Specification order", filters.sort) + opt("weak", "Weakest first", filters.sort) +
             opt("due", "Due for review first", filters.sort) + opt("acc", "Lowest accuracy first", filters.sort) +
@@ -23,8 +23,17 @@ const TopicsView = (function () {
           '<button class="btn btn-sm" data-action="add-custom-topic">+ Add topic</button>' +
         '</div>' +
         '<div class="row wrap" style="gap:16px;margin-top:12px">' +
-          chipGroup("paper", ["all", "pure", "stats", "mech"], { all: "All papers", pure: "Pure", stats: "Statistics", mech: "Mechanics" }) +
-          chipGroup("year", ["all", "1", "2"], { all: "Both years", "1": "Year 1", "2": "Year 2" }) +
+          /* Built from the active spec, so a subject's own papers or themes
+             appear rather than the Maths ones. */
+          (function () {
+            const vals = ["all"].concat(SPEC.map(function (p) { return p.id; }));
+            const labels = { all: "All " + Subjects.current().papersLabel.toLowerCase() };
+            SPEC.forEach(function (p) { labels[p.id] = p.paper; });
+            return chipGroup("paper", vals, labels);
+          })() +
+          (Subjects.current().usesYears
+            ? chipGroup("year", ["all", "1", "2"], { all: "Both years", "1": "Year 1", "2": "Year 2" })
+            : "") +
           chipGroup("rag", ["all", "red", "amber", "green", "unrated"], { all: "All RAG", red: "🔴 Red", amber: "🟠 Amber", green: "🟢 Green", unrated: "Unrated" }) +
           chipGroup("status", ["all", "notstarted", "video", "questions", "covered", "due"],
             { all: "Any status", notstarted: "Not started", video: "Video done", questions: "Questions done", covered: "Covered", due: "Due for review" }) +
@@ -97,7 +106,7 @@ const TopicsView = (function () {
       '<b>Exam-Focus is on.</b> You are revising a chapter at a time \u2014 one summary, the components that carry ' +
       'the marks, and a mixed question set. Turn it off in the top bar to go back to individual sections.</div>';
     SPEC.forEach(function (p) {
-      if (!Store.settings().papers[p.id]) return;
+      if (!paperOn(p.id)) return;
       const cards = p.sections.map(function (sec) {
         const cid = CHAPTER_PREFIX + sec.id;
         if (!shown[cid]) return "";
@@ -120,7 +129,7 @@ const TopicsView = (function () {
       '<div class="row wrap" style="gap:10px">' +
         '<div style="flex:1;min-width:0">' +
           '<div class="row wrap" style="gap:8px">' +
-            '<span class="code">Ch ' + UI.esc(inf.chapter.num) + '</span>' +
+            '<span class="code">' + UI.esc(inf.sub.code) + '</span>' +
             '<b style="font-size:15px">' + UI.esc(inf.sub.name) + '</b>' +
             UI.yearPill(inf.chapter.year) +
             UI.ragPill(eff.rag) +
@@ -148,7 +157,7 @@ const TopicsView = (function () {
     const shown = {}; filtered(allIds).forEach(function (id) { shown[id] = true; });
     let out = "";
     SPEC.forEach(function (p) {
-      if (!Store.settings().papers[p.id]) return;
+      if (!paperOn(p.id)) return;
       const secs = p.sections.map(function (sec) {
         const ids = sec.subs.map(function (s) { return s.id; }).filter(function (id) { return shown[id]; });
         if (!ids.length) return "";
@@ -175,7 +184,11 @@ const TopicsView = (function () {
     return '<div class="topic-card ' + (overall || "") + '" style="cursor:default">' +
       '<div class="row wrap" data-action="toggle-section" data-id="' + sec.id + '" style="cursor:pointer;gap:10px">' +
         '<div style="flex:1;min-width:0">' +
-        '<div class="row" style="gap:8px"><b style="font-size:15px">' + UI.esc(sec.plainLabel ? sec.name : "Chapter " + sec.num + " · " + sec.name) + '</b>' + UI.yearPill(sec.year) + UI.ragPill(overall, "overall") + '</div>' +
+        '<div class="row" style="gap:8px"><b style="font-size:15px">' +
+          UI.esc(sec.plainLabel ? sec.name
+               : sec.flatNumbering ? sec.num + " " + sec.name
+               : "Chapter " + sec.num + " · " + sec.name) + '</b>' +
+          UI.yearPill(sec.year) + UI.ragPill(overall, "overall") + '</div>' +
           '<div class="tiny muted" style="margin-top:4px">' + UI.esc(sec.desc) + '</div>' +
         '</div>' +
         '<div style="text-align:right"><div class="tiny muted">' + covered + '/' + ids.length + ' covered</div>' +

@@ -290,7 +290,7 @@ mediums and a hard, or whatever mix you want, and only the ones you
   /* ---------- phase progress ---------- */
   function phaseProgress(paperId) {
     const ids = chapterIds(paperId).filter(function (cid) {
-      return Store.settings().papers[paperId];
+      return paperOn(paperId);
     });
     const done = ids.filter(chapterComplete).length;
     return {
@@ -302,7 +302,7 @@ mediums and a hard, or whatever mix you want, and only the ones you
   }
 
   function allPhases() {
-    return PHASES.filter(function (p) { return Store.settings().papers[p.paper]; })
+    return PHASES.filter(function (p) { return paperOn(p.paper); })
                  .map(function (p) { return Object.assign({}, p, phaseProgress(p.paper)); });
   }
 

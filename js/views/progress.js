@@ -19,7 +19,7 @@ const ProgressView = (function () {
 
       '<div class="grid g2">' +
         '<div class="card"><div class="card-head"><div class="card-title">Specification completion by paper</div></div>' +
-          SPEC.filter(function (p) { return Store.settings().papers[p.id]; }).map(function (p) {
+          SPEC.filter(function (p) { return paperOn(p.id); }).map(function (p) {
             const pc = Metrics.coverage(p.id);
             return '<div style="margin-bottom:16px"><div class="row tiny" style="margin-bottom:5px">' +
               '<b>' + UI.esc(p.short) + '</b><div class="spacer"></div><span class="muted">' + pc.coveredPct + '% · ' + pc.covered + '/' + pc.total + '</span></div>' +

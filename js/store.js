@@ -11,16 +11,30 @@
    read directly by Auth.adoptLegacySave when upgrading an old save. */
 const STORAGE_KEY_BASE = "as-maths-tracker-v1";
 
-/* Which save file is open right now. */
+/* Which save file is open right now: profile first, then subject. Maths uses
+   the unsuffixed key it has always used, so no existing save has to move. */
 function storageKey() {
-  return (typeof Auth !== "undefined" && Auth.isSignedIn())
+  const base = (typeof Auth !== "undefined" && Auth.isSignedIn())
     ? Auth.storageKey()
     : STORAGE_KEY_BASE;
+  return base + (typeof Subjects !== "undefined" ? Subjects.storageSuffix() : "");
 }
 
 /* Kept so older code and the settings screen can still refer to a key.
    Prefer storageKey() anywhere the current profile matters. */
 const STORAGE_KEY = STORAGE_KEY_BASE;
+
+/* Is this paper (or Economics theme) part of the plan?
+
+   Absent means ON. The defaults only name the Maths papers, so a subject
+   added later would otherwise have every one of its papers read as disabled
+   and its whole specification would vanish from the planner. Only an explicit
+   false, set by unticking it in Settings, switches a paper off. Each subject
+   has its own save file, so its own toggles, and they never collide. */
+function paperOn(paperId) {
+  const p = (typeof Store !== "undefined" && Store.get()) ? Store.settings().papers : null;
+  return !p || p[paperId] !== false;
+}
 
 /* A copy of what was here before the last import, so restoring the wrong
    file is not the end of your progress. Per profile, for the same reason. */
@@ -278,7 +292,7 @@ const Store = (function () {
       if (s.examFocus) {
         ALL_CHAPTER_IDS.forEach(function (id) {
           const inf = CHAPTER_INDEX[id];
-          if (!s.papers[inf.paper.id]) return;
+          if (!paperOn(inf.paper.id)) return;
           if (!yearPasses(inf.chapter.year, s.yearFilter)) return;
           if (state.topics[id] && state.topics[id].archived) return;
           out.push(id);
@@ -286,7 +300,7 @@ const Store = (function () {
         return out;
       }
       SPEC.forEach(function (p) {
-        if (!s.papers[p.id]) return;
+        if (!paperOn(p.id)) return;
         p.sections.forEach(function (sec) {
           if (!yearPasses(sec.year, s.yearFilter)) return;
           sec.subs.forEach(function (sub) {
@@ -307,7 +321,7 @@ const Store = (function () {
       const s = state.settings;
       const out = [];
       SPEC.forEach(function (p) {
-        if (!s.papers[p.id]) return;
+        if (!paperOn(p.id)) return;
         p.sections.forEach(function (sec) {
           if (!yearPasses(sec.year, s.yearFilter)) return;
           sec.subs.forEach(function (sub) { out.push(sub.id); });
@@ -340,7 +354,7 @@ const Store = (function () {
       const s = state.settings;
       return ALL_CHAPTER_IDS.filter(function (cid) {
         const inf = CHAPTER_INDEX[cid];
-        if (!s.papers[inf.paper.id]) return false;
+        if (!paperOn(inf.paper.id)) return false;
         if (state.topics[cid] && state.topics[cid].archived) return false;
         return true;
       });
