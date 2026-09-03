@@ -51,6 +51,26 @@ function setSidebar(open) {
     const st = Store.get();
     const root = document.getElementById("view");
 
+    /* Signed out: the login screen takes the whole window. It is not a view
+       inside the app shell, because there is no profile to render a sidebar,
+       countdown or plan for yet. */
+    const shell = document.getElementById("app");
+    if (!Auth.isSignedIn()) {
+      shell.style.display = "none";
+      let host = document.getElementById("loginRoot");
+      if (!host) {
+        host = document.createElement("div");
+        host.id = "loginRoot";
+        document.body.appendChild(host);
+      }
+      host.style.display = "";
+      LoginView.render(host);
+      return;
+    }
+    shell.style.display = "";
+    const loginHost = document.getElementById("loginRoot");
+    if (loginHost) loginHost.style.display = "none";
+
     if (!st.onboarded && current !== "settings") current = "onboarding";
 
     /* Only play the entrance animation when the view actually changes.
@@ -170,12 +190,30 @@ function setSidebar(open) {
     btn.innerHTML = (dark ? sun : moon) + '<span>' + (dark ? "Light mode" : "Dark mode") + '</span>';
   }
 
-/* The sidebar countdown was removed. A permanent days-left number is
-pressure rather than information, and it never changed what to do next.
-The exam date still drives the planner; it just is not shouted at you. */
+  /* The sidebar countdown was removed. A permanent days-left number is
+     pressure rather than information, and it never changed what to do next.
+     The exam date still drives the planner; it just is not shouted at you. */
   function renderCountdown() {
     const el = document.getElementById("countdownMini");
     if (el) el.innerHTML = "";
+    renderWhoAmI();
+  }
+
+  /* Whose progress is on screen. Worth stating plainly once a browser can
+     hold several profiles: it is how you notice you are in the wrong one. */
+  function renderWhoAmI() {
+    const el = document.getElementById("whoAmI");
+    if (!el) return;
+    const u = Auth.current();
+    if (!u) { el.innerHTML = ""; return; }
+    const av = u.picture
+      ? '<img class="who-av" src="' + UI.esc(u.picture) + '" alt="" referrerpolicy="no-referrer">'
+      : '<span class="who-av who-av-i">' + UI.esc((u.name || "?").charAt(0).toUpperCase()) + '</span>';
+    el.innerHTML =
+      '<div class="who-row">' + av +
+        '<span class="who-name" title="' + UI.esc(u.email || u.name) + '">' + UI.esc(u.name) + '</span>' +
+      '</div>' +
+      '<button class="btn btn-ghost btn-sm btn-block" data-action="sign-out">Sign out</button>';
   }
 
   /* ============================================================
@@ -237,6 +275,7 @@ The exam date still drives the planner; it just is not shouted at you. */
     if (CalendarView.handle(action, el)) return;
     if (PapersView.handle(action, el)) return;
     if (AssessmentsView.handle(action, el)) return;
+    if (LoginView.handle(action, el)) return;
     if (SettingsView.handle(action, el)) return;
     if (WeaknessesView.handle(action, el)) return;
     if (PaperView.handle(action, el)) return;
@@ -1828,6 +1867,8 @@ The exam date still drives the planner; it just is not shouted at you. */
 
   /* ---------- boot ---------- */
   function boot() {
+    /* Auth first: it decides which save file Store.init() opens. */
+    Auth.init();
     Store.init();
     applyTheme();
 

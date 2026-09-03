@@ -1,10 +1,30 @@
 /* ============================================================
-Store, application state + localStorage persistence
+   Store, application state + localStorage persistence
+   ------------------------------------------------------------
+   Each profile keeps its progress under its own key, so two
+   people sharing a browser cannot read or overwrite each other's
+   work by accident. Auth owns the key; everything here goes
+   through storageKey() rather than a fixed constant.
    ============================================================ */
 
-const STORAGE_KEY = "as-maths-tracker-v1";
+/* The pre-profiles key. Still the base of every per-profile key, and still
+   read directly by Auth.adoptLegacySave when upgrading an old save. */
+const STORAGE_KEY_BASE = "as-maths-tracker-v1";
+
+/* Which save file is open right now. */
+function storageKey() {
+  return (typeof Auth !== "undefined" && Auth.isSignedIn())
+    ? Auth.storageKey()
+    : STORAGE_KEY_BASE;
+}
+
+/* Kept so older code and the settings screen can still refer to a key.
+   Prefer storageKey() anywhere the current profile matters. */
+const STORAGE_KEY = STORAGE_KEY_BASE;
+
 /* A copy of what was here before the last import, so restoring the wrong
-   file is not the end of your progress. */
+   file is not the end of your progress. Per profile, for the same reason. */
+function rollbackKey() { return storageKey() + "-rollback"; }
 const ROLLBACK_KEY = "as-maths-tracker-v1-rollback";
 const SCHEMA_VERSION = 1;
 
@@ -155,7 +175,7 @@ const Store = (function () {
 
   function load() {
     let raw = null;
-    try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) { raw = null; }
+    try { raw = localStorage.getItem(storageKey()); } catch (e) { raw = null; }
     if (raw) {
       try {
         const parsed = JSON.parse(raw);
@@ -177,10 +197,20 @@ const Store = (function () {
   function save(immediate) {
     if (saveTimer) clearTimeout(saveTimer);
     const doIt = function () {
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+      try { localStorage.setItem(storageKey(), JSON.stringify(state)); }
       catch (e) { console.error("Save failed", e); UI && UI.toast && UI.toast("Could not save, storage may be full", "bad"); }
     };
     if (immediate) doIt(); else saveTimer = setTimeout(doIt, 180);
+  }
+
+  /* Switching profile swaps the save file underneath a live app. Any pending
+     debounced write belongs to the profile that just left, so it is dropped
+     rather than flushed into the new profile's key. */
+  function reloadForUser() {
+    if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
+    load();
+    emit();
+    return state;
   }
 
   function emit() { listeners.forEach(function (fn) { fn(state); }); }
@@ -191,6 +221,7 @@ const Store = (function () {
     blankTopic: blankTopic,
 
     init: function () { load(); return state; },
+    reloadForUser: reloadForUser,
     get: function () { return state; },
     settings: function () { return state.settings; },
     topic: function (id) {
@@ -494,7 +525,7 @@ const Store = (function () {
       const data = parsed.data || parsed;
       if (!data || typeof data !== "object" || !data.topics) throw new Error("This does not look like a tracker backup file.");
       /* keep what is here now, so the import can be undone */
-      try { localStorage.setItem(ROLLBACK_KEY, JSON.stringify({ at: new Date().toISOString(), data: state })); }
+      try { localStorage.setItem(rollbackKey(), JSON.stringify({ at: new Date().toISOString(), data: state })); }
       catch (e) { /* out of space: the import still goes ahead, just without an undo */ }
       state = Object.assign(defaultState(), data);
       state.settings = Object.assign(defaultState().settings, data.settings || {});
@@ -506,7 +537,7 @@ const Store = (function () {
     /* ---------- undoing an import ---------- */
     rollbackInfo: function () {
       try {
-        const raw = localStorage.getItem(ROLLBACK_KEY);
+        const raw = localStorage.getItem(rollbackKey());
         if (!raw) return null;
         const r = JSON.parse(raw);
         if (!r || !r.data || !r.data.topics) return null;
@@ -514,18 +545,18 @@ const Store = (function () {
       } catch (e) { return null; }
     },
     undoImport: function () {
-      const raw = localStorage.getItem(ROLLBACK_KEY);
+      const raw = localStorage.getItem(rollbackKey());
       if (!raw) return false;
       const r = JSON.parse(raw);
       if (!r || !r.data || !r.data.topics) return false;
       state = Object.assign(defaultState(), r.data);
       state.settings = Object.assign(defaultState().settings, r.data.settings || {});
       ensureTopics();
-      try { localStorage.removeItem(ROLLBACK_KEY); } catch (e) {}
+      try { localStorage.removeItem(rollbackKey()); } catch (e) {}
       save(true); emit();
       return true;
     },
-    clearRollback: function () { try { localStorage.removeItem(ROLLBACK_KEY); } catch (e) {} },
+    clearRollback: function () { try { localStorage.removeItem(rollbackKey()); } catch (e) {} },
 
     /* ---------- knowing whether you are actually backed up ---------- */
     markBackedUp: function () {
@@ -534,7 +565,7 @@ const Store = (function () {
     },
     lastBackupAt: function () { return state.lastBackupAt || null; },
     hardReset: function () {
-      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      try { localStorage.removeItem(storageKey()); } catch (e) {}
       state = defaultState(); ensureTopics(); save(true); emit();
     }
   };

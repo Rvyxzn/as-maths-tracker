@@ -120,6 +120,43 @@ round-number reading of where recent 9MA0 series have sat, and Edexcel move them
 Check Pearson's published boundaries for the series you are sitting; the values live at the
 top of `js/metrics.js` if you want them exact.
 
+## Accounts and profiles
+
+The tracker opens on a login screen. Several people can share one browser and
+keep separate progress: each profile saves under its own key
+(`as-maths-tracker-v1::<profile>`), so profiles cannot read or overwrite each
+other by accident.
+
+A save written before profiles existed becomes the first profile's progress
+automatically, with a backup copy kept under a separate key. Nothing is lost on
+upgrade.
+
+**Be clear about what this is.** It decides which save file to open. It is not
+a security boundary:
+
+- Progress lives in this browser's `localStorage`. Anyone with the device and
+  developer tools can read any profile's data, passcode or not.
+- A profile passcode (hashed with SHA-256, never stored in the clear) is a
+  "not your account" speed bump for a shared laptop. It is **not** encryption
+  and the data it guards is readable without it.
+- Progress does **not** sync between devices. Use Settings › Export to move it.
+
+### Google sign-in
+
+Real Google Identity Services, off until you configure it. The button renders
+disabled and says so rather than pretending to work.
+
+To switch it on, create an OAuth Client ID at
+[console.cloud.google.com](https://console.cloud.google.com/) (Web application,
+with `https://rvyxzn.github.io` and `http://localhost:8080` as authorised
+JavaScript origins) and paste it into `js/auth-config.js`. Step-by-step notes
+are in that file. There is no client secret in this flow, and none should ever
+be committed to this repository.
+
+Signing in with Google proves who you are to Google. It does not move your
+progress anywhere yet: that still needs a backend. `js/auth.js` ends with a
+note on exactly what has to change to put Supabase behind it.
+
 ## School Tests
 
 Past Papers covers official Edexcel papers. **School Tests** covers the other half of the

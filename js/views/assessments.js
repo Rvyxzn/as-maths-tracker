@@ -270,7 +270,10 @@ const AssessmentsView = (function () {
       if (action === "assess-delete") {
         const a = SchoolAssessments.get(el.dataset.id);
         if (!a) return true;
-        UI.confirm("Delete this assessment?", "“" + a.title + "” will be removed from your record.", function () {
+        UI.confirm("Delete this assessment?",
+          "“" + a.title + "” will be removed from your record.", "Delete", true)
+          .then(function (ok) {
+            if (!ok) return;
             SchoolAssessments.remove(a.id);
             Scheduler.regenerate("school assessment deleted");
             UI.toast("Assessment deleted", "ok");

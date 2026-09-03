@@ -11,6 +11,7 @@ const SettingsView = (function () {
     const st = Store.get();
 
     root.innerHTML =
+      accountCard() +
       '<div class="grid g2">' +
 
         '<div class="card"><div class="card-head"><div class="card-title">Exam and qualification</div></div>' +
@@ -124,9 +125,52 @@ const SettingsView = (function () {
     return '<div class="field"><label class="label">' + label + '</label>' + control + '</div>';
   }
 
-function sel(value, label, current) {
-  return '<option value="' + value + '"' + (String(current) === value ? " selected" : "") + '>' + label + '</option>';
-}
+  function sel(value, label, current) {
+    return '<option value="' + value + '"' + (String(current) === value ? " selected" : "") + '>' + label + '</option>';
+  }
+
+  /* Who is signed in, and what that does and does not mean. Stated here as
+     well as on the login screen, because this is where someone comes looking
+     when they wonder where their progress actually lives. */
+  function accountCard() {
+    const u = Auth.current();
+    if (!u) return "";
+    const others = Auth.profiles().length - 1;
+    const kb = Math.round(Auth.profileSize(u.id) / 1024);
+
+    return '<div class="card" style="margin-bottom:18px">' +
+      '<div class="card-head"><div class="card-title">Account</div>' +
+        '<div class="right"><button class="btn btn-sm" data-action="sign-out">Sign out</button></div></div>' +
+
+      '<div class="row wrap" style="gap:12px;align-items:center">' +
+        (u.picture
+          ? '<img class="profile-av" src="' + UI.esc(u.picture) + '" alt="" referrerpolicy="no-referrer">'
+          : '<span class="profile-av profile-av-i">' + UI.esc((u.name || "?").charAt(0).toUpperCase()) + '</span>') +
+        '<div style="flex:1;min-width:0">' +
+          '<b style="font-size:15px">' + UI.esc(u.name) + '</b>' +
+          '<div class="tiny muted">' +
+            (u.provider === "google" ? "Signed in with Google" + (u.email ? " · " + UI.esc(u.email) : "")
+                                     : "Profile on this device") +
+            " · " + kb + " KB saved" +
+          '</div>' +
+        '</div>' +
+        (u.provider === "local"
+          ? '<button class="btn btn-sm" data-action="set-passcode">' +
+              (u.passcodeHash ? "Change passcode" : "Add a passcode") + '</button>' +
+            (u.passcodeHash ? ' <button class="btn btn-sm btn-ghost" data-action="clear-passcode">Remove</button>' : "")
+          : "") +
+      '</div>' +
+
+      '<div class="warnbox info tiny" style="margin-top:14px"><b>Your progress is on this device only</b>' +
+        'It is not synced between your laptop and your phone, and signing in with Google does not change that ' +
+        'yet, it only says who you are. Use Export below to move it or to keep a backup. ' +
+        'A passcode keeps another person on this laptop out of your profile by accident; it is not encryption, ' +
+        'and it does not hide your data from anyone who really looks.' +
+        (others > 0 ? ' There ' + (others === 1 ? "is 1 other profile" : "are " + others + " other profiles") +
+          ' on this device, each with separate progress.' : "") +
+      '</div></div>';
+  }
+
   function dataRow(k, v) {
     return '<div class="row tiny" style="padding:7px 0;border-bottom:1px solid var(--border)">' +
       '<span class="muted">' + k + '</span><div class="spacer"></div><b>' + UI.esc(v) + '</b></div>';
@@ -153,7 +197,7 @@ function sel(value, label, current) {
   }
   function storageSize() {
     try {
-      const s = localStorage.getItem(STORAGE_KEY) || "";
+      const s = localStorage.getItem(storageKey()) || "";
       return (s.length / 1024).toFixed(1) + " KB";
     } catch (e) { return "unavailable"; }
   }
@@ -300,6 +344,55 @@ function sel(value, label, current) {
   function handle(action, el) {
     switch (action) {
       case "save-settings": save(); return true;
+
+      case "set-passcode": {
+        const u = Auth.current();
+        if (!u || u.provider !== "local") return true;
+        UI.modal({
+          title: u.passcodeHash ? "Change passcode" : "Add a passcode",
+          body:
+            '<div class="field"><label class="label">New passcode</label>' +
+              '<input class="input" id="pcNew" type="password" autocomplete="new-password"></div>' +
+            '<div class="field"><label class="label">Confirm</label>' +
+              '<input class="input" id="pcConfirm" type="password" autocomplete="new-password"></div>' +
+            '<div class="warnbox info tiny"><b>What a passcode does</b>' +
+              'It stops someone else on this laptop opening your profile by accident. It is not encryption: ' +
+              'your progress is stored unencrypted and stays readable to anyone who opens the browser\'s ' +
+              'developer tools, with or without this passcode.</div>',
+          footer: '<button class="btn" data-pc-cancel>Cancel</button>' +
+                  '<button class="btn btn-primary" id="pcSave">Save passcode</button>',
+          onMount: function (box) {
+            box.querySelector("[data-pc-cancel]").onclick = UI.closeModal;
+            box.querySelector("#pcSave").onclick = function () {
+              const a = box.querySelector("#pcNew").value;
+              const b = box.querySelector("#pcConfirm").value;
+              if (!a) { UI.toast("Enter a passcode", "bad"); return; }
+              if (a !== b) { UI.toast("The two passcodes do not match", "bad"); return; }
+              Auth.setPasscode(u.id, a).then(function () {
+                UI.closeModal();
+                UI.toast("Passcode saved. You will be asked for it next time you open the tracker.", "ok", 5000);
+                App.render();
+              });
+            };
+          }
+        });
+        return true;
+      }
+
+      case "clear-passcode": {
+        const u = Auth.current();
+        if (!u) return true;
+        UI.confirm("Remove the passcode?",
+          "Your profile will open without one. Your progress is unaffected.", "Remove")
+          .then(function (ok) {
+            if (!ok) return;
+            Auth.setPasscode(u.id, null).then(function () {
+              UI.toast("Passcode removed", "ok");
+              App.render();
+            });
+          });
+        return true;
+      }
       case "undo-import": {
         const rb = Store.rollbackInfo();
         if (!rb) { UI.toast("Nothing to undo", "bad"); return true; }
