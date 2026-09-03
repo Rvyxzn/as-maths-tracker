@@ -1,6 +1,7 @@
-# AS Maths Revision Tracker & Adaptive Study Planner
+# A-Level Maths Revision Tracker & Adaptive Study Planner
 
-Pearson Edexcel AS Mathematics (8MA0) — Pure, Statistics and Mechanics.
+Pearson Edexcel A level Mathematics (9MA0), Year 1 and Year 2, across Pure,
+Statistics and Mechanics.
 Exam date preset to **1 September 2026** (changeable in Settings).
 
 ## Using it
@@ -9,7 +10,7 @@ Exam date preset to **1 September 2026** (changeable in Settings).
 
 **https://Rvyxzn.github.io/as-maths-tracker/**
 
-Published with GitHub Pages, so it runs in any browser — laptop or phone — with no
+Published with GitHub Pages, so it runs in any browser, laptop or phone, with no
 download and no setup. Open the link and start.
 
 Your progress is saved in **your own browser**, so two people using the same link keep
@@ -28,7 +29,7 @@ It needs Python installed.
 
 **PDFs render via PDF.js, not the browser's native plugin.** This app runs inside
 embedded/Electron-based browser panes that don't ship Chromium's built-in PDF viewer
-extension — a plain `<iframe src="file.pdf">` renders completely blank in that
+extension, a plain `<iframe src="file.pdf">` renders completely blank in that
 environment, with no error. `js/pdf-viewer.js` renders every PDF to `<canvas>` with a
 vendored copy of PDF.js (`js/vendor/pdfjs/`, Apache-2.0, no CDN at runtime) instead, so
 it looks identical everywhere. One consequence worth knowing: DOM morphing (see below)
@@ -36,31 +37,36 @@ treats a `.pdfv` element as an opaque leaf and never re-diffs its children, othe
 unrelated click anywhere else on the same page would wipe and re-render the PDF from
 scratch.
 
-Every PDF panel — exam questions, mark schemes, past papers — has the same toolbar:
+Every PDF panel, exam questions, mark schemes, past papers, has the same toolbar:
 
-- **Zoom** — buttons, a slider, or **Ctrl/Cmd + scroll wheel zooms toward your cursor**.
+- **Zoom**, buttons, a slider, or **Ctrl/Cmd + scroll wheel zooms toward your cursor**.
   The zoom is scoped to that one PDF panel only; scrolling without Ctrl held behaves
   normally, and the site itself never zooms.
-- **Reset** — snaps back to fit-width and scrolls back to the top.
-- **Pen** — draw directly on the page (freehand, in red ink) to annotate a question
+- **Reset**, snaps back to fit-width and scrolls back to the top.
+- **Pen**, draw directly on the page (freehand, in red ink) to annotate a question
   or mark scheme; a **Clear** button appears while the pen is active. Drawings are not
   saved between sessions.
-- **Full screen** — expands that one panel to fill most of the screen with a blurred
+- **Full screen**, expands that one panel to fill most of the screen with a blurred
   backdrop behind it, Escape or clicking the backdrop closes it. This replaced the old
   "open in a new tab" links, which triggered a file-download prompt in this app's
   browser environment rather than actually opening the PDF.
 
 No build step, no npm. The only external request is the Google Fonts pair, which falls back cleanly offline.
 
-## Structure — by chapter
+## Structure, by chapter
 
-The topic database follows the **Pearson Edexcel Year 1/AS student books**, which are the
-divisions the specification is actually taught, revised and video-summarised in:
+The topic database follows the **Pearson Edexcel student books**, which are the divisions
+the specification is actually taught, revised and video-summarised in:
 
 | Book | Chapters |
 |---|---|
-| Pure Mathematics Year 1/AS | 1–14 |
-| Statistics & Mechanics Year 1/AS | 1–7 Statistics, 8–11 Mechanics |
+| Pure Mathematics Year 1/AS | 1-14 |
+| Pure Mathematics Year 2 | 1-12 |
+| Statistics & Mechanics Year 1/AS | 1-7 Statistics, 8-11 Mechanics |
+| Statistics & Mechanics Year 2 | 1-3 Statistics, 4-8 Mechanics |
+
+Both years restart their chapter numbering, so every chapter is labelled **Y1** or **Y2**
+throughout the app.
 
 **Pure:** 1 Algebraic Expressions · 2 Quadratics · 3 Equations and Inequalities ·
 4 Graphs and Transformations · 5 Straight Line Graphs · 6 Circles · 7 Algebraic Methods ·
@@ -73,25 +79,64 @@ divisions the specification is actually taught, revised and video-summarised in:
 **Mechanics:** 8 Modelling in Mechanics · 9 Constant Acceleration · 10 Forces and Motion ·
 11 Variable Acceleration
 
-Every chapter is broken into its numbered sections (1.1, 1.2, …) — **139 examinable sections**
-in total, each with its own "what you need to be able to do" list, RAG rating, video link,
-question history and review schedule.
+### Year 2
+
+**Pure:** 1 Algebraic Methods · 2 Functions and Graphs · 3 Sequences and Series ·
+4 Binomial Expansion · 5 Radians · 6 Trigonometric Functions · 7 Trigonometry and Modelling ·
+8 Parametric Equations · 9 Differentiation · 10 Numerical Methods · 11 Integration ·
+12 Vectors (3D)
+
+**Statistics:** 1 Regression, Correlation and Hypothesis Testing · 2 Conditional Probability ·
+3 The Normal Distribution
+
+**Mechanics:** 4 Moments · 5 Forces and Friction · 6 Projectiles · 7 Applications of Forces ·
+8 Further Kinematics
+
+Every chapter is broken into its numbered sections (1.1, 1.2, …), **247 examinable sections
+across 45 chapters**, each with its own "what you need to be able to do" list, RAG rating,
+video link, question history and review schedule.
+
+### Year filter
+
+Topics, the dashboard and the planner all respect a **Year 1 / Year 2 / both** filter, so a
+Year 12 student can work the Year 1 content only and switch Year 2 on once it is taught.
+Set the default in Settings, or flip it per view in Topics.
 
 ## Specification accuracy
 
-The Year 1/AS books contain the AS content and nothing more, so this chapter list *is* the
-examinable AS specification. Topics commonly assumed to be AS but which live in the **Year 2**
-books and are **not examinable on 8MA0** are grouped separately, flagged `YEAR 2`, and excluded
-from the schedule by default:
+This is the full A level (9MA0), assessed as three papers:
 
-- arithmetic & geometric sequences and series, sigma notation, recurrence relations
-- radians, arc length / sector area, small-angle approximations
-- sec / cosec / cot, compound and double angle formulae, R sin(x + a)
-- composite and inverse functions, the modulus function
-- proof by contradiction
+| Paper | Content | Length | Marks |
+|---|---|---|---|
+| 1 | Pure Mathematics 1 | 2h | 100 |
+| 2 | Pure Mathematics 2 | 2h | 100 |
+| 3 | Statistics and Mechanics (50 marks each) | 2h | 100 |
 
-Turn them on in Settings if you want the stretch. Note that on 8MA0, Pure "Sequences and series"
-is the **binomial expansion only** — that is Chapter 8.
+Pearson do not split the pure content between Papers 1 and 2, so any pure topic from either
+year can appear on either paper. The app therefore keeps Pure as one body of content.
+
+Grade boundaries shown in the app are **indicative, not a published series**. They are a
+round-number reading of where recent 9MA0 series have sat, and Edexcel move them every year.
+Check Pearson's published boundaries for the series you are sitting; the values live at the
+top of `js/metrics.js` if you want them exact.
+
+## School Tests
+
+Past Papers covers official Edexcel papers. **School Tests** covers the other half of the
+evidence: chapter tests, mini-assessments and school mocks.
+
+- **Topic tests attach to chapters.** Type the title and the chapter is suggested from it
+  ("Chapter 5 Radians test" attaches to Y2 Ch 5 Radians). Tick or untick to correct it.
+  A weak score then pushes those chapters up your plan, exactly like losing marks in a
+  past paper does.
+- **Mocks and full papers attach to nothing.** There is no single chapter to blame, so they
+  are tracked only as an overall grade trend.
+- **Grade-only entries are allowed.** If all you were told is "you got a B", log that. It is
+  kept in your history but never feeds the planner and is not plotted, because inventing a
+  percentage from a letter would put a made-up number into your schedule.
+
+Past papers are also tagged **AS (8MA0)** or **A level (9MA0)** and can be filtered by level,
+so an AS average never flatters a full A level prediction.
 
 ## Exam-Focus mode
 
@@ -104,9 +149,9 @@ It switches the whole app between two granularities:
 
 | | Off | On |
 |---|---|---|
-| Working unit | 139 specification sections | 25 chapters |
+| Working unit | 247 specification sections | 45 chapters |
 | A session covers | one section, e.g. 12.9 Stationary points | a whole chapter, e.g. Chapter 12 Differentiation |
-| Assessment length | 139 ratings | 25 ratings |
+| Assessment length | 247 ratings | 45 ratings |
 
 In chapter mode each session gives you a summary of what the chapter is for, **the
 components that actually carry the marks**, **where marks get thrown away**, an exam-value
@@ -119,8 +164,8 @@ its sections.
 
 ### About the chapter weightings
 
-Pearson do not publish a per-topic frequency count for 8MA0, and no reliable published
-tally exists — the papers would have to be hand-counted. The exam-value ratings and the
+Pearson do not publish a per-topic frequency count for 9MA0, and no reliable published
+tally exists, the papers would have to be hand-counted. The exam-value ratings and the
 "typically worth" figures are an **editorial judgement**, built from the assessment
 structure of the specification, the 100/60 mark split between the papers, and the
 recurring question structures in the Sample Assessment Materials and released papers.
@@ -134,13 +179,13 @@ Chapters map onto PMT's spec-theme pages, so several chapters legitimately share
 ## Exam Questions
 
 The **Exam Questions** section in the sidebar holds 21 Edexcel topic question sets with
-their full mark schemes — 13 Pure, 4 Statistics, 4 Mechanics — read straight from
+their full mark schemes, 13 Pure, 4 Statistics, 4 Mechanics, read straight from
 `Exam questions PDFs/`. Nothing is downloaded or attached: open a set and the paper is
 there, with the mark scheme behind a deliberate *Reveal* click.
 
 Each set lists the chapters it covers, and the same PDFs appear inside step 2 of every
 chapter, so the questions are where you actually revise. Chapter 9 (Constant Acceleration)
-gets two sets — SUVAT and Motion–Time Graphs. Where a set is the closest available match
+gets two sets, SUVAT and Motion-Time Graphs. Where a set is the closest available match
 rather than an exact one (for example Equations and Inequalities sitting inside the
 Quadratics set), the app says so rather than pretending the fit is exact.
 
@@ -154,17 +199,16 @@ taken from Pearson's *Mathematical Formulae and Statistical Tables* (P54458A), s
 The AS booklet is far shorter than people assume. It gives you only: sphere and cone
 surface areas, the binomial series with ⁿCᵣ, change of base for logs, e^(x ln a) = aˣ,
 differentiation from first principles, P(A′) = 1 − P(A), IQR, Sxx and standard deviation,
-and the five suvat equations. **Everything else** — the quadratic formula, the circle
+and the five suvat equations. **Everything else**, the quadratic formula, the circle
 equation, every trig identity, the sine and cosine rules, the log laws, differentiating
-and integrating xⁿ, F = ma — has to come out of your head, so there is no point drilling
+and integrating xⁿ, F = ma, has to come out of your head, so there is no point drilling
 what you are handed on the day.
 
 Study mode flips cards, shuffles, filters to *must memorise* or *not yet known*, and
 tracks what you have got. The graph-shape cards (sin, cos, tan, both parabolas, cubic,
 reciprocal) draw the curve on the back, because the shape is the answer.
 
-**Quizlet import/export** works both ways through Quizlet's own copy-and-paste format —
-no account linking, since Quizlet has no open API for creating sets. Separators are
+**Quizlet import/export** works both ways through Quizlet's own copy-and-paste format - no account linking, since Quizlet has no open API for creating sets. Separators are
 selectable to match whatever Quizlet gives you, and the import preview shows what it
 parsed before you commit.
 
@@ -186,19 +230,19 @@ against the study time you set for the day.
   also listed under the bar on Today's Plan with a one-click remove, and there is a
   "clear the whole day" option if you want to start the day again.
 
-Removing logged time is independent of your tasks — a task stays ticked off, and re-ticking
+Removing logged time is independent of your tasks, a task stays ticked off, and re-ticking
 it will not double-count.
 
 ## Retaking the RAG assessment
 
-Re-rating is meant to be routine — it is available from the Dashboard, the Weaknesses page
+Re-rating is meant to be routine, it is available from the Dashboard, the Weaknesses page
 and Settings. Choose the scope:
 
-- **Everything** — re-rate from scratch
-- **Weak only** — what is currently red, amber or unrated
-- **Unrated only** — fill the gaps you skipped
-- **Going stale** — not revised in 5+ days, or never
-- **One paper** — Pure, Statistics or Mechanics
+- **Everything**, re-rate from scratch
+- **Weak only**, what is currently red, amber or unrated
+- **Unrated only**, fill the gaps you skipped
+- **Going stale**, not revised in 5+ days, or never
+- **One paper**, Pure, Statistics or Mechanics
 
 Each completed assessment is snapshotted, so you can see how your red/amber/green mix
 has shifted over time.
@@ -206,14 +250,14 @@ has shifted over time.
 ## Weaknesses: topic or chapter
 
 The Weaknesses page has a **Topic / Chapter** toggle that works in either mode. Chapter view
-rolls a chapter and all of its sections together — accuracy, marks lost in past papers and
+rolls a chapter and all of its sections together, accuracy, marks lost in past papers and
 coverage percentage. Either way, every row names the chapter it belongs to.
 
 ## How the planner works
 
 `ASSESS → PLAN → REVISE → PRACTISE → REVIEW → REPLAN`
 
-1. First run walks you through a RAG rating of all 139 sections.
+1. First run walks you through a RAG rating of all 247 sections.
 2. It generates a day-by-day plan to the exam, sized to the study time you say you have.
 3. Every session, question set and past-paper error you log **recalculates the plan**.
 
@@ -241,7 +285,7 @@ as a glyph summary rather than prose:
 - a moon for rest days, a graduation cap for the exam
 
 A key sits under the grid. **Click any day and it expands** into a short brief directly
-under that week — the date, how far away it is, time planned against your budget, how many
+under that week, the date, how far away it is, time planned against your budget, how many
 tasks are done, and a one-line-per-task list of what you are actually doing. From there you
 can change that day's time or add a task without leaving the calendar.
 
@@ -249,17 +293,17 @@ can change that day's time or add a task without leaving the calendar.
 
 Palette, gradient and font pairing are taken from the Contar AI site:
 
-- **Dark** — `#15171c` field, `#1c2027` surfaces, blue ramp `#2f80ed → #4fa9f0 → #86dcf8`
-- **Light** — a soft blue gradient field `#eef4fd → #dce9fa → #c8dcf6` with gently tinted
+- **Dark**, `#15171c` field, `#1c2027` surfaces, blue ramp `#2f80ed → #4fa9f0 → #86dcf8`
+- **Light**, a soft blue gradient field `#eef4fd → #dce9fa → #c8dcf6` with gently tinted
   `#fbfcff` surfaces, so nothing reads as a stark white slab, and the saturated brand
   gradient carries the hero instead
-- **Fonts** — Bricolage Grotesque (display) + Instrument Sans (body)
+- **Fonts**, Bricolage Grotesque (display) + Instrument Sans (body)
 
 Toggle with the sun/moon button at the bottom of the sidebar, or in Settings. Both themes
 were checked against WCAG AA across every view, with translucent layers and gradient stops
 composited properly: **no text falls below AA in either mode.**
 
-Motion is used throughout — staggered card entrances, button presses, a pop when you tick a
+Motion is used throughout, staggered card entrances, button presses, a pop when you tick a
 task off, bars that grow, and the countdown counting in. All of it collapses under
 `prefers-reduced-motion`.
 
@@ -268,18 +312,18 @@ entrance animation; anything else (rating a topic, ticking a task, filtering, to
 Exam-Focus) is applied by **morphing the existing DOM** rather than replacing it, so there is
 no repaint flash, scroll position and caret survive, and entrance animations do not replay.
 The little pop on a control is applied to the element you actually clicked, not to every
-element that happens to be selected — otherwise the whole view would pop on each render.
+element that happens to be selected, otherwise the whole view would pop on each render.
 
 ## Your data
 
 Saved in your browser's `localStorage` under `as-maths-tracker-v1`, plus IndexedDB for any
-PDFs you attach yourself. It never leaves your machine — there is no account and no server
+PDFs you attach yourself. It never leaves your machine, there is no account and no server
 storing anything.
 
 **Clearing your browser data will erase your progress.** Settings → *Export JSON backup*
 downloads a full snapshot; *Import backup* restores it. Do this weekly.
 
-Each address is a separate browser origin with **separate saved data** — the hosted link,
+Each address is a separate browser origin with **separate saved data**, the hosted link,
 `localhost:8777`, and `file://` do not share progress. Pick one and stick with it, or move
 between them with export/import. The same applies across devices: your phone and your
 laptop keep their own copies, so use export/import to move progress between them.
@@ -287,7 +331,7 @@ laptop keep their own copies, so use export/import to move progress between them
 ## Videos and past papers
 
 No video URLs or past-paper links are invented. Each section has a field where you paste the
-Zeeshan Zamured chapter summary video once — it's remembered against that section forever.
+Zeeshan Zamured chapter summary video once, it's remembered against that section forever.
 Past papers are added manually (title, type, date, marks, timing, URL); the official Pearson
 course page is linked in Settings.
 
@@ -296,7 +340,7 @@ course page is linked in Settings.
 ```
 index.html            shell + script tags (?v= query busts browser cache on edits)
 css/app.css           design tokens, both themes, all components
-js/spec-data.js       the chapter-by-chapter 8MA0 database (144 sections incl. Year 2)
+js/spec-data.js       the chapter-by-chapter 9MA0 database (247 sections, Y1 + Y2)
 js/exam-focus.js      chapter-level summaries, exam weightings, traps, question links
 js/store.js           state + localStorage + export/import
 js/metrics.js         derived values: effective RAG, coverage, phases, feasibility

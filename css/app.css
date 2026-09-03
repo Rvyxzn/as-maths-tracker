@@ -1,5 +1,5 @@
 /* =========================================================================
-   AS Maths Revision Tracker — stylesheet
+A-Level Maths Revision Tracker, stylesheet
    Palette lifted from the Contar AI site:
      dark  → #15171c field, #1c2027 surfaces, blue ramp #2f80ed → #4fa9f0 → #86dcf8
      light → vivid royal blue field #1b6fd0 → #114e9e → #071f4d, bone surfaces
@@ -53,7 +53,7 @@
 /* ---------- tokens: LIGHT (vivid blue field, bone surfaces) ---------- */
 :root[data-theme="light"]{
   /* A soft, light blue field rather than a saturated one, with gently
-     tinted surfaces instead of stark white — the gradient still carries
+  tinted surfaces instead of stark white, the gradient still carries
      the page, but nothing reads as a white slab. */
   --field:#dce9fa;
   --field-grad:linear-gradient(165deg,#eef4fd 0%,#dce9fa 46%,#c8dcf6 100%);
@@ -348,6 +348,10 @@ textarea.input{resize:vertical;min-height:66px;line-height:1.5}
 .sub-name{flex:1;min-width:0;font-size:13.5px}
 .sub-name small{display:block;color:var(--faint);font-size:11.5px;margin-top:1px}
 .y2{font-size:10px;font-weight:800;letter-spacing:.05em;background:var(--blue-soft);color:var(--blue);padding:1px 6px;border-radius:5px;vertical-align:middle;margin-left:6px}
+/* Year 1 / Year 2 badge, both years restart chapter numbering */
+.yr{font-size:10px;font-weight:800;letter-spacing:.04em;padding:1px 6px;border-radius:5px;vertical-align:middle;margin-left:6px;border:1px solid transparent}
+.yr-1{background:var(--surface-2);color:var(--muted);border-color:var(--border)}
+.yr-2{background:var(--blue-soft);color:var(--blue)}
 .reqs{margin:0;padding-left:18px;color:var(--muted);font-size:13px;line-height:1.65}
 .reqs li{margin-bottom:2px}
 
@@ -358,6 +362,12 @@ textarea.input{resize:vertical;min-height:66px;line-height:1.5}
 .chip:hover{color:var(--text);border-color:var(--accent)}
 .chip.on{background:var(--grad-fill);border-color:transparent;color:var(--accent-ink)}
 [data-theme="light"] .chip.on{color:#fff}
+
+/* Dimmer behind an open mobile sidebar. Always display:none at desktop
+widths, where the sidebar is a permanent column and never "open". */
+.sidebar-scrim{position:fixed;inset:0;background:rgba(4,10,22,.5);z-index:35;display:none;
+  animation:scrimIn .18s ease-out}
+@keyframes scrimIn{from{opacity:0}to{opacity:1}}
 
 /* ---------- modal ---------- */
 .overlay{position:fixed;inset:0;background:rgba(4,10,22,.66);backdrop-filter:blur(3px);z-index:60;display:none}
@@ -436,6 +446,9 @@ textarea.input{resize:vertical;min-height:66px;line-height:1.5}
   .only-mobile{display:block}
   .sidebar{position:fixed;left:0;top:0;transform:translateX(-100%);transition:transform .22s;box-shadow:var(--shadow-lg)}
   .sidebar.open{transform:none}
+  /* Tap anywhere off an open sidebar to put it back. Sits under the sidebar
+  (z-index 40) and over the page, so it catches every stray tap. */
+  .sidebar-scrim.on{display:block}
   .g2,.g3{grid-template-columns:minmax(0,1fr)}
   .view{padding:16px}
   .topbar{padding:12px 16px}
@@ -450,7 +463,7 @@ textarea.input{resize:vertical;min-height:66px;line-height:1.5}
 }
 
 /* =========================================================================
-   Exam-Focus dial — an overclock gauge. Off: a small tick sitting left.
+Exam-Focus dial, an overclock gauge. Off: a small tick sitting left.
    On: the needle sweeps clockwise to the right, grows, and the arc lights
    up in a green gradient.
    ========================================================================= */
@@ -498,7 +511,7 @@ textarea.input{resize:vertical;min-height:66px;line-height:1.5}
 .focus-banner b{color:var(--focus-b)}
 
 /* =========================================================================
-   Time bar — fills as time is logged, animates, shows a percentage
+Time bar, fills as time is logged, animates, shows a percentage
    ========================================================================= */
 .timebar-wrap{width:100%}
 .timebar{
@@ -569,7 +582,7 @@ textarea.input{resize:vertical;min-height:66px;line-height:1.5}
 #themeToggle:hover .theme-ico{transform:rotate(35deg) scale(1.12)}
 
 /* =========================================================================
-   Motion — entrances, presses, ticks
+Motion, entrances, presses, ticks
    ========================================================================= */
 @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 @keyframes countIn{from{opacity:0;transform:translateY(14px) scale(.94)}to{opacity:1;transform:none}}
@@ -632,7 +645,7 @@ a:hover{opacity:.78}
 }
 
 /* =========================================================================
-   Exam-Focus dial — transitions gated behind .ready so the control does not
+Exam-Focus dial, transitions gated behind .ready so the control does not
    sweep on first paint, only when you actually toggle it.
    ========================================================================= */
 .focus-wrap{display:inline-flex;align-items:center;gap:6px}
@@ -670,7 +683,7 @@ a:hover{opacity:.78}
 @media(max-width:640px){ .focus-compare{grid-template-columns:minmax(0,1fr)} }
 
 /* =========================================================================
-   Time log — the day's logged chunks, each editable and removable
+Time log, the day's logged chunks, each editable and removable
    ========================================================================= */
 .timelog{display:flex;flex-direction:column;gap:7px}
 .timelog-row{
@@ -690,7 +703,7 @@ a:hover{opacity:.78}
 .timelog-row:hover [data-action="time-remove"]{opacity:1;color:var(--red)}
 
 /* =========================================================================
-   Icons — stroke glyphs in currentColor, sized to the text they sit beside
+Icons, stroke glyphs in currentColor, sized to the text they sit beside
    ========================================================================= */
 .ico{
   width:1em;height:1em;flex:0 0 auto;vertical-align:-.14em;
@@ -700,7 +713,7 @@ a:hover{opacity:.78}
 .ico:last-child{margin-right:0}
 
 /* =========================================================================
-   Node hover — lifted from the Contar chips: a gradient panel behind the
+Node hover, lifted from the Contar chips: a gradient panel behind the
    content that sweeps in from the left on hover, with the label inverting.
    ========================================================================= */
 .chip,.btn,.rag-btn,.retake-opt,.focus-info,.timer-btn,.cal-cell{
@@ -731,7 +744,7 @@ a:hover{opacity:.78}
 [data-theme="light"] .retake-opt:hover:not(:disabled),
 [data-theme="light"] .focus-info:hover,[data-theme="light"] .timer-btn:hover{color:#fff}
 
-/* the primary button already carries the gradient — sweep a lighter wash over it */
+/* the primary button already carries the gradient, sweep a lighter wash over it */
 .btn-primary::before{background:linear-gradient(100deg,var(--accent-2),var(--accent-deep))}
 /* keep RAG buttons semantic: they sweep in their own colour, not the brand blue */
 .rag-btn[data-v=red]::before{background:linear-gradient(100deg,var(--red),var(--red))}
@@ -756,7 +769,7 @@ a:hover{opacity:.78}
 }
 
 /* =========================================================================
-   Calendar — glyphs and a load bar, no prose
+Calendar, glyphs and a load bar, no prose
    ========================================================================= */
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
 .cal-dow{
@@ -832,7 +845,7 @@ a:hover{opacity:.78}
 @media(max-width:640px){ .cal-cell{min-height:66px;padding:6px} .cal-top b{font-size:11.5px} }
 
 /* =========================================================================
-   Calendar — a day expands into a short brief of what you are doing
+Calendar, a day expands into a short brief of what you are doing
    ========================================================================= */
 .cal-cell{cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%}
 .cal-blank{min-height:0}
@@ -872,7 +885,7 @@ a:hover{opacity:.78}
 .cal-panel-exam b{color:var(--text);font-size:14px}
 
 /* =========================================================================
-   The chapter method — stepper, playlist, question bank
+The chapter method, stepper, playlist, question bank
    ========================================================================= */
 .chapter-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
 .chapter-steps.compact{gap:6px;margin-top:10px}
@@ -984,7 +997,7 @@ a:hover{opacity:.78}
 .ms-lock-ico .ico{width:26px;height:26px;margin:0}
 
 /* =========================================================================
-   Maths typesetting — real superscripts/subscripts in a maths face
+Maths typesetting, real superscripts/subscripts in a maths face
    ========================================================================= */
 .math{
   font-family:"STIX Two Math","Cambria Math","Latin Modern Math",
@@ -1050,7 +1063,7 @@ a:hover{opacity:.78}
 .eq-body{padding:0 15px 15px;animation:panelDrop .24s cubic-bezier(.2,.85,.25,1)}
 
 /* =========================================================================
-   PdfViewer — toolbar, zoom, pen tool, in-app full screen
+PdfViewer, toolbar, zoom, pen tool, in-app full screen
    ========================================================================= */
 .pdfv{width:100%;height:100%;display:flex;flex-direction:column;background:var(--surface-2)}
 .pdfv-toolbar{
@@ -1107,7 +1120,7 @@ a:hover{opacity:.78}
   position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;
   padding:10px;transform-origin:0 0;width:fit-content;
   /* horizontal centring is computed in JS (setPagesTransform) as a flat
-     translateX baked into the same transform as the zoom scale — a CSS
+  translateX baked into the same transform as the zoom scale, a CSS
      margin:auto here would fight that, since margin math is based on the
      box's unscaled layout width while the JS math is based on its scaled
      visual width. */
@@ -1147,7 +1160,7 @@ a:hover{opacity:.78}
 }
 
 /* =========================================================================
-   Pen flyout — hover-expanding tool picker: draw/erase, colour wheel, size
+Pen flyout, hover-expanding tool picker: draw/erase, colour wheel, size
    ========================================================================= */
 .pdfv-pen-wrap{position:relative;display:inline-flex}
 .pdfv-pen-pop{
@@ -1551,8 +1564,8 @@ a:hover{opacity:.78}
 .vid-go{border-radius:11px 0 0 11px;padding:7px 11px}
 
 /* ---------- stacked fractions ---------- */
-/* An inline-flex box takes its baseline from its FIRST line — the
-   numerator — so the whole fraction hangs below the surrounding text.
+/* An inline-flex box takes its baseline from its FIRST line, the
+numerator, so the whole fraction hangs below the surrounding text.
    inline-block with vertical-align:middle centres it on the line instead,
    which is what a written fraction should do. Kept small and tight so it
    does not push the lines of a mark scheme apart. */

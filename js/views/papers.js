@@ -1,12 +1,19 @@
 /* ============================================================
-   Past Papers — tracker, filters, and per-paper error log
+Past Papers: tracker, filters, and per-paper error log
    ============================================================ */
 
 const PapersView = (function () {
 
-  const filters = { type: "all", scope: "all", timing: "all" };
+  const filters = { type: "all", level: "all", scope: "all", timing: "all" };
   const ERROR_TYPES = ["Knowledge gap", "Method error", "Algebra error", "Calculator error", "Misread question", "Time pressure", "Careless mistake"];
   const PAPER_TYPES = ["Pure", "Statistics", "Mechanics", "Statistics & Mechanics", "Mixed"];
+
+  /* AS (8MA0) papers only examine Year 1 content and are marked out of 100/60;
+  A level (9MA0) papers are out of 100 each and can ask anything from either
+  year. Keeping them apart stops an AS average from flattering a full-A-level
+  prediction, which is why the grade estimate is reported per level. */
+  const PAPER_LEVELS = { as: "AS (8MA0)", alevel: "A level (9MA0)" };
+  function levelOf(p) { return p.level === "alevel" ? "alevel" : "as"; }
 
   function render(root) {
     const st = Store.get();
@@ -16,9 +23,9 @@ const PapersView = (function () {
     root.innerHTML =
       '<div class="grid g4" style="margin-bottom:18px">' +
         stat("Papers logged", ps.count, ps.timed + " timed · " + ps.full + " full") +
-        stat("Average", ps.avg != null ? ps.avg + "%" : "—", ps.avg != null ? "grade " + Metrics.estimateGrade(ps.avg) + " (indicative)" : "no scores yet") +
-        stat("Latest", ps.latest != null ? ps.latest + "%" : "—", ps.trendAvg != null ? "last 3 avg " + ps.trendAvg + "%" : "") +
-        stat("Best", ps.best != null ? ps.best + "%" : "—", "") +
+        stat("Average", ps.avg != null ? ps.avg + "%" : "n/a", ps.avg != null ? "grade " + Metrics.estimateGrade(ps.avg) + " (indicative)" : "no scores yet") +
+        stat("Latest", ps.latest != null ? ps.latest + "%" : "n/a", ps.trendAvg != null ? "last 3 avg " + ps.trendAvg + "%" : "") +
+        stat("Best", ps.best != null ? ps.best + "%" : "n/a", "") +
       '</div>' +
 
       '<div class="card" style="margin-bottom:18px">' +
@@ -33,6 +40,7 @@ const PapersView = (function () {
       '</div>' +
 
       '<div class="card" style="margin-bottom:18px"><div class="row wrap" style="gap:16px">' +
+      chips("level", ["all", "as", "alevel"], { all: "AS + A level", as: "AS papers", alevel: "A level papers" }) +
         chips("type", ["all"].concat(PAPER_TYPES), { all: "All papers" }) +
         chips("scope", ["all", "full", "partial"], { all: "Full or partial", full: "Full paper", partial: "Partial / section" }) +
         chips("timing", ["all", "timed", "untimed"], { all: "Any timing", timed: "Timed", untimed: "Untimed" }) +
@@ -41,7 +49,7 @@ const PapersView = (function () {
       (rows.length ? table(rows) :
         (st.papers.length ? UI.empty("🔍", "No papers match those filters")
           : UI.empty("▤", "No past papers logged yet",
-              "Official Edexcel 8MA0 papers, mark schemes and the formulae booklet are on the Pearson course page — add each one here as you do it.") +
+            "Official Edexcel 9MA0 (A level) and 8MA0 (AS) papers, mark schemes and the formulae booklet are on the Pearson course page, add each one here as you do it, tagging which level it was.") +
             '<div class="row" style="justify-content:center;gap:8px">' +
               '<button class="btn btn-primary" data-action="log-paper">Log your first paper</button>' +
               '<a class="btn" href="' + REFERENCE_LINKS[0].url + '" target="_blank" rel="noopener">Pearson past papers ↗</a></div>'));
@@ -62,6 +70,7 @@ const PapersView = (function () {
   function filtered() {
     return Store.get().papers.filter(function (p) {
       if (filters.type !== "all" && p.type !== filters.type) return false;
+      if (filters.level !== "all" && levelOf(p) !== filters.level) return false;
       if (filters.scope === "full" && !p.full) return false;
       if (filters.scope === "partial" && p.full) return false;
       if (filters.timing === "timed" && !p.timed) return false;
@@ -72,19 +81,20 @@ const PapersView = (function () {
 
   function table(rows) {
     return '<div class="card"><div class="tbl-wrap"><table class="tbl"><thead><tr>' +
-      '<th>Paper</th><th>Type</th><th>Date</th><th>Mark</th><th>%</th><th>Grade</th><th>Time</th><th>Conditions</th><th>Errors</th><th></th>' +
+    '<th>Paper</th><th>Level</th><th>Type</th><th>Date</th><th>Mark</th><th>%</th><th>Grade</th><th>Time</th><th>Conditions</th><th>Errors</th><th></th>' +
       '</tr></thead><tbody>' + rows.map(function (p) {
         const pct = p.total ? Math.round(p.mark / p.total * 100) : null;
         const lost = (p.errors || []).reduce(function (a, e) { return a + (+e.marks || 0); }, 0);
         return '<tr>' +
           '<td><b>' + UI.esc(p.title) + '</b>' + (p.url ? ' <a href="' + UI.esc(p.url) + '" target="_blank" rel="noopener" title="Open paper">↗</a>' : "") +
             (p.notes ? '<div class="tiny muted" style="max-width:280px">' + UI.esc(p.notes) + '</div>' : "") + '</td>' +
-          '<td><span class="pill">' + UI.esc(p.type || "—") + '</span></td>' +
-          '<td class="tiny">' + (p.date ? Metrics.fmtDate(p.date) : "—") + '</td>' +
-          '<td>' + (p.mark != null ? p.mark + " / " + p.total : "—") + '</td>' +
-          '<td>' + (pct != null ? UI.accPill(pct) : "—") + '</td>' +
-          '<td>' + (pct != null ? '<b>' + Metrics.estimateGrade(pct) + '</b>' : "—") + '</td>' +
-          '<td class="tiny">' + (p.timeTaken ? p.timeTaken + "/" + (p.duration || "?") + " min" : (p.duration ? p.duration + " min" : "—")) + '</td>' +
+            '<td><span class="pill ' + (levelOf(p) === "alevel" ? "good" : "") + '">' + UI.esc(PAPER_LEVELS[levelOf(p)]) + '</span></td>' +
+            '<td><span class="pill">' + UI.esc(p.type || "n/a") + '</span></td>' +
+            '<td class="tiny">' + (p.date ? Metrics.fmtDate(p.date) : "n/a") + '</td>' +
+            '<td>' + (p.mark != null ? p.mark + " / " + p.total : "n/a") + '</td>' +
+            '<td>' + (pct != null ? UI.accPill(pct) : "n/a") + '</td>' +
+            '<td>' + (pct != null ? '<b>' + Metrics.estimateGrade(pct) + '</b>' : "n/a") + '</td>' +
+            '<td class="tiny">' + (p.timeTaken ? p.timeTaken + "/" + (p.duration || "?") + " min" : (p.duration ? p.duration + " min" : "n/a")) + '</td>' +
           '<td class="tiny">' + (p.timed ? "⏱ timed" : "untimed") + '<br>' + (p.full ? "full paper" : "partial") + '</td>' +
           '<td>' + ((p.errors || []).length
             ? '<span class="pill bad">' + p.errors.length + ' · ' + lost + ' marks</span>'
@@ -111,6 +121,7 @@ const PapersView = (function () {
     }
     const p = existing || {
       title: "", url: "", type: timed && timed.type ? timed.type : "Pure", date: Metrics.today(),
+      level: "alevel",
       duration: timed && timed.duration ? timed.duration : 120,
       timeTaken: timed ? timed.minutes : "",
       mark: "", total: 100, timed: true, full: true, notes: ""
@@ -120,7 +131,9 @@ const PapersView = (function () {
       wide: true,
       body:
         '<div class="form-grid">' +
-          f("Paper title", '<input class="input" data-p="title" placeholder="e.g. 8MA0/01 June 2023 Pure" value="' + UI.esc(p.title) + '">') +
+        f("Paper title", '<input class="input" data-p="title" placeholder="e.g. 9MA0/01 June 2023 Pure 1" value="' + UI.esc(p.title) + '">') +
+        f("Level", '<select class="input" data-p="level">' + Object.keys(PAPER_LEVELS).map(function (k) {
+          return '<option value="' + k + '"' + (levelOf(p) === k ? " selected" : "") + '>' + PAPER_LEVELS[k] + '</option>'; }).join("") + '</select>') +
           f("Type", '<select class="input" data-p="type">' + PAPER_TYPES.map(function (t) {
             return '<option' + (p.type === t ? " selected" : "") + '>' + t + '</option>'; }).join("") + '</select>') +
           f("Date completed", '<input class="input" type="date" data-p="date" value="' + UI.esc(p.date) + '">') +
@@ -135,7 +148,7 @@ const PapersView = (function () {
           '<label class="switch"><input type="checkbox" data-p="full"' + (p.full ? " checked" : "") + '><i></i><span>Full paper (not a section)</span></label>' +
         '</div>' +
         '<div class="field"><label class="label">Notes</label><textarea class="input" data-p="notes" placeholder="How it felt, what to fix, timing issues…">' + UI.esc(p.notes) + '</textarea></div>' +
-        '<div class="tiny faint">Grades shown in the tracker are indicative only — real Edexcel boundaries change every series.</div>',
+        '<div class="tiny faint">Grades shown in the tracker are indicative only, real Edexcel boundaries change every series.</div>',
       footer: '<button class="btn" data-modal-close-2>Cancel</button>' +
               '<button class="btn btn-primary" id="savePaper">' + (existing ? "Save changes" : "Save paper") + '</button>',
       onMount: function (box) {
@@ -153,7 +166,7 @@ const PapersView = (function () {
           Store.mutate(function (st) {
             const rec = {
               id: existing ? existing.id : "pp-" + Date.now().toString(36),
-              title: title, type: get("type"), date: get("date"), url: get("url").trim(),
+              title: title, type: get("type"), level: get("level"), date: get("date"), url: get("url").trim(),
               duration: UI.num(get("duration"), null), timeTaken: UI.num(get("timeTaken"), null),
               mark: mark, total: total, timed: get("timed"), full: get("full"), notes: get("notes"),
               errors: existing ? existing.errors || [] : []
@@ -167,7 +180,7 @@ const PapersView = (function () {
           });
           Scheduler.regenerate("past paper logged");
           UI.closeModal();
-          UI.toast("Paper saved. Now log the marks you lost — that is what changes your schedule.", "ok", 5000);
+          UI.toast("Paper saved. Now log the marks you lost, that is what changes your schedule.", "ok", 5000);
           const saved = Store.get().papers[Store.get().papers.length - 1];
           if (!existing) setTimeout(function () { errorModal(saved.id); }, 350);
           App.render();
@@ -187,17 +200,19 @@ const PapersView = (function () {
     const errs = paper.errors || [];
     const lost = errs.reduce(function (a, e) { return a + (+e.marks || 0); }, 0);
 
-    const topicOptions = '<option value="">— choose a topic —</option>' +
+    const topicOptions = '<option value=""> - choose a topic - </option>' +
       SPEC.filter(function (sp) { return Store.settings().papers[sp.id]; }).map(function (sp) {
+        /* Every topic stays selectable here regardless of the Year filter, a
+        mistake in a paper must be attributable even if that year is hidden. */
         return '<optgroup label="' + UI.esc(sp.short) + '">' + sp.sections.map(function (sec) {
-          return sec.subs.filter(function (sub) { return !sub.y2 || Store.settings().includeY2; }).map(function (sub) {
-            return '<option value="' + sub.id + '">' + UI.esc(sec.name + " — " + sub.name) + '</option>';
+          return sec.subs.map(function (sub) {
+            return '<option value="' + sub.id + '">' + UI.esc("Y" + (sec.year || 1) + " " + sec.name + ", " + sub.name) + '</option>';
           }).join("");
         }).join("") + '</optgroup>';
       }).join("");
 
     UI.modal({
-      title: "Error log — " + paper.title,
+      title: "Error log, " + paper.title,
       wide: true,
       body:
         '<div class="row wrap" style="gap:10px">' +
@@ -209,11 +224,11 @@ const PapersView = (function () {
         (errs.length ? '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Q</th><th>Topic</th><th>Marks</th><th>Type</th><th>Why</th><th>Revisit</th><th></th></tr></thead><tbody>' +
           errs.map(function (e, i) {
             const inf = e.topicId ? Store.info(e.topicId) : null;
-            return '<tr><td>' + UI.esc(e.qNo || "—") + '</td>' +
+            return '<tr><td>' + UI.esc(e.qNo || "n/a") + '</td>' +
               '<td class="tiny">' + (inf ? UI.esc(inf.sub.name) + '<div class="faint">' + UI.esc(inf.section.name) + '</div>' : '<span class="faint">unassigned</span>') + '</td>' +
               '<td><b>' + (e.marks || 0) + '</b></td>' +
-              '<td class="tiny">' + UI.esc(e.type || "—") + '</td>' +
-              '<td class="tiny muted">' + UI.esc(e.why || "—") + '</td>' +
+              '<td class="tiny">' + UI.esc(e.type || "n/a") + '</td>' +
+              '<td class="tiny muted">' + UI.esc(e.why || "n/a") + '</td>' +
               '<td>' + (e.revisit ? '<span class="pill warn">yes</span>' : '<span class="pill">no</span>') + '</td>' +
               '<td><button class="btn btn-sm btn-ghost" data-del-err="' + i + '">✕</button></td></tr>';
           }).join("") + '</tbody></table></div>' : '<div class="tiny faint">No mistakes logged for this paper yet.</div>') +
@@ -229,7 +244,7 @@ const PapersView = (function () {
             '<select class="input" data-e="topicId">' + topicOptions + '</select></div>' +
           '<div class="field" style="margin-top:12px"><label class="label">Why did you lose it?</label>' +
             '<textarea class="input" data-e="why" placeholder="e.g. didn’t realise I had to use the discriminant; ran out of time"></textarea></div>' +
-          '<label class="switch" style="margin-top:12px"><input type="checkbox" data-e="revisit" checked><i></i><span>Needs revisiting — feed this into my schedule</span></label>' +
+            '<label class="switch" style="margin-top:12px"><input type="checkbox" data-e="revisit" checked><i></i><span>Needs revisiting, feed this into my schedule</span></label>' +
           '<button class="btn btn-primary btn-block" style="margin-top:14px" id="addErr">Add mistake</button>' +
         '</div>',
       footer: '<button class="btn btn-primary" data-modal-close-2>Done</button>',

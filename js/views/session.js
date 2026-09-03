@@ -1,10 +1,10 @@
 /* ============================================================
-   Revision session — BEFORE → VIDEO → PRACTICE → REVIEW → COMPLETE
+Revision session, BEFORE → VIDEO → PRACTICE → REVIEW → COMPLETE
    ============================================================ */
 
 const SessionView = (function () {
 
-  let s = null;   // working session state
+  let s = null; // working session state
 
   function start(id, taskId) {
     const t = Store.topic(id);
@@ -47,8 +47,8 @@ const SessionView = (function () {
           '<div style="flex:1;min-width:0">' +
             '<div class="assess-path">' + UI.esc(inf.paper.short + " · " + inf.chapterLabel) + '</div>' +
             '<h2 style="font-size:23px;margin:6px 0 0">' +
-              (inf.sub.code && !inf.sub.y2 ? '<span class="code">' + UI.esc(inf.sub.code) + '</span>' : "") +
-              UI.esc(inf.sub.name) + '</h2>' +
+            (inf.sub.code ? '<span class="code">' + UI.esc(inf.sub.code) + '</span>' : "") +
+            UI.esc(inf.sub.name) + UI.yearPill(inf.year) + '</h2>' +
             '<div class="tiny muted" style="margin-top:5px">' +
               (Store.get().timer && Store.get().timer.refId === id
                 ? '<span class="pill good">\u23f1 timing this session</span> \u00b7 ' : "") +
@@ -108,7 +108,7 @@ const SessionView = (function () {
         'and recurring question patterns \u2014 Pearson do not publish a per-topic frequency count.</div>' : "") +
       (t.notes ? '<div class="warnbox info"><b>Your notes on this topic</b>' + UI.esc(t.notes) + '</div>' : "") +
       lastTimeBox(t) +
-      '<div class="field"><label class="label">Before starting — what do you think you can already do here? (optional)</label>' +
+      '<div class="field"><label class="label">Before starting, what do you think you can already do here? (optional)</label>' +
         '<textarea class="input" data-s="preNotes" placeholder="e.g. I can solve sin x = 0.5 but I get lost when it is sin(2x + 30)">' + UI.esc(s.preNotes) + '</textarea></div>',
       "Read the requirements and be honest about the gaps");
   }
@@ -124,18 +124,18 @@ const SessionView = (function () {
   function step2(t, skipVideo) {
     return stepShell(2, "Watch the chapter summary", s.videoDone,
       '<div class="tiny muted">Paste the Zeeshan Zamured chapter summary video for this topic. The link is saved against the topic, ' +
-        'so you only ever have to find it once. Nothing here is auto-detected — you decide when it counts as watched.</div>' +
+      'so you only ever have to find it once. Nothing here is auto-detected, you decide when it counts as watched.</div>' +
       '<div class="row wrap" style="gap:8px">' +
         '<input class="input" data-s="videoUrl" placeholder="https://www.youtube.com/watch?v=…" value="' + UI.esc(s.videoUrl) + '" style="flex:1;min-width:200px">' +
         '<button class="btn" data-action="session-save-video">Save link</button>' +
         (s.videoUrl ? '<a class="btn btn-primary" href="' + UI.esc(s.videoUrl) + '" target="_blank" rel="noopener">▶ Open</a>' : "") +
       '</div>' +
-      (skipVideo ? '<div class="warnbox"><b>Final week — video suppressed</b>You have already done questions on this topic. ' +
+      (skipVideo ? '<div class="warnbox"><b>Final week, video suppressed</b>You have already done questions on this topic. ' +
         'Rewatching a full summary video now is poor value; go straight to questions unless you are genuinely lost.</div>' : "") +
       '<label class="switch"><input type="checkbox" data-s="videoDone"' + (s.videoDone ? " checked" : "") + '><i></i>' +
         '<span>Video watched</span></label>' +
-      (t.videoDone && !s.videoDone ? '<div class="tiny faint">You have watched this topic’s video before — ticking again is optional.</div>' : ""),
-      "Manual — the app never assumes you watched anything");
+        (t.videoDone && !s.videoDone ? '<div class="tiny faint">You have watched this topic’s video before, ticking again is optional.</div>' : ""),
+        "Manual, the app never assumes you watched anything");
   }
 
   function step3(pct, m) {
@@ -148,7 +148,7 @@ const SessionView = (function () {
           '<div class="tiny faint">Topic-sorted past-paper questions with mark schemes on Physics &amp; Maths Tutor, ' +
           'split AS / A level \u2014 use the AS sets.</div>'
         : "") +
-      '<div class="tiny muted">Aim for ' + Math.max(6, Math.round(m.questions / 4)) + '–' + Math.round(m.questions / 3) +
+      '<div class="tiny muted">Aim for ' + Math.max(6, Math.round(m.questions / 4)) + '-' + Math.round(m.questions / 3) +
         ' exam-style questions. Do them, then mark them honestly against the mark scheme.</div>' +
       '<div class="form-grid">' +
         numField("Number attempted", "attempted", s.attempted) +
@@ -156,11 +156,11 @@ const SessionView = (function () {
         '<div class="field"><label class="label">Score</label>' +
           '<div class="input" style="display:flex;align-items:center;font-weight:800;' +
             (pct == null ? "color:var(--faint)" : pct >= 75 ? "color:var(--green)" : pct >= 55 ? "color:var(--amber)" : "color:var(--red)") + '">' +
-            (pct == null ? "—" : pct + "%") + '</div></div>' +
+            (pct == null ? "n/a" : pct + "%") + '</div></div>' +
         numField("Time taken (min)", "minutes", s.minutes) +
         '<div class="field"><label class="label">Difficulty</label><select class="input" data-s="difficulty">' +
           ["", "Easy", "Comfortable", "Challenging", "Very hard"].map(function (d) {
-            return '<option value="' + d + '"' + (s.difficulty === d ? " selected" : "") + '>' + (d || "—") + '</option>';
+            return '<option value="' + d + '"' + (s.difficulty === d ? " selected" : "") + '>' + (d || "n/a") + '</option>';
           }).join("") + '</select></div>' +
       '</div>' +
       '<div class="field"><label class="label">Mistakes made</label>' +
@@ -169,7 +169,7 @@ const SessionView = (function () {
         '<textarea class="input" data-s="notes" placeholder="Method to remember, page reference, anything worth keeping">' + UI.esc(s.notes) + '</textarea></div>' +
       '<label class="switch"><input type="checkbox" data-s="marked"' + (s.marked ? " checked" : "") + '><i></i>' +
         '<span>I have marked / checked my answers against the mark scheme</span></label>',
-      "This matters more than the video — it is the evidence you can actually score marks");
+        "This matters more than the video, it is the evidence you can actually score marks");
   }
 
   function numField(label, key, val) {
@@ -181,12 +181,12 @@ const SessionView = (function () {
     const pct = pctNow();
     let hint = "";
     if (pct != null) {
-      if (pct < 50) hint = "You scored " + pct + "%. Be honest — this is probably still RED.";
+      if (pct < 50) hint = "You scored " + pct + "%. Be honest, this is probably still RED.";
       else if (pct < 70) hint = "You scored " + pct + "%. AMBER is likely the truthful answer.";
       else if (pct >= 85) hint = "You scored " + pct + "%. GREEN is defensible if you did those unaided and under time.";
       else hint = "You scored " + pct + "%. Somewhere between AMBER and GREEN.";
     }
-    return stepShell(4, "Review — how confident are you now?", !!s.ragAfter,
+  return stepShell(4, "Review, how confident are you now?", !!s.ragAfter,
       (hint ? '<div class="warnbox info">' + UI.esc(hint) + ' Whatever you choose, your score will override an over-optimistic rating.</div>' : "") +
       UI.ragPicker(s.ragAfter, "session-rag-after", s.id, true) +
       '<div class="field"><label class="label">What went wrong? (optional)</label>' +
@@ -202,7 +202,7 @@ const SessionView = (function () {
       '<div class="tiny muted">Saving updates the topic status, recalculates its priority and reschedules it.</div>' +
       '<div class="row wrap" style="gap:8px">' +
         (willCover ? '<span class="pill good">Will be marked as COVERED</span>'
-                   : '<span class="pill warn">Will stay as NOT COVERED — video, marked questions and a post-rating are all required</span>') +
+          : '<span class="pill warn">Will stay as NOT COVERED, video, marked questions and a post-rating are all required</span>') +
         '<span class="pill">Next review around ' + Metrics.fmtDate(nextIso) + '</span>' +
       '</div>' +
       '<div class="row wrap" style="gap:8px">' +
@@ -244,7 +244,7 @@ const SessionView = (function () {
       UI.toast("Correct cannot be more than attempted", "bad"); return true;
     }
     if (!s.ragAfter && pct == null && !s.videoDone) {
-      UI.toast("Record something first — video watched, questions, or a new rating", "warn"); return true;
+      UI.toast("Record something first, video watched, questions, or a new rating", "warn"); return true;
     }
 
     Store.mutate(function (st) {

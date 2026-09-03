@@ -1,5 +1,5 @@
 /* ============================================================
-   App — routing, navigation, global actions
+App, routing, navigation, global actions
    ============================================================ */
 
 const App = (function () {
@@ -15,6 +15,7 @@ const App = (function () {
     { id: "calendar", label: "Calendar", icon: "▦" },
     { id: "examq", label: "Exam Questions", icon: "✎" },
     { id: "papers", label: "Past Papers", icon: "▤" },
+    { id: "assessments", label: "School Tests", icon: "✎" },
     { id: "flashcards", label: "Flashcards", icon: "◈" },
     { id: "weaknesses", label: "Weaknesses", icon: "⚠" },
     { id: "progress", label: "Progress", icon: "◔" },
@@ -24,7 +25,7 @@ const App = (function () {
   const TITLES = {
     dashboard: "Dashboard", today: "Today’s Plan", topics: "My Topics", topic: "Topic", chapter: "Chapter", paperview: "Paper",
     calendar: "Calendar", examq: "Exam Questions", papers: "Past Papers", weaknesses: "Weaknesses",
-    flashcards: "Formula Flashcards",
+    assessments: "School Tests", flashcards: "Formula Flashcards",
     progress: "Progress", settings: "Settings", session: "Revision Session", onboarding: "Getting Started"
   };
 
@@ -32,10 +33,17 @@ const App = (function () {
     document.documentElement.setAttribute("data-theme", Store.settings().theme || "dark");
   }
 
+/* The mobile sidebar and its dimmer are one thing, always move them
+together, or you get a scrim with no sidebar behind it. */
+function setSidebar(open) {
+  document.getElementById("sidebar").classList.toggle("open", open);
+  document.getElementById("sidebarScrim").classList.toggle("on", open);
+}
+
   function go(view, p) {
     current = view; params = p || {};
     window.scrollTo({ top: 0, behavior: "smooth" });
-    document.getElementById("sidebar").classList.remove("open");
+    setSidebar(false);
     render();
   }
 
@@ -80,6 +88,7 @@ const App = (function () {
       case "calendar": CalendarView.render(buf); break;
       case "examq": ExamQView.render(buf); break;
       case "papers": PapersView.render(buf); break;
+      case "assessments": AssessmentsView.render(buf); break;
       case "flashcards": FlashcardsView.render(buf); break;
       case "weaknesses": WeaknessesView.render(buf); break;
       case "progress": ProgressView.render(buf); break;
@@ -87,8 +96,8 @@ const App = (function () {
       default: DashboardView.render(buf);
     }
 
-    /* PDF viewers are expensive to (re)build — pdf.js has to fetch and
-       rasterise every page to canvas — so morph() (see ui.js) treats a
+  /* PDF viewers are expensive to (re)build, pdf.js has to fetch and
+  rasterise every page to canvas, so morph() (see ui.js) treats a
        .pdfv element as an opaque leaf and never touches its children,
        whether or not the view changed. mountAll() only (re)loads a
        viewer whose data-src is new to it. */
@@ -103,7 +112,8 @@ const App = (function () {
     const c = Metrics.coverage();
     const badges = { today: todayPending || "", weaknesses: c.red || "",
                      examq: typeof EXAM_SETS !== "undefined" ? Object.keys(EXAM_SETS).length : "",
-                     papers: st.papers.length || "" };
+                     papers: st.papers.length || "",
+                     assessments: (st.schoolAssessments || []).length || "" };
 
     document.getElementById("nav").innerHTML = NAV.map(function (n) {
       const active = current === n.id || ((current === "topic" || current === "chapter") && n.id === "topics") || (current === "session" && n.id === "today");
@@ -113,7 +123,7 @@ const App = (function () {
     }).join("");
   }
 
-  /* The dial must persist between renders — replacing its markup would
+/* The dial must persist between renders, replacing its markup would
      reset the element and the sweep animation would never play. */
   function renderFocusDial() {
     const slot = document.getElementById("focusSlot");
@@ -160,12 +170,12 @@ const App = (function () {
     btn.innerHTML = (dark ? sun : moon) + '<span>' + (dark ? "Light mode" : "Dark mode") + '</span>';
   }
 
+/* The sidebar countdown was removed. A permanent days-left number is
+pressure rather than information, and it never changed what to do next.
+The exam date still drives the planner; it just is not shouted at you. */
   function renderCountdown() {
-    const d = Metrics.daysLeft();
     const el = document.getElementById("countdownMini");
-    if (Metrics.examPassed()) { el.innerHTML = "<b>✓</b>Exam complete"; return; }
-    if (Metrics.isExamDay()) { el.innerHTML = "<b>0</b>Exam is today"; return; }
-    el.innerHTML = "<b>" + d + "</b>day" + (d === 1 ? "" : "s") + " until your exam";
+    if (el) el.innerHTML = "";
   }
 
   /* ============================================================
@@ -191,13 +201,13 @@ const App = (function () {
       const t = document.querySelector(sel);
       if (!t) return;
       t.classList.remove("pop");
-      void t.offsetWidth;               // restart the animation if it is mid-flight
+      void t.offsetWidth; // restart the animation if it is mid-flight
       t.classList.add("pop");
       setTimeout(function () { t.classList.remove("pop"); }, 360);
     });
   }
 
-  /* Remember the chapter — and the question — you were last working on, so
+/* Remember the chapter, and the question, you were last working on, so
      "Continue revision" resumes exactly there instead of dropping you at the
      top of whichever chapter happens to be first-incomplete. Any chapter
      action counts as being "in" that chapter. */
@@ -226,6 +236,7 @@ const App = (function () {
     if (TopicsView.handle(action, el)) return;
     if (CalendarView.handle(action, el)) return;
     if (PapersView.handle(action, el)) return;
+    if (AssessmentsView.handle(action, el)) return;
     if (SettingsView.handle(action, el)) return;
     if (WeaknessesView.handle(action, el)) return;
     if (PaperView.handle(action, el)) return;
@@ -250,7 +261,7 @@ const App = (function () {
         const budget = Scheduler.budgetFor(Metrics.today());
         UI.toast("Added " + Store.info(id).sub.name + " to today" +
           (t ? " (" + Metrics.fmtMins(t.minutes) + ")" : "") +
-          (planned > budget ? " — today is now over your " + Metrics.fmtMins(budget) + " budget" : ""),
+          (planned > budget ? ", today is now over your " + Metrics.fmtMins(budget) + " budget" : ""),
           planned > budget ? "warn" : "ok", 4200);
         render(); return;
       }
@@ -262,7 +273,7 @@ const App = (function () {
       }
 
       case "open-session": {
-        /* Whatever you click — a task, a weak topic, a chapter card — the
+        /* Whatever you click, a task, a weak topic, a chapter card, the
            revision itself always happens in the chapter workflow. */
         const sid = el.dataset.id, stask = el.dataset.task || null;
         const cid = Store.chapterOf(sid);
@@ -278,7 +289,7 @@ const App = (function () {
         Store.mutate(function (st) {
           const t = st.topics[id];
           t.rag = v;
-          t.derived = false;               // you rated it yourself now
+          t.derived = false; // you rated it yourself now
           if (!t.initialRag) t.initialRag = v;
         });
         Scheduler.regenerate("RAG rating changed");
@@ -326,7 +337,7 @@ const App = (function () {
       case "task-skip":
         Scheduler.setTaskStatus(el.dataset.id, "skipped");
         Scheduler.regenerate("task skipped");
-        UI.toast("Skipped — the planner has pushed it forward", "warn");
+        UI.toast("Skipped, the planner has pushed it forward", "warn");
         render(); return;
 
       case "task-move": moveTaskModal(el.dataset.id); return;
@@ -339,7 +350,7 @@ const App = (function () {
         const name = info.task.title;
         UI.toast("Removed " + name + " from " +
           (info.date === Metrics.today() ? "today" : Metrics.fmtDate(info.date)) +
-          (info.task.manual ? "" : " — it will not come back to that day"), "ok", 4000);
+          (info.task.manual ? "" : ", it will not come back to that day"), "ok", 4000);
         render(); return;
       }
 
@@ -402,7 +413,7 @@ const App = (function () {
         const tlabel = ts.label;
         let tmins = 0;
         Store.mutate(function () { tmins = Store.timerStop(true); });
-        UI.toast(tmins > 0 ? "Logged " + Metrics.fmtMins(tmins) + " on " + tlabel : "Timer stopped — nothing logged",
+        UI.toast(tmins > 0 ? "Logged " + Metrics.fmtMins(tmins) + " on " + tlabel : "Timer stopped, nothing logged",
                  tmins > 0 ? "ok" : "warn");
         render(); return;
       }
@@ -425,7 +436,7 @@ const App = (function () {
         const total = Journey.totalVideos(cid);
         if (n < 1 || n > total) return;
         Store.mutate(function () { Store.topic(cid).currentEpisode = n; });
-        /* Try to jump in place first — no reload, keeps the player warm.
+        /* Try to jump in place first, no reload, keeps the player warm.
            If the player does not answer, the re-render below swaps the
            iframe src, which reloads it at that episode instead. */
         jumpToEpisode(n);
@@ -438,7 +449,7 @@ const App = (function () {
         Store.mutate(function (st) {
           const t = Store.topic(cid);
           /* Pin where the player is BEFORE the tick changes what counts as
-             "first unwatched" — otherwise ticking a video slides the current
+          "first unwatched", otherwise ticking a video slides the current
              episode forward and the player jumps to the next one. */
           if (t.currentEpisode == null) t.currentEpisode = Journey.currentEpisode(cid);
           const i = t.videoWatched.indexOf(n);
@@ -500,7 +511,7 @@ const App = (function () {
         Store.mutate(function () { Store.topic(cid).questionsFinished = true; });
         Scheduler.regenerate("questions finished");
         UI.toast("Marking " + b.count + " question" + (b.count === 1 ? "" : "s") +
-          " — " + b.marks + "/" + b.available + " marks", "ok", 3600);
+          ", " + b.marks + "/" + b.available + " marks", "ok", 3600);
         render(); return;
       }
       case "ch-q-reopen": {
@@ -544,7 +555,7 @@ const App = (function () {
       case "ch-q-add": { addQuestionModal(el.dataset.id); return; }
 
       case "ch-pdf": {
-        const cid = el.dataset.id, kind = el.dataset.kind;   // "q" or "ms"
+        const cid = el.dataset.id, kind = el.dataset.kind; // "q" or "ms"
         const inp = document.createElement("input");
         inp.type = "file"; inp.accept = "application/pdf";
         inp.onchange = function () {
@@ -656,35 +667,35 @@ const App = (function () {
       title: "How “most likely to come up” is worked out",
       body:
         '<div class="warnbox"><b>There is no official frequency table</b>' +
-        'Pearson do not publish how often each topic appears on 8MA0, and there is no reliable public ' +
-        'tally of past papers. So this ranking deliberately shows no percentages — any number of that ' +
+        'Pearson do not publish how often each topic appears on 9MA0, and there is no reliable public ' +
+        'tally of past papers. So this ranking deliberately shows no percentages, any number of that ' +
         'kind would be invented. It ranks chapters by how much of the exam they account for.</div>' +
 
         '<div class="section-label" style="margin-top:16px">What it is based on</div>' +
         '<ol class="reqs" style="padding-left:20px">' +
-          '<li><b>The mark split, which is published.</b> Paper 1 (Pure) is ' + m.pure + ' of the ' + total +
-            ' marks — ' + Math.round(m.pure / total * 100) + '% of the qualification. Paper 2 is ' + (m.stats + m.mech) +
+        '<li><b>The mark split, which is published.</b> Papers 1 and 2 (Pure) are ' + m.pure + ' of the ' + total +
+        ' marks, ' + Math.round(m.pure / total * 100) + '% of the qualification. Paper 3 is ' + (m.stats + m.mech) +
             ' marks, split evenly between Statistics and Mechanics.</li>' +
           '<li><b>A per-chapter weighting and typical mark range</b> carried in this app, read off the ' +
             'specification’s assessment structure and the released papers. This is an editorial judgement, ' +
             'not a measurement, and it is the part you should treat with most caution.</li>' +
-          '<li><b>Your own results</b> — the only genuinely measured input. These never change the ranking ' +
+            '<li><b>Your own results</b>, the only genuinely measured input. These never change the ranking ' +
             'itself, so the picture of the exam stays stable as you improve; they only flag which of those ' +
             'chapters you are currently weak on.</li>' +
         '</ol>' +
 
         '<div class="section-label" style="margin-top:16px">Reading the row</div>' +
-        '<div class="tiny muted"><b>The five ticks</b> are how reliably that chapter shows up — five means it is on ' +
+        '<div class="tiny muted"><b>The five ticks</b> are how reliably that chapter shows up, five means it is on ' +
         'essentially every paper. <b>The marks figure</b> is the typical size of the question when it appears. ' +
-        '<b>“Woven in”</b> means the chapter rarely gets its own question but runs through the others — ' +
+        '<b>“Woven in”</b> means the chapter rarely gets its own question but runs through the others, ' +
         'Algebraic Expressions is the clearest case: you use index laws and factorising inside differentiation, ' +
         'integration and coordinate geometry, so weakness there costs you marks that get recorded against ' +
         'other topics. <b>The coloured dot</b> is your current rating, so a five-tick chapter with a red dot ' +
         'is the most valuable thing you could fix.</div>' +
 
         '<div class="warnbox info" style="margin-top:16px"><b>Use it for ordering, not for gambling</b>' +
-        'This is a sensible order to revise in. It is not a prediction, and question spotting is a bad bet — ' +
-        'AS Maths is a small specification and examiners can and do ask anything on it.</div>',
+        'This is a sensible order to revise in. It is not a prediction, and question spotting is a bad bet, ' +
+        'the A level is a broad specification and examiners can and do ask anything on it.</div>',
       footer: '<button class="btn btn-primary" data-c>Got it</button>',
       onMount: function (box) { box.querySelector("[data-c]").onclick = UI.closeModal; }
     });
@@ -710,7 +721,7 @@ const App = (function () {
           out.innerHTML = '<div style="margin-top:6px">' +
             '<div class="tiny faint" style="letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:8px">Do this now</div>' +
             UI.taskCard(t, { hideActions: true }) +
-            (t.shortened ? '<div class="tiny faint" style="margin-top:8px">Shortened to fit the ' + Metrics.fmtMins(mins) + ' you have — do as much as you can and log what you managed.</div>' : "") +
+            (t.shortened ? '<div class="tiny faint" style="margin-top:8px">Shortened to fit the ' + Metrics.fmtMins(mins) + ' you have, do as much as you can and log what you managed.</div>' : "") +
             (r.bonus ? '<div class="warnbox info" style="margin-top:12px"><b>Bonus work</b>Today’s plan is already done. This is the next highest-priority topic, pulled forward.</div>' : "") +
             '<div class="row wrap" style="gap:8px;margin-top:14px">' +
               (t.topicId ? '<button class="btn btn-primary" data-action="open-session" data-id="' + t.topicId + '" data-task="' + UI.esc(t.id) + '">Start this session</button>' : "") +
@@ -773,7 +784,7 @@ const App = (function () {
   function addTaskModal(dateIso) {
     const opts = Store.activeSubIds().map(function (id) {
       const inf = Store.info(id);
-      return '<option value="' + id + '">' + UI.esc(inf.paper.short + " — " + inf.sub.name) + '</option>';
+      return '<option value="' + id + '">' + UI.esc(inf.paper.short + ", " + inf.sub.name) + '</option>';
     }).join("");
     UI.modal({
       title: "Add a task to " + Metrics.fmtDate(dateIso),
@@ -830,14 +841,14 @@ const App = (function () {
           if (!d) return;
           Scheduler.rescheduleTask(taskId, d);
           Scheduler.regenerate("task rescheduled");
-          UI.closeModal(); UI.toast("Task moved to " + Metrics.fmtDate(d) + " — today's plan filled the gap", "ok"); render();
+          UI.closeModal(); UI.toast("Task moved to " + Metrics.fmtDate(d) + ", today's plan filled the gap", "ok"); render();
         };
       }
     });
   }
 
   /* Jump the player to an episode. YtPlayer drives a real IFrame API player,
-     where playVideoAt() is documented and actually works — unlike an `index`
+  where playVideoAt() is documented and actually works, unlike an `index`
      URL parameter, which a playlist embed silently ignores. If the player is
      still starting up, YtPlayer remembers the episode and goes there once it
      is ready. */
@@ -861,7 +872,7 @@ const App = (function () {
       '</div>';
     }
     UI.modal({
-      title: "Episode lengths — " + Store.info(cid).chapter.name,
+      title: "Episode lengths, " + Store.info(cid).chapter.name,
       body:
         '<div class="tiny muted">YouTube does not hand out video lengths without an API key, so these are not ' +
         'fetched automatically. Type them in from the thumbnails once and the chapter’s total, the time still ' +
@@ -869,7 +880,7 @@ const App = (function () {
         'it fills the gap with the average of the ones you did enter.</div>' +
         '<div class="ep-time-grid" style="margin-top:14px">' + rows + '</div>' +
         '<div class="tiny faint" style="margin-top:10px">Currently ' +
-          (vm.exact ? "using your entered lengths." : vm.knownCount + " of " + total + " entered — the rest are estimated.") +
+        (vm.exact ? "using your entered lengths." : vm.knownCount + " of " + total + " entered, the rest are estimated.") +
         '</div>',
       footer: '<button class="btn" data-c>Cancel</button>' +
               '<button class="btn btn-primary" id="etSave">Save lengths</button>',
@@ -902,7 +913,7 @@ const App = (function () {
   const QUIZLET_SEPS = {
     tab: { label: "Tab", value: "\t" },
     comma: { label: "Comma", value: "," },
-    dash: { label: "Hyphen -", value: " - " }
+    dash: { label: "Hyphen -", value: "n/a" }
   };
   const QUIZLET_ROWS = {
     newline: { label: "New line", value: "\n" },
@@ -973,9 +984,9 @@ const App = (function () {
         box.querySelector("#qxCopy").onclick = function () {
           out.select();
           navigator.clipboard.writeText(out.value).then(function () {
-            UI.toast("Copied " + rows.length + " cards — paste into Quizlet's import box", "ok", 4200);
+            UI.toast("Copied " + rows.length + " cards, paste into Quizlet's import box", "ok", 4200);
           }).catch(function () {
-            UI.toast("Could not reach the clipboard — select the text and copy manually", "warn", 4200);
+          UI.toast("Could not reach the clipboard, select the text and copy manually", "warn", 4200);
           });
         };
       }
@@ -995,7 +1006,7 @@ const App = (function () {
             chapters.map(function (c) {
               const inf = CHAPTER_INDEX[c];
               return '<option value="' + c + '"' + (c === cid ? " selected" : "") + '>' +
-                UI.esc(inf.paper.short + " Ch" + inf.chapter.num + " — " + inf.chapter.name) + '</option>';
+              UI.esc(inf.paper.short + " Ch" + inf.chapter.num + ", " + inf.chapter.name) + '</option>';
             }).join("") + '</select></div>' +
         '<div class="form-grid">' +
           '<div class="field"><label class="label">Between term and definition</label>' +
@@ -1045,7 +1056,7 @@ const App = (function () {
         box.querySelector("[data-c]").onclick = UI.closeModal;
         box.querySelector("#qiSave").onclick = function () {
           const cards = parse();
-          if (!cards.length) { UI.toast("Nothing to import — check the separators", "bad"); return; }
+          if (!cards.length) { UI.toast("Nothing to import, check the separators", "bad"); return; }
           const target = box.querySelector("#qiChapter").value;
           Store.mutate(function () {
             const t = Store.topic(target);
@@ -1090,7 +1101,7 @@ const App = (function () {
 
   /* Which videos in the playlist actually count.
 
-     Playlists are not always pure teaching — Zeeshan's include the odd
+  Playlists are not always pure teaching, Zeeshan's include the odd
      advert or channel trailer. Two controls, because the extras are not
      always at the end: set how many videos the playlist has, and untick any
      individual one that is not part of the course. Unticked videos stay
@@ -1125,9 +1136,9 @@ const App = (function () {
     };
 
     UI.modal({
-      title: "Which videos count? — " + Store.info(cid).chapter.name,
+      title: "Which videos count?, " + Store.info(cid).chapter.name,
       body:
-        '<div class="tiny muted">Playlists sometimes include videos that are not part of the course — adverts or ' +
+      '<div class="tiny muted">Playlists sometimes include videos that are not part of the course, adverts or ' +
         'channel trailers. Untick those and they will not count towards finishing the chapter, and their length ' +
         'will be left out of the total watch time. You can still play them.</div>' +
         (detected ? '<div class="tiny faint" style="margin-top:6px">YouTube reports this playlist has ' +
@@ -1163,7 +1174,7 @@ const App = (function () {
           Store.mutate(function () {
             const t = Store.topic(cid);
             t.videoTotal = total;
-            t.videoTotalManual = true;         // stop the player overriding this
+            t.videoTotalManual = true; // stop the player overriding this
             t.videoSkipped = skip;
             t.videoWatched = (t.videoWatched || []).filter(function (x) { return x <= total; });
             t.videoDone = Journey.watchedCount(cid) >= Journey.countedVideos(cid);
@@ -1180,9 +1191,9 @@ const App = (function () {
   function videoModal(id) {
     const t = Store.topic(id);
     UI.modal({
-      title: "Chapter summary video — " + Store.info(id).sub.name,
+      title: "Chapter summary video, " + Store.info(id).sub.name,
       body: '<div class="tiny muted">Paste the Zeeshan Zamured chapter summary video URL for this topic. ' +
-        'No links are guessed or invented — find the right video once and the tracker remembers it.</div>' +
+      'No links are guessed or invented, find the right video once and the tracker remembers it.</div>' +
         '<div class="field"><label class="label">Video URL</label>' +
         '<input class="input" id="vmUrl" placeholder="https://www.youtube.com/watch?v=…" value="' + UI.esc(t.videoUrl) + '"></div>' +
         '<label class="switch"><input type="checkbox" id="vmDone"' + (t.videoDone ? " checked" : "") + '><i></i><span>I have watched this video</span></label>',
@@ -1203,7 +1214,7 @@ const App = (function () {
 
   function questionsModal(id) {
     UI.modal({
-      title: "Log a question set — " + Store.info(id).sub.name,
+      title: "Log a question set, " + Store.info(id).sub.name,
       body:
         '<div class="form-grid">' +
           '<div class="field"><label class="label">Attempted</label><input class="input" type="number" min="1" id="qmA"></div>' +
@@ -1235,7 +1246,7 @@ const App = (function () {
           const eff = Metrics.effectiveRag(id);
           UI.closeModal();
           UI.toast(eff.adjusted
-            ? Store.info(id).sub.name + " is now being treated as " + eff.rag.toUpperCase() + " — " + eff.reasons[0]
+            ? Store.info(id).sub.name + " is now being treated as " + eff.rag.toUpperCase() + ", " + eff.reasons[0]
             : "Question set saved", eff.adjusted ? "warn" : "ok", 5000);
           render();
         };
@@ -1246,7 +1257,7 @@ const App = (function () {
   function notesModal(id) {
     const t = Store.topic(id);
     UI.modal({
-      title: "Notes — " + Store.info(id).sub.name,
+      title: "Notes, " + Store.info(id).sub.name,
       body: '<div class="field"><label class="label">Your notes</label>' +
         '<textarea class="input" id="nmText" style="min-height:200px">' + UI.esc(t.notes) + '</textarea></div>',
       footer: '<button class="btn" data-c>Cancel</button><button class="btn btn-primary" id="nmSave">Save</button>',
@@ -1270,7 +1281,7 @@ const App = (function () {
         '<div class="field"><label class="label">What you need to know (one per line)</label>' +
           '<textarea class="input" id="ctReqs" style="min-height:110px"></textarea></div>' +
         '<div class="form-grid">' +
-          '<div class="field"><label class="label">Importance (1–5)</label><input class="input" type="number" min="1" max="5" id="ctImp" value="3"></div>' +
+          '<div class="field"><label class="label">Importance (1-5)</label><input class="input" type="number" min="1" max="5" id="ctImp" value="3"></div>' +
           '<div class="field"><label class="label">Video minutes</label><input class="input" type="number" id="ctVid" value="20"></div>' +
           '<div class="field"><label class="label">Question minutes</label><input class="input" type="number" id="ctQs" value="35"></div>' +
         '</div>',
@@ -1381,8 +1392,8 @@ const App = (function () {
     Scheduler.regenerate(turningOn ? "switched to Exam-Focus (chapters)" : "switched to section-level revision");
     const c = Metrics.coverage();
     UI.toast(turningOn
-      ? "Exam-Focus on — planning " + c.total + " chapters instead of individual sections. Your ratings carried across."
-      : "Exam-Focus off — back to " + c.total + " specification sections.", "ok", 5200);
+      ? "Exam-Focus on, planning " + c.total + " chapters instead of individual sections. Your ratings carried across."
+      : "Exam-Focus off, back to " + c.total + " specification sections.", "ok", 5200);
     render();
   }
 
@@ -1417,7 +1428,7 @@ const App = (function () {
         examMarks: sc.exam.has ? { got: sc.exam.got, avail: sc.exam.avail, pct: sc.exam.pct } : null,
         minutes: mins, difficulty: diff, mistakes: mistakes, notes: notes });
       /* feed the existing engine so RAG adjustment and the planner still work.
-         Carry the marks across too — accuracy() weights by marks so that
+      Carry the marks across too, accuracy() weights by marks so that
          part-marks count, rather than only fully-correct questions. */
       t.questionSets.push({ date: Metrics.today(), attempted: n, correct: correct, pct: pct,
         marksAvailable: avail, marksAchieved: got,
@@ -1473,8 +1484,8 @@ const App = (function () {
   }
 
   /* The one button that always knows what is next. */
-  /* Open a chapter positioned on the step you stopped at — expanding the
-     right question if questions are the live step — rather than dumping you
+  /* Open a chapter positioned on the step you stopped at, expanding the
+  right question if questions are the live step, rather than dumping you
      at the top of the page to find your place again. */
   function resumeChapterAt(n) {
     ChapterView.setOpenQ(n.question != null ? n.question : null);
@@ -1517,7 +1528,7 @@ const App = (function () {
     const stepName = { video: "the playlist", questions: "the topic questions",
                        marked: "marking your answers", rag: "your confidence rating" }[n.step] || "this chapter";
     return '<div class="continue-resume">' + UI.icon("refresh") +
-      '<div>Picking up where you stopped' + (when ? " " + UI.esc(when) : "") + ' — ' + UI.esc(stepName) +
+    '<div>Picking up where you stopped' + (when ? " " + UI.esc(when) : "") + ', ' + UI.esc(stepName) +
       (n.question != null ? ', question ' + (n.question + 1) : "") + '.</div></div>';
   }
 
@@ -1527,7 +1538,7 @@ const App = (function () {
       title: "Continue revision",
       body:
         '<div class="continue-hero">' +
-          '<div class="continue-kind">' + UI.esc({ assess: "Step 1 — Assess", chapter: "Chapter revision", paper: "Past papers", done: "Done" }[n.kind] || "") + '</div>' +
+        '<div class="continue-kind">' + UI.esc({ assess: "Step 1, Assess", chapter: "Chapter revision", paper: "Past papers", done: "Done" }[n.kind] || "") + '</div>' +
           '<h3 style="font-size:20px;margin:6px 0 8px">' + UI.esc(n.title) + '</h3>' +
           '<div class="muted tiny">' + UI.esc(n.detail) + '</div>' +
         '</div>' +
@@ -1838,7 +1849,7 @@ const App = (function () {
       }
     });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") UI.closeModal();
+      if (e.key === "Escape") { UI.closeModal(); setSidebar(false); }
       if (current === "onboarding" && !document.getElementById("modalRoot").classList.contains("on")) {
         const tag = (document.activeElement.tagName || "").toLowerCase();
         if (tag !== "input" && tag !== "textarea" && tag !== "select") OnboardingView.keydown(e);
@@ -1849,12 +1860,19 @@ const App = (function () {
       Store.mutate(function (st) { st.settings.theme = st.settings.theme === "dark" ? "light" : "dark"; });
       applyTheme(); render();
     };
-    document.getElementById("menuBtn").onclick = function () {
-      document.getElementById("sidebar").classList.toggle("open");
+  document.getElementById("menuBtn").onclick = function (e) {
+    e.stopPropagation(); // don't let this click immediately re-close it
+    setSidebar(!document.getElementById("sidebar").classList.contains("open"));
     };
+  /* Tapping the dimmer, i.e. anywhere off the sidebar, puts it back. */
+  document.getElementById("sidebarScrim").onclick = function () { setSidebar(false); };
+  /* Following a link inside the sidebar closes it too (see go()). */
+  document.getElementById("sidebar").addEventListener("click", function (e) {
+    if (e.target.closest(".nav-item")) setSidebar(false);
+  });
     document.getElementById("whatNowBtn").onclick = continueRevision;
 
-    /* The player knows things we were only estimating — how many videos the
+    /* The player knows things we were only estimating, how many videos the
        playlist really has, and how long each one is. Record them as they
        come in so "total video time" becomes measured rather than guessed,
        without you typing anything. */
@@ -1866,7 +1884,7 @@ const App = (function () {
         const t = Store.topic(cid);
         if (meta.count > 0) {
           /* always remember what YouTube says, so the "which videos count"
-             dialog can show it — but only apply it if you have not set the
+          dialog can show it, but only apply it if you have not set the
              count yourself. Otherwise excluding the adverts would be undone
              the moment the player loaded. */
           if (t.videoDetectedTotal !== meta.count) { t.videoDetectedTotal = meta.count; changed = true; }
@@ -1880,8 +1898,7 @@ const App = (function () {
           }
         }
         /* Follow the player rather than fight it. If you skip videos using
-           YouTube's own controls, the app must adopt that position —
-           otherwise the next re-render would "correct" the player and yank
+        YouTube's own controls, the app must adopt that position - otherwise the next re-render would "correct" the player and yank
            you back to where the app thought you were. */
         if (meta.episode && t.currentEpisode !== meta.episode) {
           t.currentEpisode = meta.episode;

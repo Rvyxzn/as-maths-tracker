@@ -1,29 +1,31 @@
 /* ============================================================
-   Edexcel AS Mathematics (8MA0) — chapter-by-chapter database
-   ------------------------------------------------------------
+Edexcel A level Mathematics (9MA0), chapter-by-chapter database
+------------------------------------------------------------
+Covers the FULL A level: Year 1/AS content and Year 2 content.
    Structured to match the Pearson Edexcel AS/A level Mathematics
-   Year 1/AS student books, which are the chapter divisions the
-   specification is taught and revised in (and the ones chapter
-   summary videos follow):
+   student books, which are the chapter divisions the specification
+   is taught and revised in (and the ones summary videos follow):
 
-     Pure Mathematics Year 1/AS ............ Chapters 1–14
-     Statistics & Mechanics Year 1/AS ...... Chapters 1–7  (Statistics)
-                                             Chapters 8–11 (Mechanics)
+   Pure Mathematics Year 1/AS ............ Chapters 1-14 (year 1)
+   Pure Mathematics Year 2 ............... Chapters 1-12 (year 2)
+   Statistics & Mechanics Year 1/AS ...... Chapters 1-7 Statistics
+   Chapters 8-11 Mechanics
+   Statistics & Mechanics Year 2 ......... Chapters 1-3 Statistics
+   Chapters 4-8 Mechanics
 
-   Paper 1 (8MA0/01) Pure Mathematics       2h,    100 marks
-   Paper 2 (8MA0/02) Statistics & Mechanics 1h15,   60 marks
+   Paper 1 (9MA0/01) Pure Mathematics 1 2h, 100 marks
+   Paper 2 (9MA0/02) Pure Mathematics 2 2h, 100 marks
+   Paper 3 (9MA0/03) Statistics & Mechanics 2h, 100 marks
+   (Section A Statistics 50, Section B Mechanics 50)
 
-   ACCURACY NOTE
-   The Year 1/AS books contain the AS content and nothing more, so
-   this chapter list *is* the examinable AS specification. Topics
-   often assumed to be AS but which live in the Year 2 books and are
-   NOT examinable on 8MA0 are listed at the end of the Pure chapters,
-   flagged y2:true, and excluded from the schedule by default:
-     arithmetic & geometric series, sigma notation, recurrence
-     relations; radians, arc length/sector area, small angle
-     approximations; sec/cosec/cot, compound & double angles,
-     R sin(x+a); composite/inverse functions and the modulus
-     function; proof by contradiction.
+   Any pure topic from either year can appear on Paper 1 or Paper 2 - Pearson do not split the pure content between the two papers, so
+   this database keeps Pure as one body of content.
+
+   YEAR TAGGING
+   Every section carries `year: 1` or `year: 2` (sections without the
+     field default to 1 in the index builder below). The Year filter in
+   Topics and the scheduler both read this, so a Year 12 student can
+   work the Y1 content only and switch Y2 on when they are taught it.
    ============================================================ */
 
 /* importance: 1 = niche, 5 = appears on virtually every paper */
@@ -31,13 +33,14 @@
 const SPEC = [
 {
   id: "pure", paper: "Pure", short: "Pure",
-  name: "Paper 1 — Pure Mathematics", code: "8MA0/01",
-  book: "Pure Mathematics Year 1/AS",
-  examMinutes: 120, marks: 100,
+  name: "Papers 1 & 2: Pure Mathematics", code: "9MA0/01 & 9MA0/02",
+  book: "Pure Mathematics Year 1/AS (ch 1-14) and Year 2 (ch 1-12)",
+  examMinutes: 240, marks: 200,
+  note: "Pure is examined across two 2-hour papers of 100 marks each. Pearson do not split the content between them, so any pure topic from either year can appear on either paper.",
   sections: [
 
     { id: "pu1", num: "1", name: "Algebraic Expressions",
-      desc: "Indices, expanding, factorising and surds — the manipulation every other chapter depends on.",
+      desc: "Indices, expanding, factorising and surds, the manipulation every other chapter depends on.",
       subs: [
         { id:"pu1-1", code:"1.1", name:"Index laws", importance:5, vid:14, qs:26, reqs:[
           "Know and use the laws of indices: a^m × a^n = a^(m+n), a^m ÷ a^n = a^(m-n), (a^m)^n = a^(mn)",
@@ -532,43 +535,438 @@ const SPEC = [
           "Interpret the resulting model in context" ]}
       ]},
 
-    /* ---- Year 2 content: NOT examinable on AS 8MA0, off by default ---- */
-    { id: "puY2", num: "Y2", name: "Year 2 stretch — not on AS 8MA0", y2Group: true,
-      desc: "These live in the Pure Year 2 book and are not examinable on the AS paper. Off by default; switch on in Settings only if you want the stretch.",
+    /* ================================================================
+    PURE MATHEMATICS YEAR 2, Chapters 1-12
+    Examinable on A level 9MA0 Papers 1 and 2.
+    ================================================================ */
+
+    { id: "pu2c1", num: "1", name: "Algebraic Methods", year: 2,
+      desc: "Proof by contradiction, algebraic fractions, partial fractions and algebraic division.",
       subs: [
-        { id:"y2-seq", code:"Y2", name:"Sequences and series (arithmetic, geometric, sigma)", importance:1, y2:true, vid:24, qs:38, reqs:[
-          "PURE YEAR 2, CHAPTER 3 — not examinable on AS 8MA0",
-          "Arithmetic sequences and series: nth term and sum formulae",
-          "Geometric sequences and series: nth term, sum of n terms, sum to infinity and |r| < 1",
-          "Sigma notation and recurrence relations; increasing, decreasing and periodic sequences" ]},
-        { id:"y2-rad", code:"Y2", name:"Radians, arcs, sectors and small angles", importance:1, y2:true, vid:22, qs:36, reqs:[
-          "PURE YEAR 2, CHAPTER 5 — not examinable on AS 8MA0",
-          "Radian measure and conversion between degrees and radians",
-          "Arc length s = r(theta) and sector area ½r^2(theta)",
-          "Small angle approximations for sin, cos and tan" ]},
-        { id:"y2-trig", code:"Y2", name:"Reciprocal and compound angle identities", importance:1, y2:true, vid:26, qs:40, reqs:[
-          "PURE YEAR 2, CHAPTERS 6–7 — not examinable on AS 8MA0",
-          "sec, cosec and cot and the derived Pythagorean identities",
-          "Compound and double angle formulae",
-          "The harmonic form R sin(x + a)" ]},
-        { id:"y2-fn", code:"Y2", name:"Composite and inverse functions, modulus", importance:1, y2:true, vid:24, qs:38, reqs:[
-          "PURE YEAR 2, CHAPTER 2 — not examinable on AS 8MA0",
-          "Form and evaluate composite functions fg(x)",
-          "Find inverse functions with their domains and ranges; reflection in y = x",
-          "The modulus function and solving modulus equations and inequalities" ]},
-        { id:"y2-proof", code:"Y2", name:"Proof by contradiction", importance:1, y2:true, vid:15, qs:25, reqs:[
-          "PURE YEAR 2, CHAPTER 1 — not examinable on AS 8MA0",
-          "Assume the negation, derive a contradiction, conclude the original statement",
-          "Classic proofs: the irrationality of root 2, the infinitude of primes" ]}
+        { id:"pu2c1-1", code:"1.1", name:"Proof by contradiction", importance:4, vid:16, qs:28, reqs:[
+          "Understand the structure of a proof by contradiction: assume the negation, derive a contradiction, conclude the original statement",
+          "Prove that root 2 is irrational",
+          "Prove that there are infinitely many prime numbers",
+          "Prove statements about odd, even and rational numbers by contradiction",
+          "State the assumption clearly at the start and the conclusion clearly at the end, both carry marks" ]},
+        { id:"pu2c1-2", code:"1.2", name:"Algebraic fractions", importance:3, vid:14, qs:26, reqs:[
+          "Simplify algebraic fractions by factorising and cancelling common factors",
+          "Multiply and divide algebraic fractions",
+          "Add and subtract algebraic fractions using a common denominator",
+          "Simplify compound fractions with a fraction in the numerator or denominator" ]},
+        { id:"pu2c1-3", code:"1.3", name:"Partial fractions", importance:5, vid:20, qs:36, reqs:[
+          "Split a proper fraction with two distinct linear factors in the denominator into partial fractions",
+          "Split a proper fraction with three distinct linear factors into partial fractions",
+          "Use the substitution method and the comparing-coefficients method",
+          "Know that partial fractions are the gateway to integrating and to binomial-expanding rational functions" ]},
+        { id:"pu2c1-4", code:"1.4", name:"Repeated factors", importance:4, vid:18, qs:32, reqs:[
+          "Split a fraction with a repeated linear factor into partial fractions of the form A/(x+a) + B/(x+a)^2",
+          "Combine repeated and distinct linear factors in the same expression",
+          "Find the constants by substitution and by comparing coefficients" ]},
+        { id:"pu2c1-5", code:"1.5", name:"Algebraic division", importance:4, vid:18, qs:32, reqs:[
+          "Divide a polynomial by a linear expression using long division or by inspection",
+          "Write the result in the form quotient plus remainder over divisor",
+          "Convert an improper algebraic fraction into partial fractions by dividing first",
+          "Use the remainder theorem and the factor theorem to find unknown coefficients" ]}
+      ]},
+
+    { id: "pu2c2", num: "2", name: "Functions and Graphs", year: 2,
+      desc: "The modulus function, composite and inverse functions, and combined transformations.",
+      subs: [
+        { id:"pu2c2-1", code:"2.1", name:"The modulus function", importance:4, vid:16, qs:30, reqs:[
+          "Understand |x| as the distance of x from zero and evaluate the modulus of an expression",
+          "Sketch the graph of y = |ax + b|",
+          "Solve modulus equations such as |3x - 2| = 5 algebraically and graphically",
+          "Solve modulus inequalities, using a sketch to decide which regions satisfy them" ]},
+        { id:"pu2c2-2", code:"2.2", name:"Functions and mappings", importance:3, vid:14, qs:26, reqs:[
+          "Understand a mapping and know the conditions for it to be a function",
+          "Distinguish between one-to-one and many-to-one functions",
+          "State the domain and range of a function using correct notation",
+          "Restrict a domain so that a many-to-one function becomes one-to-one" ]},
+        { id:"pu2c2-3", code:"2.3", name:"Composite functions", importance:5, vid:18, qs:34, reqs:[
+          "Form the composite function fg(x), applying g first and then f",
+          "Evaluate fg(a) and solve equations of the form fg(x) = k",
+          "Find the domain and range of a composite function",
+          "Solve problems where the composite is given and one of the functions must be found" ]},
+        { id:"pu2c2-4", code:"2.4", name:"Inverse functions", importance:5, vid:18, qs:34, reqs:[
+          "Know that only a one-to-one function has an inverse",
+          "Find the inverse function by rearranging y = f(x) for x",
+          "State the domain and range of the inverse, knowing they swap with those of f",
+          "Know that the graph of the inverse is the reflection of y = f(x) in the line y = x",
+          "Know and use ff^-1(x) = x" ]},
+        { id:"pu2c2-5", code:"2.5", name:"y = |f(x)| and y = f(|x|)", importance:4, vid:16, qs:30, reqs:[
+          "Sketch y = |f(x)| by reflecting the negative part of the curve in the x-axis",
+          "Sketch y = f(|x|) by reflecting the part for x >= 0 in the y-axis",
+          "Solve equations and inequalities involving these graphs",
+          "State the range of the transformed function" ]},
+        { id:"pu2c2-6", code:"2.6", name:"Combining transformations", importance:4, vid:18, qs:32, reqs:[
+          "Apply a sequence of translations, stretches and reflections to y = f(x)",
+          "Know the correct order when a transformation affects the inside and the outside of the function",
+          "Find the image of a given point under a combination of transformations",
+          "Describe fully the transformations that map one curve onto another" ]},
+        { id:"pu2c2-7", code:"2.7", name:"Solving modulus problems", importance:4, vid:16, qs:30, reqs:[
+          "Solve equations of the form |f(x)| = |g(x)| and |f(x)| = g(x)",
+          "Use a sketch to determine the number of solutions",
+          "Find the set of values of k for which an equation has a given number of solutions",
+          "Solve problems combining the modulus function with transformations" ]}
+      ]},
+
+    { id: "pu2c3", num: "3", name: "Sequences and Series", year: 2,
+      desc: "Arithmetic and geometric sequences and series, sigma notation and recurrence relations.",
+      subs: [
+        { id:"pu2c3-1", code:"3.1", name:"Arithmetic sequences", importance:4, vid:14, qs:28, reqs:[
+          "Recognise an arithmetic sequence and identify a and d",
+          "Use the nth term formula u_n = a + (n - 1)d",
+          "Find the number of terms in an arithmetic sequence",
+          "Solve problems where terms are given in terms of an unknown" ]},
+        { id:"pu2c3-2", code:"3.2", name:"Arithmetic series", importance:5, vid:18, qs:34, reqs:[
+          "Know and use S_n = n/2 (2a + (n - 1)d) and S_n = n/2 (a + l)",
+          "Prove the sum formula by reversing and adding the series",
+          "Find the number of terms needed for the sum to exceed a given value, solving the resulting quadratic",
+          "Apply arithmetic series to modelling contexts such as savings and repayments" ]},
+        { id:"pu2c3-3", code:"3.3", name:"Geometric sequences", importance:5, vid:16, qs:32, reqs:[
+          "Recognise a geometric sequence and find the common ratio r",
+          "Use the nth term formula u_n = ar^(n-1)",
+          "Find r and a from two given terms, dividing the equations to eliminate a",
+          "Use logarithms to find the term number when the term value is given" ]},
+        { id:"pu2c3-4", code:"3.4", name:"Geometric series", importance:5, vid:18, qs:34, reqs:[
+          "Know and use S_n = a(1 - r^n)/(1 - r) and the equivalent form for r > 1",
+          "Prove the sum formula by multiplying by r and subtracting",
+          "Solve problems requiring logarithms to find n",
+          "Apply geometric series to compound interest and depreciation models" ]},
+        { id:"pu2c3-5", code:"3.5", name:"Sum to infinity", importance:5, vid:16, qs:30, reqs:[
+          "Know that a geometric series converges if and only if |r| < 1",
+          "Know and use S_infinity = a/(1 - r)",
+          "Distinguish between convergent and divergent series and justify the condition",
+          "Solve problems where the sum to infinity and a term are given and a and r must be found" ]},
+        { id:"pu2c3-6", code:"3.6", name:"Sigma notation", importance:4, vid:14, qs:28, reqs:[
+          "Interpret sigma notation and write out the terms of a given sum",
+          "Write an arithmetic or geometric series using sigma notation",
+          "Evaluate a sum in sigma notation using the series formulae",
+          "Handle sums that do not start at n = 1 by subtracting the earlier part" ]},
+        { id:"pu2c3-7", code:"3.7", name:"Recurrence relations", importance:3, vid:14, qs:26, reqs:[
+          "Generate the terms of a sequence from a recurrence relation and a first term",
+          "Find a recurrence relation that describes a given sequence",
+          "Solve problems where a term or the relation contains an unknown constant" ]},
+        { id:"pu2c3-8", code:"3.8", name:"Increasing, decreasing and periodic sequences", importance:3, vid:12, qs:24, reqs:[
+          "Define and identify increasing and decreasing sequences",
+          "Define and identify a periodic sequence and state its order",
+          "Determine the behaviour of a sequence from its recurrence relation",
+          "Find the sum of the terms of a periodic sequence over many terms" ]}
+      ]},
+
+    { id: "pu2c4", num: "4", name: "Binomial Expansion", year: 2,
+      desc: "Expanding for negative and fractional indices, validity, and using partial fractions.",
+      subs: [
+        { id:"pu2c4-1", code:"4.1", name:"Expanding (1 + x)^n for any n", importance:5, vid:20, qs:36, reqs:[
+          "Use the binomial expansion of (1 + x)^n where n is negative or fractional",
+          "Write out the first several terms in ascending powers of x",
+          "Simplify the coefficients correctly, taking care with signs and factorials",
+          "Know that the expansion is valid only for |x| < 1" ]},
+        { id:"pu2c4-2", code:"4.2", name:"Expanding (a + bx)^n", importance:5, vid:20, qs:36, reqs:[
+          "Take out a factor of a^n to write (a + bx)^n as a^n(1 + bx/a)^n before expanding",
+          "Expand the resulting bracket and multiply back through by a^n",
+          "State the range of validity as |x| < |a/b|",
+          "Use the expansion to find an approximation by substituting a suitable value of x" ]},
+        { id:"pu2c4-3", code:"4.3", name:"Using partial fractions", importance:4, vid:18, qs:32, reqs:[
+          "Split a rational function into partial fractions before expanding each term binomially",
+          "Combine the expansions and collect like terms up to the required power",
+          "Determine the overall range of validity as the most restrictive of the individual ranges",
+          "Recognise when partial fractions are needed rather than a direct expansion" ]}
+      ]},
+
+    { id: "pu2c5", num: "5", name: "Radians", year: 2,
+      desc: "Radian measure, arc length and sector area, trig equations in radians and small angle approximations.",
+      subs: [
+        { id:"pu2c5-1", code:"5.1", name:"Radian measure", importance:4, vid:14, qs:28, reqs:[
+          "Understand a radian as the angle subtended by an arc equal in length to the radius",
+          "Convert between degrees and radians, knowing pi radians = 180 degrees",
+          "Know the exact trigonometric values at pi/6, pi/4, pi/3 and pi/2 in radians",
+          "Work in radians throughout a question when the question is set in radians" ]},
+        { id:"pu2c5-2", code:"5.2", name:"Arc length", importance:5, vid:16, qs:30, reqs:[
+          "Know and use the arc length formula l = r(theta) with theta in radians",
+          "Find the perimeter of a sector or a composite shape",
+          "Find the radius or the angle when the arc length is given",
+          "Solve problems involving several arcs and straight edges together" ]},
+        { id:"pu2c5-3", code:"5.3", name:"Areas of sectors and segments", importance:5, vid:18, qs:34, reqs:[
+          "Know and use the sector area formula A = ½r^2(theta)",
+          "Find the area of a segment by subtracting the triangle area ½r^2 sin(theta)",
+          "Find the area of composite regions built from sectors, segments and triangles",
+          "Set up and solve an equation where an area is given and the radius or angle is unknown" ]},
+        { id:"pu2c5-4", code:"5.4", name:"Solving trigonometric equations in radians", importance:5, vid:18, qs:34, reqs:[
+          "Solve trigonometric equations over an interval given in radians",
+          "Use the CAST diagram or the graph to find all solutions in the interval",
+          "Handle equations in a multiple or a shifted angle, adjusting the interval accordingly",
+          "Give answers in terms of pi where the question asks for exact values" ]},
+        { id:"pu2c5-5", code:"5.5", name:"Small angle approximations", importance:3, vid:14, qs:26, reqs:[
+          "Know and use sin(theta) approx theta, tan(theta) approx theta and cos(theta) approx 1 - theta^2/2 for small theta in radians",
+          "Use the approximations to estimate the value of an expression",
+          "Simplify a compound expression using the approximations",
+          "Understand that the approximations are only valid for small angles measured in radians" ]}
+      ]},
+
+    { id: "pu2c6", num: "6", name: "Trigonometric Functions", year: 2,
+      desc: "Secant, cosecant and cotangent, the derived Pythagorean identities, and inverse trig functions.",
+      subs: [
+        { id:"pu2c6-1", code:"6.1", name:"Secant, cosecant and cotangent", importance:4, vid:16, qs:30, reqs:[
+          "Know the definitions sec x = 1/cos x, cosec x = 1/sin x and cot x = 1/tan x",
+          "Know that cot x can also be written as cos x / sin x",
+          "Evaluate these functions at standard angles, giving exact values",
+          "Simplify expressions by rewriting reciprocal functions in terms of sin and cos" ]},
+        { id:"pu2c6-2", code:"6.2", name:"Graphs of sec, cosec and cot", importance:3, vid:16, qs:28, reqs:[
+          "Sketch the graphs of y = sec x, y = cosec x and y = cot x",
+          "Identify the asymptotes and state their equations",
+          "State the period and the range of each function",
+          "Apply transformations to these graphs and describe the effect" ]},
+        { id:"pu2c6-3", code:"6.3", name:"Using sec, cosec and cot", importance:4, vid:16, qs:32, reqs:[
+          "Solve equations involving sec, cosec and cot over a given interval",
+          "Rewrite an equation in terms of a single trigonometric function before solving",
+          "Simplify and prove identities involving the reciprocal functions" ]},
+        { id:"pu2c6-4", code:"6.4", name:"Trigonometric identities", importance:5, vid:20, qs:36, reqs:[
+          "Know and use 1 + tan^2 x = sec^2 x",
+          "Know and use 1 + cot^2 x = cosec^2 x",
+          "Derive both identities from sin^2 x + cos^2 x = 1",
+          "Use the identities to solve equations that mix, for example, sec x and tan x",
+          "Prove identities by working on one side only and stating the identities used" ]},
+        { id:"pu2c6-5", code:"6.5", name:"Inverse trigonometric functions", importance:3, vid:16, qs:28, reqs:[
+          "Understand arcsin, arccos and arctan as inverse functions with restricted domains",
+          "State the domain and range of each inverse function",
+          "Sketch the graphs of y = arcsin x, y = arccos x and y = arctan x",
+          "Evaluate inverse trigonometric functions exactly at standard values" ]}
+      ]},
+
+    { id: "pu2c7", num: "7", name: "Trigonometry and Modelling", year: 2,
+      desc: "Addition and double angle formulae, the harmonic R form, and trigonometric modelling.",
+      subs: [
+        { id:"pu2c7-1", code:"7.1", name:"Addition formulae", importance:5, vid:20, qs:38, reqs:[
+          "Know and use the addition formulae for sin(A ± B), cos(A ± B) and tan(A ± B)",
+          "Use the formulae to find exact values such as sin 75 degrees",
+          "Expand and simplify expressions using the addition formulae",
+          "Solve equations that require an addition formula to be applied first" ]},
+        { id:"pu2c7-2", code:"7.2", name:"Double angle formulae", importance:5, vid:20, qs:38, reqs:[
+          "Know and use sin 2A = 2 sin A cos A",
+          "Know and use all three forms of cos 2A and choose the most useful one",
+          "Know and use tan 2A = 2 tan A / (1 - tan^2 A)",
+          "Use the half angle and the descending powers forms where useful",
+          "Solve equations by reducing a double angle to a single angle" ]},
+        { id:"pu2c7-3", code:"7.3", name:"Solving trigonometric equations", importance:5, vid:20, qs:38, reqs:[
+          "Choose the identity that reduces an equation to a single trigonometric function",
+          "Solve the resulting linear or quadratic trigonometric equation over the given interval",
+          "Check that all solutions in the interval have been found and none introduced",
+          "Give exact answers in radians where required" ]},
+        { id:"pu2c7-4", code:"7.4", name:"Simplifying a cos x + b sin x", importance:5, vid:20, qs:36, reqs:[
+          "Write a cos x + b sin x in the form R cos(x ± alpha) or R sin(x ± alpha)",
+          "Find R using R = root(a^2 + b^2) and alpha using tan alpha = b/a",
+          "Choose the form that matches the question and keep alpha in the required range",
+          "Use the R form to solve equations and to state the maximum and minimum values and where they occur" ]},
+        { id:"pu2c7-5", code:"7.5", name:"Proving trigonometric identities", importance:4, vid:18, qs:32, reqs:[
+          "Prove identities by starting from the more complicated side and working towards the other",
+          "Select the appropriate identity at each step and state it",
+          "Use the Pythagorean, addition and double angle identities in combination",
+          "Set out the proof so each line follows from the last" ]},
+        { id:"pu2c7-6", code:"7.6", name:"Modelling with trigonometric functions", importance:4, vid:16, qs:30, reqs:[
+          "Set up a trigonometric model for a periodic situation such as tides or a Ferris wheel",
+          "Interpret the amplitude, period and vertical shift in context",
+          "Use the R form to find the maximum and minimum of a model and when they occur",
+          "Comment on the limitations of a trigonometric model" ]}
+      ]},
+
+    { id: "pu2c8", num: "8", name: "Parametric Equations", year: 2,
+      desc: "Converting to Cartesian form, sketching parametric curves, and parametric modelling.",
+      subs: [
+        { id:"pu2c8-1", code:"8.1", name:"Parametric equations", importance:4, vid:16, qs:30, reqs:[
+          "Understand a curve defined parametrically by x = f(t) and y = g(t)",
+          "Find the coordinates of a point on the curve for a given value of the parameter",
+          "Find the value of the parameter at a given point",
+          "State the domain and range of a parametric curve from the range of the parameter" ]},
+        { id:"pu2c8-2", code:"8.2", name:"Converting to Cartesian form", importance:5, vid:18, qs:34, reqs:[
+          "Eliminate the parameter by substitution to obtain a Cartesian equation",
+          "Rearrange one equation for the parameter and substitute into the other",
+          "State the domain of the Cartesian equation implied by the parameter range",
+          "Give the answer in the form the question requires" ]},
+        { id:"pu2c8-3", code:"8.3", name:"Trigonometric parametric equations", importance:5, vid:20, qs:36, reqs:[
+          "Eliminate a trigonometric parameter using sin^2 t + cos^2 t = 1",
+          "Use the double angle and other identities to eliminate the parameter",
+          "Recognise the resulting curve, for example a circle or an ellipse",
+          "State the restricted domain and range that the parameter produces" ]},
+        { id:"pu2c8-4", code:"8.4", name:"Curve sketching and points of intersection", importance:3, vid:16, qs:30, reqs:[
+          "Sketch a curve from its parametric equations using a table of values",
+          "Find where a parametric curve crosses the axes by setting x = 0 or y = 0",
+          "Find the points of intersection of a parametric curve with a line" ]},
+        { id:"pu2c8-5", code:"8.5", name:"Modelling with parametric equations", importance:4, vid:16, qs:30, reqs:[
+          "Set up parametric equations for a situation where both coordinates depend on time",
+          "Interpret the parameter in context, usually as time",
+          "Find when and where a modelled object reaches a given position",
+          "Comment on the validity and limitations of the model" ]}
+      ]},
+
+    { id: "pu2c9", num: "9", name: "Differentiation", year: 2,
+      desc: "Differentiating trig, exponentials and logs; chain, product and quotient rules; implicit, parametric and connected rates.",
+      subs: [
+        { id:"pu2c9-1", code:"9.1", name:"Differentiating sin x and cos x from first principles", importance:2, vid:16, qs:26, reqs:[
+          "Use the definition of the derivative as a limit together with the small angle approximations",
+          "Derive that the derivative of sin x is cos x, with x in radians",
+          "Derive that the derivative of cos x is -sin x",
+          "Understand why the results only hold when x is measured in radians" ]},
+        { id:"pu2c9-2", code:"9.2", name:"Differentiating standard functions", importance:5, vid:18, qs:36, reqs:[
+          "Differentiate sin kx, cos kx and tan kx",
+          "Differentiate e^kx and a^kx",
+          "Differentiate ln x and ln kx",
+          "Combine standard results with the sum and constant multiple rules" ]},
+        { id:"pu2c9-3", code:"9.3", name:"The chain rule", importance:5, vid:20, qs:38, reqs:[
+          "Know and use the chain rule dy/dx = dy/du × du/dx",
+          "Differentiate composite functions such as (3x + 1)^5, sin(2x^2) and e^(x^2)",
+          "Use the chain rule in the form dy/dx = 1 / (dx/dy)",
+          "Apply the chain rule repeatedly for a function within a function" ]},
+        { id:"pu2c9-4", code:"9.4", name:"The product rule", importance:5, vid:18, qs:36, reqs:[
+          "Know and use the product rule d/dx(uv) = u dv/dx + v du/dx",
+          "Differentiate products such as x^2 sin x and e^x ln x",
+          "Combine the product rule with the chain rule",
+          "Factorise the resulting derivative before setting it equal to zero" ]},
+        { id:"pu2c9-5", code:"9.5", name:"The quotient rule", importance:5, vid:18, qs:36, reqs:[
+          "Know and use the quotient rule for d/dx(u/v)",
+          "Differentiate quotients such as (2x + 1)/(x^2 - 3) and sin x / x",
+          "Derive the derivatives of tan x, sec x, cosec x and cot x using the quotient rule",
+          "Simplify the numerator fully before solving" ]},
+        { id:"pu2c9-6", code:"9.6", name:"Differentiating trigonometric functions", importance:4, vid:16, qs:32, reqs:[
+          "Know and use the derivatives of tan x, sec x, cosec x and cot x",
+          "Differentiate composite and product expressions involving these functions",
+          "Find stationary points of trigonometric functions",
+          "Work consistently in radians" ]},
+        { id:"pu2c9-7", code:"9.7", name:"Parametric differentiation", importance:5, vid:18, qs:34, reqs:[
+          "Find dy/dx for a parametric curve using dy/dx = (dy/dt) / (dx/dt)",
+          "Find the gradient at a given value of the parameter",
+          "Find the equation of a tangent or normal to a parametric curve",
+          "Find stationary points by setting dy/dt equal to zero" ]},
+        { id:"pu2c9-8", code:"9.8", name:"Implicit differentiation", importance:5, vid:20, qs:38, reqs:[
+          "Differentiate an equation term by term with respect to x, treating y as a function of x",
+          "Apply the chain and product rules to terms containing y",
+          "Rearrange to make dy/dx the subject",
+          "Find tangents, normals and stationary points on an implicitly defined curve" ]},
+        { id:"pu2c9-9", code:"9.9", name:"Concavity and second derivatives", importance:4, vid:16, qs:30, reqs:[
+          "Know that a function is concave where the second derivative is negative and convex where it is positive",
+          "Find points of inflection where the second derivative changes sign",
+          "Use the second derivative to classify stationary points",
+          "Justify a conclusion by referring to the sign of the second derivative" ]},
+        { id:"pu2c9-10", code:"9.10", name:"Connected rates of change", importance:5, vid:20, qs:36, reqs:[
+          "Link related rates using the chain rule, for example dV/dt = dV/dr × dr/dt",
+          "Set up the required derivatives from a described situation involving volume, area or length",
+          "Substitute the given rate and value to find the required rate",
+          "Give the answer with correct units and interpret its sign" ]}
+      ]},
+
+    { id: "pu2c10", num: "10", name: "Numerical Methods", year: 2,
+      desc: "Locating roots, fixed point iteration, the Newton-Raphson method and their applications.",
+      subs: [
+        { id:"pu2c10-1", code:"10.1", name:"Locating roots", importance:4, vid:14, qs:28, reqs:[
+          "Use a change of sign to show that a root lies in a given interval",
+          "State that the function is continuous over the interval as part of the justification",
+          "Evaluate the function at each end point and quote the values",
+          "Understand when a change of sign fails, for example at a repeated root or across an asymptote" ]},
+        { id:"pu2c10-2", code:"10.2", name:"Iteration", importance:4, vid:16, qs:30, reqs:[
+          "Rearrange an equation into the form x = g(x)",
+          "Apply the iterative formula from a given starting value and record the terms to the required accuracy",
+          "Show that an iteration converges to a root to a stated number of decimal places",
+          "Draw and interpret cobweb and staircase diagrams and identify divergence" ]},
+        { id:"pu2c10-3", code:"10.3", name:"The Newton-Raphson method", importance:5, vid:18, qs:34, reqs:[
+          "Know and use the formula x_(n+1) = x_n - f(x_n)/f'(x_n)",
+          "Differentiate the function correctly before applying the formula",
+          "Carry out the iteration to the required accuracy",
+          "Explain why the method may fail, for example when the derivative is zero or near a turning point",
+          "Illustrate the method with a tangent drawn on a sketch" ]},
+        { id:"pu2c10-4", code:"10.4", name:"Applications to modelling", importance:3, vid:14, qs:26, reqs:[
+          "Apply numerical methods to a root arising from a modelling context",
+          "Interpret the root in terms of the original situation",
+          "Comment on the accuracy of the value obtained and on the limitations of the method" ]}
+      ]},
+
+    { id: "pu2c11", num: "11", name: "Integration", year: 2,
+      desc: "Standard integrals, substitution, by parts, partial fractions, areas, the trapezium rule and differential equations.",
+      subs: [
+        { id:"pu2c11-1", code:"11.1", name:"Integrating standard functions", importance:5, vid:18, qs:36, reqs:[
+          "Integrate e^x, 1/x, sin x, cos x, sec^2 x and the other standard results",
+          "Know that the integral of 1/x is ln|x| + c",
+          "Recognise a standard integral written in a disguised form",
+          "Include the constant of integration every time" ]},
+        { id:"pu2c11-2", code:"11.2", name:"Integrating f(ax + b)", importance:5, vid:16, qs:32, reqs:[
+          "Integrate functions of a linear function, dividing by the coefficient of x",
+          "Apply the result to exponential, trigonometric and reciprocal functions",
+          "Check the answer by differentiating it back" ]},
+        { id:"pu2c11-3", code:"11.3", name:"Using trigonometric identities", importance:4, vid:18, qs:32, reqs:[
+          "Use the double angle formulae to integrate sin^2 x and cos^2 x",
+          "Use identities to rewrite products such as sin 3x cos 3x before integrating",
+          "Use 1 + tan^2 x = sec^2 x to integrate tan^2 x" ]},
+        { id:"pu2c11-4", code:"11.4", name:"Reverse chain rule", importance:5, vid:18, qs:34, reqs:[
+          "Recognise integrals of the form f'(x)/f(x) giving ln|f(x)| + c",
+          "Recognise integrals of the form f'(x)(f(x))^n",
+          "Adjust by a constant multiple to make the integral fit the pattern",
+          "Spot the pattern quickly rather than substituting unnecessarily" ]},
+        { id:"pu2c11-5", code:"11.5", name:"Integration by substitution", importance:5, vid:20, qs:38, reqs:[
+          "Choose a suitable substitution and find du in terms of dx",
+          "Rewrite the whole integral, including any remaining x terms, in terms of u",
+          "Change the limits when the integral is definite, or substitute back when it is not",
+          "Handle trigonometric substitutions where the question suggests one" ]},
+        { id:"pu2c11-6", code:"11.6", name:"Integration by parts", importance:5, vid:20, qs:38, reqs:[
+          "Know and use the formula for integration by parts",
+          "Choose u and dv/dx sensibly, usually differentiating the algebraic or logarithmic factor",
+          "Apply the method twice where necessary",
+          "Integrate ln x by taking the second function to be 1" ]},
+        { id:"pu2c11-7", code:"11.7", name:"Partial fractions", importance:5, vid:18, qs:34, reqs:[
+          "Split a rational function into partial fractions before integrating",
+          "Integrate each part to obtain a sum of logarithms",
+          "Combine the logarithms into a single expression using the log laws",
+          "Handle repeated factors, which give a reciprocal term rather than a logarithm" ]},
+        { id:"pu2c11-8", code:"11.8", name:"Finding areas", importance:5, vid:18, qs:34, reqs:[
+          "Find the area between a curve and the x-axis using a definite integral",
+          "Find the area between two curves by subtracting the integrals",
+          "Deal with areas below the axis and interpret a negative integral correctly",
+          "Find the area under a parametric curve using the substitution for dx" ]},
+        { id:"pu2c11-9", code:"11.9", name:"The trapezium rule", importance:4, vid:16, qs:30, reqs:[
+          "Know and use the trapezium rule with a given number of strips",
+          "Calculate the strip width h correctly from the limits and the number of strips",
+          "Tabulate the ordinates to sufficient accuracy",
+          "State whether the estimate is an overestimate or an underestimate by referring to the concavity of the curve",
+          "Explain how the estimate could be improved" ]},
+        { id:"pu2c11-10", code:"11.10", name:"Differential equations", importance:5, vid:20, qs:38, reqs:[
+          "Solve a first order differential equation by separating the variables",
+          "Include the constant of integration and use a boundary condition to find it",
+          "Rearrange the solution into the required form, often by taking exponentials",
+          "Set up a differential equation from a described rate of change",
+          "Interpret the solution in context and comment on the model's limitations" ]}
+      ]},
+
+    { id: "pu2c12", num: "12", name: "Vectors (3D)", year: 2,
+      desc: "Extending vectors into three dimensions and solving geometric problems.",
+      subs: [
+        { id:"pu2c12-1", code:"12.1", name:"3D coordinates", importance:3, vid:12, qs:24, reqs:[
+          "Understand the three-dimensional Cartesian coordinate system with x, y and z axes",
+          "Plot and interpret points in three dimensions",
+          "Find the distance of a point from the origin using root(x^2 + y^2 + z^2)",
+          "Find the distance between two points in three dimensions" ]},
+        { id:"pu2c12-2", code:"12.2", name:"Vectors in 3D", importance:4, vid:16, qs:30, reqs:[
+          "Write a three-dimensional vector in i, j, k form and in column form",
+          "Add and subtract 3D vectors and multiply by a scalar",
+          "Find the magnitude of a 3D vector",
+          "Find a unit vector in the direction of a given vector",
+          "Find the direction cosines and the angles a vector makes with each axis" ]},
+        { id:"pu2c12-3", code:"12.3", name:"Solving geometric problems", importance:4, vid:18, qs:32, reqs:[
+          "Use position vectors to find the vector joining two points",
+          "Show that three points are collinear using parallel vectors",
+          "Find the position vector of a point dividing a line in a given ratio",
+          "Prove geometric results such as properties of a parallelogram using vectors" ]},
+        { id:"pu2c12-4", code:"12.4", name:"Applications of vectors", importance:3, vid:14, qs:26, reqs:[
+          "Apply 3D vectors to problems involving position, displacement and velocity",
+          "Find the position of a moving object at a given time",
+          "Solve problems set in a modelling context, stating any assumptions" ]}
       ]}
   ]
 },
 {
   id: "stats", paper: "Statistics", short: "Stats",
-  name: "Paper 2 Section A — Statistics", code: "8MA0/02",
-  book: "Statistics & Mechanics Year 1/AS, Chapters 1–7",
-  examMinutes: 75, marks: 60,
-  note: "Paper 2 is 1h15 and 60 marks in total, split between Statistics and Mechanics.",
+  name: "Paper 3 Section A: Statistics", code: "9MA0/03",
+  book: "Statistics & Mechanics Year 1/AS (ch 1-7) and Year 2 (ch 1-3)",
+  examMinutes: 60, marks: 50,
+  note: "Paper 3 is 2 hours and 100 marks in total, split evenly between Section A Statistics (50 marks) and Section B Mechanics (50 marks).",
   sections: [
 
     { id: "st1", num: "1", name: "Data Collection",
@@ -746,15 +1144,108 @@ const SPEC = [
           "Halve the significance level and test against the appropriate tail",
           "Decide which tail the observed value lies in before testing",
           "Write a full conclusion in context" ]}
+      ]},
+
+    /* ================================================================
+    STATISTICS YEAR 2, Chapters 1-3
+    ================================================================ */
+
+    { id: "st2c1", num: "1", name: "Regression, Correlation and Hypothesis Testing", year: 2,
+      desc: "Exponential models, linearising with logarithms, the PMCC and testing for zero correlation.",
+      subs: [
+        { id:"st2c1-1", code:"1.1", name:"Exponential models", importance:4, vid:18, qs:32, reqs:[
+          "Recognise when a non-linear model of the form y = ax^n or y = kb^x is appropriate",
+          "Take logarithms of both sides to linearise the model",
+          "Know that y = ax^n gives a straight line when log y is plotted against log x",
+          "Know that y = kb^x gives a straight line when log y is plotted against x",
+          "Use the gradient and intercept of the linearised plot to find the constants" ]},
+        { id:"st2c1-2", code:"1.2", name:"Measuring correlation", importance:4, vid:16, qs:30, reqs:[
+          "Understand the product moment correlation coefficient as a measure of linear correlation",
+          "Know that the PMCC always lies between -1 and 1 and interpret values near each extreme",
+          "Calculate the PMCC using a calculator's statistics mode",
+          "Interpret the PMCC in the context of the data",
+          "Understand that correlation does not imply causation" ]},
+        { id:"st2c1-3", code:"1.3", name:"Hypothesis testing for zero correlation", importance:5, vid:20, qs:36, reqs:[
+          "State the hypotheses in terms of the population correlation coefficient rho",
+          "Set up a one-tailed or two-tailed test as the question requires",
+          "Find the critical value from the table of critical values for the PMCC using the sample size and significance level",
+          "Compare the sample PMCC with the critical value and decide whether to reject H0",
+          "Write a full conclusion in the context of the data" ]}
+      ]},
+
+    { id: "st2c2", num: "2", name: "Conditional Probability", year: 2,
+      desc: "Set notation, Venn diagrams, two-way tables, conditional probability and tree diagrams.",
+      subs: [
+        { id:"st2c2-1", code:"2.1", name:"Set notation", importance:4, vid:14, qs:28, reqs:[
+          "Understand and use the notation for union, intersection and complement",
+          "Interpret probability statements written in set notation",
+          "Translate between worded probability statements and set notation",
+          "Use the addition formula P(A or B) = P(A) + P(B) - P(A and B)" ]},
+        { id:"st2c2-2", code:"2.2", name:"Conditional probability", importance:5, vid:18, qs:34, reqs:[
+          "Understand conditional probability as the probability of an event given that another has occurred",
+          "Know and use P(A given B) = P(A and B) / P(B)",
+          "Calculate conditional probabilities from a two-way table",
+          "Interpret a conditional probability in context" ]},
+        { id:"st2c2-3", code:"2.3", name:"Conditional probabilities in Venn diagrams", importance:4, vid:16, qs:30, reqs:[
+          "Complete a Venn diagram from given probabilities, working from the intersection outwards",
+          "Read conditional probabilities directly off a Venn diagram",
+          "Use a Venn diagram with three sets",
+          "Find an unknown probability by using the fact that all regions sum to 1" ]},
+        { id:"st2c2-4", code:"2.4", name:"Probability formulae", importance:4, vid:16, qs:30, reqs:[
+          "Know and use the addition formula and the multiplication formula",
+          "Know that A and B are independent if P(A and B) = P(A)P(B)",
+          "Know that A and B are mutually exclusive if P(A and B) = 0",
+          "Test whether two events are independent and justify the conclusion with a calculation" ]},
+        { id:"st2c2-5", code:"2.5", name:"Tree diagrams", importance:4, vid:16, qs:32, reqs:[
+          "Draw a tree diagram for two or three stages, with or without replacement",
+          "Label branches with conditional probabilities where the stages are dependent",
+          "Multiply along branches and add across branches to find probabilities",
+          "Use a tree diagram to find a conditional probability by reversing the condition" ]}
+      ]},
+
+    { id: "st2c3", num: "3", name: "The Normal Distribution", year: 2,
+      desc: "The normal distribution, the standard normal, approximating the binomial, and testing a mean.",
+      subs: [
+        { id:"st2c3-1", code:"3.1", name:"The normal distribution", importance:5, vid:18, qs:34, reqs:[
+          "Understand the normal distribution as a continuous distribution, symmetrical about the mean",
+          "Know the notation X ~ N(mu, sigma^2)",
+          "Know that roughly 68%, 95% and 99.7% of data lie within one, two and three standard deviations of the mean",
+          "Sketch a normal curve and shade the region representing a required probability",
+          "Know that points of inflection occur at one standard deviation from the mean" ]},
+        { id:"st2c3-2", code:"3.2", name:"Finding probabilities", importance:5, vid:18, qs:36, reqs:[
+          "Use a calculator to find P(X < a), P(X > a) and P(a < X < b) for a normal distribution",
+          "Use the symmetry of the distribution to simplify a calculation",
+          "Know that for a continuous distribution P(X = a) = 0, so strict and non-strict inequalities give the same answer",
+          "Give probabilities to an appropriate degree of accuracy" ]},
+        { id:"st2c3-3", code:"3.3", name:"The inverse normal distribution", importance:4, vid:16, qs:32, reqs:[
+          "Use the inverse normal function to find the value of x for a given cumulative probability",
+          "Find quartiles and percentiles of a normal distribution",
+          "Take care to convert a probability in the upper tail before using the inverse function" ]},
+        { id:"st2c3-4", code:"3.4", name:"The standard normal distribution", importance:5, vid:18, qs:34, reqs:[
+          "Know that Z ~ N(0, 1) is the standard normal distribution",
+          "Standardise using Z = (X - mu) / sigma",
+          "Use the standard normal to find an unknown mean or standard deviation",
+          "Set up and solve simultaneous equations to find both mu and sigma from two given probabilities" ]},
+        { id:"st2c3-5", code:"3.5", name:"Approximating a binomial distribution", importance:4, vid:18, qs:32, reqs:[
+          "Know the conditions for a normal approximation to the binomial: n large and p close to 0.5",
+          "Use mu = np and sigma^2 = np(1 - p)",
+          "Apply a continuity correction when moving from the discrete binomial to the continuous normal",
+          "Choose the correct continuity correction for each type of inequality" ]},
+        { id:"st2c3-6", code:"3.6", name:"Hypothesis testing with the normal distribution", importance:5, vid:20, qs:36, reqs:[
+          "Know that the sample mean of a normal distribution is distributed as N(mu, sigma^2/n)",
+          "State hypotheses in terms of the population mean mu",
+          "Carry out a one-tailed or two-tailed test on a sample mean",
+          "Find the critical region and compare it with the sample mean, or compare probabilities directly",
+          "Write a full conclusion in context" ]}
       ]}
   ]
 },
 {
   id: "mech", paper: "Mechanics", short: "Mech",
-  name: "Paper 2 Section B — Mechanics", code: "8MA0/02",
-  book: "Statistics & Mechanics Year 1/AS, Chapters 8–11",
-  examMinutes: 75, marks: 60,
-  note: "Paper 2 is 1h15 and 60 marks in total, split between Statistics and Mechanics.",
+  name: "Paper 3 Section B: Mechanics", code: "9MA0/03",
+  book: "Statistics & Mechanics Year 1/AS (ch 8-11) and Year 2 (ch 4-8)",
+  examMinutes: 60, marks: 50,
+  note: "Paper 3 is 2 hours and 100 marks in total, split evenly between Section A Statistics (50 marks) and Section B Mechanics (50 marks).",
   sections: [
 
     { id: "me8", num: "8", name: "Modelling in Mechanics",
@@ -872,22 +1363,172 @@ const SPEC = [
           "Use calculus to derive the constant acceleration formulae",
           "Understand why the suvat formulae only apply when acceleration is constant",
           "Recognise from a question whether calculus or suvat is required" ]}
+      ]},
+
+    /* ================================================================
+    MECHANICS YEAR 2, Chapters 4-8
+    ================================================================ */
+
+    { id: "me2c4", num: "4", name: "Moments", year: 2,
+      desc: "Turning effects of forces, equilibrium of rigid bodies, centres of mass and tilting.",
+      subs: [
+        { id:"me2c4-1", code:"4.1", name:"Moments", importance:4, vid:16, qs:30, reqs:[
+          "Understand the moment of a force as force multiplied by perpendicular distance from the pivot",
+          "Know that the units of a moment are newton metres (N m)",
+          "State the sense of a moment as clockwise or anticlockwise",
+          "Calculate the moment of a force about a given point" ]},
+        { id:"me2c4-2", code:"4.2", name:"Resultant moments", importance:4, vid:16, qs:30, reqs:[
+          "Find the resultant moment of several forces about a point by summing with consistent signs",
+          "State the magnitude and sense of the resultant moment",
+          "Find an unknown force or distance given the resultant moment" ]},
+        { id:"me2c4-3", code:"4.3", name:"Equilibrium of rigid bodies", importance:5, vid:20, qs:38, reqs:[
+          "Know that a rigid body in equilibrium has zero resultant force and zero resultant moment about any point",
+          "Resolve vertically and take moments to form equations",
+          "Choose the point to take moments about so that an unknown force is eliminated",
+          "Solve problems with a uniform rod resting on two supports and find both reactions" ]},
+        { id:"me2c4-4", code:"4.4", name:"Centres of mass", importance:4, vid:18, qs:34, reqs:[
+          "Know that the weight of a uniform rod acts at its midpoint",
+          "Model a non-uniform rod with its centre of mass at an unknown distance from one end",
+          "Take moments to find the position of the centre of mass",
+          "Solve problems where a mass is placed on a rod and the system remains in equilibrium" ]},
+        { id:"me2c4-5", code:"4.5", name:"Tilting and rods on the point of tilting", importance:4, vid:18, qs:34, reqs:[
+          "Understand that when a rod is on the point of tilting about a support, the reaction at the other support is zero",
+          "Set the appropriate reaction to zero and take moments to find the critical position or mass",
+          "Determine about which support the rod will tilt",
+          "Find the range of positions for which the rod remains in equilibrium" ]}
+      ]},
+
+    { id: "me2c5", num: "5", name: "Forces and Friction", year: 2,
+      desc: "Resolving forces, inclined planes, and the friction inequality F <= muR.",
+      subs: [
+        { id:"me2c5-1", code:"5.1", name:"Resolving forces", importance:5, vid:20, qs:38, reqs:[
+          "Resolve a force into components parallel and perpendicular to a chosen direction",
+          "Use F cos(theta) and F sin(theta) correctly, checking which component the angle is adjacent to",
+          "Find the resultant of several forces by resolving in two perpendicular directions",
+          "Find the magnitude and direction of the resultant" ]},
+        { id:"me2c5-2", code:"5.2", name:"Inclined planes", importance:5, vid:20, qs:38, reqs:[
+          "Resolve the weight into components parallel and perpendicular to an inclined plane",
+          "Know that the component down the slope is mg sin(theta) and perpendicular to it is mg cos(theta)",
+          "Apply Newton's second law along the slope and equilibrium perpendicular to it",
+          "Solve problems with a particle sliding up or down a slope, with or without an applied force" ]},
+        { id:"me2c5-3", code:"5.3", name:"Friction", importance:5, vid:20, qs:38, reqs:[
+          "Understand friction as a force opposing motion or attempted motion",
+          "Know and use F <= muR, with F = muR only when the body is moving or on the point of moving",
+          "Find the coefficient of friction from given information",
+          "Determine whether a body remains at rest or begins to slide by comparing the required friction with the maximum",
+          "Solve problems combining friction with an inclined plane and an applied force at an angle" ]}
+      ]},
+
+    { id: "me2c6", num: "6", name: "Projectiles", year: 2,
+      desc: "Motion under gravity in two dimensions, horizontal and angled projection.",
+      subs: [
+        { id:"me2c6-1", code:"6.1", name:"Horizontal projection", importance:4, vid:18, qs:34, reqs:[
+          "Model projectile motion by treating the horizontal and vertical components independently",
+          "Know that horizontal velocity is constant and vertical acceleration is g downwards",
+          "Find the time of flight from the vertical motion and the range from the horizontal motion",
+          "State the standard modelling assumptions, in particular that air resistance is negligible" ]},
+        { id:"me2c6-2", code:"6.2", name:"Horizontal and vertical components", importance:5, vid:18, qs:36, reqs:[
+          "Resolve an initial velocity U at an angle alpha into U cos(alpha) horizontally and U sin(alpha) vertically",
+          "Apply the constant acceleration formulae separately to each direction",
+          "Find the velocity of the projectile at a given time in component form",
+          "Find the speed and direction of motion at a given instant" ]},
+        { id:"me2c6-3", code:"6.3", name:"Projection at any angle", importance:5, vid:20, qs:38, reqs:[
+          "Find the greatest height by setting the vertical velocity to zero",
+          "Find the time of flight and the range on a horizontal plane",
+          "Solve problems where the projectile lands above or below its starting level",
+          "Interpret both roots of the resulting quadratic and reject the invalid one",
+          "Find the angle of projection required to pass through a given point" ]},
+        { id:"me2c6-4", code:"6.4", name:"Projectile formulae", importance:3, vid:16, qs:30, reqs:[
+          "Derive the formulae for time of flight, range and greatest height",
+          "Derive the equation of the trajectory as a Cartesian equation in x and y",
+          "Know that the maximum range on level ground occurs at 45 degrees",
+          "Use the trajectory equation to solve problems directly" ]}
+      ]},
+
+    { id: "me2c7", num: "7", name: "Applications of Forces", year: 2,
+      desc: "Static particles and rigid bodies, friction in statics, and dynamics on inclined planes.",
+      subs: [
+        { id:"me2c7-1", code:"7.1", name:"Static particles", importance:5, vid:18, qs:36, reqs:[
+          "Know that a particle in equilibrium has zero resultant force",
+          "Resolve in two perpendicular directions and set each component to zero",
+          "Find unknown forces and angles for a particle held in equilibrium by several forces",
+          "Choose directions to resolve in that eliminate an unwanted unknown" ]},
+        { id:"me2c7-2", code:"7.2", name:"Modelling with statics", importance:4, vid:16, qs:32, reqs:[
+          "Set up a model for a real situation involving strings, supports and attached masses",
+          "State the modelling assumptions being used and what each allows you to ignore",
+          "Interpret the answer in context and comment on the model's limitations" ]},
+        { id:"me2c7-3", code:"7.3", name:"Friction and static particles", importance:5, vid:20, qs:38, reqs:[
+          "Apply F <= muR to a particle in equilibrium on a rough surface",
+          "Find the least force required to move a particle, or the range of values for which it stays at rest",
+          "Solve problems with a particle on a rough inclined plane in limiting equilibrium",
+          "Find the angle of friction and the least angle at which sliding begins" ]},
+        { id:"me2c7-4", code:"7.4", name:"Static rigid bodies", importance:4, vid:20, qs:36, reqs:[
+          "Apply both force equilibrium and moment equilibrium to a rigid body such as a ladder",
+          "Solve classic ladder problems with friction at the ground and a smooth or rough wall",
+          "Take moments about a sensible point to eliminate unknowns",
+          "Find the coefficient of friction or the critical angle for the body to remain in equilibrium" ]},
+        { id:"me2c7-5", code:"7.5", name:"Dynamics and inclined planes", importance:5, vid:20, qs:38, reqs:[
+          "Apply F = ma along an inclined plane, including friction",
+          "Resolve perpendicular to the plane to find the normal reaction first",
+          "Solve problems where a particle decelerates going up a rough slope and then slides back down",
+          "Combine the resulting acceleration with the constant acceleration formulae" ]},
+        { id:"me2c7-6", code:"7.6", name:"Connected particles", importance:5, vid:20, qs:38, reqs:[
+          "Solve connected particle problems where one particle is on a rough inclined plane",
+          "Write an equation of motion for each particle with consistent positive directions",
+          "Solve simultaneously for the acceleration and the tension",
+          "Deal with what happens after the string breaks or a particle lands" ]}
+      ]},
+
+    { id: "me2c8", num: "8", name: "Further Kinematics", year: 2,
+      desc: "Vectors in kinematics and calculus with variable acceleration in one and two dimensions.",
+      subs: [
+        { id:"me2c8-1", code:"8.1", name:"Vectors in kinematics", importance:4, vid:16, qs:32, reqs:[
+          "Use the constant acceleration formulae in vector form with i and j components",
+          "Find the position vector of a particle at a given time",
+          "Find the velocity and speed of a particle from its velocity vector",
+          "Determine when a particle is moving in a particular direction, such as due north" ]},
+        { id:"me2c8-2", code:"8.2", name:"Vector methods with projectiles", importance:4, vid:16, qs:32, reqs:[
+          "Model projectile motion using vectors with acceleration -g j",
+          "Find the position and velocity vectors at a given time",
+          "Determine when a projectile is at its greatest height or lands",
+          "Find the angle of the velocity to the horizontal at a given instant" ]},
+        { id:"me2c8-3", code:"8.3", name:"Variable acceleration in one dimension", importance:5, vid:18, qs:36, reqs:[
+          "Differentiate displacement to obtain velocity and velocity to obtain acceleration",
+          "Integrate acceleration to obtain velocity and velocity to obtain displacement",
+          "Use initial conditions to find each constant of integration",
+          "Find maximum or minimum velocity and when a particle is instantaneously at rest",
+          "Find total distance travelled, splitting the interval where the direction changes" ]},
+        { id:"me2c8-4", code:"8.4", name:"Differentiating and integrating vectors", importance:5, vid:18, qs:36, reqs:[
+          "Differentiate a position vector with respect to time component by component to find velocity",
+          "Differentiate again to find acceleration",
+          "Integrate a vector expression component by component, including a vector constant of integration",
+          "Solve problems in two dimensions where acceleration varies with time" ]}
       ]}
   ]
 }
 ];
 
 /* ---------- derived helpers ---------- */
+
+/* Chapter heading used everywhere: "Y1 Ch 4 · Graphs and Transformations".
+Both years restart their chapter numbering, so the year prefix is what
+stops Pure Y1 Ch 2 and Pure Y2 Ch 2 reading as the same chapter. */
+function chapterLabelFor(sec) {
+  return "Y" + (sec.year || 1) + " Ch " + sec.num + " · " + sec.name;
+}
+
 const SPEC_INDEX = (function () {
   const map = {};
   SPEC.forEach(function (paper) {
     paper.sections.forEach(function (sec) {
+      if (!sec.year) sec.year = 1; // sections default to Year 1
       sec.subs.forEach(function (sub) {
+        sub.year = sec.year; // subtopics inherit their chapter's year
         map[sub.id] = {
-          sub: sub, section: sec, paper: paper,
-          chapterLabel: sec.y2Group ? sec.name : "Chapter " + sec.num + " · " + sec.name,
+          sub: sub, section: sec, paper: paper, year: sec.year,
+          chapterLabel: chapterLabelFor(sec),
           path: paper.short + " / " + sec.name,
-          fullName: sec.name + " — " + sub.name
+          fullName: sec.name + ", " + sub.name
         };
       });
     });
@@ -896,6 +1537,21 @@ const SPEC_INDEX = (function () {
 })();
 
 const ALL_SUB_IDS = Object.keys(SPEC_INDEX);
+
+/* Every section in the order the app should present it, with its year. */
+const ALL_SECTIONS = (function () {
+  const out = [];
+  SPEC.forEach(function (paper) {
+    paper.sections.forEach(function (sec) { out.push({ sec: sec, paper: paper }); });
+  });
+return out;
+})();
+
+/* Does this year pass the current Year filter? filter is "all" | "1" | "2" */
+function yearPasses(year, filter) {
+  if (!filter || filter === "all") return true;
+  return String(year || 1) === String(filter);
+}
 
 /* Estimated minutes for the standard workflow on one subtopic */
 function subMinutes(sub) {
@@ -907,9 +1563,9 @@ function subMinutes(sub) {
   };
 }
 
-/* Reference links (official Pearson pages only — no invented paper URLs) */
+/* Reference links (official Pearson pages only, no invented paper URLs) */
 const REFERENCE_LINKS = [
-  { name: "Pearson Edexcel AS/A level Mathematics (2017) — specification, past papers and mark schemes",
+  { name: "Pearson Edexcel AS/A level Mathematics (2017), specification, past papers and mark schemes",
     url: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/mathematics-2017.html" },
   { name: "Formulae booklet and the large data set (same page, under Teaching and learning materials)",
     url: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/mathematics-2017.html" }

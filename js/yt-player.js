@@ -1,11 +1,11 @@
 /* ============================================================
-   YtPlayer — the chapter playlist, with working episode skipping.
+YtPlayer, the chapter playlist, with working episode skipping.
 
    WHY THIS EXISTS RATHER THAN A PLAIN <iframe>:
    A playlist embed (…/embed/videoseries?list=PL…) always starts at the
    first video. The `index` URL parameter that everyone reaches for is not
    in Google's documented player parameters, and testing it here confirmed
-   it does nothing — the src said index=5 and the player still loaded
+   it does nothing, the src said index=5 and the player still loaded
    video 1. Sending playVideoAt over postMessage to a bare iframe does not
    work either, because the player only accepts commands after the API
    handshake.
@@ -21,9 +21,9 @@
 
 const YtPlayer = (function () {
 
-  const players = new WeakMap();   // host element -> { player, list, ready, pending }
+  const players = new WeakMap(); // host element -> { player, list, ready, pending }
   let apiPromise = null;
-  let metaHandler = null;          // told the real episode count and durations
+  let metaHandler = null; // told the real episode count and durations
 
   /* Pass the facts the player knows back to the app: how many videos the
      playlist really has, which one is showing, and how long it is. These
@@ -59,7 +59,7 @@ const YtPlayer = (function () {
       s.src = "https://www.youtube.com/iframe_api";
       s.onerror = function () { reject(new Error("Could not load the YouTube player")); };
       document.head.appendChild(s);
-      /* If the network blocks it, fail rather than hang forever — the
+      /* If the network blocks it, fail rather than hang forever, the
          caller falls back to a plain embed and the YouTube link. */
       setTimeout(function () { reject(new Error("YouTube player timed out")); }, 12000);
     });
@@ -74,7 +74,7 @@ const YtPlayer = (function () {
     const existing = players.get(host);
 
     /* Already showing this playlist. Only move if the episode actually
-       changed — mountAll() runs after EVERY app render, and playVideoAt()
+    changed, mountAll() runs after EVERY app render, and playVideoAt()
        starts playback, so calling it unconditionally made the video burst
        into life whenever you ticked a question or opened a mark scheme. */
     if (existing && existing.list === (list || video)) { playAt(host, ep); return; }
@@ -102,7 +102,7 @@ const YtPlayer = (function () {
             report(host, e.target);
           },
           /* Every time a video loads the player knows its real length and
-             the playlist's real size — both things we would otherwise be
+          the playlist's real size, both things we would otherwise be
              guessing at. Hand them to whoever is listening. */
           onStateChange: function (e) { report(host, e.target); }
         }
@@ -141,7 +141,7 @@ const YtPlayer = (function () {
     if (!st) return false;
     host.dataset.ep = String(episode);
     if (st.failed) return false;
-    if (st.episode === episode) return true;          // already there; leave it alone
+    if (st.episode === episode) return true; // already there; leave it alone
     if (!st.ready || !st.player || !st.player.playVideoAt) { st.pending = episode; return false; }
     try { st.player.playVideoAt(episode - 1); st.episode = episode; return true; }
     catch (e) { st.pending = episode; return false; }

@@ -1,5 +1,5 @@
 /* ============================================================
-   Store — application state + localStorage persistence
+Store, application state + localStorage persistence
    ============================================================ */
 
 const STORAGE_KEY = "as-maths-tracker-v1";
@@ -18,29 +18,29 @@ const Store = (function () {
 
   function blankTopic() {
     return {
-      rag: null,             // "red" | "amber" | "green" | null (unassessed)
-      initialRag: null,      // captured at first assessment
+      rag: null, // "red" | "amber" | "green" | null (unassessed)
+      initialRag: null, // captured at first assessment
       videoUrl: "",
       videoDone: false,
-      questionSets: [],      // {date, attempted, correct, pct, minutes, difficulty, notes, mistakes}
-      sessions: [],          // {date, type, ragBefore, ragAfter, minutes, notes}
-      lastRevised: null,     // ISO date
-      nextReview: null,      // ISO date
-      reviewStage: 0,        // spaced repetition stage
+      questionSets: [], // {date, attempted, correct, pct, minutes, difficulty, notes, mistakes}
+      sessions: [], // {date, type, ragBefore, ragAfter, minutes, notes}
+      lastRevised: null, // ISO date
+      nextReview: null, // ISO date
+      reviewStage: 0, // spaced repetition stage
       reviewsDone: 0,
-      covered: false,        // completed the full workflow at least once
-      marked: false,         // questions have been marked/checked
+      covered: false, // completed the full workflow at least once
+      marked: false, // questions have been marked/checked
       notes: "",
       /* chapter-method fields */
-      videoWatched: [],      // which playlist videos have been ticked
-      videoTotal: null,      // overrides the known playlist length
-      answers: {},           // { questionIndex: {work, revealed, marksGot, recorded} }
-      ownQuestions: [],      // questions you added yourself
-      attempts: [],          // {date, questions, correct, marksAvailable, marksAchieved, pct, minutes, ...}
+      videoWatched: [], // which playlist videos have been ticked
+      videoTotal: null, // overrides the known playlist length
+      answers: {}, // { questionIndex: {work, revealed, marksGot, recorded} }
+      ownQuestions: [], // questions you added yourself
+      attempts: [], // {date, questions, correct, marksAvailable, marksAchieved, pct, minutes, ...}
       ragAfterChapter: null, // the rating recorded at the end of the chapter
-      priorityBoost: 0,      // manual override (-3..+3)
+      priorityBoost: 0, // manual override (-3..+3)
       pinned: false,
-      archived: false        // user removed it from the plan
+      archived: false // user removed it from the plan
     };
   }
 
@@ -74,40 +74,75 @@ const Store = (function () {
       createdAt: new Date().toISOString(),
       settings: {
         examDate: "2026-09-01",
-        qualification: "Pearson Edexcel AS Mathematics (8MA0)",
+        qualification: "Pearson Edexcel A level Mathematics (9MA0)",
         papers: { pure: true, stats: true, mech: true },
         theme: "dark",
         dailyMinutes: 120,
-        dailyOverrides: {},        // { "2026-08-22": 180 }
-        restDays: [],              // 0-6 weekday indexes to skip
-        includeY2: false,          // A-level Year 2 stretch topics
-        examFocus: false,          // chapter-level revision instead of section-level
-        timerPrompt: true,         // offer to time a task when starting it
+        dailyOverrides: {}, // { "2026-08-22": 180 }
+        restDays: [], // 0-6 weekday indexes to skip
+        yearFilter: "all", // "all" | "1" | "2", which year's content is in play
+        paperLevelFilter: "all", // "all" | "as" | "alevel", past paper library filter
+        examFocus: false, // chapter-level revision instead of section-level
+        timerPrompt: true, // offer to time a task when starting it
         pastPaperTargetPerWeek: 2,
-        questionCount: 0,          // topic questions shown per chapter; 0 = all
+        questionCount: 0, // topic questions shown per chapter; 0 = all
         studentName: ""
       },
       onboarded: false,
       assessmentDone: false,
       assessCursor: 0,
-      assessQueue: null,           // ids being worked through in a retake
+      assessQueue: null, // ids being worked through in a retake
       assessScope: "full",
-      assessments: [],             // snapshots of the RAG mix after each assessment
+      assessments: [], // snapshots of the RAG mix after each assessment
       topics: {},
-      customSubs: [],              // user-added topics
-      papers: [],                  // past paper records
-      plan: null,                  // { generatedAt, days:{ iso: [task] } }
-      taskState: {},               // { taskId: {status, doneAt, movedTo} }
-      timer: null,                 // live session timer {label, kind, refId, startedAt, accumulated, running}
-      timeLog: {},                 // { "2026-08-21": [ {label, kind, refId, minutes, at} ] }
-      activity: [],                // rolling log
-      lastPlace: null,             // { chapterId, step, question, at } — where you actually stopped
-      dayDismissed: {}             // { "2026-08-31": ["ch:pu13","paper"] } — taken off that day by hand
+      customSubs: [], // user-added topics
+      papers: [], // past paper records
+      schoolAssessments: [], // class tests, mini-assessments and school mocks
+      plan: null, // { generatedAt, days:{ iso: [task] } }
+      taskState: {}, // { taskId: {status, doneAt, movedTo} }
+      timer: null, // live session timer {label, kind, refId, startedAt, accumulated, running}
+      timeLog: {}, // { "2026-08-21": [ {label, kind, refId, minutes, at} ] }
+      activity: [], // rolling log
+      lastPlace: null, // { chapterId, step, question, at }, where you actually stopped
+      dayDismissed: {} // { "2026-08-31": ["ch:pu13","paper"] }, taken off that day by hand
     };
   }
 
   let state = null;
   const listeners = [];
+
+  /* ---------- save-file migrations ----------
+     Saves written before the tracker covered the full A level carry the
+     old AS-only settings. Nothing here throws away user data: it only
+     translates settings that changed shape. */
+  function migrate(st) {
+    const s = st.settings;
+
+    /* The AS build had includeY2, a stretch-topic opt-in. Year 2 is now the
+       real specification, so anyone upgrading sees all of it. */
+    if (s.yearFilter === undefined || s.includeY2 !== undefined) {
+      s.yearFilter = "all";
+      delete s.includeY2;
+    }
+    if (s.paperLevelFilter === undefined) s.paperLevelFilter = "all";
+    if (!st.schoolAssessments) st.schoolAssessments = [];
+
+    if (/8MA0/.test(s.qualification || "")) {
+      s.qualification = "Pearson Edexcel A level Mathematics (9MA0)";
+    }
+
+    /* Past papers logged before the AS and A level distinction existed are
+       tagged "as", which is what they were sitting at the time. */
+    (st.papers || []).forEach(function (p) {
+      if (!p.level) p.level = /9MA0/.test(p.title || "") ? "alevel" : "as";
+    });
+
+    /* The five old "Year 2 stretch" placeholder topics were replaced by real
+       Year 2 chapters. Drop the orphans so they cannot be counted. */
+    ["y2-seq", "y2-rad", "y2-trig", "y2-fn", "y2-proof"].forEach(function (id) {
+      if (st.topics && st.topics[id]) delete st.topics[id];
+    });
+  }
 
   function ensureTopics() {
     const ids = ALL_SUB_IDS
@@ -126,6 +161,7 @@ const Store = (function () {
         const parsed = JSON.parse(raw);
         state = Object.assign(defaultState(), parsed);
         state.settings = Object.assign(defaultState().settings, parsed.settings || {});
+        migrate(state);
       } catch (e) {
         console.warn("Corrupt save, starting fresh", e);
         state = defaultState();
@@ -142,7 +178,7 @@ const Store = (function () {
     if (saveTimer) clearTimeout(saveTimer);
     const doIt = function () {
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-      catch (e) { console.error("Save failed", e); UI && UI.toast && UI.toast("Could not save — storage may be full", "bad"); }
+      catch (e) { console.error("Save failed", e); UI && UI.toast && UI.toast("Could not save, storage may be full", "bad"); }
     };
     if (immediate) doIt(); else saveTimer = setTimeout(doIt, 180);
   }
@@ -192,6 +228,7 @@ const Store = (function () {
         ALL_CHAPTER_IDS.forEach(function (id) {
           const inf = CHAPTER_INDEX[id];
           if (!s.papers[inf.paper.id]) return;
+          if (!yearPasses(inf.chapter.year, s.yearFilter)) return;
           if (state.topics[id] && state.topics[id].archived) return;
           out.push(id);
         });
@@ -200,8 +237,8 @@ const Store = (function () {
       SPEC.forEach(function (p) {
         if (!s.papers[p.id]) return;
         p.sections.forEach(function (sec) {
+          if (!yearPasses(sec.year, s.yearFilter)) return;
           sec.subs.forEach(function (sub) {
-            if (sub.y2 && !s.includeY2) return;
             if (state.topics[sub.id] && state.topics[sub.id].archived) return;
             out.push(sub.id);
           });
@@ -214,17 +251,15 @@ const Store = (function () {
       return out;
     },
 
-    /* Every section id, regardless of mode — used when aggregating */
+  /* Every section id, regardless of mode, used when aggregating */
     allSectionIds: function () {
       const s = state.settings;
       const out = [];
       SPEC.forEach(function (p) {
         if (!s.papers[p.id]) return;
         p.sections.forEach(function (sec) {
-          sec.subs.forEach(function (sub) {
-            if (sub.y2 && !s.includeY2) return;
-            out.push(sub.id);
-          });
+          if (!yearPasses(sec.year, s.yearFilter)) return;
+          sec.subs.forEach(function (sub) { out.push(sub.id); });
         });
       });
       state.customSubs.forEach(function (sub) { out.push(sub.id); });
@@ -235,7 +270,7 @@ const Store = (function () {
 
     /* Where you actually stopped, so "Continue revision" resumes there
        rather than restarting the chapter from the top. Only tracks work
-       that is genuinely in progress — a finished chapter is not a place
+       that is genuinely in progress, a finished chapter is not a place
        to come back to, so it is cleared once the chapter completes. */
     setLastPlace: function (chapterId, extra) {
       if (!chapterId) return;
@@ -247,7 +282,7 @@ const Store = (function () {
     lastPlace: function () { return state.lastPlace; },
     clearLastPlace: function () { state.lastPlace = null; },
 
-    /* Revision always happens a chapter at a time — that is the method.
+    /* Revision always happens a chapter at a time, that is the method.
        The Exam-Focus toggle only changes how finely you RAG-rate, never
        how the work itself is done. */
     planIds: function () {
@@ -274,10 +309,11 @@ const Store = (function () {
       const c = state.customSubs.filter(function (s) { return s.id === id; })[0];
       if (!c) return null;
       const paper = SPEC.filter(function (p) { return p.id === c.paperId; })[0] || SPEC[0];
-      const fakeSec = { id: "custom", num: "C", name: c.sectionName || "Custom topics", desc: "", subs: [], y2Group: true };
-      return { sub: c, section: fakeSec, paper: paper, chapterLabel: fakeSec.name,
+      /* plainLabel: show the section name as-is, with no "Y1 Ch 3 ·" prefix */
+      const fakeSec = { id: "custom", num: "C", name: c.sectionName || "Custom topics", desc: "", subs: [], plainLabel: true, year: c.year || 1 };
+      return { sub: c, section: fakeSec, paper: paper, year: fakeSec.year, chapterLabel: fakeSec.name,
                path: paper.short + " / " + fakeSec.name,
-               fullName: fakeSec.name + " — " + c.name, custom: true };
+               fullName: fakeSec.name + ", " + c.name, custom: true };
     },
 
     addCustomSub: function (data) {
@@ -429,7 +465,7 @@ const Store = (function () {
     /* ---------- export / import ---------- */
     exportJSON: function () {
       return JSON.stringify({
-        app: "AS Maths Revision Tracker", exportedAt: new Date().toISOString(),
+        app: "A-Level Maths Revision Tracker", exportedAt: new Date().toISOString(),
         schema: SCHEMA_VERSION, data: state
       }, null, 2);
     },
@@ -441,7 +477,7 @@ const Store = (function () {
       /* The raw parser error ("Unexpected token 'h'...") means nothing to
          anyone reading it, so say the useful thing instead. */
       try { parsed = JSON.parse(text); }
-      catch (e) { throw new Error("that file is not a backup — pick the .json file the tracker saved."); }
+      catch (e) { throw new Error("that file is not a backup, pick the .json file the tracker saved."); }
       const data = parsed && (parsed.data || parsed);
       if (!data || typeof data !== "object" || !data.topics) {
         throw new Error("that file does not have any tracker data in it.");

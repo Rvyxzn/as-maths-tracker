@@ -1,11 +1,11 @@
 /* ============================================================
-   Weaknesses — ranked weak topics, recurring past-paper errors,
+Weaknesses, ranked weak topics, recurring past-paper errors,
    error-type breakdown
    ============================================================ */
 
 const WeaknessesView = (function () {
 
-  let grain = null;   // null = follow the current mode
+  let grain = null; // null = follow the current mode
 
   function currentGrain() {
     if (grain) return grain;
@@ -45,7 +45,7 @@ const WeaknessesView = (function () {
     if (!recurring.length) {
       return '<div class="card"><div class="card-head"><div class="card-title">Recurring past-paper weaknesses</div></div>' +
         UI.empty("▤", "No past-paper errors logged yet",
-          "Log a paper and record every mark you lost — this is where the tracker gets genuinely useful.") +
+          "Log a paper and record every mark you lost, this is where the tracker gets genuinely useful.") +
         '<button class="btn btn-primary btn-block" data-action="log-paper">Log a paper</button></div>';
     }
     return '<div class="card"><div class="card-head"><div class="card-title">Recurring past-paper weaknesses</div>' +
@@ -114,7 +114,7 @@ const WeaknessesView = (function () {
       })) +
       '<div class="tiny faint" style="margin-top:12px">' +
         (types[0] && types[0].type !== "Knowledge gap"
-          ? "Your biggest loss is <b>" + UI.esc(types[0].type.toLowerCase()) + "</b>, not missing knowledge. More revision will not fix that — slower, checked working will."
+          ? "Your biggest loss is <b>" + UI.esc(types[0].type.toLowerCase()) + "</b>, not missing knowledge. More revision will not fix that, slower, checked working will."
           : "Your biggest loss is genuine knowledge gaps, so topic revision is the right response.") +
       '</div></div>';
   }

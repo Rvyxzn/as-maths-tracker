@@ -9,7 +9,7 @@ const TodayView = (function () {
     const tasks = Scheduler.tasksFor(iso);
     const budget = Scheduler.budgetFor(iso);
     /* Skipped tasks stay listed for the day's history, but they no longer
-       occupy any of today's time — a replacement already filled that slot. */
+    occupy any of today's time, a replacement already filled that slot. */
     const planned = tasks.filter(function (t) { return t.status !== "skipped"; })
       .reduce(function (a, t) { return a + t.minutes; }, 0);
     const doneMins = tasks.filter(function (t) { return t.status === "done"; }).reduce(function (a, t) { return a + t.minutes; }, 0);
@@ -53,7 +53,7 @@ const TodayView = (function () {
 
       (planned > budget ? '<div class="warnbox" style="margin-bottom:16px"><b>Today is overloaded</b>' +
         Metrics.fmtMins(planned) + ' is scheduled but you said you have ' + Metrics.fmtMins(budget) + '. ' +
-        'Either raise today’s time or skip the lowest task — the planner will push it forward.</div>' : "") +
+        'Either raise today’s time or skip the lowest task, the planner will push it forward.</div>' : "") +
 
       (tasks.length
         ? '<div class="stack">' + tasks.map(function (t) { return UI.taskCard(t); }).join("") + '</div>'
@@ -63,7 +63,7 @@ const TodayView = (function () {
 
       (remaining.length === 0 && tasks.length
         ? '<div class="warnbox info" style="margin-top:16px"><b>✓ Today’s plan is complete</b>' +
-          'Everything scheduled for today is done. If you have more time, press “What should I do now?” for a bonus task — ' +
+        'Everything scheduled for today is done. If you have more time, press “What should I do now?” for a bonus task, ' +
           'it will pick your highest-priority topic and pull work forward.</div>' : "") +
 
       upcoming();

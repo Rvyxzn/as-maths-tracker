@@ -1,19 +1,19 @@
 /* ============================================================
-   Chapter view — the revision method, one chapter at a time.
+Chapter view, the revision method, one chapter at a time.
 
-     1. Watch the whole playlist   (embedded, ticked off video by video)
-     2. Topic questions            (in-app, mark scheme hidden until asked for)
+     1. Watch the whole playlist (embedded, ticked off video by video)
+     2. Topic questions (in-app, mark scheme hidden until asked for)
      3. Mark and record the score
      4. Update the RAG rating
    ============================================================ */
 
 const ChapterView = (function () {
 
-  let openQ = null;      // index of the question currently expanded
-  let qBand = "all";     // difficulty filter on the question list (view only)
+  let openQ = null; // index of the question currently expanded
+  let qBand = "all"; // difficulty filter on the question list (view only)
   const revealedMs = {}; // chapters whose attached mark scheme is showing
-  const pdfUrls = {};    // blob urls for attached PDFs, by chapter
-  let pdfLoaded = {};    // what has already been fetched out of IndexedDB
+  const pdfUrls = {}; // blob urls for attached PDFs, by chapter
+  let pdfLoaded = {}; // what has already been fetched out of IndexedDB
 
   function render(root, cid) {
     const inf = Store.info(cid);
@@ -110,8 +110,7 @@ const ChapterView = (function () {
     const skipped = Journey.skippedVideos(cid).length;
 
     /* Each episode is two controls in one pill: the number jumps the player
-       to it, the tick marks it watched. They are deliberately separate —
-       skipping ahead to re-watch something should not tick it off. */
+    to it, the tick marks it watched. They are deliberately separate - skipping ahead to re-watch something should not tick it off. */
     let ticks = "";
     for (let i = 1; i <= total; i++) {
       const on = watched.indexOf(i) >= 0;
@@ -122,7 +121,7 @@ const ChapterView = (function () {
           'title="' + (off ? "Play video " + i + " (does not count towards the chapter)" : "Play video " + i) + '">' +
           (i === cur ? UI.icon("play") : "") + 'Ep ' + i + '</button>' +
         (off
-          ? '<span class="vid-check off" title="Not part of the course — does not count">' + UI.icon("minus") + '</span>'
+          ? '<span class="vid-check off" title="Not part of the course, does not count">' + UI.icon("minus") + '</span>'
           : '<button class="vid-check ' + (on ? "on" : "") + '" data-action="ch-video" data-id="' + cid + '" data-n="' + i + '" ' +
             'title="' + (on ? "Mark video " + i + " unwatched" : "Mark video " + i + " watched") + '">' +
             UI.icon("check") + '</button>') +
@@ -137,7 +136,7 @@ const ChapterView = (function () {
             ' data-ep="' + cur + '"></div></div>' +
           episodeBar(cid, cur, total, watched) +
           '<div class="tiny faint">' +
-            (custom ? "Your own link." : "Zeeshan Zamurred — " + UI.esc(inf.paper.short === "Pure" ? "Pure Maths Year 1" : inf.paper.short === "Stats" ? "Statistics Year 1" : "Mechanics Year 1") +
+          (custom ? "Your own link." : "Zeeshan Zamurred, " + UI.esc(inf.paper.short === "Pure" ? "Pure Maths Year 1" : inf.paper.short === "Stats" ? "Statistics Year 1" : "Mechanics Year 1") +
               ", Chapter " + UI.esc(inf.chapter.num) + ".") +
             ' Skip between episodes with the buttons above, or the playlist button inside the player.</div>'
         : '<div class="warnbox"><b>No playlist found for this chapter</b>' +
@@ -262,7 +261,7 @@ const ChapterView = (function () {
               '</div>'
             : '<button class="btn btn-primary btn-block" data-action="ch-q-reveal" data-id="' + cid + '" data-n="' + i + '">' +
                 'Reveal mark scheme</button>' +
-              '<div class="tiny faint" style="text-align:center">Attempt it fully first — the answer stays hidden until you ask.</div>') +
+                '<div class="tiny faint" style="text-align:center">Attempt it fully first, the answer stays hidden until you ask.</div>') +
         '</div>' : "") +
       '</div>';
     }).join("");
@@ -283,7 +282,7 @@ const ChapterView = (function () {
 
   /* Filter the list by difficulty, so picking "two mediums and two hards"
      is a couple of clicks rather than a hunt. Filtering only changes what
-     is on screen — it never changes what has been counted. */
+     is on screen, it never changes what has been counted. */
   function bandFilter(cid) {
     const bands = Journey.questionBands(cid);
     const chip = function (v, label, n) {
@@ -298,21 +297,21 @@ const ChapterView = (function () {
     '</span>';
   }
 
-  /* What you have actually answered. You choose the mix — say two
-     middling, two harder and one easier — and only those are totalled. */
+/* What you have actually answered. You choose the mix, say two
+middling, two harder and one easier, and only those are totalled. */
   function answeredTally(cid, st) {
     const b = Journey.answeredBreakdown(cid);
     const t = Store.topic(cid);
     if (!b.count) {
       return '<div class="spread-note">' +
-        '<b>Answer whichever questions you want.</b> You do not have to do all of them — pick a mix, ' +
+      '<b>Answer whichever questions you want.</b> You do not have to do all of them, pick a mix, ' +
         'and only the ones you answer are marked and counted.' +
         '<div class="tiny faint" style="margin-top:5px">Difficulty is judged by how many marks each question ' +
         'carries compared with the others in this chapter, because there is no official difficulty rating.</div>' +
       '</div>';
     }
     return '<div class="spread-note">' +
-      '<b>You have answered ' + b.count + '</b> — ' +
+    '<b>You have answered ' + b.count + '</b>, ' +
       '<span class="band band-easy">' + b.easy + ' easier</span> ' +
       '<span class="band band-medium">' + b.medium + ' middling</span> ' +
       '<span class="band band-hard">' + b.hard + ' harder</span>' +
@@ -322,15 +321,14 @@ const ChapterView = (function () {
           ? '<span class="pill good">' + UI.icon("check") + 'Questions finished</span>' +
             (t.questionsFinished ? '<button class="btn btn-sm btn-ghost" data-action="ch-q-reopen" data-id="' + cid + '">Answer more</button>' : "")
           : '<button class="btn btn-sm btn-primary" data-action="ch-q-finish" data-id="' + cid + '">' +
-              'Done — mark these ' + b.count + '</button>' +
+          'Done, mark these ' + b.count + '</button>' +
             '<span class="tiny faint">Or keep going; there is no need to do all ' + st.steps.questions.total + '.</span>') +
       '</div>' +
     '</div>';
   }
 
   /* The real Edexcel topic questions for this chapter, served straight
-     from the PDFs in the project folder. Nothing to download or attach —
-     the mark scheme simply stays behind a deliberate click. */
+  from the PDFs in the project folder. Nothing to download or attach - the mark scheme simply stays behind a deliberate click. */
   function questionPdf(cid) {
     const inf = Store.info(cid);
     const sets = inf.sets || [];
@@ -348,7 +346,7 @@ const ChapterView = (function () {
       const shown = revealedMs[cid + ":" + s.key];
       return '<div class="qset">' +
         '<div class="qset-head">' + UI.icon("paper") +
-          '<div style="flex:1;min-width:0"><b>Exam questions — ' + UI.esc(s.name) + '</b>' +
+        '<div style="flex:1;min-width:0"><b>Exam questions, ' + UI.esc(s.name) + '</b>' +
             '<div class="tiny muted">' +
               (s.approx ? UI.esc(s.approx) : "Edexcel questions by topic, with the full mark scheme.") +
             '</div></div>' +
@@ -358,7 +356,7 @@ const ChapterView = (function () {
         '</div>' +
         (shown
           ? '<div class="qz-ms" style="margin-top:12px">' +
-              '<div class="qz-ms-h">' + UI.icon("check") + 'Mark scheme — ' + UI.esc(s.name) + '</div>' +
+          '<div class="qz-ms-h">' + UI.icon("check") + 'Mark scheme, ' + UI.esc(s.name) + '</div>' +
               '<div class="pdf-frame" style="height:min(60vh,660px);border:0;border-radius:0">' +
                 '<div class="pdfv" data-src="' + s.msUrl + '"></div>' +
               '</div></div>' +
@@ -459,7 +457,7 @@ const ChapterView = (function () {
         '<textarea class="input" id="chNotes" placeholder="Anything worth keeping for the next pass"></textarea></div>' +
       '<button class="btn btn-primary btn-block" data-action="ch-record" data-id="' + cid + '">' +
         'Record ' + sc.overall.got + '/' + sc.overall.avail +
-        ' (' + (sc.overall.pct != null ? sc.overall.pct + "%" : "—") + ') for this chapter</button>' +
+        ' (' + (sc.overall.pct != null ? sc.overall.pct + "%" : "n/a") + ') for this chapter</button>' +
       (t.attempts && t.attempts.length ? attemptHistory(t.attempts) : ""),
       "Marks achieved out of marks available");
   }
@@ -510,7 +508,7 @@ const ChapterView = (function () {
       return '<div class="score-block">' +
         '<div class="row" style="gap:8px;align-items:baseline;margin-bottom:8px">' +
           '<b class="tiny">Exam questions</b>' +
-          '<span class="tiny faint">the Edexcel PDFs above — mark them, then enter the totals</span>' +
+          '<span class="tiny faint">the Edexcel PDFs above, mark them, then enter the totals</span>' +
         '</div>' + editor +
       '</div>';
     }
@@ -557,8 +555,8 @@ const ChapterView = (function () {
   function confidenceNote(c) {
     if (!c) return "";
     return '<div class="tiny ' + (c.level === "thin" ? "warn-text" : "faint") + '" style="margin:2px 0 12px">' +
-      (c.level === "solid"  ? 'Based on ' + c.marks + ' marks — enough to trust.'
-     : c.level === "fair"   ? 'Based on ' + c.marks + ' marks — a fair amount to go on.'
+    (c.level === "solid" ? 'Based on ' + c.marks + ' marks, enough to trust.'
+      : c.level === "fair" ? 'Based on ' + c.marks + ' marks, a fair amount to go on.'
      : 'Based on ' + c.marks + ' mark' + (c.marks === 1 ? '' : 's') + ' only. Do a few more before reading much into it.') +
     '</div>';
   }
@@ -640,7 +638,7 @@ const ChapterView = (function () {
   }
 
   /* The rating the evidence points to, offered as one click. You can still
-     pick anything — but if you overrule it, it says so rather than letting
+  pick anything, but if you overrule it, it says so rather than letting
      an optimistic rating pass unremarked. */
   function recommendation(cid, rec, pct, chosen, weighted) {
     const label = { red: "RED", amber: "AMBER", green: "GREEN" }[rec.rag];
@@ -653,7 +651,7 @@ const ChapterView = (function () {
         '<div class="tiny muted">' +
           (weighted ? 'Counting exam questions more heavily, that is ' + pct + '%'
                     : 'You scored ' + pct + '%') +
-          ' — ' + UI.esc(rec.why) + '.</div>' +
+                  ', ' + UI.esc(rec.why) + '.</div>' +
       '</div>' +
       (chosen === rec.rag
         ? '<span class="pill good">' + UI.icon("check") + 'matches your rating</span>'
@@ -661,7 +659,7 @@ const ChapterView = (function () {
             UI.esc(cid) + '" data-v="' + rec.rag + '">Use ' + label + '</button>') +
       (disagrees
         ? '<div class="tiny faint" style="flex-basis:100%;margin-top:6px">' +
-          'You picked ' + chosen.toUpperCase() + '. That is fine — but the planner goes on your actual scores, ' +
+        'You picked ' + chosen.toUpperCase() + '. That is fine, but the planner goes on your actual scores, ' +
           'so rating yourself higher than your marks will not change what it gives you.</div>'
         : "") +
     '</div>';

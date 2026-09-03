@@ -1,5 +1,5 @@
 /* ============================================================
-   Paper viewer — sit the paper inside the app, with the mark
+Paper viewer: sit the paper inside the app, with the mark
    scheme kept behind a deliberate click.
    ============================================================ */
 
@@ -105,7 +105,7 @@ const PaperView = (function () {
   function viewer(src, isFile, what) {
     if (!src) {
       return '<div class="warnbox"><b>No ' + UI.esc(what) + ' attached yet</b>' +
-        'Download the PDF once from the Pearson course page, then attach it above — it is stored in this browser ' +
+      'Download the PDF once from the Pearson course page, then attach it above, it is stored in this browser ' +
         'and opens inside the app from then on. You can also paste a direct link when you add the paper.' +
         '<div class="row wrap" style="gap:6px;margin-top:10px">' +
           '<a class="btn btn-sm" href="' + PEARSON_PAPERS_URL + '" target="_blank" rel="noopener">Pearson past papers ↗</a>' +
@@ -116,7 +116,7 @@ const PaperView = (function () {
       '</div>' +
       (isFile ? "" :
         '<div class="tiny faint">This is a link rather than an attached file. If the panel above stays blank, that site ' +
-        'does not allow being framed — attach the PDF instead and it will always open here.</div>');
+        'does not allow being framed, attach the PDF instead and it will always open here.</div>');
   }
 
   function handle(action, el) {
@@ -150,8 +150,8 @@ const PaperView = (function () {
               const p = st.papers.filter(function (x) { return x.id === id; })[0];
               if (p) { p[kind + "File"] = f.name; }
             });
-            loadingFor = null;   // force a reload of the new file
-            UI.toast((kind === "qp" ? "Paper" : "Mark scheme") + " attached — it opens inside the app now", "ok", 4200);
+            loadingFor = null; // force a reload of the new file
+            UI.toast((kind === "qp" ? "Paper" : "Mark scheme") + " attached, it opens inside the app now", "ok", 4200);
             App.render();
           }).catch(function (e) { UI.toast("Could not store that file: " + e.message, "bad"); });
         };

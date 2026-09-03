@@ -1,7 +1,7 @@
 /* ============================================================
-   Journey — the revision method, in order.
+Journey, the revision method, in order.
 
-     ASSESS  →  PURE  →  STATISTICS  →  MECHANICS  →  PAST PAPERS
+     ASSESS → PURE → STATISTICS → MECHANICS → PAST PAPERS
 
    Within every chapter the order is fixed:
      1. watch the whole playlist
@@ -16,16 +16,16 @@
 const Journey = (function () {
 
   const PHASES = [
-    { id: "pure",  label: "Pure",       paper: "pure" },
+    { id: "pure", label: "Pure", paper: "pure" },
     { id: "stats", label: "Statistics", paper: "stats" },
-    { id: "mech",  label: "Mechanics",  paper: "mech" }
+    { id: "mech", label: "Mechanics", paper: "mech" }
   ];
 
   const STEPS = [
-    { key: "video",     label: "Watch the playlist" },
+    { key: "video", label: "Watch the playlist" },
     { key: "questions", label: "Topic questions" },
-    { key: "marked",    label: "Mark your answers" },
-    { key: "rag",       label: "Update your confidence" }
+    { key: "marked", label: "Mark your answers" },
+    { key: "rag", label: "Update your confidence" }
   ];
 
   /* ---------- per-chapter state ---------- */
@@ -42,7 +42,7 @@ const Journey = (function () {
     return pl && pl.count ? pl.count : 6;
   }
 
-  /* Episodes you have marked as not part of the course — adverts, channel
+/* Episodes you have marked as not part of the course, adverts, channel
      trailers, anything that is in the playlist but is not teaching. They
      stay playable, but they do not count towards finishing the chapter.
      Kept as a list of episode numbers rather than just a smaller total,
@@ -66,15 +66,15 @@ const Journey = (function () {
 
   /* How long the chapter's videos actually take.
 
-     Lengths are learned one at a time — the player only knows the duration
-     of the video currently loaded — so most of the time some are measured
+  Lengths are learned one at a time, the player only knows the duration
+  of the video currently loaded, so most of the time some are measured
      and the rest are not. Anything not yet measured is estimated from the
      average of the ones that are, which means the estimate MOVES as you
      watch more. That is unavoidable, but it must not look like a precise
      figure that keeps changing, so this reports the measured part and the
      estimated part separately and the UI shows which is which.
 
-     Only videos that count are included — an advert you excluded is not
+     Only videos that count are included, an advert you excluded is not
      study time. */
   function videoMinutes(cid) {
     const t = Store.topic(cid);
@@ -107,7 +107,7 @@ const Journey = (function () {
           ? CHAPTER_INDEX[cid].sub.vid / Math.max(1, counted || 1) : 12);
 
     return {
-      /* best overall figure — measured plus estimate for the rest */
+      /* best overall figure, measured plus estimate for the rest */
       total: Math.round(knownMins + unknownCount * perVideo),
       remaining: Math.round(knownRemaining + unknownRemaining * perVideo),
       /* the part that is actually measured, which never moves */
@@ -122,8 +122,8 @@ const Journey = (function () {
     };
   }
 
-  /* Which episode the player is on. Once it is pinned — because you picked
-     one, or because the player told us where it actually is — it stays put.
+/* Which episode the player is on. Once it is pinned, because you picked
+one, or because the player told us where it actually is, it stays put.
      Only an unpinned chapter falls back to "the first one not ticked off",
      otherwise ticking video 1 would silently make video 2 current and the
      player would jump. */
@@ -158,7 +158,7 @@ const Journey = (function () {
 
   /* What the player should load: a playlist id, or a single video id if you
      pasted a plain video link. Returned as data rather than a URL because
-     the player is driven through the IFrame API, not an <iframe src> — an
+     the player is driven through the IFrame API, not an <iframe src>, an
      `index` parameter on a playlist embed does not work (tested: the src
      said index=5 and the player still loaded video 1). */
   function embedSource(cid) {
@@ -173,7 +173,7 @@ const Journey = (function () {
     return src.type === "playlist" ? { list: src.id, video: null } : { list: null, video: src.id };
   }
 
-  /* Watch this specific episode on YouTube itself — the fallback that always
+/* Watch this specific episode on YouTube itself, the fallback that always
      works, whatever the embed does. `index` DOES work on a youtube.com watch
      link (it is what YouTube's own URLs use); it is only the embed that
      ignores it. */
@@ -193,7 +193,7 @@ const Journey = (function () {
   /* ---------- picking a shorter question set ----------
      If you ask for fewer questions, they must not all be the two-markers.
      There is no difficulty field on the questions, so marks are used as the
-     proxy — a 5-mark question genuinely asks more of you than a 2-mark one.
+     proxy, a 5-mark question genuinely asks more of you than a 2-mark one.
      Questions are banded WITHIN their own chapter, so "hard" means hard for
      that chapter rather than against some fixed scale, then picked
      round-robin across the three bands. It is deterministic: the same
@@ -220,8 +220,8 @@ const Journey = (function () {
     return "easy";
   }
 
-  /* Every question is on show. You pick which ones to actually do — two
-     mediums and a hard, or whatever mix you want — and only the ones you
+/* Every question is on show. You pick which ones to actually do, two
+mediums and a hard, or whatever mix you want, and only the ones you
      answer are counted. */
   function selectedQuestions(cid) {
     return questionsFor(cid).map(function (_, i) { return i; });
@@ -258,8 +258,8 @@ const Journey = (function () {
     const qs = questionsFor(cid), qDone = answeredCount(cid);
     const attempts = t.attempts || [];
 
-    /* If nothing counts — every video excluded, or a chapter with no
-       playlist at all — there is nothing to watch, so the step is done
+    /* If nothing counts, every video excluded, or a chapter with no
+    playlist at all, there is nothing to watch, so the step is done
        rather than blocking the chapter forever. */
     const video = { done: vTotal === 0 || vDone >= vTotal, count: vDone, total: vTotal };
     /* You choose how many to do, so the step is finished either when you
@@ -330,7 +330,7 @@ const Journey = (function () {
     if (Store.planIds().indexOf(cid) < 0) return null;
     if (chapterComplete(cid)) return null;
     const st = state(cid);
-    if (!st.doneCount && !watchedCount(cid) && !answeredCount(cid)) return null;  // never actually begun
+    if (!st.doneCount && !watchedCount(cid) && !answeredCount(cid)) return null; // never actually begun
     return cid;
   }
 
@@ -362,7 +362,7 @@ const Journey = (function () {
 
     /* Where you actually stopped wins, provided it is still unfinished and
        still in the plan. Normally that IS the first incomplete chapter, so
-       the method's order is unchanged — but if you jumped ahead, or came
+       the method's order is unchanged, but if you jumped ahead, or came
        back mid-chapter, this is what makes "Continue" resume rather than
        restart. Falls back to the first incomplete chapter in phase order. */
     const resume = resumeChapter();
@@ -372,7 +372,7 @@ const Journey = (function () {
     const st = state(cid);
     const inf = CHAPTER_INDEX[cid];
     const name = inf.chapter.name;
-    const chLabel = phase.label + " — Chapter " + inf.chapter.num + " " + name;
+    const chLabel = phase.label + ", Chapter " + inf.chapter.num + " " + name;
 
     const detail = {
       video: st.steps.video.count === 0
@@ -380,7 +380,7 @@ const Journey = (function () {
         : "You are " + st.steps.video.count + " of " + st.steps.video.total +
           " videos through the playlist. Finish it before starting questions.",
       questions: "Playlist finished. Work through the " + st.steps.questions.total +
-        " topic questions" + (st.steps.questions.count ? " — " + st.steps.questions.count +
+      " topic questions" + (st.steps.questions.count ? ", " + st.steps.questions.count +
         " done, " + (st.steps.questions.total - st.steps.questions.count) + " to go" : "") + ".",
       marked: "Questions answered. Mark them against the mark schemes and record your score.",
       rag: "Score recorded. Update your confidence for this chapter to finish it."
@@ -404,7 +404,7 @@ const Journey = (function () {
 
     return {
       kind: "chapter", chapterId: cid, step: st.current,
-      title: (resume ? "Pick up where you left off — " : "Continue ") + chLabel,
+      title: (resume ? "Pick up where you left off, " : "Continue ") + chLabel,
       detail: detail, question: question, resumed: !!resume,
       action: "open-chapter", cta: (resume ? "Resume " : "Continue ") + name,
       state: st, phase: phase

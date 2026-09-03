@@ -1,11 +1,11 @@
 /* ============================================================
-   Calendar — day-by-day plan through to the exam
+Calendar, day-by-day plan through to the exam
    ============================================================ */
 
 const CalendarView = (function () {
 
-  let mode = "list";   // list | grid
-  let openDay = null;  // the day expanded in the month grid
+  let mode = "list"; // list | grid
+  let openDay = null; // the day expanded in the month grid
 
   function render(root) {
     const st = Store.get();
@@ -90,7 +90,7 @@ const CalendarView = (function () {
     }).join("") + '</div>';
   }
 
-  /* One day in the month grid. Everything is a glyph or a bar — the only
+/* One day in the month grid. Everything is a glyph or a bar, the only
      words are the date itself and the key underneath the grid. */
   function dayCell(d, todayIso, exam) {
     const isExam = d === exam;
@@ -146,7 +146,7 @@ const CalendarView = (function () {
   }
 
   /* The panel that drops open under a week when you click one of its days.
-     Deliberately brief — what you are doing, for how long, and nothing else. */
+  Deliberately brief, what you are doing, for how long, and nothing else. */
   function dayPanel(d, todayIso, exam) {
     const tasks = Scheduler.tasksFor(d);
     const mins = tasks.reduce(function (a, t) { return a + t.minutes; }, 0);
@@ -231,7 +231,7 @@ const CalendarView = (function () {
     return Object.keys(months).map(function (k) {
       const days = months[k];
       const first = Metrics.parseISO(days[0]);
-      const offset = (first.getDay() + 6) % 7;  // Monday-first
+      const offset = (first.getDay() + 6) % 7; // Monday-first
       const slots = [];
       for (let i = 0; i < offset; i++) slots.push(null);
       days.forEach(function (d) { slots.push(d); });

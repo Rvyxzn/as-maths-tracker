@@ -1,5 +1,5 @@
 /* ============================================================
-   PaperFiles — PDFs kept in IndexedDB so papers open inside the
+PaperFiles: PDFs kept in IndexedDB so papers open inside the
    app instead of sending you off to download things.
 
    localStorage would blow its quota on a single paper, so the

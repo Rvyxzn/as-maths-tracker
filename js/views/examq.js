@@ -1,13 +1,13 @@
 /* ============================================================
-   Exam Questions — every topic question set, by chapter, opened
+Exam Questions, every topic question set, by chapter, opened
    inside the app. Mark schemes stay hidden until asked for.
    ============================================================ */
 
 const ExamQView = (function () {
 
   let filter = "all";
-  let openSet = null;      // set key currently expanded
-  const msShown = {};      // set keys whose mark scheme is revealed
+  let openSet = null; // set key currently expanded
+  const msShown = {}; // set keys whose mark scheme is revealed
 
   function render(root) {
     const sets = allExamSets();
@@ -22,7 +22,7 @@ const ExamQView = (function () {
             '<b>Edexcel topic questions</b>' +
             '<div class="tiny muted" style="margin-top:3px">' +
               sets.length + ' question sets with full mark schemes, filed by chapter. ' +
-              'Everything opens here — nothing to download.</div>' +
+              'Everything opens here, nothing to download.</div>' +
           '</div>' +
           '<div class="chips">' +
             chip("all", "All (" + counts.all + ")") +
@@ -43,7 +43,7 @@ const ExamQView = (function () {
   function byPaper(sets) {
     const groups = { Pure: [], Stats: [], Mech: [] };
     sets.forEach(function (s) { groups[s.paper].push(s); });
-    const label = { Pure: "Paper 1 — Pure Mathematics", Stats: "Paper 2 — Statistics", Mech: "Paper 2 — Mechanics" };
+    const label = { Pure: "Paper 1: Pure Mathematics", Stats: "Paper 2: Statistics", Mech: "Paper 2: Mechanics" };
     let out = "";
     ["Pure", "Stats", "Mech"].forEach(function (p) {
       if (!groups[p].length) return;
@@ -90,7 +90,7 @@ const ExamQView = (function () {
         '</div>' +
         (shown
           ? '<div class="qz-ms" style="margin-top:12px">' +
-              '<div class="qz-ms-h">' + UI.icon("check") + 'Mark scheme — ' + UI.esc(s.name) + '</div>' +
+          '<div class="qz-ms-h">' + UI.icon("check") + 'Mark scheme, ' + UI.esc(s.name) + '</div>' +
               '<div class="pdf-frame" style="height:min(62vh,700px);border:0;border-radius:0">' +
                 '<div class="pdfv" data-src="' + s.msUrl + '"></div>' +
               '</div></div>' +

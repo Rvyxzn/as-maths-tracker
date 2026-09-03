@@ -1,5 +1,5 @@
 @echo off
-title AS Maths Revision Tracker
+title A-Level Maths Revision Tracker
 cd /d "%~dp0"
 
 python ".claude\serve.py" --open

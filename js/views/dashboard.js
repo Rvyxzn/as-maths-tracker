@@ -1,5 +1,5 @@
 /* ============================================================
-   Dashboard — the "how prepared am I / what do I do now" view
+Dashboard, the "how prepared am I / what do I do now" view
    ============================================================ */
 
 const DashboardView = (function () {
@@ -48,7 +48,7 @@ const DashboardView = (function () {
       '</div></div>';
   }
 
-  /* MY AS MATHS JOURNEY — where you are in the method, and what is next */
+/* MY AS MATHS JOURNEY, where you are in the method, and what is next */
   function journeyCard() {
     const phases = Journey.allPhases();
     const cur = Journey.currentPhase();
@@ -75,7 +75,7 @@ const DashboardView = (function () {
       stage = '<div class="journey-now">' +
         '<div class="row wrap" style="gap:8px">' +
           '<span class="pill acc">Current stage</span>' +
-          '<b>' + UI.esc(next.phase.label + " — Chapter " + inf.chapter.num + " " + inf.chapter.name) + '</b>' +
+          '<b>' + UI.esc(next.phase.label + ", Chapter " + inf.chapter.num + " " + inf.chapter.name) + '</b>' +
         '</div>' +
         chapterStepStrip(next.state) +
         '<div class="tiny muted" style="margin-top:10px">' + UI.esc(next.detail) + '</div>' +
@@ -88,7 +88,7 @@ const DashboardView = (function () {
     }
 
     return '<div class="card" style="margin-top:18px">' +
-      '<div class="card-head"><div class="card-title">My AS Maths journey</div>' +
+    '<div class="card-head"><div class="card-title">My A-Level Maths journey</div>' +
         '<div class="right"><button class="btn btn-primary" data-action="continue-revision">' +
           UI.icon("play") + 'Continue revision</button></div></div>' +
       '<div class="journey-strip">' + phaseRow + '</div>' +
@@ -114,7 +114,7 @@ const DashboardView = (function () {
       out += '<div class="warnbox ' + (feas.tight ? "" : "bad") + '" style="margin-top:18px">' +
         '<b>⚠️ ' + (feas.tight ? "This is tight" : "You cannot fit everything in") + '</b>' +
         'About <b>' + reqH + ' hours</b> of planned revision remain, but only about <b>' + availH + ' hours</b> ' +
-        'of study time before the exam' + (feas.deficitMins > 0 ? ' — a shortfall of roughly <b>' + Metrics.fmtMins(feas.deficitMins) + '</b>' : "") + '. ' +
+        'of study time before the exam' + (feas.deficitMins > 0 ? ', a shortfall of roughly <b>' + Metrics.fmtMins(feas.deficitMins) + '</b>' : "") + '. ' +
         'The planner is already front-loading red topics and exam questions over videos and green maintenance. ' +
         '<a href="#" data-action="go" data-view="settings">Increase your daily study time</a> if you can.</div>';
     }
@@ -187,7 +187,7 @@ const DashboardView = (function () {
       '<div class="spacer"></div><b>' + val + '</b></div>' + UI.bar(pct, "thin") + '</div>';
   }
 
-  /* Which chapters account for the most of the exam — and, crucially, which
+/* Which chapters account for the most of the exam, and, crucially, which
      of those you are currently weak on. The honesty note is not decoration:
      there is no published frequency table for 8MA0, so this must never read
      as though it were measured. */
@@ -207,7 +207,7 @@ const DashboardView = (function () {
           '<div class="tiny muted" style="margin-top:2px">These are the marks most at risk. They are marked below.</div></div></div>'
         : "") +
       '<div class="likely-list">' + rows.map(likelyRow).join("") + '</div>' +
-      '<div class="tiny faint" style="margin-top:10px">Ranked by how much of the paper each chapter accounts for — ' +
+      '<div class="tiny faint" style="margin-top:10px">Ranked by how much of the paper each chapter accounts for, ' +
         'not by a measured frequency count, because Pearson do not publish one. ' +
         '<button class="linklike" data-action="likely-why">How this is worked out</button></div>' +
     '</div>';
@@ -282,9 +282,9 @@ const DashboardView = (function () {
     return '<div class="card"><div class="card-head"><div class="card-title">Past paper performance</div>' +
       '<div class="right"><button class="btn btn-sm btn-ghost" data-action="go" data-view="papers">All</button></div></div>' +
       '<div class="row" style="gap:16px;margin-bottom:10px">' +
-        '<div><div class="stat-k">Average</div><div style="font-size:22px;font-weight:800">' + (ps.avg != null ? ps.avg + "%" : "—") + '</div></div>' +
-        '<div><div class="stat-k">Latest</div><div style="font-size:22px;font-weight:800">' + (ps.latest != null ? ps.latest + "%" : "—") + '</div></div>' +
-        '<div><div class="stat-k">Best</div><div style="font-size:22px;font-weight:800">' + (ps.best != null ? ps.best + "%" : "—") + '</div></div>' +
+      '<div><div class="stat-k">Average</div><div style="font-size:22px;font-weight:800">' + (ps.avg != null ? ps.avg + "%" : "n/a") + '</div></div>' +
+      '<div><div class="stat-k">Latest</div><div style="font-size:22px;font-weight:800">' + (ps.latest != null ? ps.latest + "%" : "n/a") + '</div></div>' +
+      '<div><div class="stat-k">Best</div><div style="font-size:22px;font-weight:800">' + (ps.best != null ? ps.best + "%" : "n/a") + '</div></div>' +
         '<div><div class="stat-k">Timed</div><div style="font-size:22px;font-weight:800">' + ps.timed + '</div></div>' +
       '</div>' + UI.lineChart(pts, { height: 150 }) + '</div>';
   }

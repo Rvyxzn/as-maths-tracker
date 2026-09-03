@@ -1,11 +1,11 @@
 /* ============================================================
-   Onboarding — welcome, exam setup, RAG explainer, assessment,
+Onboarding, welcome, exam setup, RAG explainer, assessment,
    revision map, generate plan.
    ============================================================ */
 
 const OnboardingView = (function () {
 
-  let step = 0;   // 0 welcome, 1 setup, 2 explain, 3 assess, 4 map
+  let step = 0; // 0 welcome, 1 setup, 2 explain, 3 assess, 4 map
 
   /* The assessment works through a queue, so a retake can cover everything,
      just the weak topics, or just one paper. No queue means "everything". */
@@ -34,7 +34,7 @@ const OnboardingView = (function () {
         return d === null || d >= 5;
       });
     }
-    if (!ids.length) { UI.toast("Nothing matches that — every topic is already covered", "warn"); return false; }
+  if (!ids.length) { UI.toast("Nothing matches that, every topic is already covered", "warn"); return false; }
     Store.mutate(function (st) {
       st.assessQueue = ids;
       st.assessCursor = 0;
@@ -81,13 +81,13 @@ const OnboardingView = (function () {
     root.innerHTML = '<div class="wizard">' + dots(0) +
       '<div class="assess-card">' +
         '<div class="assess-path">Getting started</div>' +
-        '<h1 style="font-size:30px;margin:8px 0 10px">Let’s build your AS Maths revision plan.</h1>' +
+        '<h1 style="font-size:30px;margin:8px 0 10px">Let’s build your A-Level Maths revision plan.</h1>' +
         '<p class="muted" style="margin:0 0 20px;font-size:15px;line-height:1.65">' +
-          'This tracker plans your revision around the full Pearson Edexcel AS Mathematics (8MA0) specification — ' +
-          'Pure, Statistics and Mechanics. It adapts as you go: your ratings, your question scores and your past-paper ' +
-          'mistakes all change what it tells you to do next.</p>' +
+        'This tracker plans your revision around the full Pearson Edexcel A level Mathematics (9MA0) specification, ' +
+        'Year 1 and Year 2, across Pure, Statistics and Mechanics. It adapts as you go: your ratings, your question ' +
+        'scores and your past-paper mistakes all change what it tells you to do next.</p>' +
         '<div class="grid g3" style="margin-bottom:22px">' +
-          statBox("Exam", "1 Sep 2026", "Edexcel AS Maths 8MA0") +
+        statBox("Exam", Metrics.fmtDate(Store.settings().examDate), "Edexcel A level Maths 9MA0") +
           statBox("Days remaining", String(d), d === 1 ? "day" : "days") +
           statBox("Topics to cover", String(list().length), "subtopics across 3 papers") +
         '</div>' +
@@ -121,18 +121,24 @@ const OnboardingView = (function () {
             '<input class="input" id="obName" placeholder="e.g. Rayan" value="' + UI.esc(s.studentName) + '"></div>' +
           '<div class="field"><label class="label">Papers you are sitting</label>' +
             '<div class="row wrap" style="gap:14px;margin-top:4px">' +
-              paperToggle("pure", "Paper 1 — Pure", s.papers.pure) +
-              paperToggle("stats", "Paper 2 — Statistics", s.papers.stats) +
-              paperToggle("mech", "Paper 2 — Mechanics", s.papers.mech) +
+            paperToggle("pure", "Papers 1 & 2: Pure", s.papers.pure) +
+            paperToggle("stats", "Paper 3: Statistics", s.papers.stats) +
+            paperToggle("mech", "Paper 3: Mechanics", s.papers.mech) +
             '</div></div>' +
           '<div class="field"><label class="label">How much can you usually study per day?</label>' +
             '<select class="input" id="obDaily">' +
               [60, 90, 120, 180, 240, 300, 360].map(function (m) {
                 return '<option value="' + m + '"' + (s.dailyMinutes === m ? " selected" : "") + '>' + Metrics.fmtMins(m) + '</option>';
               }).join("") +
-            '</select><div class="tiny faint" style="margin-top:5px">You can change this any day — the planner never schedules more than the time you have.</div></div>' +
-          '<label class="switch"><input type="checkbox" id="obY2"' + (s.includeY2 ? " checked" : "") + '><i></i>' +
-            '<span>Include A-level Year 2 stretch topics <span class="tiny faint">(sequences &amp; series, radians, compound angles, composite/inverse functions — <b>not examinable on AS 8MA0</b>)</span></span></label>' +
+            '</select><div class="tiny faint" style="margin-top:5px">You can change this any day, the planner never schedules more than the time you have.</div></div>' +
+            '<div class="field"><label class="label">Which content are you revising right now?</label>' +
+            '<select class="input" id="obYear">' +
+            ['all|Both years, the full A level', '1|Year 1 only (AS content)', '2|Year 2 only'].map(function (o) {
+              const p = o.split("|");
+              return '<option value="' + p[0] + '"' + (String(s.yearFilter || "all") === p[0] ? " selected" : "") + '>' + p[1] + '</option>';
+            }).join("") +
+          '</select><div class="tiny faint" style="margin-top:5px">Pick Year 1 if you have not been taught Year 2 yet. ' +
+          'You can switch this any time in Settings, or filter year by year in Topics.</div></div>' +
         '</div>' +
         '<div class="row" style="margin-top:24px">' +
           '<button class="btn" data-action="ob-back">Back</button><div class="spacer"></div>' +
@@ -155,20 +161,20 @@ const OnboardingView = (function () {
         '<p class="muted" style="margin:0 0 18px">Rate each subtopic by asking one question: ' +
           '<b style="color:var(--text)">could I answer exam questions on this right now, under time pressure, without notes?</b></p>' +
         '<div class="stack">' +
-          ragRow("red", "Weak — I don’t understand it", "Very high priority. Scheduled first, revisited often, short spaced-repetition gaps.") +
+        ragRow("red", "Weak, I don’t understand it", "Very high priority. Scheduled first, revisited often, short spaced-repetition gaps.") +
           ragRow("amber", "Partially confident", "High priority. Scheduled early, reviewed at medium intervals.") +
-          ragRow("green", "Confident", "Low priority, but not ignored — it still gets maintenance retrieval so it doesn’t decay.") +
+          ragRow("green", "Confident", "Low priority, but not ignored, it still gets maintenance retrieval so it doesn’t decay.") +
         '</div>' +
         '<div class="field" style="margin-top:20px"><label class="label">Rate by</label>' +
           '<div class="chips">' +
             '<button class="chip' + (!isFocus ? " on" : "") + '" data-action="ob-set-grain" data-grain="topic">Individual topics <span class="tiny faint">(' + topicCount + ')</span></button>' +
             '<button class="chip' + (isFocus ? " on" : "") + '" data-action="ob-set-grain" data-grain="chapter">Whole chapters <span class="tiny faint">(' + chapterCount + ')</span></button>' +
           '</div>' +
-          '<div class="tiny faint" style="margin-top:6px">Rating chapter by chapter is faster and matches how you revise — one rating per textbook chapter instead of one per subtopic.</div>' +
+          '<div class="tiny faint" style="margin-top:6px">Rating chapter by chapter is faster and matches how you revise, one rating per textbook chapter instead of one per subtopic.</div>' +
         '</div>' +
         '<div class="warnbox" style="margin-top:20px"><b>Ratings are not permanent, and they are not the final word</b>' +
           'Your scores override your self-rating. Rate a topic GREEN then score 42% on its questions and it will be pushed ' +
-          'back down to AMBER or RED automatically. Rate something RED then score 90% and it moves up. Be honest, not optimistic — ' +
+          'back down to AMBER or RED automatically. Rate something RED then score 90% and it moves up. Be honest, not optimistic, ' +
           'and don’t agonise, you can change any rating in one click later.</div>' +
         '<div class="row" style="margin-top:24px">' +
           '<button class="btn" data-action="ob-back">Back</button><div class="spacer"></div>' +
@@ -193,8 +199,8 @@ const OnboardingView = (function () {
     const rated = ids.filter(function (x) { return Store.topic(x).rag; }).length;
 
     const scope = st.assessScope || "full";
-    const scopeLabel = { full: "Full assessment", weak: "Retake — weak topics", unrated: "Retake — unrated only",
-                         paper: "Retake — one paper", stale: "Retake — going stale" }[scope] || "Assessment";
+    const scopeLabel = { full: "Full assessment", weak: "Retake, weak topics", unrated: "Retake, unrated only",
+      paper: "Retake, one paper", stale: "Retake, going stale" }[scope] || "Assessment";
     const unit = st.settings.examFocus ? "chapters" : "topics";
     root.innerHTML = '<div class="wizard">' + dots(3) +
       '<div class="row tiny muted" style="margin-bottom:10px">' +
@@ -205,13 +211,13 @@ const OnboardingView = (function () {
       UI.bar((i / ids.length) * 100) +
       '<div class="assess-card" style="margin-top:18px">' +
         '<div class="assess-path">' + UI.esc(inf.chapterLabel) + '</div>' +
-        '<h2 class="assess-q">' + (inf.sub.code && !inf.sub.y2 ? '<span class="code">' + UI.esc(inf.sub.code) + '</span>' : "") + UI.esc(inf.sub.name) + (inf.sub.y2 ? '<span class="y2">YEAR 2</span>' : "") + '</h2>' +
+        '<h2 class="assess-q">' + (inf.sub.code ? '<span class="code">' + UI.esc(inf.sub.code) + '</span>' : "") + UI.esc(inf.sub.name) + UI.yearPill(inf.year) + '</h2>' +
         '<p class="muted tiny" style="margin:0 0 14px">' + UI.esc(inf.section.desc) + '</p>' +
         '<div style="font-weight:700;font-size:13px;margin-bottom:6px">What you need to be able to do</div>' +
         '<ul class="reqs">' + inf.sub.reqs.map(function (r) { return "<li>" + UI.math(r) + "</li>"; }).join("") + '</ul>' +
         '<div style="margin-top:20px;font-weight:700">How confident are you that you could answer exam questions on this right now?</div>' +
         '<div class="big-rag">' +
-          bigBtn("red", "🔴", "Red", "Weak — I don’t understand it") +
+        bigBtn("red", "🔴", "Red", "Weak, I don’t understand it") +
           bigBtn("amber", "🟠", "Amber", "Partially confident") +
           bigBtn("green", "🟢", "Green", "Confident I could do this in an exam") +
         '</div>' +
@@ -305,14 +311,14 @@ const OnboardingView = (function () {
         const qual = document.getElementById("obQual").value;
         const name = document.getElementById("obName").value;
         const daily = parseInt(document.getElementById("obDaily").value, 10);
-        const y2 = document.getElementById("obY2").checked;
+        const yearFilter = document.getElementById("obYear").value;
         const papers = {};
         document.querySelectorAll("[data-paper]").forEach(function (cb) { papers[cb.dataset.paper] = cb.checked; });
         if (!papers.pure && !papers.stats && !papers.mech) { UI.toast("Select at least one paper", "bad"); return true; }
         if (!exam) { UI.toast("Enter your exam date", "bad"); return true; }
         Store.mutate(function (s) {
           s.settings.examDate = exam; s.settings.qualification = qual; s.settings.studentName = name;
-          s.settings.dailyMinutes = daily; s.settings.includeY2 = y2; s.settings.papers = papers;
+          s.settings.dailyMinutes = daily; s.settings.yearFilter = yearFilter; s.settings.papers = papers;
         });
         step = 2; App.render(); return true;
       }

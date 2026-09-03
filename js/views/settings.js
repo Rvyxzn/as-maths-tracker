@@ -1,5 +1,5 @@
 /* ============================================================
-   Settings — exam setup, time budget, data export/import
+Settings, exam setup, time budget, data export/import
    ============================================================ */
 
 const SettingsView = (function () {
@@ -23,12 +23,18 @@ const SettingsView = (function () {
                 return '<label class="switch"><input type="checkbox" data-paper="' + p.id + '"' + (s.papers[p.id] ? " checked" : "") + '><i></i>' +
                   '<span>' + UI.esc(p.name) + '</span></label>';
               }).join("") + '</div></div>' +
-            '<label class="switch"><input type="checkbox" data-set="includeY2"' + (s.includeY2 ? " checked" : "") + '><i></i>' +
-              '<span>Include A-level Year 2 stretch topics</span></label>' +
-            '<div class="warnbox info tiny"><b>About the Year 2 topics</b>' +
-              'Arithmetic and geometric series, sigma notation, radians, small-angle approximations, sec/cosec/cot, compound angles, ' +
-              'composite and inverse functions, and proof by contradiction are <b>A level (Year 2) content and are not examinable on AS 8MA0</b>. ' +
-              'They are in the database, flagged YEAR 2, but excluded from your plan unless you switch them on here.</div>' +
+            '<div class="field"><label class="label">Content in your plan</label>' +
+            '<select class="input" data-set="yearFilter">' +
+            sel("all", "Both years, the full A level", s.yearFilter) +
+            sel("1", "Year 1 only (AS content)", s.yearFilter) +
+            sel("2", "Year 2 only", s.yearFilter) +
+            '</select>' +
+            '<div class="tiny faint" style="margin-top:6px">Restricts the planner, the dashboard and the topic list. ' +
+            'Useful while you are still being taught Year 2, switch back to both years once you have covered it.</div></div>' +
+            '<div class="warnbox info tiny"><b>This tracker covers the full A level (9MA0)</b>' +
+            'Pure Year 1 chapters 1-14 and Year 2 chapters 1-12, Statistics Year 1 chapters 1-7 and Year 2 chapters 1-3, ' +
+            'Mechanics Year 1 chapters 8-11 and Year 2 chapters 4-8. Both years restart their chapter numbering, so chapters ' +
+            'are labelled <b>Y1</b> or <b>Y2</b> throughout.</div>' +
             '<button class="btn btn-primary" data-action="save-settings">Save changes</button>' +
           '</div></div>' +
 
@@ -117,6 +123,10 @@ const SettingsView = (function () {
   function field(label, control) {
     return '<div class="field"><label class="label">' + label + '</label>' + control + '</div>';
   }
+
+function sel(value, label, current) {
+  return '<option value="' + value + '"' + (String(current) === value ? " selected" : "") + '>' + label + '</option>';
+}
   function dataRow(k, v) {
     return '<div class="row tiny" style="padding:7px 0;border-bottom:1px solid var(--border)">' +
       '<span class="muted">' + k + '</span><div class="spacer"></div><b>' + UI.esc(v) + '</b></div>';
@@ -165,7 +175,7 @@ const SettingsView = (function () {
       st.settings.studentName = get("studentName");
       st.settings.dailyMinutes = parseInt(get("dailyMinutes"), 10);
       st.settings.pastPaperTargetPerWeek = parseInt(get("pastPaperTargetPerWeek"), 10);
-      st.settings.includeY2 = get("includeY2");
+      st.settings.yearFilter = get("yearFilter") || "all";
       const tp = get("timerPrompt");
       if (tp !== null) st.settings.timerPrompt = tp;
       st.settings.papers = papers;
@@ -190,7 +200,7 @@ const SettingsView = (function () {
     return '<div class="backup-state' + (stale ? " warn" : " ok") + '">' +
       UI.icon(stale ? "alert" : "check") +
       '<span>Last backup <b>' + (days === 0 ? "today" : days === 1 ? "yesterday" : days + " days ago") + '</b> (' + when + ')' +
-      (stale ? ' — worth saving a fresh one.' : '') + '</span></div>';
+      (stale ? ', worth saving a fresh one.' : '') + '</span></div>';
   }
 
   /* Only shown when an import has actually happened, so the wrong file can
@@ -200,7 +210,7 @@ const SettingsView = (function () {
     if (!rb) return "";
     const when = new Date(rb.at).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
     return '<div class="row wrap" style="gap:8px;margin-top:10px;align-items:center">' +
-      '<span class="tiny faint">Replaced ' + UI.esc(when) + ' — ' + rb.summary.rated + ' rated, ' +
+    '<span class="tiny faint">Replaced ' + UI.esc(when) + ', ' + rb.summary.rated + ' rated, ' +
         rb.summary.sets + ' question sets, ' + rb.summary.papers + ' papers.</span>' +
       '<div class="spacer"></div>' +
       '<button class="btn btn-sm" data-action="undo-import">Undo that restore</button>' +
@@ -276,7 +286,7 @@ const SettingsView = (function () {
           if (!ok) { clear(); return; }
           try {
             Store.importJSON(reader.result);
-            UI.toast("Restored from " + file.name + " — you can undo this in Settings", "ok", 6000);
+            UI.toast("Restored from " + file.name + ", you can undo this in Settings", "ok", 6000);
             App.go("dashboard");
           } catch (err) {
             UI.toast("Restore failed: " + err.message, "bad", 5000);
@@ -299,7 +309,7 @@ const SettingsView = (function () {
           .then(function (ok) {
             if (!ok) return;
             if (Store.undoImport()) { UI.toast("Put back the way it was", "ok"); App.go("dashboard"); }
-            else UI.toast("Could not undo — the saved copy has gone", "bad");
+            else UI.toast("Could not undo, the saved copy has gone", "bad");
           });
         return true;
       }

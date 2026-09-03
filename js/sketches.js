@@ -1,5 +1,5 @@
 /* ============================================================
-   Sketches — drawn answers.
+Sketches, drawn answers.
 
    Some questions ask you to sketch something, and the answer is a
    picture. Describing it in words ("correct sine shape, one full
@@ -7,7 +7,7 @@
    know what right looks like, so those mark schemes show the
    curve as well.
 
-   Everything here is drawn from the maths — the sine curve's peak
+   Everything here is drawn from the maths, the sine curve's peak
    really is a quarter of the way along, the cubic really does
    touch rather than cross at a repeated root. Nothing is traced
    from a textbook or a mark scheme.
@@ -44,7 +44,7 @@ const SKETCH = (function () {
 
   const S = {};
 
-  /* y = 2 sin x, 0° to 360°.  peak at 90°, trough at 270° */
+  /* y = 2 sin x, 0° to 360°. peak at 90°, trough at 270° */
   S["sin-2x"] = function () {
     const ax = 75, x0 = 26, xEnd = 232, mid = (x0 + xEnd) / 2;
     return frame(
@@ -117,7 +117,7 @@ const SKETCH = (function () {
       { alt: "Scatter diagram with points close to a downward sloping line" });
   };
 
-  /* velocity–time trapezium: 0 to 12 over 4s, flat 6s, down over 5s */
+  /* velocity-time trapezium: 0 to 12 over 4s, flat 6s, down over 5s */
   S["vt-trapezium"] = function () {
     const ax = 122, y12 = 30;
     return frame(

@@ -1,5 +1,5 @@
 /* ============================================================
-   PdfViewer — renders PDFs to <canvas> using PDF.js instead of
+PdfViewer, renders PDFs to <canvas> using PDF.js instead of
    relying on the browser's native PDF plugin, and wraps every one
    in the same toolbar: zoom slider, ctrl+scroll-to-cursor zoom,
    reset, a pen tool for annotating on top of the page, and a real
@@ -8,12 +8,11 @@
    Why canvas instead of <iframe src="file.pdf">: this app runs
    inside embedded/Electron-based browser panes that do not ship
    Chromium's built-in PDF viewer extension. An iframe renders
-   completely blank there — no error, just an empty frame.
+   completely blank there, no error, just an empty frame.
 
    Usage: give a container class "pdfv" and a data-src pointing at
    the PDF (relative URL or blob: URL), then call PdfViewer.mount()
-   or let mountAll() pick it up after a render. Everything below —
-   toolbar, viewport, drawing layer — is built entirely by this file
+   or let mountAll() pick it up after a render. Everything below - toolbar, viewport, drawing layer, is built entirely by this file
    and is never touched by the app's DOM morphing (see the isOpaque
    check in ui.js), so it survives unrelated re-renders untouched.
    ============================================================ */
@@ -116,7 +115,7 @@ const PdfViewer = (function () {
     setLoading(container, sess);
 
     ensureLib().then(function () {
-      if (sessions.get(container) !== sess) return;   // superseded
+      if (sessions.get(container) !== sess) return; // superseded
       return window.pdfjsLib.getDocument(src).promise;
     }).then(function (pdf) {
       if (!pdf || sessions.get(container) !== sess) return;
@@ -194,7 +193,7 @@ const PdfViewer = (function () {
     wirePenPopover(container, sess);
 
     /* Ctrl/Cmd + wheel zooms toward the cursor, and only inside this
-       viewer — preventDefault + stopPropagation keep it from also
+    viewer, preventDefault + stopPropagation keep it from also
        zooming the page itself. Anything without Ctrl held scrolls
        normally, exactly as the user asked. */
     viewport.addEventListener("wheel", function (e) {
@@ -225,7 +224,7 @@ const PdfViewer = (function () {
       if (e.pointerType !== "touch") return;
       pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
       if (pts.size !== 2) return;
-      /* A second finger means this was never a stroke — drop whatever the
+      /* A second finger means this was never a stroke, drop whatever the
          pen had started so a pinch does not leave a stray line behind. */
       const annot = container.querySelector(".pdfv-annot");
       if (annot) {
@@ -277,7 +276,7 @@ const PdfViewer = (function () {
     viewport.addEventListener("pointercancel", release, { passive: true });
   }
 
-  /* Right mouse button drag pans the viewport — handy once you are
+/* Right mouse button drag pans the viewport, handy once you are
      zoomed in past the width of the panel. The browser's own
      right-click context menu is suppressed only over the PDF itself. */
   function attachPanning(viewport) {
@@ -347,7 +346,7 @@ const PdfViewer = (function () {
     const viewport = container.querySelector(".pdfv-viewport");
     const pages = container.querySelector(".pdfv-pages");
     if (!viewport || !pages) return;
-    const naturalWidth = pages.offsetWidth;              // layout width; transform does not affect this
+    const naturalWidth = pages.offsetWidth; // layout width; transform does not affect this
     const scaledWidth = naturalWidth * sess.scale;
     const vpWidth = viewport.clientWidth;
     const offset = scaledWidth < vpWidth ? Math.round((vpWidth - scaledWidth) / 2) : 0;
@@ -521,7 +520,7 @@ const PdfViewer = (function () {
       for (let i = 0; i < evts.length; i++) {
         const ev = evts[i];
         /* A coalesced event has no offsetX/offsetY, so derive it from the
-           element box — the canvas is sized 1:1 with its CSS box, so this
+        element box, the canvas is sized 1:1 with its CSS box, so this
            matches what offsetX would have given. */
         addPoint(ev.clientX - box.left, ev.clientY - box.top);
       }
@@ -566,7 +565,7 @@ const PdfViewer = (function () {
   /* ---------- full screen (in-app, not the OS/browser one) ---------- */
   let fsBackdrop = null;
   /* The panel currently full screen, if any. Going full screen moves the real
-     node to <body>, which leaves a hole in the view — so the next DOM morph
+  node to <body>, which leaves a hole in the view, so the next DOM morph
      rebuilds an empty .pdfv in its place. That "ghost" would otherwise be
      mounted and render the whole document a second time in the background,
      then sit there as a duplicate once you exit. We skip mounting it, and
@@ -593,7 +592,7 @@ const PdfViewer = (function () {
      original slot, and moving a node throws away its scroll position. The
      width also changes, which can re-render the pages at a different size,
      so an absolute pixel offset would not map back anyway. Remember where
-     you were as a FRACTION of the document and restore that instead — it
+     you were as a FRACTION of the document and restore that instead, it
      survives both the move and a re-render. */
   function captureScroll(container, sess) {
     const vp = container.querySelector(".pdfv-viewport");
@@ -614,7 +613,7 @@ const PdfViewer = (function () {
       if (!vp) return;
       const max = vp.scrollHeight - vp.clientHeight;
       if (max > 0) { applyPendingScroll(container, sess); return; }
-      if (++tries < 20) setTimeout(attempt, 60);      // give up after ~1.2s
+      if (++tries < 20) setTimeout(attempt, 60); // give up after ~1.2s
       else sess.pendingScroll = null;
     };
     setTimeout(attempt, 0);
@@ -656,7 +655,7 @@ const PdfViewer = (function () {
     fsContainer = container;
     container.classList.add("pdfv-fullscreen");
     /* hug the actual page width instead of always spanning ~90% of the
-       screen — the toolbar chrome adds ~24px either side of the pages */
+    screen, the toolbar chrome adds ~24px either side of the pages */
     const sess = sessions.get(container);
     if (sess && sess.contentWidth) {
       container.style.width = Math.min(sess.contentWidth + 44, window.innerWidth * 0.94) + "px";
@@ -665,8 +664,8 @@ const PdfViewer = (function () {
     if (btn) { btn.innerHTML = UI.icon("contract"); btn.title = "Exit full screen"; }
     document.addEventListener("keydown", escExit);
     if (sess) {
-      setPagesTransform(container, sess);           // viewport size just changed
-      applyPendingScroll(container, sess);          // back to where you were reading
+      setPagesTransform(container, sess); // viewport size just changed
+      applyPendingScroll(container, sess); // back to where you were reading
     }
   }
   function exitFullscreen(container) {
@@ -694,19 +693,18 @@ const PdfViewer = (function () {
     }
     const sess = sessions.get(container);
     if (sess) {
-      setPagesTransform(container, sess);           // viewport size just changed back
+      setPagesTransform(container, sess); // viewport size just changed back
       applyPendingScroll(container, sess);
     }
   }
 
   /* ---------- rendering ---------- */
   /* Pages are rasterised to fit the panel's width at the moment they are
-     drawn. If the panel is later wider — the window is resized, the sidebar
-     closes, or the panel simply had not been laid out yet when we measured —
-     the PDF would stay small and sit in a sea of empty space. Watch the
+  drawn. If the panel is later wider, the window is resized, the sidebar
+  closes, or the panel simply had not been laid out yet when we measured - the PDF would stay small and sit in a sea of empty space. Watch the
      width and redraw at the new size when it changes materially. */
   /* The ResizeObserver below is the live path, but browsers pause it while
-     the tab is hidden — so a panel that was first drawn narrow could stay
+  the tab is hidden, so a panel that was first drawn narrow could stay
      narrow. mountAll() runs after every app render, so check the width there
      too: that path does not depend on the rendering pipeline at all. */
   function refitIfNeeded(container, sess) {
@@ -727,7 +725,7 @@ const PdfViewer = (function () {
       if (sessions.get(container) !== sess || !sess.pdf) return;
       const w = viewport.clientWidth;
       if (!w || !sess.renderedWidth) return;
-      if (Math.abs(w - sess.renderedWidth) < 40) return;      // ignore scrollbar-sized jitter
+      if (Math.abs(w - sess.renderedWidth) < 40) return; // ignore scrollbar-sized jitter
       clearTimeout(timer);
       timer = setTimeout(function () {
         if (sessions.get(container) !== sess || !sess.pdf) return;
@@ -789,7 +787,7 @@ const PdfViewer = (function () {
     }
     function finish() {
       if (stale()) return;
-      setPagesTransform(container, sess);   // centre the freshly-rendered pages if narrower than the panel
+      setPagesTransform(container, sess); // centre the freshly-rendered pages if narrower than the panel
       let maxW = 0;
       pagesEl.querySelectorAll(".pdfv-page").forEach(function (c) {
         maxW = Math.max(maxW, parseFloat(c.style.width) || 0);
@@ -837,7 +835,7 @@ const PdfViewer = (function () {
     (root || document).querySelectorAll(".pdfv").forEach(function (el) {
       const existing = sessions.get(el);
       if (existing && existing.src === el.dataset.src) { refitIfNeeded(el, existing); return; }
-      if (ghostFor(el)) return;   // placeholder for a panel that is full screen
+      if (ghostFor(el)) return; // placeholder for a panel that is full screen
       mount(el);
     });
   }

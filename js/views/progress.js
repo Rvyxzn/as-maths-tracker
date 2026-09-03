@@ -1,5 +1,5 @@
 /* ============================================================
-   Progress — charts and long-run trends
+Progress, charts and long-run trends
    ============================================================ */
 
 const ProgressView = (function () {
@@ -13,8 +13,8 @@ const ProgressView = (function () {
       '<div class="grid g4" style="margin-bottom:18px">' +
         stat("Specification covered", c.coveredPct + "%", c.covered + " of " + c.total + " subtopics") +
         stat("Questions attempted", totalAttempted() + "", totalSets() + " question sets logged") +
-        stat("Overall accuracy", overallAccuracy() != null ? overallAccuracy() + "%" : "—", "across all topic questions") +
-        stat("Past paper average", ps.avg != null ? ps.avg + "%" : "—", ps.count + " papers logged") +
+        stat("Overall accuracy", overallAccuracy() != null ? overallAccuracy() + "%" : "n/a", "across all topic questions") +
+        stat("Past paper average", ps.avg != null ? ps.avg + "%" : "n/a", ps.count + " papers logged") +
       '</div>' +
 
       '<div class="grid g2">' +

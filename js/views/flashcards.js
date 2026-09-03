@@ -1,5 +1,5 @@
 /* ============================================================
-   Flashcards — the formulae and facts you have to recall cold.
+Flashcards, the formulae and facts you have to recall cold.
 
    Two things make this different from a generic deck:
      1. Every card says whether the formula is GIVEN in the Edexcel
@@ -8,17 +8,17 @@
      2. Decks are per chapter, so they line up with the revision
         method rather than being one undifferentiated pile.
 
-   Quizlet moves in and out as plain text — that is what Quizlet's
+        Quizlet moves in and out as plain text, that is what Quizlet's
    own import and export use, and it needs no account or API.
    ============================================================ */
 
 const FlashcardsView = (function () {
 
-  let openChapter = null;     // chapter being studied, or null for the index
-  let idx = 0;                // position in the current deck
+  let openChapter = null; // chapter being studied, or null for the index
+  let idx = 0; // position in the current deck
   let flipped = false;
-  let filter = "all";         // all | memorise | unknown
-  let order = null;           // shuffled index list, or null for spec order
+  let filter = "all"; // all | memorise | unknown
+  let order = null; // shuffled index list, or null for spec order
 
   /* ---------- progress ---------- */
   function known(cid) {
@@ -58,14 +58,14 @@ const FlashcardsView = (function () {
     const totalKnown = chapters.reduce(function (n, c) { return n + known(c).length; }, 0);
     const groups = { Pure: [], Stats: [], Mech: [] };
     chapters.forEach(function (cid) { groups[CHAPTER_INDEX[cid].paper.short].push(cid); });
-    const label = { Pure: "Paper 1 — Pure Mathematics", Stats: "Paper 2 — Statistics", Mech: "Paper 2 — Mechanics" };
+    const label = { Pure: "Paper 1: Pure Mathematics", Stats: "Paper 2: Statistics", Mech: "Paper 2: Mechanics" };
 
     return '<div class="card" style="margin-bottom:18px">' +
         '<div class="row wrap" style="gap:14px">' +
           '<div style="flex:1;min-width:230px">' +
             '<b>' + totalCards + ' formula flashcards, filed by chapter</b>' +
             '<div class="tiny muted" style="margin-top:4px">Written from the 8MA0 specification. Each card tells you whether ' +
-            'the formula is <b>given to you in the exam</b> or whether you have to learn it — so you are not wasting ' +
+            'the formula is <b>given to you in the exam</b> or whether you have to learn it, so you are not wasting ' +
             'time memorising things they hand you on the day.</div>' +
           '</div>' +
           '<div style="text-align:right">' + UI.accPill(totalCards ? Math.round(totalKnown / totalCards * 100) : 0) +

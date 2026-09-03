@@ -1,5 +1,5 @@
 /* ============================================================
-   Metrics — derived values: effective RAG, accuracy, coverage,
+Metrics, derived values: effective RAG, accuracy, coverage,
    phases, workload feasibility, weakness detection.
    ============================================================ */
 
@@ -44,18 +44,18 @@ const Metrics = (function () {
     const cov0 = coverage().coveredPct;
     if (d <= 7) return { key: "final", name: "Final week mode",
       desc: cov0 < 50
-        ? "Timed paper sections, error analysis and red topics — but with only " + cov0 + "% of the specification covered, the planner is still prioritising new content over full papers. Videos are suppressed for anything you have already done questions on."
+      ? "Timed paper sections, error analysis and red topics, but with only " + cov0 + "% of the specification covered, the planner is still prioritising new content over full papers. Videos are suppressed for anything you have already done questions on."
         : "Timed papers, error analysis, red topics and formula recall. Videos are suppressed unless a topic has never been covered." };
     const cov = cov0;
-    if (cov >= 85) return { key: "p3", name: "Phase 3 — Final preparation",
+    if (cov >= 85) return { key: "p3", name: "Phase 3, Final preparation",
       desc: "Full timed papers, marking, error analysis and rapid weak-topic revision." };
-    if (cov >= 55) return { key: "p2", name: "Phase 2 — Mixed practice",
+    if (cov >= 55) return { key: "p2", name: "Phase 2, Mixed practice",
       desc: "Mixed questions, past-paper sections and weak-topic revision alongside remaining new content." };
-    return { key: "p1", name: "Phase 1 — Specification coverage",
+    return { key: "p1", name: "Phase 1, Specification coverage",
       desc: "Cover the specification: chapter videos and topic questions, with some past-paper practice." };
   }
 
-  /* "just now" / "20 minutes ago" / "yesterday" — for telling you when you
+/* "just now" / "20 minutes ago" / "yesterday", for telling you when you
      last stopped, which is only useful in human terms. */
   function relativeTime(iso) {
     if (!iso) return null;
@@ -78,13 +78,13 @@ const Metrics = (function () {
      This must be MARKS-based wherever marks were recorded. Counting only
      fully-correct questions punishes you twice for part-marks: 14/23 marks
      is 61%, but if only 3 of those 8 questions were perfect it looks like
-     38% — which then drags your effective RAG down to RED and overrides a
+     38%, which then drags your effective RAG down to RED and overrides a
      rating you correctly set to AMBER. Marks first, then a recorded pct,
      and only fall back to the fully-correct count when nothing better
      exists (older records, and the quick-log modal which has no marks). */
   /* A percentage means little without knowing how many marks it came off.
      GREEN needs at least a fair sample before it is offered. */
-  const NOMINAL_SET_MARKS = 10;    // assumed size of an old record with no marks
+  const NOMINAL_SET_MARKS = 10; // assumed size of an old record with no marks
   const FAIR_MARKS = 12;
   const SOLID_MARKS = 30;
   const GREEN_MIN_MARKS = 20;
@@ -132,7 +132,7 @@ const Metrics = (function () {
   }
   function confidenceOf(marks) {
     if (marks >= SOLID_MARKS) return { level: "solid", marks: marks, label: "solid evidence" };
-    if (marks >= FAIR_MARKS)  return { level: "fair",  marks: marks, label: "a fair amount to go on" };
+    if (marks >= FAIR_MARKS) return { level: "fair", marks: marks, label: "a fair amount to go on" };
     return { level: "thin", marks: marks, label: "only " + marks + " mark" + (marks === 1 ? "" : "s") + " so far" };
   }
   function lastAccuracy(id) {
@@ -176,6 +176,18 @@ const Metrics = (function () {
     const loss = paperLoss(id);
     if (loss.marks >= 8 && level > 0) { level = Math.max(0, level - 1); reasons.push("you lost " + loss.marks + " marks on it across your past papers"); }
     else if (loss.marks >= 4 && level > 1) { level = 1; reasons.push("you lost " + loss.marks + " marks on it in past papers"); }
+
+    /* A school test on this chapter is real, marked evidence, so it carries
+       the same weight as your own question scores. Grade-only entries are
+       excluded upstream because a letter has no percentage behind it. */
+    if (typeof SchoolAssessments !== "undefined") {
+      const sa = SchoolAssessments.signal(id);
+      if (sa.avg !== null) {
+        const where = sa.count > 1 ? "across " + sa.count + " school tests" : "in a school test";
+        if (sa.avg < 50 && level > 0) { level = 0; reasons.push("you scored " + sa.avg + "% " + where); }
+        else if (sa.avg < 65 && level > 1) { level = 1; reasons.push("you scored " + sa.avg + "% " + where); }
+      }
+    }
 
     const rag = level === 0 ? "red" : level === 1 ? "amber" : "green";
     return { rag: rag, base: base, reasons: reasons, adjusted: rag !== base };
@@ -280,23 +292,32 @@ const Metrics = (function () {
   }
 
   /* ---------- grade boundaries ----------
-     The real published Edexcel AS Mathematics (8MA0) subject boundaries,
-     taken from Pearson's "Grade Boundaries Edexcel GCE AS/A Level June 2025"
-     — the most recent series available. Raw marks out of 160: Paper 1 Pure
-     is 100 marks and Paper 2 Statistics & Mechanics is 60.
+  A level Mathematics (9MA0) is marked out of 300: Paper 1 Pure 100,
+  Paper 2 Pure 100, Paper 3 Statistics & Mechanics 100.
 
-     These are whole-subject boundaries. A set of topic questions on one
-     chapter is not a whole paper, so a grade here is an indication of where
-     that score would sit, not a prediction — and boundaries move every
-     series. The UI says so wherever a grade is shown. */
-  const AS_MAX_MARK = 160;
-  const AS_BOUNDARY_SERIES = "Edexcel 8MA0, June 2025";
+  IMPORTANT, READ BEFORE TRUSTING A GRADE
+  Unlike the mark totals above, which are published and fixed, the marks
+  below are INDICATIVE. They are a round-number reading of where recent
+  9MA0 series have tended to sit, not a transcription of one published
+  series, and Edexcel move them every year, sometimes by ten marks or
+  more. They are here so a percentage has some human meaning, not so you
+  can predict a grade.
+
+  Check your own target against Pearson's published boundaries for the
+  series you are sitting, and edit these numbers if you want them exact.
+
+  They are also whole-subject boundaries: a set of topic questions on one
+  chapter is not a whole paper, so a grade here indicates where that score
+  would sit on a full paper. The UI repeats this wherever a grade shows. */
+  const AS_MAX_MARK = 300;
+  const AS_BOUNDARY_SERIES = "Edexcel 9MA0, indicative, not a published series";
   const AS_BOUNDARIES = [
-    { grade: "A", mark: 108 },
-    { grade: "B", mark: 95 },
-    { grade: "C", mark: 82 },
-    { grade: "D", mark: 69 },
-    { grade: "E", mark: 57 }
+    { grade: "A*", mark: 213 },
+    { grade: "A", mark: 176 },
+    { grade: "B", mark: 139 },
+    { grade: "C", mark: 102 },
+    { grade: "D", mark: 66 },
+    { grade: "E", mark: 30 }
   ].map(function (b) {
     return { grade: b.grade, mark: b.mark, pct: b.mark / AS_MAX_MARK * 100 };
   });
@@ -334,7 +355,7 @@ const Metrics = (function () {
      Topic questions are the in-app bank; exam questions are the real
      Edexcel PDFs, where you mark yourself and enter the totals. The
      chapter's standing is the two added together, because the exam
-     questions are the harder and more representative half — judging a
+     questions are the harder and more representative half, judging a
      chapter on the in-app bank alone would flatter it. */
   function chapterScore(cid) {
     const t = Store.topic(cid);
@@ -380,14 +401,13 @@ const Metrics = (function () {
   /* ---------- RAG recommendation ----------
      Anchored to the real boundaries rather than round numbers: an A-grade
      score is the only thing that justifies GREEN, anything below a C is
-     RED, and the band between them is AMBER. Repeat attempts temper it —
-     one good score on a second sitting of the same questions is weaker
+     RED, and the band between them is AMBER. Repeat attempts temper it - one good score on a second sitting of the same questions is weaker
      evidence than a good score first time. */
   function recommendRag(pct, opts) {
     if (pct == null) return null;
     opts = opts || {};
-    const gradeA = AS_BOUNDARIES[0].pct;    // 67.5%
-    const gradeC = AS_BOUNDARIES[2].pct;    // 51.25%
+    const gradeA = AS_BOUNDARIES[0].pct; // 67.5%
+    const gradeC = AS_BOUNDARIES[2].pct; // 51.25%
     const grade = estimateGrade(pct);
     let rag, why;
 
@@ -400,7 +420,7 @@ const Metrics = (function () {
     } else {
       rag = "red";
       why = grade === "U"
-        ? "that is below an E — this has not gone in yet"
+      ? "that is below an E, this has not gone in yet"
         : "a grade " + grade + " is too low to say you know this yet";
     }
 
@@ -408,7 +428,7 @@ const Metrics = (function () {
        partly recall of the answers, so hold GREEN back one notch. */
     if (rag === "green" && opts.attemptNumber > 1 && pct < 85) {
       rag = "amber";
-      why = "that is an A, but on questions you have already seen — stay AMBER until you can do it on new ones";
+      why = "that is an A, but on questions you have already seen, stay AMBER until you can do it on new ones";
     }
 
     /* Two questions right is not the same evidence as eight. A high score
@@ -416,13 +436,13 @@ const Metrics = (function () {
        until there is enough behind it. */
     if (rag === "green" && opts.marks != null && opts.marks < GREEN_MIN_MARKS) {
       rag = "amber";
-      why = "that is an A, but off only " + opts.marks + " marks — do a few more before calling it GREEN";
+      why = "that is an A, but off only " + opts.marks + " marks, do a few more before calling it GREEN";
     }
 
     /* Being slow matters even when the marks are there. */
     if (rag === "green" && opts.difficulty === "Very hard") {
       rag = "amber";
-      why = "you got the marks, but you said it was very hard — AMBER is more honest";
+      why = "you got the marks, but you said it was very hard, AMBER is more honest";
     }
 
     return { rag: rag, why: why, grade: grade };
@@ -431,22 +451,24 @@ const Metrics = (function () {
   /* ---------- what is most likely to come up ----------
      IMPORTANT, and stated plainly wherever this is shown: Pearson do not
      publish how often each topic appears, and no reliable public tally of
-     8MA0 papers exists. Nothing here is a measured frequency and no
+     9MA0 papers exists. Nothing here is a measured frequency and no
      percentage is invented.
 
      What it IS built from, all of which is real:
-       - the mark split, which is published and verifiable: Paper 1 Pure is
-         100 of the 160 marks (62.5%), Paper 2 is 60 (Statistics 30 and
-         Mechanics 30, 37.5% together)
+     - the mark split, which is published and verifiable: Papers 1 and 2 are
+     Pure, 100 marks each, so Pure is 200 of the 300 marks (66.7%);
+     Paper 3 is 100 (Statistics 50 and Mechanics 50, 33.3% together)
        - the per-chapter weighting and typical mark ranges already carried in
          this app's chapter data, which are an editorial reading of the
          specification and the released papers, not a statistic
        - your own results, which are the only genuinely measured input here
 
      So it answers "where are the marks, and which of those am I weak on",
-     which is the useful question — not "this appears in 87% of papers",
+     which is the useful question, not "this appears in 87% of papers",
      which nobody can honestly tell you. */
-  const PAPER_MARKS = { pure: 100, stats: 30, mech: 30 };
+     /* 9MA0: Papers 1 and 2 are 100 marks of Pure each; Paper 3 is 100 marks
+     split evenly between Statistics and Mechanics. 300 marks in total. */
+     const PAPER_MARKS = { pure: 200, stats: 50, mech: 50 };
 
   function chapterExamValue(cid) {
     const inf = CHAPTER_INDEX[cid];
@@ -454,9 +476,13 @@ const Metrics = (function () {
     const ex = inf.chapter.exam;
     const weight = ex && ex.weight ? ex.weight : 3;
     const marksText = ex && ex.marks ? ex.marks : "";
-    const range = marksText.match(/(\d+)\s*[–—-]\s*(\d+)\s*marks/);
+    /* Dash class written as unicode escapes, never as literal dash characters,
+       so a find-and-replace over dashes cannot turn this into an invalid range.
+       Chapter mark ranges are written with plain hyphens now, but older saved
+       text may still contain en or em dashes. */
+    const range = marksText.match(/(\d+)\s*[-–—]\s*(\d+)\s*marks/);
     const typicalMarks = range ? (parseInt(range[1], 10) + parseInt(range[2], 10)) / 2 : null;
-    /* a chapter with no standalone mark range is not unimportant — it is
+    /* a chapter with no standalone mark range is not unimportant, it is
        woven through other questions (index laws inside differentiation, and
        so on). Treat it as reliably present but not separately counted. */
     const embedded = !range;
@@ -497,7 +523,7 @@ const Metrics = (function () {
     return opts.limit ? rows.slice(0, opts.limit) : rows;
   }
 
-  /* The subset that is both high-value and currently weak — the actual
+/* The subset that is both high-value and currently weak, the actual
      "do these first" list. */
   function priorityTopics(limit) {
     return likelyTopics().filter(function (r) { return r.atRisk && !r.complete; })
@@ -519,7 +545,7 @@ const Metrics = (function () {
       if (!isChapterRec) {
         total++;
         if (isCovered(id)) covered++;
-        if (t.rag) rags.push(effectiveRag(id).rag);   // section ratings only
+        if (t.rag) rags.push(effectiveRag(id).rag); // section ratings only
       }
       t.questionSets.forEach(function (q) { att += q.attempted || 0; cor += q.correct || 0; sets++; });
       const l = paperLoss(id);
@@ -531,7 +557,7 @@ const Metrics = (function () {
     const rank = { red: 0, amber: 1, green: 2 };
     const chRec = Store.get().topics[chapterId];
     let rag = null;
-    /* An explicit chapter rating wins. A *derived* one does not — if the
+    /* An explicit chapter rating wins. A *derived* one does not, if the
        sections have since been re-rated, the roll-up should follow them. */
     if (chRec && chRec.rag && !chRec.derived) {
       rag = effectiveRag(chapterId).rag;
@@ -598,7 +624,7 @@ const Metrics = (function () {
         const inf = e.topicId ? Store.info(e.topicId) : null;
         const key = inf ? inf.section.id : "unassigned";
         if (!bySection[key]) bySection[key] = {
-          key: key, name: inf ? inf.section.name : "Unassigned", paper: inf ? inf.paper.short : "—",
+          key: key, name: inf ? inf.section.name : "Unassigned", paper: inf ? inf.paper.short : "n/a",
           marks: 0, count: 0, papers: {}, types: {}, topicIds: {}
         };
         const g = bySection[key];
@@ -634,7 +660,7 @@ const Metrics = (function () {
     let total = 0; const days = [];
     let cur = today();
     const end = s.examDate;
-    while (diffDays(cur, end) > 0) {           // days strictly before the exam
+    while (diffDays(cur, end) > 0) { // days strictly before the exam
       const wd = parseISO(cur).getDay();
       let m = s.dailyOverrides[cur] != null ? s.dailyOverrides[cur] : (s.restDays.indexOf(wd) >= 0 ? 0 : s.dailyMinutes);
       total += m; days.push({ date: cur, minutes: m });

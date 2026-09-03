@@ -1,10 +1,10 @@
 /* ============================================================
-   My Topics — searchable/filterable topic browser + topic detail
+My Topics, searchable/filterable topic browser + topic detail
    ============================================================ */
 
 const TopicsView = (function () {
 
-  const filters = { q: "", paper: "all", rag: "all", status: "all", sort: "spec" };
+  const filters = { q: "", paper: "all", year: "all", rag: "all", status: "all", sort: "spec" };
   const openSections = {};
 
   /* ---------- list ---------- */
@@ -24,6 +24,7 @@ const TopicsView = (function () {
         '</div>' +
         '<div class="row wrap" style="gap:16px;margin-top:12px">' +
           chipGroup("paper", ["all", "pure", "stats", "mech"], { all: "All papers", pure: "Pure", stats: "Statistics", mech: "Mechanics" }) +
+          chipGroup("year", ["all", "1", "2"], { all: "Both years", "1": "Year 1", "2": "Year 2" }) +
           chipGroup("rag", ["all", "red", "amber", "green", "unrated"], { all: "All RAG", red: "🔴 Red", amber: "🟠 Amber", green: "🟢 Green", unrated: "Unrated" }) +
           chipGroup("status", ["all", "notstarted", "video", "questions", "covered", "due"],
             { all: "Any status", notstarted: "Not started", video: "Video done", questions: "Questions done", covered: "Covered", due: "Due for review" }) +
@@ -53,6 +54,7 @@ const TopicsView = (function () {
     return ids.filter(function (id) {
       const inf = Store.info(id), t = Store.topic(id);
       if (filters.paper !== "all" && inf.paper.id !== filters.paper) return false;
+      if (!yearPasses(inf.year || (inf.section && inf.section.year), filters.year)) return false;
       const eff = Metrics.effectiveRag(id).rag;
       if (filters.rag === "unrated" && t.rag) return false;
       if (["red", "amber", "green"].indexOf(filters.rag) >= 0 && eff !== filters.rag) return false;
@@ -96,7 +98,7 @@ const TopicsView = (function () {
       'the marks, and a mixed question set. Turn it off in the top bar to go back to individual sections.</div>';
     SPEC.forEach(function (p) {
       if (!Store.settings().papers[p.id]) return;
-      const cards = p.sections.filter(function (sec) { return !sec.y2Group; }).map(function (sec) {
+      const cards = p.sections.map(function (sec) {
         const cid = CHAPTER_PREFIX + sec.id;
         if (!shown[cid]) return "";
         return chapterCard(cid);
@@ -120,11 +122,11 @@ const TopicsView = (function () {
           '<div class="row wrap" style="gap:8px">' +
             '<span class="code">Ch ' + UI.esc(inf.chapter.num) + '</span>' +
             '<b style="font-size:15px">' + UI.esc(inf.sub.name) + '</b>' +
+            UI.yearPill(inf.chapter.year) +
             UI.ragPill(eff.rag) +
             '<span class="pill ' + (w >= 5 ? "bad" : w >= 4 ? "warn" : "") + '" title="Exam value">' +
               "\u2605".repeat(Math.max(1, Math.min(5, w))) + '</span>' +
           '</div>' +
-          '<div class="tiny muted" style="margin-top:6px">' + UI.esc(inf.sub.summary || "") + '</div>' +
           '<div class="topic-stats">' +
             '<span>' + inf.sub.sectionIds.length + ' sections</span>' +
             '<span>' + cs.done + '/' + cs.total + ' steps</span>' +
@@ -173,7 +175,7 @@ const TopicsView = (function () {
     return '<div class="topic-card ' + (overall || "") + '" style="cursor:default">' +
       '<div class="row wrap" data-action="toggle-section" data-id="' + sec.id + '" style="cursor:pointer;gap:10px">' +
         '<div style="flex:1;min-width:0">' +
-          '<div class="row" style="gap:8px"><b style="font-size:15px">' + UI.esc(sec.y2Group ? sec.name : "Chapter " + sec.num + " · " + sec.name) + '</b>' + UI.ragPill(overall, "overall") + '</div>' +
+        '<div class="row" style="gap:8px"><b style="font-size:15px">' + UI.esc(sec.plainLabel ? sec.name : "Chapter " + sec.num + " · " + sec.name) + '</b>' + UI.yearPill(sec.year) + UI.ragPill(overall, "overall") + '</div>' +
           '<div class="tiny muted" style="margin-top:4px">' + UI.esc(sec.desc) + '</div>' +
         '</div>' +
         '<div style="text-align:right"><div class="tiny muted">' + covered + '/' + ids.length + ' covered</div>' +
@@ -194,8 +196,8 @@ const TopicsView = (function () {
     return '<div class="sub-row">' +
       UI.ragDot(eff.rag) +
       '<div class="sub-name" data-action="open-topic" data-id="' + id + '" style="cursor:pointer">' +
-        (inf.sub.code && !inf.sub.y2 ? '<span class="code">' + UI.esc(inf.sub.code) + '</span>' : "") +
-        UI.esc(inf.sub.name) + (inf.sub.y2 ? '<span class="y2">YEAR 2</span>' : "") + (eff.adjusted ? '<span class="pill warn" style="margin-left:6px">adjusted</span>' : "") +
+      (inf.sub.code ? '<span class="code">' + UI.esc(inf.sub.code) + '</span>' : "") +
+      UI.esc(inf.sub.name) + UI.yearPill(inf.year) + (eff.adjusted ? '<span class="pill warn" style="margin-left:6px">adjusted</span>' : "") +
         '<small>' + cs.done + "/" + cs.total + ' steps' +
           (t.lastRevised ? " · last revised " + Metrics.fmtDate(t.lastRevised) : " · never revised") +
           (acc != null ? " · " + acc + "% accuracy" : "") +
@@ -235,7 +237,7 @@ const TopicsView = (function () {
             '<div class="row wrap" style="gap:10px">' +
               '<div style="flex:1;min-width:0">' +
                 '<div class="assess-path">' + UI.esc(inf.paper.short + " · " + inf.chapterLabel) + '</div>' +
-                '<h2 style="font-size:24px;margin:6px 0 0">' + (inf.sub.code && !inf.sub.y2 ? '<span class="code">' + UI.esc(inf.sub.code) + '</span>' : "") + UI.esc(inf.sub.name) + (inf.sub.y2 ? '<span class="y2">YEAR 2 — NOT ON AS</span>' : "") + '</h2>' +
+                '<h2 style="font-size:24px;margin:6px 0 0">' + (inf.sub.code ? '<span class="code">' + UI.esc(inf.sub.code) + '</span>' : "") + UI.esc(inf.sub.name) + UI.yearPill(inf.year) + '</h2>' +
               '</div>' + UI.ragPill(eff.rag) +
             '</div>' +
             (eff.adjusted ? '<div class="warnbox" style="margin-top:12px"><b>Rating adjusted automatically</b>' +
@@ -266,7 +268,7 @@ const TopicsView = (function () {
           '<div class="card"><div class="card-head"><div class="card-title">Completion checklist</div>' +
             '<div class="right"><span class="pill ' + (cs.done === cs.total ? "good" : "") + '">' + cs.done + '/' + cs.total + '</span></div></div>' +
             checklistRows(cs.items) +
-            (cs.done === cs.total ? '<div class="tiny" style="margin-top:10px;color:var(--green);font-weight:600">✓ Covered — now on retrieval practice</div>'
+            (cs.done === cs.total ? '<div class="tiny" style="margin-top:10px;color:var(--green);font-weight:600">✓ Covered, now on retrieval practice</div>'
               : '<div class="tiny faint" style="margin-top:10px">Watching the video alone does not count as covered.</div>') +
           '</div>' +
           '<div class="card"><div class="card-head"><div class="card-title">Why the planner ranks this here</div></div>' +
@@ -283,8 +285,8 @@ const TopicsView = (function () {
       ["Questions", t.questionSets.length ? "✅ " + t.questionSets.length + " set" + (t.questionSets.length > 1 ? "s" : "") : "❌ None yet"],
       ["Marked", t.marked ? "✅ Yes" : "❌ Not marked"],
       ["Last revised", t.lastRevised ? Metrics.fmtDate(t.lastRevised) + " (" + Metrics.daysSinceRevised(id) + "d ago)" : "Never"],
-      ["Best question score", best != null ? best + "%" : "—"],
-      ["Recent accuracy", acc != null ? acc + "%" : "—"],
+      ["Best question score", best != null ? best + "%" : "n/a"],
+      ["Recent accuracy", acc != null ? acc + "%" : "n/a"],
       ["Past-paper marks lost", loss.marks ? loss.marks + " marks across " + loss.papers + " paper(s)" : "None recorded"],
       ["Next review", t.nextReview ? (Metrics.isDue(id) ? "Due now" : Metrics.fmtDate(t.nextReview)) : "Not scheduled"],
       ["Reviews completed", String(t.reviewsDone || 0)]
@@ -326,9 +328,9 @@ const TopicsView = (function () {
         t.questionSets.slice().reverse().map(function (q, ri) {
           const idx = t.questionSets.length - 1 - ri;
           return '<tr><td>' + Metrics.fmtDate(q.date) + '</td><td>' + q.correct + '/' + q.attempted + '</td>' +
-            '<td>' + UI.accPill(q.pct) + '</td><td>' + (q.minutes ? Metrics.fmtMins(q.minutes) : "—") + '</td>' +
-            '<td>' + UI.esc(q.difficulty || "—") + '</td>' +
-            '<td class="tiny muted">' + UI.esc([q.mistakes, q.notes].filter(Boolean).join(" — ") || "—") + '</td>' +
+          '<td>' + UI.accPill(q.pct) + '</td><td>' + (q.minutes ? Metrics.fmtMins(q.minutes) : "n/a") + '</td>' +
+          '<td>' + UI.esc(q.difficulty || "n/a") + '</td>' +
+          '<td class="tiny muted">' + UI.esc([q.mistakes, q.notes].filter(Boolean).join(", ") || "n/a") + '</td>' +
             '<td><button class="btn btn-sm btn-ghost" data-action="del-qset" data-id="' + id + '" data-idx="' + idx + '">✕</button></td></tr>';
         }).join("") + '</tbody></table></div>' : "") +
       (t.sessions.length ? '<div class="section-label" style="margin:18px 0 8px">Session log</div>' +

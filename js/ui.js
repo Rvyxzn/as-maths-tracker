@@ -1,5 +1,5 @@
 /* ============================================================
-   UI — shared rendering helpers, modals, toasts, charts
+UI, shared rendering helpers, modals, toasts, charts
    ============================================================ */
 
 const UI = (function () {
@@ -84,6 +84,13 @@ const UI = (function () {
     if (!rag) return '<span class="rag rag-none"><i class="dot dot-none"></i>NOT RATED</span>';
     return '<span class="rag rag-' + rag + '"><i class="dot dot-' + rag + '"></i>' + RAG_LABEL[rag] + (extra ? " " + esc(extra) : "") + '</span>';
   }
+
+/* Which year of the A level a topic belongs to. Both years restart their
+chapter numbering, so this badge is what keeps them apart at a glance. */
+function yearPill(year) {
+  const y = Number(year) === 2 ? 2 : 1;
+  return '<span class="yr yr-' + y + '" title="Pure/Stats/Mechanics Year ' + y + ' content">Y' + y + '</span>';
+}
   function ragDot(rag) { return '<i class="dot dot-' + (rag || "none") + '"></i>'; }
 
   function bar(pct, cls) {
@@ -233,7 +240,7 @@ const UI = (function () {
           '<button class="btn btn-sm" data-action="task-skip" data-id="' + esc(t.id) + '">Skip</button>' +
           '<button class="btn btn-sm" data-action="task-move" data-id="' + esc(t.id) + '">Reschedule</button>' +
           '<button class="btn btn-sm btn-danger" data-action="task-delete" data-id="' + esc(t.id) + '" ' +
-            'title="' + (t.manual ? "Remove this task" : "Take this off the day — the planner will not put it back") + '">Remove</button>' +
+          'title="' + (t.manual ? "Remove this task" : "Take this off the day, the planner will not put it back") + '">Remove</button>' +
         '</div>') +
       '</div></div>';
   }
@@ -269,12 +276,12 @@ const UI = (function () {
   function focusButton(on, compact) {
     /* A gauge that sweeps from left to right as the mode comes on. The
        viewBox is 44x30 and the rendered box keeps that exact ratio, so the
-       dial actually sits centred in its pill — the old one was 48x34 drawn
+       dial actually sits centred in its pill, the old one was 48x34 drawn
        into a 38x28 box, which pulled it off centre. Chunky rounded arc,
        capsule needle, solid hub. */
     return '<button class="focus-toggle' + (on ? " on" : "") + (compact ? " compact" : "") + '" ' +
         'data-action="toggle-focus" aria-pressed="' + (on ? "true" : "false") + '" ' +
-        'title="Exam-Focus mode — revise a whole chapter at a time instead of section by section">' +
+        'title="Exam-Focus mode, revise a whole chapter at a time instead of section by section">' +
       '<svg class="dial" viewBox="0 0 44 30" aria-hidden="true">' +
         '<defs><linearGradient id="dialGrad" x1="0" y1="1" x2="1" y2="0">' +
           '<stop offset="0%" stop-color="var(--focus-a)"/>' +
@@ -282,7 +289,7 @@ const UI = (function () {
           '<stop offset="100%" stop-color="var(--focus-c)"/>' +
         '</linearGradient></defs>' +
         '<path class="dial-track" d="M8 24 A14 14 0 0 1 36 24"/>' +
-        '<path class="dial-fill"  d="M8 24 A14 14 0 0 1 36 24"/>' +
+        '<path class="dial-fill" d="M8 24 A14 14 0 0 1 36 24"/>' +
         '<g class="dial-needle"><rect x="20.6" y="11" width="2.8" height="13.5" rx="1.4"/></g>' +
         '<circle class="dial-hub" cx="22" cy="24" r="3.4"/>' +
       '</svg>' +
@@ -359,7 +366,7 @@ const UI = (function () {
          .replace(/ \* /g, " \u00d7 ");
 
     /* roots, in every form they get typed:
-         sqrt(x)  root(x)  root x  \u221a already
+         sqrt(x) root(x) root x \u221a already
        The bracketed forms run first so "root(3^2 + 4^2)" becomes
        "\u221a(3^2 + 4^2)" and the exponents are picked up further down. */
     t = t.replace(/(?<![A-Za-z])(?:sqrt|root)\s*\(([^()]*)\)/gi, "\u221a($1)")
@@ -373,7 +380,7 @@ const UI = (function () {
 
     /* superscripts: ^{...}, ^(...), ^-1, ^2, ^kx */
     /* The token class allows vulgar fractions (x^½) and a real minus sign,
-       not just plain alphanumerics — otherwise "x^½" stayed as literal text.
+    not just plain alphanumerics, otherwise "x^½" stayed as literal text.
        It deliberately does NOT include "/": "x^2/4" means x squared over
        four, not x to the power two-quarters. A genuinely fractional power
        is written with brackets, x^(1/2), and handled by the branch above. */
@@ -391,12 +398,12 @@ const UI = (function () {
        deliberately conservative and was written against an audit of every
        slash in the app's content:
 
-         stack     1/2 · 15/56 · x²/4 · (y₂ − y₁)/(x₂ − x₁) · ln 20/ln 3
-         leave     m/s · km/h · m/s²   (units)
-         leave     dy/dx · dv/dt · d²y/dx²  (written inline by convention,
+         stack 1/2 · 15/56 · x²/4 · (y₂ − y₁)/(x₂ − x₁) · ln 20/ln 3
+         leave m/s · km/h · m/s² (units)
+         leave dy/dx · dv/dt · d²y/dx² (written inline by convention,
                    and that is how mark schemes write them)
-         leave     positive/negative · quicker/cheaper  (prose)
-         leave     anything inside a URL
+         leave positive/negative · quicker/cheaper (prose)
+         leave anything inside a URL
 
        A side may be a bracketed group, or a token of letters/digits with
        any superscripts and subscripts already applied. */
@@ -420,8 +427,8 @@ const UI = (function () {
         const hasDigit = /[\d²³¹⁰-₟]/.test(n + d);
         /* both sides plain words and no brackets = prose, not a fraction */
         if (!bracketed && !hasDigit && n.length > 1 && d.length > 1) return whole;
-        if (UNIT_DEN.test(d) && /^[A-Za-z]/.test(n)) return whole;   // m/s, km/h, m/s²
-        if (DERIV_NUM.test(n)) return whole;                          // dy/dx, d/dx
+        if (UNIT_DEN.test(d) && /^[A-Za-z]/.test(n)) return whole; // m/s, km/h, m/s²
+        if (DERIV_NUM.test(n)) return whole; // dy/dx, d/dx
         return lead + '<span class="frac"><span class="fn">' + num +
                '</span><span class="fd">' + den + '</span></span>';
       });
@@ -446,7 +453,7 @@ const UI = (function () {
 
      The marks column shows the number, not an M1/A1/B1 code: the real codes
      say whether a mark is for method or accuracy, and that is not recorded
-     in the question bank — inventing it would be worse than omitting it. */
+     in the question bank, inventing it would be worse than omitting it. */
   function markScheme(text) {
     const lines = String(text == null ? "" : text).split("\n");
     let total = 0;
@@ -475,23 +482,23 @@ const UI = (function () {
      Small stroke icons drawn in currentColor. Used instead of words wherever
      a glyph carries the meaning on its own. */
   const ICONS = {
-    clock:     '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.4V12l3.1 1.9"/>',
-    play:      '<path d="M8.5 5.6 18 12l-9.5 6.4V5.6Z"/>',
-    pencil:    '<path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17v3Z"/><path d="M14.5 6.5 17.5 9.5"/>',
-    refresh:   '<path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4.2V9h-4.8"/>',
-    paper:     '<path d="M6.5 3.5h7.6L19 8.4v12.1H6.5Z"/><path d="M13.8 3.6v5h5"/><path d="M9.4 13h6M9.4 16.6h4"/>',
-    star:      '<path d="m12 4.3 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8Z"/>',
-    alert:     '<path d="M12 4.6 21 20H3l9-15.4Z"/><path d="M12 10.4v4.1"/><circle cx="12" cy="17.4" r=".9" fill="currentColor" stroke="none"/>',
-    check:     '<path d="m5 12.8 4.6 4.4L19 6.9"/>',
-    cap:       '<path d="M12 5 2.8 9.5 12 14l9.2-4.5L12 5Z"/><path d="M6.6 11.6v4.2c0 1.4 2.4 2.7 5.4 2.7s5.4-1.3 5.4-2.7v-4.2"/>',
-    flag:      '<path d="M6 21V4.4"/><path d="M6 5.1h11.4l-2.2 3.7 2.2 3.7H6"/>',
-    rest:      '<path d="M20.4 14.6A8.6 8.6 0 0 1 9.3 3.5 8.6 8.6 0 1 0 20.4 14.6Z"/>',
-    expand:    '<path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/>',
-    info:      '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".9" fill="currentColor" stroke="none"/>',
-    contract:  '<path d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5"/>',
-    eraser:    '<path d="M15.5 4.5 19.5 8.5c.8.8.8 2 0 2.8L13 18H8l-4.5-4.5c-.8-.8-.8-2 0-2.8l7-7c.8-.8 2-.8 2.8 0Z"/><path d="M8 18h11"/><path d="m9.5 9.5 5 5"/>',
-    plus:      '<path d="M12 5v14M5 12h14"/>',
-    minus:     '<path d="M5 12h14"/>'
+    clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.4V12l3.1 1.9"/>',
+    play: '<path d="M8.5 5.6 18 12l-9.5 6.4V5.6Z"/>',
+    pencil: '<path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17v3Z"/><path d="M14.5 6.5 17.5 9.5"/>',
+    refresh: '<path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4.2V9h-4.8"/>',
+    paper: '<path d="M6.5 3.5h7.6L19 8.4v12.1H6.5Z"/><path d="M13.8 3.6v5h5"/><path d="M9.4 13h6M9.4 16.6h4"/>',
+    star: '<path d="m12 4.3 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8Z"/>',
+    alert: '<path d="M12 4.6 21 20H3l9-15.4Z"/><path d="M12 10.4v4.1"/><circle cx="12" cy="17.4" r=".9" fill="currentColor" stroke="none"/>',
+    check: '<path d="m5 12.8 4.6 4.4L19 6.9"/>',
+    cap: '<path d="M12 5 2.8 9.5 12 14l9.2-4.5L12 5Z"/><path d="M6.6 11.6v4.2c0 1.4 2.4 2.7 5.4 2.7s5.4-1.3 5.4-2.7v-4.2"/>',
+    flag: '<path d="M6 21V4.4"/><path d="M6 5.1h11.4l-2.2 3.7 2.2 3.7H6"/>',
+    rest: '<path d="M20.4 14.6A8.6 8.6 0 0 1 9.3 3.5 8.6 8.6 0 1 0 20.4 14.6Z"/>',
+    expand: '<path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/>',
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".9" fill="currentColor" stroke="none"/>',
+    contract: '<path d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5"/>',
+    eraser: '<path d="M15.5 4.5 19.5 8.5c.8.8.8 2 0 2.8L13 18H8l-4.5-4.5c-.8-.8-.8-2 0-2.8l7-7c.8-.8 2-.8 2.8 0Z"/><path d="M8 18h11"/><path d="m9.5 9.5 5 5"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    minus: '<path d="M5 12h14"/>'
 
   };
 
@@ -504,7 +511,7 @@ const UI = (function () {
 
   /* ---------- DOM morphing ----------
      Re-rendering a view by replacing innerHTML recreates every node, which
-     (a) repaints the whole panel — the "blink" — and (b) restarts every CSS
+     (a) repaints the whole panel, the "blink", and (b) restarts every CSS
      entrance animation, so selected chips and ticks pop again on every click.
      Morphing updates the existing nodes in place instead, so only what
      genuinely changed is touched. Scroll position, focus and caret survive. */
@@ -516,8 +523,7 @@ const UI = (function () {
          insides, not by the template. PdfViewer adds pdfv-shell on mount and
          toggles pdfv-fullscreen / pdfv-pen-mode / pdfv-tool-eraser as you use
          it; the template only ever says class="pdfv", so overwriting here
-         would silently strip all of them on the next unrelated re-render —
-         which is exactly what stopped full screen and the pen from working.
+         would silently strip all of them on the next unrelated re-render - which is exactly what stopped full screen and the pen from working.
          Union instead: template classes are ensured, runtime ones survive. */
       if (opaque && a.name === "class") {
         t.classList.forEach(function (c) { f.classList.add(c); });
@@ -531,7 +537,7 @@ const UI = (function () {
       if (opaque && a.name === "class") continue;
       if (!t.hasAttribute(a.name)) f.removeAttribute(a.name);
     }
-    /* form state lives in properties, not attributes — and never clobber
+  /* form state lives in properties, not attributes, and never clobber
        whatever the user is currently typing into */
     const tag = f.tagName;
     const active = document.activeElement === f;
@@ -551,8 +557,8 @@ const UI = (function () {
     }
   }
 
-  /* Elements whose *content* is built by other code after the fact — a
-     canvas-rendered PDF being the case in point — must be treated as
+/* Elements whose *content* is built by other code after the fact, a
+canvas-rendered PDF being the case in point, must be treated as
      opaque leaves. The template morph is diffing against is always the
      empty placeholder markup (the real content gets filled in later by
      JS), so recursing into one and reconciling children against that
@@ -595,7 +601,7 @@ const UI = (function () {
 
   return {
     esc: esc, toast: toast, modal: modal, closeModal: closeModal, confirm: confirmDialog,
-    ragPill: ragPill, ragDot: ragDot, ragPicker: ragPicker, bar: bar, ragBar: ragBar, ragLegend: ragLegend,
+    ragPill: ragPill, yearPill: yearPill, ragDot: ragDot, ragPicker: ragPicker, bar: bar, ragBar: ragBar, ragLegend: ragLegend,
     empty: empty, accPill: accPill, lineChart: lineChart, hBars: hBars, donut: donut, taskCard: taskCard,
     focusButton: focusButton, morph: morph, icon: icon, math: math, todayToggle: todayToggle,
     markScheme: markScheme,

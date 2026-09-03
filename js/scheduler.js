@@ -1,5 +1,5 @@
 /* ============================================================
-   Scheduler — priority scoring, spaced repetition and
+Scheduler, priority scoring, spaced repetition and
    day-by-day plan generation.
    ============================================================ */
 
@@ -8,24 +8,24 @@ const Scheduler = (function () {
   /* Foundational topics that other topics depend on. Being weak here
      costs marks everywhere, so they get a prerequisite bonus. */
   const PREREQ = {
-    "pu1-1": 22, "pu1-3": 20, "pu1-4": 18, "pu1-5": 14,   // index laws, factorising, fractional indices, surds
-    "pu2-1": 24, "pu2-2": 20, "pu2-5": 14,                // solving quadratics, completing the square, discriminant
-    "pu5-2": 12, "pu5-3": 12,                             // equations of lines, perpendicular gradients
-    "pu12-3": 18, "pu12-5": 14,                           // differentiating x^n and multi-term expressions
-    "pu13-1": 16, "pu13-2": 12,                           // integrating x^n, indefinite integrals
-    "pu14-5": 12, "pu10-3": 12,                           // laws of logarithms, trig identities
-    "sm9-3": 16, "sm9-4": 14,                             // suvat
-    "sm6-3": 12, "sm2-4": 10                              // cumulative binomial, standard deviation
+    "pu1-1": 22, "pu1-3": 20, "pu1-4": 18, "pu1-5": 14, // index laws, factorising, fractional indices, surds
+    "pu2-1": 24, "pu2-2": 20, "pu2-5": 14, // solving quadratics, completing the square, discriminant
+    "pu5-2": 12, "pu5-3": 12, // equations of lines, perpendicular gradients
+    "pu12-3": 18, "pu12-5": 14, // differentiating x^n and multi-term expressions
+    "pu13-1": 16, "pu13-2": 12, // integrating x^n, indefinite integrals
+    "pu14-5": 12, "pu10-3": 12, // laws of logarithms, trig identities
+    "sm9-3": 16, "sm9-4": 14, // suvat
+    "sm6-3": 12, "sm2-4": 10 // cumulative binomial, standard deviation
   };
 
   const KIND = {
-    learn:    { label: "Full revision session", svg: "play" },
-    video:    { label: "Chapter summary video", svg: "play" },
+    learn: { label: "Full revision session", svg: "play" },
+    video: { label: "Chapter summary video", svg: "play" },
     questions:{ label: "Exam-style questions", svg: "pencil" },
     retrieval:{ label: "Retrieval practice", svg: "refresh" },
-    paper:    { label: "Past paper", svg: "paper" },
-    errors:   { label: "Error analysis", svg: "alert" },
-    formula:  { label: "Formula & recall drill", svg: "star" }
+    paper: { label: "Past paper", svg: "paper" },
+    errors: { label: "Error analysis", svg: "alert" },
+    formula: { label: "Formula & recall drill", svg: "star" }
   };
 
   /* ---------- priority scoring ---------- */
@@ -94,14 +94,14 @@ const Scheduler = (function () {
     if (due && covered) { s += 26; reasons.push("it is due for a spaced-repetition review"); }
 
     // 10. the method's order: Pure, then Statistics, then Mechanics, and
-    //     earlier chapters before later ones. A green rating changes how
-    //     urgent a chapter is, never whether you do it.
+    // earlier chapters before later ones. A green rating changes how
+    // urgent a chapter is, never whether you do it.
     if (typeof isChapterId === "function" && isChapterId(id)) {
-      const seq = Journey.sequenceIndex(id);          // 0..3xx, lower = sooner
+      const seq = Journey.sequenceIndex(id); // 0..3xx, lower = sooner
       s += Math.max(0, 120 - seq * 0.9);
       const phase = Journey.currentPhase();
       const inf2 = CHAPTER_INDEX[id];
-      if (phase && phase.paper && inf2.paper.id !== phase.paper) s -= 90;   // not this phase yet
+      if (phase && phase.paper && inf2.paper.id !== phase.paper) s -= 90; // not this phase yet
       if (Journey.chapterComplete(id)) s -= 60;
     }
 
@@ -163,7 +163,7 @@ const Scheduler = (function () {
     const examIso = s.examDate;
     const horizon = Math.min(200, Math.max(0, Metrics.diffDays(todayIso, examIso)));
 
-    const activeIds = Store.planIds();          // the method works chapter by chapter
+    const activeIds = Store.planIds(); // the method works chapter by chapter
 
     /* simulation state per topic */
     const sim = {};
@@ -185,7 +185,7 @@ const Scheduler = (function () {
     const oldDays = (st.plan && st.plan.days) || {};
     const days = {};
     Object.keys(oldDays).forEach(function (d) {
-      if (Metrics.diffDays(d, todayIso) > 0) days[d] = oldDays[d];  // strictly in the past
+      if (Metrics.diffDays(d, todayIso) > 0) days[d] = oldDays[d]; // strictly in the past
     });
     /* Tasks the user owns survive regeneration:
        - anything already done or skipped today (history)
@@ -199,7 +199,7 @@ const Scheduler = (function () {
     }
     const keptByDate = {};
     Object.keys(oldDays).forEach(function (d) {
-      if (Metrics.diffDays(d, todayIso) <= 0 && d !== todayIso) {   // today and later
+      if (Metrics.diffDays(d, todayIso) <= 0 && d !== todayIso) { // today and later
         const keep = oldDays[d].filter(function (t) { return t.manual || t.userMoved; });
         if (keep.length) keptByDate[d] = keep;
       }
@@ -220,8 +220,7 @@ const Scheduler = (function () {
 
       if (date === todayIso && todayKeep.length) {
         /* A skipped task didn't actually consume any time, so its slot is
-           freed up for the ranking loop below to fill with something else —
-           only tasks that were genuinely done, or deliberately placed by
+        freed up for the ranking loop below to fill with something else - only tasks that were genuinely done, or deliberately placed by
            hand, eat into today's remaining budget. */
         todayKeep.forEach(function (t) {
           tasks.push(t);
@@ -244,7 +243,7 @@ const Scheduler = (function () {
         const redRows = rankRows(activeIds, sim, date).filter(function (r) { return r.p.eff.rag === "red"; }).slice(0, 3);
         tasks.push(mk(date, {
           kind: "formula", title: "Formula and key-fact recall (both papers)", minutes: 25,
-          why: "It is the day before the exam. Short recall beats new content — go through the formulae you must memorise and the ones in the booklet."
+          why: "It is the day before the exam. Short recall beats new content, go through the formulae you must memorise and the ones in the booklet."
         }));
         used += 25;
         if (Store.get().papers.length) {
@@ -258,7 +257,7 @@ const Scheduler = (function () {
           if (used + 20 > cap) return;
           tasks.push(mk(date, {
             kind: "retrieval", topicId: r.id, title: r.p.info.sub.name, minutes: 20,
-            why: "Still your weakest area — light retrieval only, no new content tonight."
+            why: "Still your weakest area, light retrieval only, no new content tonight."
           }));
           used += 20;
         });
@@ -267,12 +266,12 @@ const Scheduler = (function () {
       }
 
       /* Was a given filler/slot kind skipped by hand today? If so, don't
-         recreate an identical one — these slots (paper, errors, formula) are
+      recreate an identical one, these slots (paper, errors, formula) are
          a deterministic rotation, not a pick from a pool, so regenerating
          after a skip would otherwise just respawn the exact same task and
          look like skipping did nothing. */
       function skippedToday(kind) {
-        if (isDismissed(date, kind)) return true;      // you removed it from this day
+        if (isDismissed(date, kind)) return true; // you removed it from this day
         return date === todayIso && oldDays[todayIso] && oldDays[todayIso].some(function (t) {
           return t.kind === kind && (st.taskState[t.id] || {}).status === "skipped";
         });
@@ -298,7 +297,7 @@ const Scheduler = (function () {
             kind: "paper", title: pt.title, minutes: mins, paperTarget: pt.paperTarget, full: pt.full,
             why: finalWeek
               ? (underCovered
-                 ? "Final week, but you have only covered " + coveredPct + "% of the specification. Papers have been thinned out and kept to sections so there is still room to cover new content — a full paper on material you have never seen mostly measures what you already know you are missing."
+                ? "Final week, but you have only covered " + coveredPct + "% of the specification. Papers have been thinned out and kept to sections so there is still room to cover new content, a full paper on material you have never seen mostly measures what you already know you are missing."
                  : "Final week: full timed papers under exam conditions are the highest-value work left.")
               : (coveredPct >= 55
                  ? "You have covered " + coveredPct + "% of the specification, so it is time to start putting topics together under time pressure."
@@ -324,7 +323,7 @@ const Scheduler = (function () {
         const r = rows[i];
         const id = r.id;
         if (tasks.some(function (t) { return t.topicId === id; })) continue;
-        if (isDismissed(date, id)) continue;           // taken off this day by hand
+        if (isDismissed(date, id)) continue; // taken off this day by hand
         const m = subMinutes(r.p.info.sub);
         const simT = sim[id];
 
@@ -344,7 +343,7 @@ const Scheduler = (function () {
           kind = "learn";
           title = r.p.info.sub.name;
           why = whyText(r.p);
-          if (finalWeek && !needVideo) why += " Final week: skipping the video — go straight to questions.";
+          if (finalWeek && !needVideo) why += " Final week: skipping the video, go straight to questions.";
           if (minutes > budget) {
             // shrink: questions only
             if (m.questions + 8 <= budget) { minutes = m.questions + 8; kind = "questions"; why += " Only " + Metrics.fmtMins(budget) + " left today, so this is a questions-only slot."; }
@@ -454,7 +453,7 @@ const Scheduler = (function () {
       if (!found) return;
       days[fromDate] = days[fromDate].filter(function (t) { return t.id !== taskId; });
       found.date = newDate;
-      found.userMoved = true;   // survives future regeneration
+      found.userMoved = true; // survives future regeneration
       if (!days[newDate]) days[newDate] = [];
       days[newDate].push(found);
       Store.log("Moved “" + found.title + "” to " + Metrics.fmtDate(newDate), "plan");
@@ -473,8 +472,8 @@ const Scheduler = (function () {
      Deleting a generated task is not enough on its own: the next
      regeneration would put it straight back, which is exactly what used to
      happen with skipped past papers. So a removal is recorded against that
-     date — by topic for a topic task, by kind for a paper, error-log or
-     formula slot — and generate() honours it.
+     date, by topic for a topic task, by kind for a paper, error-log or
+     formula slot, and generate() honours it.
 
      Skip and Remove are deliberately different. Skip leaves the task on the
      day as history and frees the time for something else; Remove takes it
@@ -507,14 +506,14 @@ const Scheduler = (function () {
       st.plan.days[d].forEach(function (t) { if (t.id === taskId) { found = t; onDate = d; } });
     });
     if (!found) return null;
-    /* one you added yourself just goes — there is nothing to suppress */
+    /* one you added yourself just goes, there is nothing to suppress */
     if (!found.manual) dismiss(onDate, found.topicId || found.kind);
     removeTask(taskId);
     return { task: found, date: onDate };
   }
 
   /* ---------- putting something on today by hand ----------
-     "I want to do Integration today" — even though the planner did not pick
+  "I want to do Integration today", even though the planner did not pick
      it. Tasks added this way are marked manual, so a plan regeneration
      leaves them exactly where you put them. */
   function todayTaskFor(topicId) {
@@ -541,7 +540,7 @@ const Scheduler = (function () {
     if (isOnToday(id)) return false;
     const inf = Store.info(id);
     if (!inf) return false;
-    undismiss(Metrics.today(), id);      // you changed your mind; let it back
+    undismiss(Metrics.today(), id); // you changed your mind; let it back
     const covered = Metrics.isCovered(id);
     addTask(Metrics.today(), {
       kind: covered ? "retrieval" : "learn",
@@ -574,7 +573,7 @@ const Scheduler = (function () {
   function whatNow(availableMins) {
     const todayIso = Metrics.today();
     const ph = Metrics.phase();
-    if (ph.key === "after") return { none: true, message: "Your exam date has passed. Well done — the tracker is now read-only for reference." };
+    if (ph.key === "after") return { none: true, message: "Your exam date has passed. Well done, the tracker is now read-only for reference." };
 
     const pending = tasksFor(todayIso).filter(function (t) { return t.status === "pending"; });
     let pick = null;
@@ -591,7 +590,7 @@ const Scheduler = (function () {
 
     if (pick) return { task: pick, fromPlan: true, phase: ph };
 
-    /* nothing left in today's plan — compute best next thing */
+    /* nothing left in today's plan, compute best next thing */
     const rows = Store.planIds().map(function (id) {
       return { id: id, p: priority(id) };
     }).sort(function (a, b) { return b.p.score - a.p.score; });
