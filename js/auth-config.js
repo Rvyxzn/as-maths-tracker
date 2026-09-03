@@ -40,8 +40,8 @@ const AUTH_CONFIG = {
      in store.js still reads and writes localStorage. See the
      "Moving to Supabase" note at the bottom of js/auth.js for
      what has to change. */
-  SUPABASE_URL: "",
-  SUPABASE_ANON_KEY: ""
+  SUPABASE_URL: "https://hgbyenbvsdlnixmtzmwx.supabase.co",
+  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhnYnllbmJ2c2Rsbml4bXR6bXd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0Njc4NjYsImV4cCI6MjEwNDA0Mzg2Nn0.ouf_6w6T8Qy48ftQOvSup5Zt0b-T9zNV0wZ3Q-zdE1M"
 };
 
 function googleConfigured() {
