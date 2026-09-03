@@ -1,25 +1,23 @@
 /* ============================================================
-Chapter learning data, playlists + question bank
-------------------------------------------------------------
+   Chapter learning data, playlists + question bank
+   ------------------------------------------------------------
    PLAYLISTS
-   Every id below was read directly off the Zeeshan Zamurred
-   YouTube channel playlists page (@zeeshanzamurred9280) and is
-   titled by chapter, matching our chapter structure exactly.
-   Nothing here is guessed.
+   All 44 ids below come from the Zeeshan Zamurred YouTube
+   channel (@zeeshanzamurred9280). Each one was verified by
+   fetching youtube.com/playlist?list=<id> and reading the real
+   page title back, so no id is guessed and none is paired with
+   a chapter by assumption. Every year and chapter number in the
+   playlist title matches the chapter it is attached to here.
 
-   Mechanics Year 1 Chapter 8 (Modelling in Mechanics) has NO
-   playlist on the channel. It is left null on purpose, paste
-   your own link in the app rather than being sent to a wrong
-   video.
+   Mechanics Year 1 Chapter 8 (Modelling in Mechanics) is the
+   ONE exception: the channel has no playlist for it. A playlist
+   of that name exists elsewhere on YouTube but belongs to a
+   different channel, so it is left null on purpose. Paste your
+   own link in the app rather than being sent to a wrong video.
 
-   The same applies to every YEAR 2 chapter. The Year 1 ids were
-   each read off the channel directly; no Year 2 playlist was
-   verified the same way, so all twenty are null rather than
-   guessed. Add your own link on the chapter and it is saved.
-
-   `count` is the number of videos where it was read from the
-   channel; where it was not visible it falls back to the number
-   of textbook sections as an estimate you can correct in-app.
+   `count` is the real number of videos in each playlist, counted
+   from the distinct video ids on the playlist page. You can still
+   correct it in-app if the channel adds or removes videos.
 
    QUESTIONS
    Past-paper questions from Yesterday's Maths Exam, PMT and
@@ -35,7 +33,7 @@ const CHAPTER_DATA = {
 
   /* ================= PURE ================= */
   pu1: {
-    playlist: { id: "PLo41lMdYNV1kYoZX3N8PKWuDi5W8RsSOu", count: 6, estimated: true },
+    playlist: { id: "PLo41lMdYNV1kYoZX3N8PKWuDi5W8RsSOu", count: 8 },
     questions: [
       { q: "Simplify (3x²y)³ × 2xy⁻¹, giving your answer in the form ax^m y^n.", marks: 3,
         ms: "(3x²y)³ = 27x⁶y³ [1]\n27x⁶y³ × 2xy⁻¹ = 54x⁷y² [2]\nAnswer: 54x⁷y²" },
@@ -46,7 +44,7 @@ const CHAPTER_DATA = {
     ]
   },
   pu2: {
-    playlist: { id: "PLo41lMdYNV1n-m6LE7lH8DLwnW-k1T166", count: 6, estimated: true },
+    playlist: { id: "PLo41lMdYNV1n-m6LE7lH8DLwnW-k1T166", count: 8 },
     questions: [
       { q: "Write 2x² − 12x + 7 in the form a(x + b)² + c, where a, b and c are constants.", marks: 3,
         ms: "2(x² − 6x) + 7 [1]\n= 2[(x − 3)² − 9] + 7 [1]\n= 2(x − 3)² − 11, so a = 2, b = −3, c = −11 [1]" },
@@ -57,7 +55,7 @@ const CHAPTER_DATA = {
     ]
   },
   pu3: {
-    playlist: { id: "PLo41lMdYNV1lKKiE8WPuFW_9ndkIsgha2", count: 7, estimated: true },
+    playlist: { id: "PLo41lMdYNV1lKKiE8WPuFW_9ndkIsgha2", count: 10 },
     questions: [
       { q: "Solve the inequality x² − 5x − 14 > 0, giving your answer in set notation.", marks: 3,
         ms: "(x − 7)(x + 2) > 0 [1]\nCritical values x = 7 and x = −2; positive parabola so outside the roots [1]\n{x : x < −2} ∪ {x : x > 7} [1]" },
@@ -68,7 +66,7 @@ const CHAPTER_DATA = {
     ]
   },
   pu4: {
-    playlist: { id: "PLo41lMdYNV1mnrskqtpbIFJoI2zq-bd2A", count: 7, estimated: true },
+    playlist: { id: "PLo41lMdYNV1mnrskqtpbIFJoI2zq-bd2A", count: 7 },
     questions: [
       { q: "Sketch the curve y = x(x − 2)(x + 3), showing clearly where it meets the axes.", marks: 3,
         ms: "Positive cubic shape [1]\nCuts the x-axis at x = −3, 0 and 2 [1]\nPasses through the origin, so the y-intercept is 0 [1]", sketch: "cubic-three-roots" },
@@ -79,7 +77,7 @@ const CHAPTER_DATA = {
     ]
   },
   pu5: {
-    playlist: { id: "PLo41lMdYNV1nG2GVM09B4gxjN1IjJBFa-", count: 5, estimated: true },
+    playlist: { id: "PLo41lMdYNV1nG2GVM09B4gxjN1IjJBFa-", count: 4 },
     questions: [
       { q: "The line l passes through A(−1, 4) and B(3, −4). Find an equation for l in the form ax + by + c = 0, where a, b and c are integers.", marks: 4,
         ms: "Gradient = (−4 − 4)/(3 − (−1)) = −8/4 = −2 [1]\ny − 4 = −2(x + 1) [1]\ny = −2x + 2 [1]\n2x + y − 2 = 0 [1]" },
@@ -90,7 +88,7 @@ const CHAPTER_DATA = {
     ]
   },
   pu6: {
-    playlist: { id: "PLo41lMdYNV1m8EafJw7eQbygliabFXsFJ", count: 5, estimated: true },
+    playlist: { id: "PLo41lMdYNV1m8EafJw7eQbygliabFXsFJ", count: 7 },
     questions: [
       { q: "A circle has equation x² + y² − 6x + 4y − 12 = 0. Find its centre and radius.", marks: 3,
         ms: "(x − 3)² − 9 + (y + 2)² − 4 − 12 = 0 [1]\n(x − 3)² + (y + 2)² = 25 [1]\nCentre (3, −2), radius 5 [1]" },
@@ -101,7 +99,7 @@ const CHAPTER_DATA = {
     ]
   },
   pu7: {
-    playlist: { id: "PLo41lMdYNV1m6VH0PAXbxHv98Vaouzmhl", count: 5, estimated: true },
+    playlist: { id: "PLo41lMdYNV1m6VH0PAXbxHv98Vaouzmhl", count: 8 },
     questions: [
       { q: "f(x) = 2x³ − 5x² − 4x + 3. Show that (x − 3) is a factor of f(x).", marks: 2,
         ms: "f(3) = 2(27) − 5(9) − 4(3) + 3 [1]\n= 54 − 45 − 12 + 3 = 0, so (x − 3) is a factor [1]" },
@@ -112,7 +110,7 @@ const CHAPTER_DATA = {
     ]
   },
   pu8: {
-    playlist: { id: "PLo41lMdYNV1lC639HvfPgh3L33jLf0bfj", count: 5, estimated: true },
+    playlist: { id: "PLo41lMdYNV1lC639HvfPgh3L33jLf0bfj", count: 7 },
     questions: [
       { q: "Find the first three terms, in ascending powers of x, of the expansion of (2 + 3x)⁵.", marks: 4,
         ms: "2⁵ = 32 [1]\n5 × 2⁴ × 3x = 240x [1]\n10 × 2³ × (3x)² = 720x² [1]\n32 + 240x + 720x² [1]" },
@@ -178,7 +176,7 @@ const CHAPTER_DATA = {
     ]
   },
   pu14: {
-    playlist: { id: "PLo41lMdYNV1lo5znVdjcSF8KpGPBSe7hO", count: 8, estimated: true },
+    playlist: { id: "PLo41lMdYNV1lo5znVdjcSF8KpGPBSe7hO", count: 11 },
     questions: [
       { q: "Solve 3^x = 20, giving your answer to 3 significant figures.", marks: 2,
         ms: "x = log₃20 = (ln 20)/(ln 3) [1]\n= 2.73 [1]" },
@@ -202,7 +200,7 @@ const CHAPTER_DATA = {
     ]
   },
   st2: {
-    playlist: { id: "PLo41lMdYNV1kPRx-8X7qWWpkRPdH1Nwsl", count: 5, estimated: true },
+    playlist: { id: "PLo41lMdYNV1kPRx-8X7qWWpkRPdH1Nwsl", count: 7 },
     questions: [
       { q: "For a set of 10 values, Σx = 250 and Σx² = 6850. Find the mean and the standard deviation.", marks: 4,
         ms: "Mean = 250/10 = 25 [1]\nSxx = 6850 − 250²/10 = 6850 − 6250 = 600 [1]\nVariance = 600/10 = 60 [1]\nSd = √60 = 7.75 [1]" },
@@ -246,7 +244,7 @@ const CHAPTER_DATA = {
     ]
   },
   st6: {
-    playlist: { id: "PLo41lMdYNV1k4mcgVktfW7EBZcIcRcQ7P", count: 3, estimated: true },
+    playlist: { id: "PLo41lMdYNV1k4mcgVktfW7EBZcIcRcQ7P", count: 6 },
     questions: [
       { q: "The random variable X ~ B(10, 0.3). Find P(X = 4), to 4 decimal places.", marks: 2,
         ms: "P(X = 4) = ¹⁰C₄ (0.3)⁴ (0.7)⁶ [1]\n= 210 × 0.0081 × 0.117649 = 0.2001 [1]" },
@@ -257,7 +255,7 @@ const CHAPTER_DATA = {
     ]
   },
   st7: {
-    playlist: { id: "PLo41lMdYNV1l1GFUMKxexqSicXzNg5wh4", count: 4, estimated: true },
+    playlist: { id: "PLo41lMdYNV1l1GFUMKxexqSicXzNg5wh4", count: 7 },
     questions: [
       { q: "A coin is suspected of being biased towards heads. State suitable null and alternative hypotheses.", marks: 2,
         ms: "H₀: p = 0.5 [1]\nH₁: p > 0.5, where p is the probability of a head [1]" },
@@ -322,7 +320,7 @@ directly. No Year 2 playlist was verified the same way, so every Year 2
 chapter is left null rather than pointing you at a guessed link, add
 your own in the app and it is remembered. */
 pu2c1: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1mBKLCyU3yuZ6vN8hddYhFz", count: 11 },
   questions: [
     { q: "Express (5x + 3) / ((x + 3)(x − 1)) in partial fractions.", marks: 4,
       ms: "Let (5x + 3)/((x+3)(x−1)) = A/(x+3) + B/(x−1) [1]\n5x + 3 = A(x − 1) + B(x + 3) [1]\nx = 1: 8 = 4B ⇒ B = 2 [1]\nx = −3: −12 = −4A ⇒ A = 3\nAnswer: 3/(x+3) + 2/(x−1) [1]" },
@@ -333,7 +331,7 @@ pu2c1: {
   ]
 },
 pu2c2: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1narKEOjF0Qm3WopATLWQkj", count: 18 },
   questions: [
     { q: "The functions f and g are defined by f(x) = 2x + 1 and g(x) = x², x ∈ ℝ. Find fg(3) and gf(3).", marks: 3,
       ms: "fg(3) = f(9) = 2(9) + 1 = 19 [2]\ngf(3) = g(7) = 49 [1]" },
@@ -344,7 +342,7 @@ pu2c2: {
   ]
 },
 pu2c3: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1lLsYSbrxhWj8KfcCZmXKCR", count: 15 },
   questions: [
     { q: "An arithmetic series has first term 7 and common difference 4. Find the sum of the first 20 terms.", marks: 3,
       ms: "S₂₀ = 20/2 (2(7) + 19(4)) [1]\n= 10(14 + 76) = 10(90) [1]\n= 900 [1]" },
@@ -355,7 +353,7 @@ pu2c3: {
   ]
 },
 pu2c4: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1mR6vOiegRFfsASSSeeeJcY", count: 9 },
   questions: [
     { q: "Find the binomial expansion of (1 + 4x)^(1/2) in ascending powers of x up to and including the term in x², and state the range of validity.", marks: 5,
       ms: "(1+4x)^(1/2) = 1 + (1/2)(4x) + ((1/2)(−1/2)/2!)(4x)² + … [2]\n= 1 + 2x + (−1/8)(16x²) [1]\n= 1 + 2x − 2x² [1]\nValid for |4x| < 1, i.e. |x| < 1/4 [1]" },
@@ -366,7 +364,7 @@ pu2c4: {
   ]
 },
 pu2c5: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1n5TyVi_R-KlRdFJvyWvu7q", count: 9 },
   questions: [
     { q: "A sector of a circle of radius 8 cm subtends an angle of 0.6 radians at the centre. Find its arc length and area.", marks: 3,
       ms: "l = rθ = 8(0.6) = 4.8 cm [1]\nA = ½r²θ = ½(64)(0.6) [1]\n= 19.2 cm² [1]" },
@@ -377,7 +375,7 @@ pu2c5: {
   ]
 },
 pu2c6: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1kw4hRmTFiSAT5rY5IShh0D", count: 11 },
   questions: [
     { q: "Prove that 1 + tan²x = sec²x.", marks: 3,
       ms: "Start from sin²x + cos²x = 1 [1]\nDivide every term by cos²x: sin²x/cos²x + 1 = 1/cos²x [1]\ntan²x + 1 = sec²x as required [1]" },
@@ -388,7 +386,7 @@ pu2c6: {
   ]
 },
 pu2c7: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1lWy3yginlDIPm8RV30z5Oz", count: 17 },
   questions: [
     { q: "Express 3 sin x + 4 cos x in the form R sin(x + α) where R > 0 and 0 < α < 90°.", marks: 4,
       ms: "R = √(3² + 4²) = 5 [2]\ntan α = 4/3 [1]\nα = 53.1°, so 5 sin(x + 53.1°) [1]" },
@@ -399,7 +397,7 @@ pu2c7: {
   ]
 },
 pu2c8: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1n5oZPj66Q2kNPMV6ZvI12t", count: 10 },
   questions: [
     { q: "A curve has parametric equations x = 2t, y = t² − 3. Find a Cartesian equation for the curve.", marks: 3,
       ms: "From x = 2t, t = x/2 [1]\ny = (x/2)² − 3 [1]\ny = x²/4 − 3 [1]" },
@@ -410,7 +408,7 @@ pu2c8: {
   ]
 },
 pu2c9: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1kf2KATmaDlYnn_GCxdETmM", count: 29 },
   questions: [
     { q: "Differentiate y = x² sin x with respect to x.", marks: 3,
       ms: "Product rule with u = x², v = sin x [1]\ndy/dx = 2x sin x + x² cos x [2]" },
@@ -421,7 +419,7 @@ pu2c9: {
   ]
 },
 pu2c10: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1l5hBis2KQTeE_NlQRsoost", count: 8 },
   questions: [
     { q: "Show that the equation x³ − 4x + 1 = 0 has a root between x = 1 and x = 2.", marks: 3,
       ms: "f(1) = 1 − 4 + 1 = −2 [1]\nf(2) = 8 − 8 + 1 = 1 [1]\nSign change and f(x) is continuous on [1, 2], so a root lies in the interval [1]" },
@@ -432,7 +430,7 @@ pu2c10: {
   ]
 },
 pu2c11: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1njwJtAqPBNC-9VfRSpDlFQ", count: 36 },
   questions: [
     { q: "Find ∫ 6x / (3x² + 1) dx.", marks: 3,
       ms: "The numerator is the derivative of the denominator [1]\nSo the integral is of the form f'(x)/f(x) [1]\n= ln|3x² + 1| + c [1]" },
@@ -443,7 +441,7 @@ pu2c11: {
   ]
 },
 pu2c12: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1lPr1ZJzcrE_uMY48Pj8sYg", count: 8 },
   questions: [
     { q: "Find the magnitude of the vector a = 2i − 3j + 6k.", marks: 2,
       ms: "|a| = √(2² + (−3)² + 6²) = √(4 + 9 + 36) [1]\n= √49 = 7 [1]" },
@@ -456,7 +454,7 @@ pu2c12: {
 
 /* ================= STATISTICS, YEAR 2 ================= */
 st2c1: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1keNegTTWraUtlbbtVI939i", count: 5 },
   questions: [
     { q: "A sample of 12 pairs of data gives a product moment correlation coefficient of 0.62. Test at the 5% level whether there is evidence of positive correlation. The critical value for n = 12 at 5% (one-tailed) is 0.4973.", marks: 4,
       ms: "H₀: ρ = 0, H₁: ρ > 0 [1]\nOne-tailed test, 5%, n = 12, critical value 0.4973 [1]\n0.62 > 0.4973, so reject H₀ [1]\nThere is evidence at the 5% level of positive correlation between the variables [1]" },
@@ -467,7 +465,7 @@ st2c1: {
   ]
 },
 st2c2: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1mk1_JB9q2LjTOduVUp_9Mn", count: 7 },
   questions: [
     { q: "Events A and B are such that P(A) = 0.4, P(B) = 0.5 and P(A ∩ B) = 0.2. Find P(A | B).", marks: 2,
       ms: "P(A|B) = P(A ∩ B)/P(B) = 0.2/0.5 [1]\n= 0.4 [1]" },
@@ -478,7 +476,7 @@ st2c2: {
   ]
 },
 st2c3: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1kza6lC3k-OqQMbgal-wuo6", count: 11 },
   questions: [
     { q: "The random variable X ~ N(50, 8²). Find P(X < 56).", marks: 3,
       ms: "Z = (56 − 50)/8 = 0.75 [1]\nP(Z < 0.75) [1]\n= 0.7734 [1]" },
@@ -491,7 +489,7 @@ st2c3: {
 
 /* ================= MECHANICS, YEAR 2 ================= */
 me2c4: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1nPd1IXh1uIwsKzCbhBSqK6", count: 7 },
   questions: [
     { q: "A uniform rod AB of length 4 m and mass 6 kg rests horizontally on supports at A and B. A mass of 10 kg is placed 1 m from A. Find the reaction at A. Take g = 9.8.", marks: 5,
       ms: "Weight of rod 6g acts at the midpoint, 2 m from A [1]\nTaking moments about B: R_A(4) = 6g(2) + 10g(3) [2]\n4R_A = 12g + 30g = 42g [1]\nR_A = 10.5g = 102.9 N [1]" },
@@ -502,7 +500,7 @@ me2c4: {
   ]
 },
 me2c5: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1k5OgYqd7gQcUin6FjrYPpR", count: 5 },
   questions: [
     { q: "A block of mass 4 kg rests on a rough horizontal surface with coefficient of friction 0.3. Find the least horizontal force needed to move it. Take g = 9.8.", marks: 3,
       ms: "R = mg = 4(9.8) = 39.2 N [1]\nF_max = μR = 0.3(39.2) [1]\n= 11.76 N [1]" },
@@ -513,7 +511,7 @@ me2c5: {
   ]
 },
 me2c6: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1mFUEt-7smdqd1AdAUM5q7X", count: 7 },
   questions: [
     { q: "A ball is thrown horizontally at 15 m/s from a height of 20 m. Find the time it takes to reach the ground. Take g = 9.8.", marks: 3,
       ms: "Vertically: s = ut + ½at², with u = 0 [1]\n20 = ½(9.8)t² [1]\nt² = 4.0816 ⇒ t = 2.02 s [1]" },
@@ -524,7 +522,7 @@ me2c6: {
   ]
 },
 me2c7: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1kphodGG4PCibacTWyA413R", count: 12 },
   questions: [
     { q: "A uniform ladder of mass 20 kg and length 5 m rests against a smooth vertical wall on rough horizontal ground, at 60° to the ground. Find the normal reaction from the wall. Take g = 9.8.", marks: 5,
       ms: "Let S be the reaction at the wall, acting horizontally [1]\nTaking moments about the base: S(5 sin 60°) = 20g(2.5 cos 60°) [2]\nS(4.330) = 20(9.8)(1.25) = 245 [1]\nS = 56.6 N [1]" },
@@ -535,7 +533,7 @@ me2c7: {
   ]
 },
 me2c8: {
-  playlist: null,
+  playlist: { id: "PLo41lMdYNV1l8qJbJM-tq12VWzDlg_C2B", count: 8 },
   questions: [
     { q: "A particle has position vector r = (t² − 2t)i + (3t)j metres. Find its velocity when t = 3.", marks: 3,
       ms: "v = dr/dt = (2t − 2)i + 3j [2]\nAt t = 3: v = 4i + 3j m/s [1]" },
