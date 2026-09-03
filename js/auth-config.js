@@ -32,7 +32,12 @@ const AUTH_CONFIG = {
 
      Paste it below. Until you do, the Google button renders
      disabled and says it is not configured. */
-  GOOGLE_CLIENT_ID: "",
+  /* Recorded for reference. With Supabase configured below, Google sign-in
+     goes through Supabase rather than through this id: Supabase holds the
+     matching client secret and verifies Google's token server-side, which a
+     static site cannot do for itself. This value is only used by the
+     no-backend fallback path in auth.js. */
+  GOOGLE_CLIENT_ID: "787386197270-nscsm82vbrk67kqm4el85kpn58ipso4g.apps.googleusercontent.com",
 
   /* ---------- Supabase (not wired up yet) ----------
      Slots for when you move progress off the device and into the
