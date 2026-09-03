@@ -307,10 +307,51 @@ const Auth = (function () {
     return current;
   }
 
+  /* ---------- cloud accounts ----------
+     A Supabase account is a profile like any other, so everything below it
+     (which save file to open, the sidebar, Settings) keeps working unchanged.
+     The difference is `cloudId`, which Sync uses as the row key, and that its
+     data is mirrored to the server rather than living only here. */
+  function adoptCloudUser(user) {
+    if (!user) return null;
+    const m = user.user_metadata || {};
+    const profile = {
+      id: "cloud-" + user.id,
+      cloudId: user.id,
+      name: m.full_name || m.name || (user.email || "").split("@")[0] || "Account",
+      email: user.email || "",
+      picture: m.avatar_url || m.picture || "",
+      subjects: m.subjects || [],
+      provider: "cloud",
+      passcodeHash: null,
+      createdAt: user.created_at || new Date().toISOString(),
+      lastSeenAt: new Date().toISOString()
+    };
+    const list = profiles();
+    const i = list.findIndex(function (p) { return p.id === profile.id; });
+    if (i >= 0) { profile.createdAt = list[i].createdAt; list[i] = profile; }
+    else list.push(profile);
+    saveProfiles(list);
+    setCurrent(profile);
+    return profile;
+  }
+
+  /* Restores a Supabase session on load, so you are not asked to sign in
+     again on every refresh. */
+  function restoreCloudSession() {
+    if (typeof Cloud === "undefined" || !Cloud.configured()) return Promise.resolve(null);
+    return Cloud.currentUser().then(function (user) {
+      return user ? adoptCloudUser(user) : null;
+    }).catch(function () { return null; });
+  }
+
   return {
     init: init,
     current: function () { return current; },
     isSignedIn: function () { return !!current; },
+    isCloud: function () { return !!(current && current.provider === "cloud" && current.cloudId); },
+    adoptCloudUser: adoptCloudUser,
+    restoreCloudSession: restoreCloudSession,
     onChange: function (fn) { listeners.push(fn); },
 
     profiles: profiles,

@@ -291,6 +291,30 @@ const SettingsView = (function () {
     App.render();
   }
 
+  /* Download an arbitrary state document, not just the live one. Used when
+     resolving a sync conflict, so the copy being replaced is saved to a file
+     before it goes, and a wrong click stays recoverable. */
+  function exportSnapshot(stateDoc, label) {
+    try {
+      const payload = JSON.stringify({
+        app: "A-Level Maths Revision Tracker",
+        exportedAt: new Date().toISOString(),
+        note: "Copy kept automatically while resolving a sync conflict",
+        data: stateDoc
+      }, null, 2);
+      const blob = new Blob([payload], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "revision-tracker-" + (label || "snapshot") + "-" + Metrics.today() + ".json";
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+      return true;
+    } catch (e) {
+      console.error("Could not save the snapshot", e);
+      return false;
+    }
+  }
+
   /* Restoring is destructive, so the file is read and described first. You
      see what is in it beside what you already have, and only then decide.
      The previous data is kept either way, so a mistake here is recoverable. */
@@ -455,5 +479,6 @@ const SettingsView = (function () {
     return false;
   }
 
-  return { render: render, handle: handle, importFile: handleImportFile };
+  return { render: render, handle: handle, importFile: handleImportFile,
+           exportSnapshot: exportSnapshot };
 })();

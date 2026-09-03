@@ -1669,3 +1669,22 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .who-av-i{display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;
   background:var(--accent);color:var(--accent-ink)}
 .who-name{font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ---------- sign-up subjects ---------- */
+.subject-grid{display:flex;flex-wrap:wrap;gap:7px;margin-top:5px}
+.subject-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:20px;
+  border:1px solid var(--border);background:var(--surface-2);cursor:pointer;font-size:12.5px;
+  transition:.13s;user-select:none}
+.subject-chip input{margin:0;cursor:pointer}
+.subject-chip:has(input:checked){border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.subject-chip.req{opacity:.85;cursor:default}
+.subject-chip.req input{cursor:default}
+
+/* ---------- sync status ---------- */
+.sync-chip{display:block;width:100%;text-align:center;font-size:11px;font-weight:600;
+  padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--surface-2);
+  color:var(--muted);cursor:pointer;font-family:inherit;transition:.13s}
+.sync-chip:hover{border-color:var(--accent)}
+.sync-chip.ok{color:var(--green)}
+.sync-chip.warn{color:var(--amber);border-color:var(--amber)}
+.sync-chip.bad{color:var(--red);border-color:var(--red)}

@@ -213,7 +213,34 @@ function setSidebar(open) {
       '<div class="who-row">' + av +
         '<span class="who-name" title="' + UI.esc(u.email || u.name) + '">' + UI.esc(u.name) + '</span>' +
       '</div>' +
+      syncChipHtml() +
       '<button class="btn btn-ghost btn-sm btn-block" data-action="sign-out">Sign out</button>';
+  }
+
+  /* Whether this device is actually in step with the account. Silence here
+     would be worse than a label: the whole point of an account is knowing
+     your work is safe, so say when it is not. */
+  function syncChipHtml() {
+    if (typeof Sync === "undefined" || !Sync.enabled()) return "";
+    const s = Sync.state();
+    const map = {
+      idle:    ["ok",   "✓ Synced"],
+      syncing: ["",     "↻ Syncing…"],
+      offline: ["warn", "⃠ Offline, saved here"],
+      error:   ["bad",  "! Sync failed"]
+    };
+    const m = map[s.status] || ["", ""];
+    if (!m[1]) return "";
+    const title = s.status === "error" ? s.error
+      : s.status === "offline" ? "Your work is saved on this device and will sync when you are back online"
+      : s.lastSyncedAt ? "Last synced " + Metrics.relativeTime(s.lastSyncedAt) : "";
+    return '<button class="sync-chip ' + m[0] + '" data-action="sync-now" title="' + UI.esc(title) + '">' +
+      m[1] + '</button>';
+  }
+
+  function renderSyncChip() {
+    const el = document.getElementById("whoAmI");
+    if (el && Auth.isSignedIn()) renderWhoAmI();
   }
 
   /* ============================================================
@@ -275,6 +302,14 @@ function setSidebar(open) {
     if (CalendarView.handle(action, el)) return;
     if (PapersView.handle(action, el)) return;
     if (AssessmentsView.handle(action, el)) return;
+    if (action === "sync-now") {
+      UI.toast("Syncing…", "info", 1500);
+      Sync.pushNow().then(function (ok) {
+        UI.toast(ok ? "Synced to your account" : "Could not sync, your work is still saved here",
+                 ok ? "ok" : "warn");
+      });
+      return;
+    }
     if (LoginView.handle(action, el)) return;
     if (SettingsView.handle(action, el)) return;
     if (WeaknessesView.handle(action, el)) return;
@@ -1871,6 +1906,25 @@ function setSidebar(open) {
     Auth.init();
     Store.init();
     applyTheme();
+
+    /* A Supabase session outlives a refresh, and Google sign-in comes back
+       through a redirect, so both are resolved after the first paint rather
+       than blocking it. Once the session is known, the state is reloaded for
+       that account and reconciled with the server. */
+    if (Cloud.configured()) {
+      Sync.init();
+      Auth.restoreCloudSession().then(function (profile) {
+        if (!profile) { render(); return; }
+        Store.reloadForUser();
+        render();
+        Sync.pullOnSignIn(profile.cloudId).then(function (r) {
+          if (r.action === "pulled") { render(); UI.toast("Progress restored from your account", "ok"); }
+          else if (r.action === "conflict") { render(); UI.toast("Two copies of your progress found, see Settings", "warn", 6000); }
+          else render();
+        });
+      });
+      Sync.on(function () { renderSyncChip(); });
+    }
 
     document.addEventListener("click", onClick);
 

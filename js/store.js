@@ -199,6 +199,10 @@ const Store = (function () {
     const doIt = function () {
       try { localStorage.setItem(storageKey(), JSON.stringify(state)); }
       catch (e) { console.error("Save failed", e); UI && UI.toast && UI.toast("Could not save, storage may be full", "bad"); }
+      /* Local write first, always. The cloud push is scheduled after it and
+         on a longer delay, so a slow or missing network can never block or
+         lose a save that has already succeeded here. */
+      if (typeof Sync !== "undefined" && Sync.enabled()) Sync.schedulePush();
     };
     if (immediate) doIt(); else saveTimer = setTimeout(doIt, 180);
   }
@@ -213,6 +217,21 @@ const Store = (function () {
     return state;
   }
 
+  /* Adopt a state document that came from somewhere else, currently the
+     cloud row on sign-in. Goes through the same migration and backfill path
+     as a load from disk, so an older document from another device is brought
+     up to date rather than trusted as-is. */
+  function replaceState(incoming) {
+    if (!incoming || typeof incoming !== "object") return state;
+    state = Object.assign(defaultState(), incoming);
+    state.settings = Object.assign(defaultState().settings, incoming.settings || {});
+    migrate(state);
+    ensureTopics();
+    save(true);
+    emit();
+    return state;
+  }
+
   function emit() { listeners.forEach(function (fn) { fn(state); }); }
 
   /* ---------- public API ---------- */
@@ -222,6 +241,7 @@ const Store = (function () {
 
     init: function () { load(); return state; },
     reloadForUser: reloadForUser,
+    replaceState: replaceState,
     get: function () { return state; },
     settings: function () { return state.settings; },
     topic: function (id) {
