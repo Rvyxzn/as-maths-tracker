@@ -52,8 +52,7 @@ const Sync = (function () {
     if (!enabled()) return Promise.resolve({ action: "skipped" });
     setStatus("syncing");
 
-    const localState = Store.get();
-    const localTouched = countWork(localState);
+    const localTouched = bundleWork(collectBundle());
 
     return Cloud.pull().then(function (row) {
       /* Nothing in the cloud yet: this device seeds it. */
@@ -64,7 +63,7 @@ const Sync = (function () {
         });
       }
 
-      const remoteTouched = countWork(row.state);
+      const remoteTouched = bundleWork(row.state);
       const m = meta();
       const localStamp = m.lastPushedAt || null;
 
@@ -102,6 +101,81 @@ const Sync = (function () {
     });
   }
 
+  /* ---------- the bundle ----------
+     One cloud row holds every subject, not just the one on screen. Syncing
+     only the active subject would mean whichever subject you happened to be
+     looking at overwrote the row and quietly dropped the others.
+
+     Shape: { __bundle: 2, subjects: { maths: <state>, economics: <state> } }
+     A row without __bundle predates this and is a bare Maths document. */
+  const BUNDLE_VERSION = 2;
+
+  function keyFor(subjectId) {
+    const base = (typeof Auth !== "undefined" && Auth.isSignedIn())
+      ? Auth.storageKey() : STORAGE_KEY_BASE;
+    return base + Subjects.storageSuffix(subjectId);
+  }
+
+  function readSubject(subjectId) {
+    /* The active subject is read from memory, because unsaved edits live
+       there for a moment before the debounced write lands. */
+    if (subjectId === Subjects.currentId()) return Store.get();
+    try { return JSON.parse(localStorage.getItem(keyFor(subjectId)) || "null"); }
+    catch (e) { return null; }
+  }
+
+  function collectBundle() {
+    const subjects = {};
+    Subjects.ids().forEach(function (id) {
+      const doc = readSubject(id);
+      if (doc && doc.topics) subjects[id] = doc;
+    });
+    return { __bundle: BUNDLE_VERSION, subjects: subjects };
+  }
+
+  /* Accept either shape, so a row written before subjects existed still
+     loads instead of being read as empty. */
+  function asBundle(remote) {
+    if (!remote) return { __bundle: BUNDLE_VERSION, subjects: {} };
+    if (remote.__bundle && remote.subjects) return remote;
+    return { __bundle: 1, subjects: { maths: remote } };
+  }
+
+  /* Write every subject in the bundle to its own key, then reopen the one on
+     screen so the running views are looking at the new data. */
+  function applyBundle(remote) {
+    const b = asBundle(remote);
+    Object.keys(b.subjects).forEach(function (id) {
+      if (!Subjects.get(id)) return;              // a subject this build lacks
+      const doc = b.subjects[id];
+      if (!doc || !doc.topics) return;
+      if (id === Subjects.currentId()) Store.replaceState(doc);
+      else {
+        try { localStorage.setItem(keyFor(id), JSON.stringify(doc)); } catch (e) {}
+      }
+    });
+  }
+
+  /* Work across every subject in a bundle, for deciding whether a side is
+     empty and for describing a conflict. */
+  function bundleWork(remote) {
+    const b = asBundle(remote);
+    return Object.keys(b.subjects).reduce(function (n, id) {
+      return n + countWork(b.subjects[id]);
+    }, 0);
+  }
+
+  function describeBundle(remote) {
+    const b = asBundle(remote);
+    const parts = Object.keys(b.subjects).map(function (id) {
+      const s = Subjects.get(id);
+      const w = countWork(b.subjects[id]);
+      if (!w) return null;
+      return (s ? s.short : id) + ": " + describe(b.subjects[id]);
+    }).filter(Boolean);
+    return parts.length ? parts.join("  ·  ") : "empty";
+  }
+
   /* A rough "how much is in here", used only to tell an empty tracker from a
      used one and to describe each side of a conflict in plain numbers. */
   function countWork(st) {
@@ -131,9 +205,9 @@ const Sync = (function () {
            (st.papers || []).length + " papers";
   }
 
-  /* Replace local state with the cloud's copy. */
+  /* Replace every local subject with the cloud's copy. */
   function adopt(remoteState, updatedAt) {
-    Store.replaceState(remoteState);
+    applyBundle(remoteState);
     lastSyncedAt = updatedAt;
     const m = meta();
     m.lastPushedAt = updatedAt;
@@ -155,7 +229,7 @@ const Sync = (function () {
     if (!user || !user.cloudId) return Promise.resolve(false);
 
     setStatus("syncing");
-    return Cloud.push(Store.get(), user.cloudId).then(function (updatedAt) {
+    return Cloud.push(collectBundle(), user.cloudId).then(function (updatedAt) {
       lastSyncedAt = updatedAt || new Date().toISOString();
       const m = meta();
       m.lastPushedAt = lastSyncedAt;
@@ -203,6 +277,10 @@ const Sync = (function () {
     pushNow: function () { return push(true); },
     adopt: adopt,
     describe: describe,
+    describeBundle: describeBundle,
+    collectBundle: collectBundle,
+    applyBundle: applyBundle,
+    bundleWork: bundleWork,
     countWork: countWork,
     clearMeta: function () { setMeta({}); lastSyncedAt = null; }
   };

@@ -22,7 +22,7 @@ const LoginView = (function () {
      for. The rest are recorded so the account knows what you take, ready for
      when other subjects are tracked too. */
   const SUBJECTS = [
-    { id: "maths", label: "Maths", required: true },
+    { id: "maths", label: "Maths", required: true },   // the tracker opens on Maths
     { id: "further-maths", label: "Further Maths" },
     { id: "physics", label: "Physics" },
     { id: "chemistry", label: "Chemistry" },
@@ -49,9 +49,10 @@ const LoginView = (function () {
       '<div class="login-wrap">' +
         '<div class="login-card">' +
           '<div class="login-brand">' +
-            '<div class="brand-mark login-mark">∑</div>' +
-            '<div><div class="login-title">A-Level Maths</div>' +
-              '<div class="login-sub">Revision Tracker</div></div>' +
+            '<div class="brand-mark login-mark" data-subject="' + Subjects.currentId() + '">' +
+              UI.esc(Subjects.current().mark) + '</div>' +
+            '<div><div class="login-title">Revision Tracker</div>' +
+              '<div class="login-sub">' + UI.esc(Subjects.list().map(function (x) { return x.short; }).join(" · ")) + '</div></div>' +
           '</div>' +
 
           (error  ? '<div class="warnbox bad login-error">' + UI.esc(error) + '</div>' : "") +
@@ -137,9 +138,10 @@ const LoginView = (function () {
               '<span>' + UI.esc(s.label) + '</span></label>';
           }).join("") +
         '</div>' +
-        '<div class="tiny faint" style="margin-top:7px">Maths is fixed: it is the only subject this tracker ' +
-          'has the specification and questions for. The others are saved to your account so it knows your ' +
-          'workload, and are not tracked yet.</div></div>' +
+        '<div class="tiny faint" style="margin-top:7px">' +
+          UI.esc(Subjects.list().map(function (x) { return x.name.replace(/^A-Level /, ""); }).join(", ")) +
+          ' are tracked in full, with their specifications built in. The rest are saved to your account so it ' +
+          'knows your workload, and are not tracked yet.</div></div>' +
 
       '<div class="field"><label class="label">Exam date</label>' +
         '<input class="input" id="suExam" type="date" value="' + UI.esc(Store.settings().examDate) + '"></div>' +
@@ -307,7 +309,7 @@ const LoginView = (function () {
     /* Signing into a fresh account on a device that already has work saved
        under a device profile. That work is not visible from a cloud account,
        so offer to bring it in rather than leaving it stranded. */
-    const incoming = Sync.countWork(Store.get());
+    const incoming = Sync.bundleWork(Sync.collectBundle());
     const local = Auth.localProfilesWithData();
     if (incoming === 0 && local.length) {
       offerLocalImport(local, user);
@@ -386,11 +388,11 @@ const LoginView = (function () {
         'not the same. Choose which to keep. The other is not deleted: it is exported to a file first.</p>' +
         '<div class="grid g2" style="gap:12px">' +
           '<div class="card"><b>On this device</b>' +
-            '<div class="tiny muted" style="margin-top:6px">' + UI.esc(Sync.describe(Store.get())) + '</div>' +
+            '<div class="tiny muted" style="margin-top:6px">' + UI.esc(Sync.describeBundle(Sync.collectBundle())) + '</div>' +
             '<button class="btn btn-primary btn-block" style="margin-top:12px" data-keep="local">Keep this device\'s</button>' +
           '</div>' +
           '<div class="card"><b>In your account</b>' +
-            '<div class="tiny muted" style="margin-top:6px">' + UI.esc(Sync.describe(r.remoteState)) + '<br>' +
+            '<div class="tiny muted" style="margin-top:6px">' + UI.esc(Sync.describeBundle(r.remoteState)) + '<br>' +
               'last saved on ' + UI.esc(r.remoteDevice) + ', ' + Metrics.fmtDate(r.remoteUpdatedAt) + '</div>' +
             '<button class="btn btn-primary btn-block" style="margin-top:12px" data-keep="remote">Keep the account\'s</button>' +
           '</div>' +
@@ -402,7 +404,7 @@ const LoginView = (function () {
             const keep = b.dataset.keep;
             /* Export the copy that is about to be replaced, so a wrong click
                here is recoverable rather than final. */
-            SettingsView.exportSnapshot(keep === "local" ? r.remoteState : Store.get(),
+            SettingsView.exportSnapshot(keep === "local" ? r.remoteState : Sync.collectBundle(),
               keep === "local" ? "account-copy" : "this-device-copy");
             if (keep === "remote") Sync.adopt(r.remoteState, r.remoteUpdatedAt);
             else Sync.pushNow();

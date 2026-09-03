@@ -65,6 +65,22 @@ const Subjects = (function () {
       usesYears: false,
       papersLabel: "Themes",
       searchHint: "Search topics, e.g. elasticity, externalities, oligopoly…"
+    },
+    geography: {
+      id: "geography",
+      name: "A-Level Geography",
+      short: "Geog",
+      mark: "◐",                       // globe-ish
+      qualification: "Pearson Edexcel A level Geography (9GE0)",
+      unit: "enquiry question",
+      unitPlural: "enquiry questions",
+      spec: function () { return GEO_SPEC; },
+      examFocus: function () { return GEO_EXAM_FOCUS; },
+      chapterData: function () { return {}; },
+      hasResources: false,
+      usesYears: false,
+      papersLabel: "Topics",
+      searchHint: "Search topics, e.g. tectonic, longshore drift, superpowers…"
     }
   };
 

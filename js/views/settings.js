@@ -24,18 +24,19 @@ const SettingsView = (function () {
                 return '<label class="switch"><input type="checkbox" data-paper="' + p.id + '"' + (paperOn(p.id) ? " checked" : "") + '><i></i>' +
                   '<span>' + UI.esc(p.name) + '</span></label>';
               }).join("") + '</div></div>' +
-            '<div class="field"><label class="label">Content in your plan</label>' +
-            '<select class="input" data-set="yearFilter">' +
-            sel("all", "Both years, the full A level", s.yearFilter) +
-            sel("1", "Year 1 only (AS content)", s.yearFilter) +
-            sel("2", "Year 2 only", s.yearFilter) +
-            '</select>' +
-            '<div class="tiny faint" style="margin-top:6px">Restricts the planner, the dashboard and the topic list. ' +
-            'Useful while you are still being taught Year 2, switch back to both years once you have covered it.</div></div>' +
-            '<div class="warnbox info tiny"><b>This tracker covers the full A level (9MA0)</b>' +
-            'Pure Year 1 chapters 1-14 and Year 2 chapters 1-12, Statistics Year 1 chapters 1-7 and Year 2 chapters 1-3, ' +
-            'Mechanics Year 1 chapters 8-11 and Year 2 chapters 4-8. Both years restart their chapter numbering, so chapters ' +
-            'are labelled <b>Y1</b> or <b>Y2</b> throughout.</div>' +
+            /* The year filter only means something for a subject taught in two
+               numbered years. Others do not show it. */
+            (Subjects.current().usesYears
+              ? '<div class="field"><label class="label">Content in your plan</label>' +
+                '<select class="input" data-set="yearFilter">' +
+                sel("all", "Both years, the full A level", s.yearFilter) +
+                sel("1", "Year 1 only (AS content)", s.yearFilter) +
+                sel("2", "Year 2 only", s.yearFilter) +
+                '</select>' +
+                '<div class="tiny faint" style="margin-top:6px">Restricts the planner, the dashboard and the topic list. ' +
+                'Useful while you are still being taught Year 2, switch back to both years once you have covered it.</div></div>'
+              : "") +
+            specNote() +
             '<button class="btn btn-primary" data-action="save-settings">Save changes</button>' +
           '</div></div>' +
 
@@ -123,6 +124,27 @@ const SettingsView = (function () {
 
   function field(label, control) {
     return '<div class="field"><label class="label">' + label + '</label>' + control + '</div>';
+  }
+
+  /* What this subject's database actually covers, counted from the live spec
+     rather than written out by hand, so it cannot drift out of date. */
+  function specNote() {
+    const subj = Subjects.current();
+    let sections = 0, subs = 0;
+    SPEC.forEach(function (p) {
+      sections += p.sections.length;
+      p.sections.forEach(function (sec) { subs += sec.subs.length; });
+    });
+    return '<div class="warnbox info tiny"><b>' + UI.esc(subj.qualification) + '</b>' +
+      SPEC.map(function (p) { return UI.esc(p.paper); }).join(", ") + ". " +
+      sections + " " + UI.esc(subj.unitPlural) + " and " + subs + " subtopics in total." +
+      (subj.usesYears
+        ? " Both years restart their chapter numbering, so chapters are labelled <b>Y1</b> or <b>Y2</b> throughout."
+        : "") +
+      (subj.hasResources
+        ? ""
+        : " No videos or question banks are attached to this subject yet, so add your own links and questions per topic.") +
+      '</div>';
   }
 
   function sel(value, label, current) {

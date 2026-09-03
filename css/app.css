@@ -1721,3 +1721,27 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .subject-current{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
   color:var(--accent);flex:0 0 auto}
+
+/* ---------- per-subject icon colours ----------
+   Dark mode: solid coloured tile with a white glyph.
+   Light mode: white tile with the coloured glyph, so the sidebar keeps a
+   light surface rather than a heavy block of colour. */
+.brand-mark[data-subject],
+.subject-mark[data-subject]{background:var(--subject-bg);color:var(--subject-fg)}
+
+.brand-mark[data-subject="maths"],
+.subject-mark[data-subject="maths"]{--subject-bg:#2f80ed;--subject-fg:#fff}
+.brand-mark[data-subject="economics"],
+.subject-mark[data-subject="economics"]{--subject-bg:#12a565;--subject-fg:#fff}
+.brand-mark[data-subject="geography"],
+.subject-mark[data-subject="geography"]{--subject-bg:#c2701a;--subject-fg:#fff}
+
+[data-theme="light"] .brand-mark[data-subject],
+[data-theme="light"] .subject-mark[data-subject]{
+  background:#fff;border:1px solid var(--border)}
+[data-theme="light"] .brand-mark[data-subject="maths"],
+[data-theme="light"] .subject-mark[data-subject="maths"]{--subject-fg:#0b4fd1}
+[data-theme="light"] .brand-mark[data-subject="economics"],
+[data-theme="light"] .subject-mark[data-subject="economics"]{--subject-fg:#0d7a52}
+[data-theme="light"] .brand-mark[data-subject="geography"],
+[data-theme="light"] .subject-mark[data-subject="geography"]{--subject-fg:#a35a11}

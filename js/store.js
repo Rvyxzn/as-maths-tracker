@@ -108,8 +108,12 @@ const Store = (function () {
       createdAt: new Date().toISOString(),
       settings: {
         examDate: "2026-09-01",
-        qualification: "Pearson Edexcel A level Mathematics (9MA0)",
-        papers: { pure: true, stats: true, mech: true },
+        /* Whichever subject is being opened, not always Maths. Each subject
+           has its own save file, so its own exam date and qualification. */
+        qualification: (typeof Subjects !== "undefined")
+          ? Subjects.current().qualification
+          : "Pearson Edexcel A level Mathematics (9MA0)",
+        papers: {},
         theme: "dark",
         dailyMinutes: 120,
         dailyOverrides: {}, // { "2026-08-22": 180 }
@@ -163,6 +167,17 @@ const Store = (function () {
 
     if (/8MA0/.test(s.qualification || "")) {
       s.qualification = "Pearson Edexcel A level Mathematics (9MA0)";
+    }
+
+    /* A save file opened under a subject whose qualification it does not name
+       was created before that subject existed, or by the old Maths-only
+       default. Point it at the right one rather than telling an Economics
+       student they are sitting 9MA0. */
+    if (typeof Subjects !== "undefined") {
+      const want = Subjects.current().qualification;
+      const mine = s.qualification || "";
+      const anyOther = Subjects.list().some(function (sub) { return sub.qualification === mine; });
+      if (!mine || (anyOther && mine !== want)) s.qualification = want;
     }
 
     /* Past papers logged before the AS and A level distinction existed are
