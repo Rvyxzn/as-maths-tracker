@@ -1,28 +1,24 @@
 /* ============================================================
    Economics question bank - Edexcel 9EC0 Papers 1 and 2
    ------------------------------------------------------------
-   Parsed from the real past papers, not written from scratch.
-   Every question's wording, its mark tariff and its mark scheme
-   come from Pearson's own PDFs. The paper's structure is what
-   makes this reliable:
+   Parsed from the real past papers. Every question's wording,
+   its mark tariff and its mark scheme come from Pearson's own
+   PDFs; the paper's fixed shape is what makes that reliable:
 
-     Section A  Q1-Q5   5 marks each
+     Section A  Q1-Q5   5 marks each, across their parts
      Section B  Q6      50 marks, parts worth 5/8/10/12/15
      Section C  Q7, Q8  25 marks each, answer one
 
-   Each question ends "(Total for Question N = M marks)" and each
-   part carries its tariff in brackets, so both are read off the
-   paper rather than assumed.
-
-   THE ONE INFERRED FIELD is `theme`. Pearson does not tag which
-   theme a question belongs to, so it is classified here by
-   matching against the spec's own topic vocabulary, and
-   `themeConfident` says whether the match was clear. Anywhere it
-   is shown it must be labelled as worked out, not official.
+   THE ONE DERIVED FIELD is `theme`, and from it `year`
+   (Themes 1 and 2 are Year 1, Themes 3 and 4 are Year 2).
+   Pearson does not tag questions by theme, so each one is
+   scored against the wording of the specification itself and
+   `themeConfident` records whether one theme clearly won.
 
    Timing: every 9EC0 paper is 100 marks in 120 minutes, so
-   1.2 minutes per mark. Section B says "spend 1 hour", which
-   agrees: 50 marks x 1.2 = 60.
+   1.2 minutes per mark. The papers agree with themselves -
+   Section A says spend 30 minutes on 25 marks, Section B an
+   hour on 50.
    ============================================================ */
 
 const ECO_MINUTES_PER_MARK = 1.2;
@@ -33,13 +29,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "000 e-cigarette kits at all prices.\n(a) Calculate the new equilibrium price and quantity following the successful\nadvertising campaign and the fall in production costs. Use the last two columns\nfor your working.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.........................................................................................................................................................",
-  "ms": "Application 2, Knowledge 2\nApplication:\nAccurate insertion of data in both columns in table\n(either fully or as far as the new equilibrium).\n(1+1 marks)\nPrice\n£\nQuantity\ndemanded\nper month\n(000)\nQuantity\nsupplied\nper\nmonth\n(000)\nNew\nQuantity\ndemanded\nper month\n(000)\nNew\nQuantity\nsupplied\nper\nmonth\n(000)\n25 5 9 8 10\n24 6 8 9 9\n23 7 7 10 8\n22 8 6 11 7\n21 9 5 12 6\nKnowledge/understanding:\nCalculation of new equilibrium price of £24 (1) and\nquantity of 9 000 (1)\nNB do not award for quantity of 9\nAward full marks for £24 and 9 000\n(4)",
+  "text": "000 e-cigarette kits at all prices.\n(a) Calculate the new equilibrium price and quantity following the successful\nadvertising campaign and the fall in production costs. Use the last two columns\nfor your working.\n(4)\n\n(b) Research conducted in New Zealand in 2014 estimated the cross elasticity of\ndemand for e-cigarettes to be 0.16 in response to changes in the price of tobacco.\nThis implies that a 5% increase in the price of tobacco will cause the percentage\nchange in demand for e-cigarettes to be:\n(1)\nA -31.25\nB -0.16\nC 0.8\nD 31.25",
+  "ms": "(a)\nApplication 2, Knowledge 2\nApplication:\nAccurate insertion of data in both columns in table\n(either fully or as far as the new equilibrium).\n(1+1 marks)\nPrice\n£\nQuantity\ndemanded\nper month\n(000)\nQuantity\nsupplied\nper\nmonth\n(000)\nNew\nQuantity\ndemanded\nper month\n(000)\nNew\nQuantity\nsupplied\nper\nmonth\n(000)\n25 5 9 8 10\n24 6 8 9 9\n23 7 7 10 8\n22 8 6 11 7\n21 9 5 12 6\nKnowledge/understanding:\nCalculation of new equilibrium price of £24 (1) and\nquantity of 9 000 (1)\nNB do not award for quantity of 9\nAward full marks for £24 and 9 000\n(4)\n\n(b)\nC\n(1)",
   "erKey": "1a",
   "paper": 1,
   "series": "June 2017",
-  "theme": 3,
-  "themeConfident": false,
+  "theme": 1,
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2017-q1"
  },
  {
@@ -47,13 +44,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Between 2010 and 2015 the average price of tea in the UK increased from £7.20 per\nkilo to £8.48 per kilo. Over the same period the quantity of tea purchased fell from\n97 million kilos to 76 million kilos. (a) Assume that the change in the quantity of tea purchased was only caused by\nthe change in the price of tea. Calculate the price elasticity of demand for tea in\nresponse to the rise in its price. You are advised to show your working.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.........................................................................................................................................................................................................",
-  "ms": "Application 2\nApplication: 1 mark for applying the formula and 1\nmark for the correct answer\n-21.65% ÷ 17.78% (1) = -1.2 (1)\nCorrect calculations of both percentages\naccept (-) 0.217 and (-) 0.178 = 1 mark\nNB if the answer given is -1.2 or 1.2, award 2\nmarks\n(2)",
+  "text": "Between 2010 and 2015 the average price of tea in the UK increased from £7.20 per\nkilo to £8.48 per kilo. Over the same period the quantity of tea purchased fell from\n97 million kilos to 76 million kilos.\n\n(a) Assume that the change in the quantity of tea purchased was only caused by\nthe change in the price of tea. Calculate the price elasticity of demand for tea in\nresponse to the rise in its price. You are advised to show your working.\n(2)\n\n(b) Calculate the change in total sales revenue for UK tea retailers between 2010 and\n2015. You are advised to show your working.\n(2)\n\n5\n(c) Estimates for the demand for black tea in the UK suggest that it is an inferior\ngood. This implies it has a negative:\n(1)\nA cross elasticity of demand\nB income elasticity of demand\nC price elasticity of demand\nD price elasticity of supply",
+  "ms": "(a)\nApplication 2\nApplication: 1 mark for applying the formula and 1\nmark for the correct answer\n-21.65% ÷ 17.78% (1) = -1.2 (1)\nCorrect calculations of both percentages\naccept (-) 0.217 and (-) 0.178 = 1 mark\nNB if the answer given is -1.2 or 1.2, award 2\nmarks\n(2)\n\n(b)\nKnowledge 1, Analysis 1\nKnowledge/understanding:\n1 mark for original and new sales revenue\nOriginal sales revenue: £7.20 × 97 million = £698.4\nmillion\nNew sales revenue: £8.48 × 76 million = £644.5 million\nAnalysis:\n1 mark for the change in revenue: -£53.9 million\n(accept close approximation, for example a fall of\n£54 million)\nNB if the answer given is -53.9m/53.9m award 2\nmarks (this may be stated as -7.7% or 7.7%)\nNB If million is missing from the answer award up\nto 1 mark (2)\n\n(c)\nB\n(1)",
   "erKey": "2a",
   "paper": 1,
   "series": "June 2017",
-  "theme": null,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2017-q2"
  },
  {
@@ -61,13 +59,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "S\nD\nS1\n526\n455\n0 1.5 1.8 Quantity of gas cylinders, daily (million)\nPrice per cylinder\n(Rupees) (a) Calculate the total domestic cooking gas subsidy paid daily by the Indian\ngovernment. You are advised to show your working.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.............................................................................................................................................",
-  "ms": "Application 2\nApplication:\n568 × 1.8 million (1)\nAccept 1022 million or 1022.4 million for 2 marks.\nAccept 1,022,400,000\nNB If million is missing from the answer award up\nto 1 mark\n(2)",
+  "text": "S\nD\nS1\n526\n455\n0 1.5 1.8 Quantity of gas cylinders, daily (million)\nPrice per cylinder\n(Rupees)\n\n(a) Calculate the total domestic cooking gas subsidy paid daily by the Indian\ngovernment. You are advised to show your working.\n(2)\n\n7\n(b) Calculate the percentage share of the total subsidy received by:\n(i) consumers\n(1)\n\n(ii) producers\n(1)\n\n(c) One effect of the subsidy is to increase:\n(1)\nA consumer surplus\nB market failure\nC public good provision\nD tax revenue",
+  "ms": "(a)\nApplication 2\nApplication:\n568 × 1.8 million (1)\nAccept 1022 million or 1022.4 million for 2 marks.\nAccept 1,022,400,000\nNB If million is missing from the answer award up\nto 1 mark\n(2)\n\n(b)\nApplication 2\nApplication:\n1 mark for the percentage of subsidy for consumers:\n71 ÷ 568 X 100 = 12.5% (1)\n1 mark for the percentage of subsidy received by\nproducers:\n497 ÷ 568 X 100 = 87.5% (1)\nAward 1 mark if the answers are transposed\nNB if no correct calculations, award up to 1 mark for:\ncorrect annotation of diagram depicting consumer and\nproducer subsidy areas\nOR the actual consumer subsidy per unit (71 rupees)\nand producer subsidy per unit (497 rupees)\nOR consumer subsidy (127.8 million rupees) and\nProducer subsidy (894.6 million rupees)\n(2)\n\n(c)\nA (1)",
   "erKey": "3a",
   "paper": 1,
   "series": "June 2017",
-  "theme": null,
-  "themeConfident": false,
+  "theme": 1,
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2017-q3"
  },
  {
@@ -75,13 +74,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "In 2015 JCB, the construction equipment manufacturer, experienced a 6% fall\nin revenue. This resulted from a reduction in sales of construction equipment to\nemerging markets.\n(a) Draw a cost and revenue diagram to show the likely impact of a reduction in sales\nof construction equipment on JCB’s profits.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n............................................................",
-  "ms": "Knowledge 2, Application 2\n1 mark for: profits are likely to fall (this may be shown\non the diagram)\n1 mark for the decrease in the average revenue and\nmarginal revenue curves (accept a pivotal movement of\nthe AR and MR curves)\n1 mark for the new equilibrium output and price\npositions at new MC = MR\n1 mark for the original area of supernormal profit.\n1 mark for the new smaller area of supernormal profit/\nloss.\nDiagram required e.g.\nAccept alternative diagram, e.g.:\n• Total revenue and total costs diagram\n(4)\nAR\nAR1\nMR\nMR1\nCosts,\nRevenue\nQuantity0 Qe\nMC\nPe\nP1\nQ1\nAC\nNew SNP\nOriginal SNP",
+  "text": "In 2015 JCB, the construction equipment manufacturer, experienced a 6% fall\nin revenue. This resulted from a reduction in sales of construction equipment to\nemerging markets.\n(a) Draw a cost and revenue diagram to show the likely impact of a reduction in sales\nof construction equipment on JCB’s profits.\n(4)\n\n(b) In India JCB has a strong brand image and a 50% share of the market for\nconstruction equipment. This means the construction equipment market in India\nis likely to have a low level of:\n(1)\nA concentration\nB contestability\nC private ownership\nD specialisation",
+  "ms": "(a)\nKnowledge 2, Application 2\n1 mark for: profits are likely to fall (this may be shown\non the diagram)\n1 mark for the decrease in the average revenue and\nmarginal revenue curves (accept a pivotal movement of\nthe AR and MR curves)\n1 mark for the new equilibrium output and price\npositions at new MC = MR\n1 mark for the original area of supernormal profit.\n1 mark for the new smaller area of supernormal profit/\nloss.\nDiagram required e.g.\nAccept alternative diagram, e.g.:\n• Total revenue and total costs diagram\n(4)\nAR\nAR1\nMR\nMR1\nCosts,\nRevenue\nQuantity0 Qe\nMC\nPe\nP1\nQ1\nAC\nNew SNP\nOriginal SNP\n\n(b)\nB (1)",
   "erKey": "4a",
   "paper": 1,
   "series": "June 2017",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2017-q4"
  },
  {
@@ -89,13 +89,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Figure 1 shows the distribution of the revenue received from the sale of a Starbucks\ncappuccino drink priced at £2.27 in 2015.\nFigure 1\nCoffee 4%\nMilk 4%\nPackaging 8%\nRent/rates 15%\nAdmin/\noverheads 15%\nLabour 24%\nVAT 17%\nProfit 13% (a) Which one of the following is a fixed cost to Starbucks?\n(1)\nA Coffee\nB Milk\nC Packaging\nD Rent\n(b) Explain the difference between fixed costs and variable costs.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n..................................................................................................................................................................................................................................................",
-  "ms": "D\n(1)",
+  "text": "Figure 1 shows the distribution of the revenue received from the sale of a Starbucks\ncappuccino drink priced at £2.27 in 2015.\nFigure 1\nCoffee 4%\nMilk 4%\nPackaging 8%\nRent/rates 15%\nAdmin/\noverheads 15%\nLabour 24%\nVAT 17%\nProfit 13%\n\n(a) Which one of the following is a fixed cost to Starbucks?\n(1)\nA Coffee\nB Milk\nC Packaging\nD Rent\n(b) Explain the difference between fixed costs and variable costs.\n(2)\n\n10\n(c) With reference to Figure 1, calculate the profit (in pence) for a cappuccino drink.\nYou are advised to show your working.\n(2)",
+  "ms": "(a)\nD\n(1)\n\n(b)\nKnowledge 1, Analysis 1\nFixed costs remain the same as output increases or\ndecreases (1)\nVariable costs vary directly with output. (1)\n(2)\n\n(c)\nApplication 2\nApplication: 1 mark for applying the formula\n1 mark for workings: e.g.\n13 × 227 ÷ 100, 13% of 227 (1)\nAward 2 marks for correct answer 29.5 (accept\nanswer between 29 and 30)\n(2)",
   "erKey": "5a",
   "paper": 1,
   "series": "June 2017",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2017-q5"
  },
  {
@@ -109,7 +110,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2017",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2017-q6a"
  },
  {
@@ -124,6 +126,7 @@ const ECO_QUESTIONS = [
   "series": "June 2017",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2017-q6b"
  },
  {
@@ -137,7 +140,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2017",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2017-q6c"
  },
  {
@@ -152,6 +156,7 @@ const ECO_QUESTIONS = [
   "series": "June 2017",
   "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2017-q6d"
  },
  {
@@ -165,7 +170,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2017",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2017-q6e"
  },
  {
@@ -174,12 +180,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "In 2015 a report by Public Health England recommended the imposition of a 20% tax\non the sale of soft drinks that contain high levels of sugar.\nEvaluate the likely microeconomic effects of such a tax.",
-  "ms": "Knowledge 4, Application 4, Analysis 8\n• Definition of a tax/ identification of an ad valorem tax.\nEconomic effects include:\n• Increase in price and a reduction in demand for soft drinks\nwhich contain sugar / increase in demand for healthy\ndrinks.\n• Reduction of consumer surplus and producer surplus/\nprofits (may be shown on diagram)\n• Tax acts to increase costs and may reduce profits.\n• Increased investment in healthier drinks.\n• Increase in tax revenue for government and impact on\nhealthcare services and other services, for example dental\ncare.\n• Improvements in quality of healthcare among population –\nfall in obesity, diabetes and heart disease. Reduced\npressure on healthcare services.\n• A diagram of an indirect tax may be awarded, depicting an\nincrease in price, a decrease in quantity and the area of\ntax collected.\n• A relevant externality diagram depicting a reduction in\nwelfare loss.\n• A relevant cost and revenue diagram depicting the impact\nof an expenditure tax on firms.\n• Increase in life expectancy/ the quality of life/ productivity\nin the workforce.\n• Impact on employment in the soft drinks industry/impact\non employment in substitute product markets.\n• Impact on income distribution / regressive tax\nEvaluation 9\n• Significance of price elasticity of demand in determining\nimpact on price, quantity, employment and tax revenue.\n• Consideration of the impact on substitutes/ application of\ncross elasticity of demand e.g. switch to healthier\nsubstitutes.\n• Consideration of the incidence of tax on consumers and\nproducers.\n• Difficulty in imposing the tax – different soft drinks\nproducts with different sugar content.\n• Extent of hidden/informal market.\n• Time factor - long term implications for government\nfunding of pensions and healthcare.\n• Consideration of price elasticity of supply e.g. the ability of\nproducers to switch to healthier drinks.\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge ",
+  "ms": "Knowledge 4, Application 4, Analysis 8\n• Definition of a tax/ identification of an ad valorem tax.\nEconomic effects include:\n• Increase in price and a reduction in demand for soft drinks\nwhich contain sugar / increase in demand for healthy\ndrinks.\n• Reduction of consumer surplus and producer surplus/\nprofits (may be shown on diagram)\n• Tax acts to increase costs and may reduce profits.\n• Increased investment in healthier drinks.\n• Increase in tax revenue for government and impact on\nhealthcare services and other services, for example dental\ncare.\n• Improvements in quality of healthcare among population –\nfall in obesity, diabetes and heart disease. Reduced\npressure on healthcare services.\n• A diagram of an indirect tax may be awarded, depicting an\nincrease in price, a decrease in quantity and the area of\ntax collected.\n• A relevant externality diagram depicting a reduction in\nwelfare loss.\n• A relevant cost and revenue diagram depicting the impact\nof an expenditure tax on firms.\n• Increase in life expectancy/ the quality of life/ productivity\nin the workforce.\n• Impact on employment in the soft drinks industry/impact\non employment in substitute product markets.\n• Impact on income distribution / regressive tax\nEvaluation 9\n• Significance of price elasticity of demand in determining\nimpact on price, quantity, employment and tax revenue.\n• Consideration of the impact on substitutes/ application of\ncross elasticity of demand e.g. switch to healthier\nsubstitutes.\n• Consideration o",
   "erKey": "7",
   "paper": 1,
   "series": "June 2017",
   "theme": 1,
   "themeConfident": true,
+  "year": 1,
   "id": "p1-june2017-q7"
  },
  {
@@ -188,12 +195,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "‘Revenue maximisation is a more realistic business objective than profit maximisation\nfor many businesses.’\nTo what extent do you agree with this statement? Refer to an industry of your choice\nin your answer.",
-  "ms": "million (1)\nAccept 1022 million or 1022.4 million for 2 marks.\nAccept 1,022,400,000\nNB If million is missing from the answer award up\nto 1 mark\n(2)",
+  "ms": "Knowledge 4, Application 4, Analysis 8\n• Explanation of revenue maximisation (for example, output\nposition where MR=0) and profit maximisation (for example,\noutput position where MR=MC).\n• Diagrammatic analysis may be offered depicting the two\nbusiness objectives.\nNB revenue maximisation discussion may be considered as\nKAA and profit maximisation as EV or vice-versa. Mark the\nbest approach as KAA and the other as EV.\nRevenue maximisation:\n• This could be more appropriate in large firms with a\nseparation of ownership from control e.g. supermarkets /\noligopoly.\n• Directors may have salaries linked to revenue growth rather\nthan profits.\n• Directors may seek greater security through larger market\nshare rather than higher profits.\n• Revenue maximisation may be less likely to draw attention of\ncompetition authorities, as price and profits will be lower.\n• Accept a game theory approach if relevant.\n• Short term need for cash e.g. to avoid bankruptcy or fund\nattractive new opportunities\nNB for a Level 4 response, candidates must refer to a\nspecific INDUSTRY in their answer.\nEvaluation 9\nProfit maximisation can be used as a counter argument to\npoints above:\n• Profit maximisation could be more appropriate in smaller\nfirms where there is no separation of ownership from control\ne.g. small independent grocery stores / monopolistic\ncompetition.\n• Profit maximisation could be more appropriate in a monopoly\nmarket with high entry barriers so little possibility of\ncompetition.\n• Rational busi",
   "erKey": "8",
   "paper": 1,
   "series": "June 2017",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2017-q8"
  },
  {
@@ -201,13 +209,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The diagram refers to production possibility frontiers for a country that produces\ncapital goods and consumer goods.\nOutput of consumer goods\nX\nY Z\nW V U\n80 100 120 140 1700\n50\n100\nOutput of\ncapital goods\nOriginally, the economy has a production possibility frontier shown by the line XY,\noperating at point V. The production possibility frontier then moves to XZ, operating\nat point U.\n(a) Calculate the original and the new opportunity cost of producing 50 capital\ngoods. You are advised to show your working.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n..................................................................................................................................",
-  "ms": "Application 2\nApplication:\nCalculation of original opportunity cost of producing 50\ncapital goods is 120 -100=20 consumer goods. (1\nmark)\nCalculation of new opportunity cost of 50 capital goods\nis 170 -140=30 consumer goods. (1 mark)\n(2)",
+  "text": "The diagram refers to production possibility frontiers for a country that produces\ncapital goods and consumer goods.\nOutput of consumer goods\nX\nY Z\nW V U\n80 100 120 140 1700\n50\n100\nOutput of\ncapital goods\nOriginally, the economy has a production possibility frontier shown by the line XY,\noperating at point V. The production possibility frontier then moves to XZ, operating\nat point U.\n(a) Calculate the original and the new opportunity cost of producing 50 capital\ngoods. You are advised to show your working.\n(2)\n\n3\n\n(b) Which one of the following was the most likely cause of the movement in the\nproduction possibility frontier from XY to XZ?\n(1)\nA A reduction in unemployment in consumer goods industries\nB A rise in the cost of producing consumer goods\nC An increase in demand for consumer goods\nD A technological improvement in the production of consumer goods\n(c) Explain one characteristic of the economy at position W.\n(2)",
+  "ms": "(a)\nApplication 2\nApplication:\nCalculation of original opportunity cost of producing 50\ncapital goods is 120 -100=20 consumer goods. (1\nmark)\nCalculation of new opportunity cost of 50 capital goods\nis 170 -140=30 consumer goods. (1 mark)\n(2)\n\n(b)\nThe only correct answer is D\nA is not correct because this would be describing a change\nin actual output such as W to V from inside the PPF XY\nB is not correct because PPF shows potential output and not\nthe cost of output\nC is not correct because PPF shows potential output and not\nthe demand for a good or service\n(1)\n\n(c)\nKnowledge 1, Analysis 1\nKnowledge/understanding: 1 mark for e.g.\nPosition W represents an\n• inefficient allocation of resources (1)\n• unemployment of resources (1)\nAnalysis: 1 mark for e.g.\n• It is possible to increase output of both consumer\ngoods and capital goods by using unemployed\nresources (1)\n• The economy could produce at either 100 or 140\nconsumer goods but is currently producing 80 (1)\n• The country is operating inside the PPF (1)\n(2)",
   "erKey": "1a",
   "paper": 1,
   "series": "June 2018",
-  "theme": null,
-  "themeConfident": false,
+  "theme": 1,
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2018-q1"
  },
  {
@@ -215,13 +224,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The number of individual weekly ticket sales from UK National Lottery games\noperated by Camelot was 73 million in the financial year 2015–2016.\nThe sale price of each lottery ticket was £2. This figure included 24 pence of tax\nrevenue on each ticket sold.\n(a) Calculate the weekly revenue received by Camelot after paying the tax to the\ngovernment. You are advised to show your working.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n...............................................................................................................................................................................................................................................................",
-  "ms": "Application 2\nApplication: 1 mark for appropriate calculation e.g.\n£2 ×73 million = £146 million (1)\nOR\n£0.24 ×73 million = £17.52 million (1)\nOR\n£1.76 ×73 million (1)\nOR\ncorrect answer with no millions (1)\nAnswer = £128.48 million (accept between £128\nmillion and £129 million)\nAward 2 marks for correct answer (128m) (2)",
+  "text": "The number of individual weekly ticket sales from UK National Lottery games\noperated by Camelot was 73 million in the financial year 2015–2016.\nThe sale price of each lottery ticket was £2. This figure included 24 pence of tax\nrevenue on each ticket sold.\n(a) Calculate the weekly revenue received by Camelot after paying the tax to the\ngovernment. You are advised to show your working.\n(2)\n\n5\nResearch conducted for HMRC estimated the cross elasticity of demand for using\ngaming machines to be 1.28 in response to changes in the price of national lottery\ntickets.\n\nIn October 2013 Camelot increased the price of a national lottery ticket from £1\nto £2.\n(b) Explain the likely impact of the price increase of national lottery tickets on the\ndemand for using gaming machines.\n(2)\n\n6\nIn 2016 a coastal flood defence scheme was completed at Broomhill Sands in Kent,\nprotecting people, homes and businesses. A £30 million grant from the National\nLottery paid for the scheme.\n\n(c) The most likely reason for this grant is to ensure the:\n(1)\nA exclusivity of Broomhill Sands\nB provision of a private good\nC provision of a public good\nD rivalry of Broomhill Sands",
+  "ms": "(a)\nApplication 2\nApplication: 1 mark for appropriate calculation e.g.\n£2 ×73 million = £146 million (1)\nOR\n£0.24 ×73 million = £17.52 million (1)\nOR\n£1.76 ×73 million (1)\nOR\ncorrect answer with no millions (1)\nAnswer = £128.48 million (accept between £128\nmillion and £129 million)\nAward 2 marks for correct answer (128m) (2)\n\n(b)\nKnowledge 1, Analysis 1\nKnowledge: 1 mark for e.g.\n• The demand for use of gaming machines is likely\nto increase (1)\n• It is a substitute for national lottery tickets (1)\n• Substitutes have a positive cross elasticity of\ndemand (1)\nAnalysis: 1 mark for e.g.\n• Increase by 128% in response to a 100%\nincrease in the price of national lottery tickets (1)\n• 1.28 cross elasticity of demand indicates they are\nclose substitutes (1)\n(2)\n\n(c)\nThe only correct answer is C\nA is not correct because the flood defence scheme is non-\nexclusive\nB is not a private good because flood defence scheme is\nnon-exclusive so you are unable to charge private\nindividuals that benefit from the scheme\nD is not correct because it is a distractor in lacking meaning\nbut also indicating that the candidate is confusing rivalry\nwith the non-rivalrous nature of public goods\n(1)",
   "erKey": "2a",
   "paper": 1,
   "series": "June 2018",
-  "theme": 3,
-  "themeConfident": true,
+  "theme": 1,
+  "themeConfident": false,
+  "year": 1,
   "id": "p1-june2018-q2"
  },
  {
@@ -229,13 +239,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The average fee charged by high-street estate agents to homeowners for selling\nproperty is 1.3% of the final sale price. (a) Assume the selling fee is 1.3%. Calculate the payment received by an estate agent\non a property sold for £489 000. You are advised to show your working.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.......................................................................................",
-  "ms": "Application 2\nApplication 2: 1 mark for appropriate calculation\n/formula e.g.\n1.3 × £489 000 (1)\n100\nOR\n489 000 ×0.013 (1)\nAnswer = £6 357\nAward 2 marks for correct answer (6 360) (2)",
+  "text": "The average fee charged by high-street estate agents to homeowners for selling\nproperty is 1.3% of the final sale price.\n\n(a) Assume the selling fee is 1.3%. Calculate the payment received by an estate agent\non a property sold for £489 000. You are advised to show your working.\n(2)\n\n8\nIn August 2016 the Office for National Statistics reported that the average house price\nin London was £489 000, whereas in the North East of England it was £127 000.\n(b) The ratio of the average house price in London to the average house price in the\nNorth East of England is:\n(1)\nA 0.26\nB 3.62\nC 3.85\nD 7.40\n(c) Explain one likely reason for the difference in average house prices between\nLondon and the North East of England.\n(2)",
+  "ms": "(a)\nApplication 2\nApplication 2: 1 mark for appropriate calculation\n/formula e.g.\n1.3 × £489 000 (1)\n100\nOR\n489 000 ×0.013 (1)\nAnswer = £6 357\nAward 2 marks for correct answer (6 360) (2)\n\n(b)\nThe only correct answer is C\nA is not correct because the candidate has mistakenly done\nthe average house price in North East of England to the\naverage house price in London\nB is not correct because the candidate has made a\ncomputational error\nD is not correct because the candidate has made a\ncomputational error\n(1)\n\n(c)\nKnowledge 1, Analysis 1\nKnowledge / understanding: 1 mark for one reason\ne.g.\n• differences in average income or wealth (1)\n• employment or unemployment rates (1)\n• migration or population change (1)\n• foreign buyers (1)\n• availability of land to build on (1)\nAnalysis: 1 mark for a linked development e.g.\n• Higher average income in London mean people\nare able to obtain larger mortgages and so pay\nhigher prices (1)\n• Higher employment rate or lower unemployment\nrate in London mean greater demand for housing\nfrom its population (1)\n• Foreign buyers attracted to invest in London due\nto high rental returns or expectations of increase\nin value of property or better market knowledge\n(1)\n• Shortage of land to build on in London, especially\nwith green belt restrictions (1)\n(2)",
   "erKey": "3a",
   "paper": 1,
   "series": "June 2018",
-  "theme": 3,
-  "themeConfident": true,
+  "theme": 1,
+  "themeConfident": false,
+  "year": 1,
   "id": "p1-june2018-q3"
  },
  {
@@ -243,13 +254,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Emily owns and operates a nail ink salon. The diagram shows the cost and revenue\ncurves for treatments at her nail ink salon. Initially, Emily sets her price to maximise\nprofits.\nAR\nAC\nMC\nMR\n25 36 Quantity of treatments\nper day\n0\n17\n12\n9\n8\nCosts, Revenue\nper treatment (£)\n(a) Calculate the change in total supernormal profit if Emily changes her objective\nfrom profit maximisation to revenue maximisation. You are advised to show your\nworking.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.....................................................................................................................................................................................................",
-  "ms": "Knowledge 2, Application 2\nKnowledge/Understanding: (up to 2 marks)\n1 mark for identifying each correct price/output level\ne.g.\nIdentify profit maximisation position: for example,\nwhere MC=MR or output level 25 or price £17 (1)\nIdentify revenue maximisation position: for example,\nwhere MR=0 or output level 36 or price £12 (1)\nApplication: (up to 2 marks)\nCalculate total profit at profit maximisation position: for\nexample, total revenue – total cost = total profit:\n£425 – £200 = £225 (1)\nOR\n£17-£8=£9, £9 ×£25 = £225 (1)\nOR\nCalculate total profit at revenue maximisation position:\n£432 - £324 = £108 (1)\nOR\n£12-£9=£3, £3 ×£36 = £108 (1)\n£108 -£225 = -£117 or £117\nAward full 4 marks for -£117 or fall of £117 or\n£117\n(4)",
+  "text": "Emily owns and operates a nail ink salon. The diagram shows the cost and revenue\ncurves for treatments at her nail ink salon. Initially, Emily sets her price to maximise\nprofits.\nAR\nAC\nMC\nMR\n25 36 Quantity of treatments\nper day\n0\n17\n12\n9\n8\nCosts, Revenue\nper treatment (£)\n(a) Calculate the change in total supernormal profit if Emily changes her objective\nfrom profit maximisation to revenue maximisation. You are advised to show your\nworking.\n(4)\n\n11\n\n(b) Emily now decides to change her objective from revenue maximisation to sales\nmaximisation. This change will lead to:\n(1)\nA a decrease in the number of customers\nB a decrease in the price of treatments\nC an increase in productive efficiency\nD an increase in the level of profit",
+  "ms": "(a)\nKnowledge 2, Application 2\nKnowledge/Understanding: (up to 2 marks)\n1 mark for identifying each correct price/output level\ne.g.\nIdentify profit maximisation position: for example,\nwhere MC=MR or output level 25 or price £17 (1)\nIdentify revenue maximisation position: for example,\nwhere MR=0 or output level 36 or price £12 (1)\nApplication: (up to 2 marks)\nCalculate total profit at profit maximisation position: for\nexample, total revenue – total cost = total profit:\n£425 – £200 = £225 (1)\nOR\n£17-£8=£9, £9 ×£25 = £225 (1)\nOR\nCalculate total profit at revenue maximisation position:\n£432 - £324 = £108 (1)\nOR\n£12-£9=£3, £3 ×£36 = £108 (1)\n£108 -£225 = -£117 or £117\nAward full 4 marks for -£117 or fall of £117 or\n£117\n(4)\n\n(b)\nThe only correct answer is B\nA is not correct because sales maximisation occurs when AC\nequals AR which is at an output higher than revenue\nmaximisation\nC is not correct because AC is higher at sales maximisation\noutput than revenue maximisation\nD is not correct because abnormal profit is removed and\nonly normal profit is now made\n(1)",
   "erKey": "4a",
   "paper": 1,
   "series": "June 2018",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2018-q4"
  },
  {
@@ -257,13 +269,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "D 75.7 13\n(b) Explain one likely reason for the decrease in sales of PCs.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n..............",
-  "ms": "The only correct answer is A\nB is not correct because the candidate has divided by the\nnew year rather than the original year\nC is not correct because the candidate has looked at the\ndifference in quantity sold between 2014 and 2015 rather\nthan answering the question between 2011 and 2015\nD is not correct because the candidate has looked at the\ndecrease in the quantity of PC’s not the percentage\ndecrease\n(1)",
+  "text": "D 75.7\n13\n(b) Explain one likely reason for the decrease in sales of PCs.\n(2)\n\n14\nThe following table shows global sales of PCs by company in 2015.\nCompany\nSales of PCs\n(million)\nLenovo 57 182\nHP 53 534\nDell 39 049\nApple 20 794\nAcer Group 19 680\nOthers 86 461\nTotal 276 700\n\n(c) Calculate the five-firm concentration ratio. You are advised to show your working.\n(2)",
+  "ms": "(a)\nThe only correct answer is A\nB is not correct because the candidate has divided by the\nnew year rather than the original year\nC is not correct because the candidate has looked at the\ndifference in quantity sold between 2014 and 2015 rather\nthan answering the question between 2011 and 2015\nD is not correct because the candidate has looked at the\ndecrease in the quantity of PC’s not the percentage\ndecrease\n(1)\n\n(b)\nKnowledge 1, Analysis 1\nKnowledge: 1 mark for likely reason in the decrease in\nsales of PCs e.g.\n• Development of substitutes such as Tablets or\niPads or iPhones (1)\n• Fall in global real incomes (1)\n• Fall in price of substitutes (1)\nAnalysis: 1 mark for linked development e.g.\n• Tablets are more convenient to carry round (1)\n• New technology in other personal devices so\nbecoming more powerful in their functions (1)\n• Fall in global incomes means that consumers are\nless likely to buy normal goods such as PCs (1)\n(2)\n\n(c)\nApplication 2\nApplication 2 1 mark for appropriate calculation\n/formula e.g. the sum of 5 largest figures = 190 239 (1)\n190 239 (million) × 100\n276 700 (million)\nAnswer = 68.8% (Accept between 68% and 69%)\nAward 2 marks for correct answer (68.8)\n(2)",
   "erKey": "5a",
   "paper": 1,
   "series": "June 2018",
-  "theme": 3,
-  "themeConfident": true,
+  "theme": 1,
+  "themeConfident": false,
+  "year": 1,
   "id": "p1-june2018-q5"
  },
  {
@@ -276,8 +289,9 @@ const ECO_QUESTIONS = [
   "erKey": "6a",
   "paper": 1,
   "series": "June 2018",
-  "theme": 3,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2018-q6a"
  },
  {
@@ -286,12 +300,13 @@ const ECO_QUESTIONS = [
   "marks": 12,
   "section": "B",
   "text": "With reference to Extract A, discuss the likely effectiveness of ‘measures to open\nup and increase competition’ in the UK energy market.",
-  "ms": "Knowledge 2, Application 2, Analysis 4\n• Measures referred to will increase\ncompetitiveness by removing imperfect\ninformation, addressing asymmetric\ninformation, reducing barriers to entry and\nexit.\n• Customer database will help producers to directly\ncontact consumers to offer better deals. It may\nencourage firms to enter the market – the extract\nrefers to recent new entrants having a combined\nmarket share of 12% for gas and electricity.\nFirms may enter as they have more market\nknowledge of customers for each energy supplier\nand are permitted to contact them directly\noffering their service.\n• Smart meters will increase market information for\nconsumers on their electricity consumption so\nmay seek better deals. Scope exists to enter as\n70% of domestic customers of the six largest\nenergy firms on an expensive standard tariff.\nSmart meters provide more information to\ncustomers on energy usage and price / reduce\nissue of asymmetric information / forcing energy\nsuppliers to become more price competitive.\n• Price cap for vulnerable customers on pre-paid\nmeters will help limit increases in energy bills and\nso offer some protection as a surrogate for\ncompetition. Price cap may offer some degree of\ncertainty over the price firms could charge /\nencouraging market entry.\n• Other evidence from Extract A demonstrates that\nmeasures have been successful in the past e.g.\nnew entrants in the market\nNB: Answers must relate to effectiveness of\nmeasures\nNB: Arguments that the measures are\nsuccessful may be seen as KAA and\nunsuccessful as evaluation or vice versa\n(8) Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reaso",
+  "ms": "Knowledge 2, Application 2, Analysis 4\n• Measures referred to will increase\ncompetitiveness by removing imperfect\ninformation, addressing asymmetric\ninformation, reducing barriers to entry and\nexit.\n• Customer database will help producers to directly\ncontact consumers to offer better deals. It may\nencourage firms to enter the market – the extract\nrefers to recent new entrants having a combined\nmarket share of 12% for gas and electricity.\nFirms may enter as they have more market\nknowledge of customers for each energy supplier\nand are permitted to contact them directly\noffering their service.\n• Smart meters will increase market information for\nconsumers on their electricity consumption so\nmay seek better deals. Scope exists to enter as\n70% of domestic customers of the six largest\nenergy firms on an expensive standard tariff.\nSmart meters provide more information to\ncustomers on energy usage and price / reduce\nissue of asymmetric information / forcing energy\nsuppliers to become more price competitive.\n• Price cap for vulnerable customers on pre-paid\nmeters will help limit increases in energy bills and\nso offer some protection as a surrogate for\ncompetition. Price cap may offer some degree of\ncertainty over the price firms could charge /\nencouraging market entry.\n• Other evidence from Extract A demonstrates that\nmeasures have been successful in the past e.g.\nnew entrants in the market\nNB: Answers must relate to effectiveness of\nmeasures\nNB: Arguments that the measures are\nsuccessful may be seen as KAA and\nunsuccessful as evaluation or vice versa\n(8) Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
   "erKey": "6b",
   "paper": 1,
   "series": "June 2018",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2018-q6b"
  },
  {
@@ -305,7 +320,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2018",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2018-q6c"
  },
  {
@@ -318,8 +334,9 @@ const ECO_QUESTIONS = [
   "erKey": "6d",
   "paper": 1,
   "series": "June 2018",
-  "theme": null,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2018-q6d"
  },
  {
@@ -332,8 +349,9 @@ const ECO_QUESTIONS = [
   "erKey": "6e",
   "paper": 1,
   "series": "June 2018",
-  "theme": 3,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2018-q6e"
  },
  {
@@ -342,12 +360,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "In September 2016 the government approved the building of an £18 billion nuclear\npower station, Hinkley Point C, which will supply 7% of UK electricity for up to\n60 years. The power station is funded by Chinese and French investment.\nEvaluate the likely private costs and external costs involved in such major power\nstation construction projects. Use an appropriate externalities diagram in your\nanswer.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Understanding of private costs and external costs\n(may be implicit).\n• Explanation of private costs in nuclear power\nstation: purchase of land, machinery,\nconstruction of buildings, labour costs, security\ncosts, raw materials.\n• Explanation of external costs: visual eyesore,\nimpact on wildlife, impact on local property\nprices, air pollution, road congestion, risk of leak\nor contamination.\n• Diagram depicting private costs and external\ncosts\n(25)\n• Original MPB / MSB and MPC curves\n• MSC curve (accept a parallel shift of the MSC\ncurve)\n• Identification of market equilibrium and socially\nefficient quantity\n• Identification of triangle of welfare loss\nNB: For a Level 4 response, candidates must include\nan accurate diagram and consideration of both\nprivate and external costs.\nMPC\nMSC\nCosts,\nBenefit\ns\nMPB=MSB\nQS Qs\nPS\nP\nm\nW\nX\nY\n0 Quantity of construction\nWelfare loss Costs also include:\n• Risk from major nuclear plant failure.\n• Imperfect market knowledge: risk from incomplete\ntechnology for developing the nuclear reactor.\n• Risk from foreign ownership and control of major\nnuclear power station (funded and built by French\nand Chinese companies).\n• High price of electricity consumers will pay – above\nthe market price.\n• Accept macro point e.g. long term income outflow on\nthe balance of payments.\nEvaluation\n• Difficulty in measuring and attaching a monetary\nvalue to private costs and external costs.\n• Time lag in building plant – at least 10 years.\n• Government intervention may reduce size of external\ncosts e.g. construction noise abatement measure.\n• Risk of government failure; some argue it could\nnot withdraw from the Hinkley Point project\nwithout major loss of trade with China.\n• Accept macro point e.g. short and long run effects\non the balance of payments.\nSignificant private and external benefits from the\nproject which offset costs and/or reduce welfare loss,\nmay include:\n• Employment and income creation / positive\nmultiplier effects at local, national and\ninternational level / French and Chinese firms\nview it as a first step to securing further contracts\nfrom around the world.\n• Increased security of energy supply for the future\n– some 7% of UK electricity for sixty years /\ngiven the closure of many coal power stations.\n• Diversify UK energy production and so spread\nrisks from uncertainty on non-renewable sources such as wind power and solar power.\n• Stable price of electricity for consumers for next\nsixty years.\n• Less damage to the environment / nuclear energy\nhas low carbon emissions / easier for g",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Understanding of private costs and external costs\n(may be implicit).\n• Explanation of private costs in nuclear power\nstation: purchase of land, machinery,\nconstruction of buildings, labour costs, security\ncosts, raw materials.\n• Explanation of external costs: visual eyesore,\nimpact on wildlife, impact on local property\nprices, air pollution, road congestion, risk of leak\nor contamination.\n• Diagram depicting private costs and external\ncosts\n(25)\n• Original MPB / MSB and MPC curves\n• MSC curve (accept a parallel shift of the MSC\ncurve)\n• Identification of market equilibrium and socially\nefficient quantity\n• Identification of triangle of welfare loss\nNB: For a Level 4 response, candidates must include\nan accurate diagram and consideration of both\nprivate and external costs.\nMPC\nMSC\nCosts,\nBenefit\ns\nMPB=MSB\nQS Qs\nPS\nP\nm\nW\nX\nY\n0 Quantity of construction\nWelfare loss Costs also include:\n• Risk from major nuclear plant failure.\n• Imperfect market knowledge: risk from incomplete\ntechnology for developing the nuclear reactor.\n• Risk from foreign ownership and control of major\nnuclear power station (funded and built by French\nand Chinese companies).\n• High price of electricity consumers will pay – above\nthe market price.\n• Accept macro point e.g. long term income outflow on\nthe balance of payments.\nEvaluation\n• Difficulty in measuring and attaching a monetary\nvalue to private costs and external costs.\n• Time lag in building plant ",
   "erKey": "7",
   "paper": 1,
   "series": "June 2018",
   "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2018-q7"
  },
  {
@@ -356,12 +375,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "In July 2016 Apple’s share of the UK market for smartphones was 38%.\nEvaluate whether such a high market share for one company is in the consumer\ninterest. Use appropriate diagrammatic analysis in your answer.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Understanding of monopoly (may be implicit).\nThis may include natural monopoly or state\nimposed monopoly\n• Use of data e.g. Apple has 38% market share\nwhich exceeds CMA definition of 25% market\nshare.\n• Understanding of operating in consumer interest:\nfor example, impact on price, choice, product\nquality, customer service, improves allocative\nefficiency and investment.\n• Market structure diagram made relevant to\nargument presented: this is most likely to be a\nmonopoly diagram.\nOne firm may operate in consumer interest since:\n• Limit pricing/may act as a surrogate for\ncompetitive pricing. Revenue/sales maximisation\nmay move closer to allocative efficient pricing and\noutput.\n• Super normal profits may result in dynamic\nefficiency gains e.g. choice, product quality,\ncustomer service and investment. • Economies of scale resulting in lower cost passed\non as lower prices\nOne firm may operate against consumer interest since:\n• Consideration of profit maximisation pricing\nstrategy as opposed to lower prices set in a\ncompetitive market.\n• There may be greater possibility of collusion\n(overt or tacit) due to the high market share.\n• One firm may use its market power to increase\nentry barriers e.g. for Apple by locking their\nphones and thus, reduce consumer choice.\n• Consideration of product quality or customer\nservice. No significant innovation, quality updates\nor features added, but price has risen. Loss of\nconsumer surplus/dead weight loss of monopoly\nargument.\n• X inefficiency resulting in higher costs and higher\nprices.\n• NB: For a Level 4 response, candidates must\ninclude an accurate diagram\n• NB: Candidates can argue that one company\nacts in the consumer interest as KAA, and\nagainst consumer interest as evaluation or\nvice versa.\nEvaluation\n• Real price increases of products may be due to\nhigher wholesale costs / production costs or an\nincreased global demand.\n• It depends on how powerful the other firms are in\nthe market. E.g. competition may make firm\ncompete effectively even in a oligopoly or\nduopoly.\n• Depends on the effectiveness of regulation by\nCMA.\n• Depends on the objective of the firm. • Depends on how contestable the market is e.g.\nNew entrant such as China’s Huawei has recently\njoined the smartphone market and is expected to\ngain a large market share, offering new consumer\nchoice.\n• Higher market share can benefit the consumers\nvia lower prices (efficiency savings / scale\neconomies can be passed on).\n• Higher profits could lead to higher investment\nproducing innovative and high quality product",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Understanding of monopoly (may be implicit).\nThis may include natural monopoly or state\nimposed monopoly\n• Use of data e.g. Apple has 38% market share\nwhich exceeds CMA definition of 25% market\nshare.\n• Understanding of operating in consumer interest:\nfor example, impact on price, choice, product\nquality, customer service, improves allocative\nefficiency and investment.\n• Market structure diagram made relevant to\nargument presented: this is most likely to be a\nmonopoly diagram.\nOne firm may operate in consumer interest since:\n• Limit pricing/may act as a surrogate for\ncompetitive pricing. Revenue/sales maximisation\nmay move closer to allocative efficient pricing and\noutput.\n• Super normal profits may result in dynamic\nefficiency gains e.g. choice, product quality,\ncustomer service and investment. • Economies of scale resulting in lower cost passed\non as lower prices\nOne firm may operate against consumer interest since:\n• Consideration of profit maximisation pricing\nstrategy as opposed to lower prices set in a\ncompetitive market.\n• There may be greater possibility of collusion\n(overt or tacit) due to the high market share.\n• One firm may use its market power to increase\nentry barriers e.g. for Apple by locking their\nphones and thus, reduce consumer choice.\n• Consideration of product quality or customer\nservice. No significant innovation, quality updates\nor features added, but price has risen. Loss of\nconsumer surplus/dead w",
   "erKey": "8",
   "paper": 1,
   "series": "June 2018",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2018-q8"
  },
  {
@@ -369,13 +389,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Between 2016 and 2017 the average price of new build houses in the UK rose by an\nestimated 5.4%.\nYear Quantity of UK new house builds\n2016 134 612\n2017 162 880 (a) With reference to the data provided, calculate the price elasticity of supply\nfor new house builds between 2016 and 2017. You are advised to show your\nworkings.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n........................................",
-  "ms": "Application 2\nPrice elasticity of supply calculation\n% change in quantity supplied (28 268/134 612 x 100)\n= 21% (accept range 20.9 to 21) (1)\nPES = 21/5.4 (1) = 3.9\nAward 2 marks for 3.9\n(Accept a range between 3.8 and 4) (2)",
+  "text": "Between 2016 and 2017 the average price of new build houses in the UK rose by an\nestimated 5.4%.\nYear Quantity of UK new house builds\n2016 134 612\n2017 162 880\n\n(a) With reference to the data provided, calculate the price elasticity of supply\nfor new house builds between 2016 and 2017. You are advised to show your\nworkings.\n(2)\n\n(b) A 2.5% increase in new build house prices in one region of the UK causes a 10%\nincrease in the number of houses built. Ceteris paribus, this suggests that supply\nof new house builds is:\n(1)\nA perfectly price elastic\nB perfectly price inelastic\nC relatively price elastic\nD relatively price inelastic\n\n3\n(c) Explain one factor that is likely to determine the price elasticity of supply of new\nhouse builds.\n(2)",
+  "ms": "(a)\nApplication 2\nPrice elasticity of supply calculation\n% change in quantity supplied (28 268/134 612 x 100)\n= 21% (accept range 20.9 to 21) (1)\nPES = 21/5.4 (1) = 3.9\nAward 2 marks for 3.9\n(Accept a range between 3.8 and 4) (2)\n\n(b)\nApplication 1\nThe only correct answer is C\nA is not correct because the PES does not equal to\ninfinity\nB is not correct because the PES does not equal zero\nD is not correct because the PES is not less than one\n(1)\n\n(c)\nKnowledge 1, Analysis 1\nIdentification of a factor determining PES (1)\ne.g\n• levels of spare capacity\n• stocks of finished goods and components\navailable e.g. bricks\n• time period and production speed\n• level of factor mobility/flexibility\n• availability of bricklayers, electricians etc\n• availability of land\n• planning permission/regulations\n• availability of technology/machinery to build\nExplain as to the impact on price elasticity of supply (1)\ne.g.\n• limited availability of land/builders (1) so supply\nwill be inelastic (1)\n(2)",
   "erKey": "1a",
   "paper": 1,
   "series": "June 2019",
-  "theme": null,
-  "themeConfident": false,
+  "theme": 1,
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2019-q1"
  },
  {
@@ -383,13 +404,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "In August 2017 Hurricane Harvey caused the closure of nearly a quarter of the oil\nproduction capacity in the United States.\n(a) Draw a supply and demand diagram to show the likely microeconomic effects of\nthe hurricane on the US oil market.\n(4)\nMR\nQuantity\nAR=D 5\n(b) The diagrams show movements from position X to Y on production possibility\nfrontiers. In which one of the diagrams does the movement from X to Y illustrate\nthe most likely impact on the US economy of a natural disaster such as Hurricane\nHarvey?\n(1)\nA B\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption A\nY\nX\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption C\nY\nX\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption B\nX\nY\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption D\nX\nY\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption A\nY\nX\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption C\nY\nX\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption B\nX\nY\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption D\nX\nY\nC D\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption A\nY\nX\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption C\nY\nX\nOutput of\nconsumer\ngoods\n0 Output o",
-  "ms": "Knowledge 2, Application 2\nKnowledge\n• Supply and demand diagram annotated to show a\nleft shift in the supply curve (2)\nApplication\n• New equilibrium price (1)\n• New equilibrium quantity (1)\nNB – Award up to 2 diagrammatic application marks for\nother microeconomic effects based on correct\nknowledge e.g. – changing Consumer Surplus (1) or\nProducer Surplus (1) or Revenue (1) or Shortage (1)\n(4)",
+  "text": "In August 2017 Hurricane Harvey caused the closure of nearly a quarter of the oil\nproduction capacity in the United States.\n(a) Draw a supply and demand diagram to show the likely microeconomic effects of\nthe hurricane on the US oil market.\n(4)\nMR\nQuantity\nAR=D\n\n5\n(b) The diagrams show movements from position X to Y on production possibility\nfrontiers. In which one of the diagrams does the movement from X to Y illustrate\nthe most likely impact on the US economy of a natural disaster such as Hurricane\nHarvey?\n(1)\nA B\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption A\nY\nX\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption C\nY\nX\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption B\nX\nY\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption D\nX\nY\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption A\nY\nX\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption C\nY\nX\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption B\nX\nY\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption D\nX\nY\nC D\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption A\nY\nX\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption C\nY\nX\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption B\nX\nY\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption D\nX\nY\nOutput of\nconsumer\ngoods\n0 Output of capital goods\nOption A\nY\nX\nOutput of\nconsumer\ngoods\n0 Output of capit",
+  "ms": "(a)\nKnowledge 2, Application 2\nKnowledge\n• Supply and demand diagram annotated to show a\nleft shift in the supply curve (2)\nApplication\n• New equilibrium price (1)\n• New equilibrium quantity (1)\nNB – Award up to 2 diagrammatic application marks for\nother microeconomic effects based on correct\nknowledge e.g. – changing Consumer Surplus (1) or\nProducer Surplus (1) or Revenue (1) or Shortage (1)\n(4)\n\n(b)\nAnalysis 1\nThe only correct answer is A\nB is not correct because the potential output is not likely\nto increase\nC is not correct because A is more likely than C which\nillustrates a reallocation of resources towards consumer\ngoods. If anything a reallocation of resources towards\nmore capital goods is more likely\nD is not correct because this illustrates an increase in\nactual output which the stem to the question does not\nprovide evidence for\n(1)",
   "erKey": "2a",
   "paper": 1,
   "series": "June 2019",
   "theme": 1,
   "themeConfident": true,
+  "year": 1,
   "id": "p1-june2019-q2"
  },
  {
@@ -397,13 +419,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "According to the Royal Mail, more hair and beauty salons opened on UK high streets\nlast year than any other type of independent business, with a net increase of 10%,\nrepresenting 626 new salons. (a) The UK hair and beauty industry is an example of monopolistic competition\nbecause:\n(1)\nA firms spend nothing on advertising and research\nB the industry is dominated by a few large firms\nC the products are homogenous\nD there are low barriers to entry and exit\n(b) Draw a cost and revenue diagram to show the long-run equilibrium of a firm in\nmonopolistic competition.\n(4)\nCost/revenue (£) MC\nMR\nQuantity\nAR=D",
-  "ms": "Analysis 1\nThe only correct answer is D\nA is not correct because there is some differentiation in\nmonopolistic competition aided by advertising and\nresearch\nB is not correct because there are many firms in a\nmonopolistic competition market\nC is not correct because goods are not necessarily\nhomogenous in monopolistic competition and some\ndegree of products being heterogeneous is likely to be\nevident (1)",
+  "text": "According to the Royal Mail, more hair and beauty salons opened on UK high streets\nlast year than any other type of independent business, with a net increase of 10%,\nrepresenting 626 new salons.\n\n(a) The UK hair and beauty industry is an example of monopolistic competition\nbecause:\n(1)\nA firms spend nothing on advertising and research\nB the industry is dominated by a few large firms\nC the products are homogenous\nD there are low barriers to entry and exit\n(b) Draw a cost and revenue diagram to show the long-run equilibrium of a firm in\nmonopolistic competition.\n(4)\nCost/revenue (£)\nMC\nMR\nQuantity\nAR=D",
+  "ms": "(a)\nAnalysis 1\nThe only correct answer is D\nA is not correct because there is some differentiation in\nmonopolistic competition aided by advertising and\nresearch\nB is not correct because there are many firms in a\nmonopolistic competition market\nC is not correct because goods are not necessarily\nhomogenous in monopolistic competition and some\ndegree of products being heterogeneous is likely to be\nevident (1)\n\n(b)\nKnowledge 2 Application 2\nAC shown tangential to downward sloping AR curve (2)\nfollowed by:\nIdentification of the profit maximising equilibrium price\nand output where MC=MR (1)\nAC=AR shown at the profit maximising equilibrium (1)\n(4)",
   "erKey": "3a",
   "paper": 1,
   "series": "June 2019",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2019-q3"
  },
  {
@@ -411,13 +434,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "In 2016, the insurance group Esure undertook a demerger with its GoCompare price\ncomparison website.\n(a) The most likely reason for this demerger was to:\n(1)\nA benefit from external economies of scale\nB benefit from internal economies of scale\nC focus more on its core business\nD increase its market share\nFollowing the demerger, GoCompare announced in 2017 a profit of £17.5 million, up\n21.5% on 2016. Total revenue in 2017 was £75.8 million, up 4.1% on 2016. (b) Calculate, using the information provided, the total costs of GoCompare in 2016.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n................................................................................................",
-  "ms": "Analysis 1\nThe only correct answer is C\nA is not correct because the external economies of scale\nbeing the most likely reason would indicate that the\nmarket contains mostly small firms in a perfectly\ncompetitive market which is not evident in the stem.\nB is not correct because companies merging are more\nlikely to benefit from internal economies of scale\nD is not correct because a demerger will usually reduce\nmarket share and it could be argued in this case that\nthe two businesses are unrelated.\n(1)",
+  "text": "In 2016, the insurance group Esure undertook a demerger with its GoCompare price\ncomparison website.\n(a) The most likely reason for this demerger was to:\n(1)\nA benefit from external economies of scale\nB benefit from internal economies of scale\nC focus more on its core business\nD increase its market share\nFollowing the demerger, GoCompare announced in 2017 a profit of £17.5 million, up\n21.5% on 2016. Total revenue in 2017 was £75.8 million, up 4.1% on 2016.\n\n(b) Calculate, using the information provided, the total costs of GoCompare in 2016.\n(4)",
+  "ms": "(a)\nAnalysis 1\nThe only correct answer is C\nA is not correct because the external economies of scale\nbeing the most likely reason would indicate that the\nmarket contains mostly small firms in a perfectly\ncompetitive market which is not evident in the stem.\nB is not correct because companies merging are more\nlikely to benefit from internal economies of scale\nD is not correct because a demerger will usually reduce\nmarket share and it could be argued in this case that\nthe two businesses are unrelated.\n(1)\n\n(b)\nKnowledge 2 Application 2\nProfit = TR – TC or TC = TR – Profit\nOR\n72.8 million – 14.4 million (1)\nCalculation of profit in 2016\n17.5 million/1.215 = 14.4 million (1)\nCalculation of total revenue in 2016\n75.8 million/1.041 = 72.8 million (1)\nAward full marks for the answer = £58.4 million\nNB – simply stating 58.4 million is 4 marks\nsimply stating 58.4 is 3 marks\n(4)",
   "erKey": "4a",
   "paper": 1,
   "series": "June 2019",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2019-q4"
  },
  {
@@ -425,13 +449,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Free market economics is being challenged. The arguments for and against are being\nincreasingly discussed within many countries.\n(a) Explain how resources are allocated in a free market economy.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n..........................................................................................................................................................................",
-  "ms": "Knowledge 1, Analysis 1\n• Resources are allocated via the price/market\nmechanism/market forces of supply and demand/\nthe invisible hand of the market (1)\n• If there is an increase in demand prices rise to ration\nthe good (1)\n• Price changes act as a signal (1)\n• If there is a fall in supply prices rise to ration the\ngood (1)\n• Consumer sovereignty (1)\n• By privately owned firms (1)\n• Limited intervention by government/laissez-faire (1) (2)",
+  "text": "Free market economics is being challenged. The arguments for and against are being\nincreasingly discussed within many countries.\n(a) Explain how resources are allocated in a free market economy.\n(2)\n\n(b) Which one of the following statements is true?\n(1)\nA Friedrich Hayek believed that the government should subsidise\ninefficient firms\nB Friedrich Hayek was a key advocate of command economies as a way\nof allocating resources\nC Karl Marx advocated allocating resources via the free market\nD Karl Marx criticised the private ownership of factors of production\nAdam Smith described the benefits of specialisation and the division of labour.\n(c) Explain one advantage to a firm of using division of labour when organising its\nproduction process.\n(2)",
+  "ms": "(a)\nKnowledge 1, Analysis 1\n• Resources are allocated via the price/market\nmechanism/market forces of supply and demand/\nthe invisible hand of the market (1)\n• If there is an increase in demand prices rise to ration\nthe good (1)\n• Price changes act as a signal (1)\n• If there is a fall in supply prices rise to ration the\ngood (1)\n• Consumer sovereignty (1)\n• By privately owned firms (1)\n• Limited intervention by government/laissez-faire (1) (2)\n\n(b)\nKnowledge 1\nThe only correct answer is D\nA is not correct because Hayek promoted the idea of\nprivate investment rather than government spending\nB is not correct because Hayek was a critic of command\neconomies allocating resources, advocating instead the\nmany price signals in a free market economy\nC is not correct because Marx was a critic of the free\nmarket economy allocating resources\n(1)\n\n(c)\nKnowledge 1, Analysis 1\nKnowledge\nIdentification of a benefit of division of labour (1)\n• Less training needed\n• Faster production process\n• Greater output from given workforce\n• Less time wasted moving between jobs\n• Increased skill within specific role\n• Increased efficiency\nAnalysis\nLinked development (1)\ne.g. A benefit is that the firm only needs to train\nworkers in one specific role (1k) this means that they\ncan lower costs (1an)\n(2)",
   "erKey": "5a",
   "paper": 1,
   "series": "June 2019",
   "theme": 1,
   "themeConfident": true,
+  "year": 1,
   "id": "p1-june2019-q5"
  },
  {
@@ -444,8 +469,9 @@ const ECO_QUESTIONS = [
   "erKey": "6a",
   "paper": 1,
   "series": "June 2019",
-  "theme": 3,
+  "theme": 1,
   "themeConfident": true,
+  "year": 1,
   "id": "p1-june2019-q6a"
  },
  {
@@ -460,6 +486,7 @@ const ECO_QUESTIONS = [
   "series": "June 2019",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2019-q6b"
  },
  {
@@ -468,12 +495,13 @@ const ECO_QUESTIONS = [
   "marks": 10,
   "section": "B",
   "text": "With reference to Extract C, assess possible reasons why many ‘landline-only’\ncustomers do not switch to a cheaper telephone provider.",
-  "ms": "Knowledge 2, Application 2, Analysis 2\nInformation gaps as main cause of consumers\nfailing to switch\n• Consumers lack market information on the price\nof their landline bill in relation to other providers\n• Main target audience (the elderly) lacks the\nknowledge to shop around online and use price\ncomparison sites\n• Switch to online billing and direct debit payments\nmeans many households are unaware\n• Automatic price changes made by BT\n• Hard to compare prices as all bundles comprise of\ndifferent services\n• Lack of awareness of competitor prices and\npackages\nIrrational behaviour as main cause of consumers\nfailing to switch\n• Computation issues e.g. consumers do not\nunderstand their pricing structure\n• Habitual behaviour/status quo bias/brand loyalty\ne.g. consumers may have a tendency to purchase\nthe same service over time\n• Consumers do not have the time to shop around\nor look for better deals\n• Consumers want to avoid the disruption of\nchanging provider\n• Strong brand of BT leading to an inelastic demand\nOther factors could be causing this:\n• Misleading advertising or price plans\n• Lack of provision in all areas e.g. fibre optic or\nbundles\n• Tie in contracts & automatic renewals\n• Information overload\n• Size of savings may not be significant enough to\ngo through switching\n• Line quality may vary so not similar\npackages/non-price considerations make BT offer\nthe best.\nNB For Level 3 response candidates need at least\ntwo reasons but are not required to use both\n‘information gaps’ and ‘irrational behaviour’.\nNB There may be overlap between information\ngaps and irrational behaviour as reasons.\n(6) Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no link between causes and\nconsequences.\nLevel 2 3–4 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or the answer may lack balance.\nLevel 3 5–6 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are applied appropriately to the broad\nelements of the question.",
+  "ms": "Knowledge 2, Application 2, Analysis 2\nInformation gaps as main cause of consumers\nfailing to switch\n• Consumers lack market information on the price\nof their landline bill in relation to other providers\n• Main target audience (the elderly) lacks the\nknowledge to shop around online and use price\ncomparison sites\n• Switch to online billing and direct debit payments\nmeans many households are unaware\n• Automatic price changes made by BT\n• Hard to compare prices as all bundles comprise of\ndifferent services\n• Lack of awareness of competitor prices and\npackages\nIrrational behaviour as main cause of consumers\nfailing to switch\n• Computation issues e.g. consumers do not\nunderstand their pricing structure\n• Habitual behaviour/status quo bias/brand loyalty\ne.g. consumers may have a tendency to purchase\nthe same service over time\n• Consumers do not have the time to shop around\nor look for better deals\n• Consumers want to avoid the disruption of\nchanging provider\n• Strong brand of BT leading to an inelastic demand\nOther factors could be causing this:\n• Misleading advertising or price plans\n• Lack of provision in all areas e.g. fibre optic or\nbundles\n• Tie in contracts & automatic renewals\n• Information overload\n• Size of savings may not be significant enough to\ngo through switching\n• Line quality may vary so not similar\npackages/non-price considerations make BT offer\nthe best.\nNB For Level 3 response candidates need at least\ntwo reasons but are not required to use both\n‘information gaps’ and ‘irrational behaviour’.\nNB There may be overlap between information\ngaps and irrational behaviour as reasons.\n(6)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no link between causes and\nconsequences.\nLevel 2 3–4 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or the answer may lack balance.\nLevel 3 5–6 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are applied appropriately to the broad\nelements of the question.",
   "erKey": "6c",
   "paper": 1,
   "series": "June 2019",
-  "theme": 3,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2019-q6c"
  },
  {
@@ -482,12 +510,13 @@ const ECO_QUESTIONS = [
   "marks": 12,
   "section": "B",
   "text": "Discuss one likely reason for the rise in BT’s profit (Figure 2, Extracts B and C).\nUse a cost and revenue diagram to support your answer.",
-  "ms": "Knowledge 2, Application 2, Analysis 4\nBT profit levels have risen to £3.03 billion\n• Higher revenue due to, e.g.:\nHigher rental price for landline\nPrice increases of 15%\nBroadband calls up in price\nCustomers paying a higher price for setting up\nlandline with BT\nIntegration with EE increasing mobile\nrevenues\nIncrease in market share to 35%\nInelastic PED subject to monopoly abuse\n• Lower costs\nApproximately 27% fall in the cost of\nproviding the landline service\nEconomies of scale\nFall in fixed costs of providing extensive\n‘landline’ network\nDynamic efficiency gains/synergy/patents\nacquired from merger\nFall in variable cost\n• Other potential reasons explained:\nExploitation of certain consumer groups\nEffective use of price discrimination\nCollusion with other landline providers\nCosts and revenue diagram showing:\nOriginal profit maximising output level\nOutward shift in AR and MR\nAnd/or – fall in AC and MC\nAnd/or – fall in AC if FC lower\nAnd/or Changes shown on Monopoly diagram\ne.g. from limit pricing to profit maximisation\nOriginal SNP and larger new SNP area\nNB – For Level 3 an accurate costs and revenue\ndiagram must be included.\n(8) Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
+  "ms": "Knowledge 2, Application 2, Analysis 4\nBT profit levels have risen to £3.03 billion\n• Higher revenue due to, e.g.:\nHigher rental price for landline\nPrice increases of 15%\nBroadband calls up in price\nCustomers paying a higher price for setting up\nlandline with BT\nIntegration with EE increasing mobile\nrevenues\nIncrease in market share to 35%\nInelastic PED subject to monopoly abuse\n• Lower costs\nApproximately 27% fall in the cost of\nproviding the landline service\nEconomies of scale\nFall in fixed costs of providing extensive\n‘landline’ network\nDynamic efficiency gains/synergy/patents\nacquired from merger\nFall in variable cost\n• Other potential reasons explained:\nExploitation of certain consumer groups\nEffective use of price discrimination\nCollusion with other landline providers\nCosts and revenue diagram showing:\nOriginal profit maximising output level\nOutward shift in AR and MR\nAnd/or – fall in AC and MC\nAnd/or – fall in AC if FC lower\nAnd/or Changes shown on Monopoly diagram\ne.g. from limit pricing to profit maximisation\nOriginal SNP and larger new SNP area\nNB – For Level 3 an accurate costs and revenue\ndiagram must be included.\n(8)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
   "erKey": "6d",
   "paper": 1,
   "series": "June 2019",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2019-q6d"
  },
  {
@@ -496,12 +525,13 @@ const ECO_QUESTIONS = [
   "marks": 15,
   "section": "B",
   "text": "Discuss methods of government intervention to protect consumers within the\nutilities markets, such as energy and telecommunications.",
-  "ms": "Knowledge 3, Application 3, Analysis 3\nMethods of government intervention include:\n• Price regulation\n• Profit regulation\n• Renationalisation of industry\n• Performance targets\n• Quality standards\n• Providing information to enable switching\n• Policies to enhance competition between firms\ne.g. start-up grants\n• Policies to improve contestability and help small\nfirms\n• Work of the Competition & Markets Authority\nregarding abuse of dominant position, anti-\ncompetitive agreements or intervening on\nmergers.\nNB for a Level 3 response there must be reference\nto the context of utilities. (Do not award Level 3 if\nno reference to the data provided or utility\nindustries)\nNB for a Level 3 response there must be reference\nto more than one policy and the policy must refer\nto how it protects consumers.\nNB for a Level 3 response a diagram is not\nrequired but may include for example Improved allocative efficiency for consumers, surrogate\nfor competition.\n(9)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
+  "ms": "Knowledge 3, Application 3, Analysis 3\nMethods of government intervention include:\n• Price regulation\n• Profit regulation\n• Renationalisation of industry\n• Performance targets\n• Quality standards\n• Providing information to enable switching\n• Policies to enhance competition between firms\ne.g. start-up grants\n• Policies to improve contestability and help small\nfirms\n• Work of the Competition & Markets Authority\nregarding abuse of dominant position, anti-\ncompetitive agreements or intervening on\nmergers.\nNB for a Level 3 response there must be reference\nto the context of utilities. (Do not award Level 3 if\nno reference to the data provided or utility\nindustries)\nNB for a Level 3 response there must be reference\nto more than one policy and the policy must refer\nto how it protects consumers.\nNB for a Level 3 response a diagram is not\nrequired but may include for example\nImproved allocative efficiency for consumers, surrogate\nfor competition.\n(9)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
   "erKey": "6e",
   "paper": 1,
   "series": "June 2019",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2019-q6e"
  },
  {
@@ -510,12 +540,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "In July 2017 it was announced that only a third of the BBC’s 96 top earning presenters\nwere women and that its seven highest-paid presenters were all men.\nAccording to the High Pay Centre, in 2018, UK chief executives can earn 120 times\nmore than the average full-time worker earning £28 758.\nWith reference to an industry of your choice, evaluate why wage differences exist\nwithin the UK labour market.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Definition of a wage differentials\n• Recognition that labour is a derived demand\n• Use of labour market diagrams to show the reasons\nfor wage differentials\nLikely reasons:\n• Differing demand for labour\n• Differing levels of supply of labour\n• Compensatory reasons –\nskills/qualifications/experience/region/productivity/age\n• Public versus private sector workers\n• Problem of a monopsony employer for certain workers\n• Impact of trade union membership\n• Impact of immobility of labour\n• Impact of discrimination\n• Use of elasticity of demand for labour\n• Use of elasticity of supply of labour\n• Current labour market issues – gig economy/zero\nhours/austerity/gaps in employment for carers\nNB – For Level 4 the candidate must refer to a specific\nindustry and the reasons for the wage differentials\nthat exist within it.\nEvaluation\n• Significance of the reasons provided\n• Counterarguments made to the point raised\n• Extent to which wage differentials may reflect the fact\nthat labour market forces are working efficiently\n• Extent to which wage differentials may reflect\nimperfections in the labour market\n• Likely to be a combination of reasons\n• Wage differentials may ignore bonuses or other\nfinancial/non-financial rewards\n• Consideration as to whether the wage differentials are\nincreasing or decreasing within the industry\n• Contrast to alternative industries\n• Short run versus long run consideration\n• Increased transparency may reduce pay differentials.\n• Regulations/National Minimum Wage/unions/public\npressure reducing wage differentials.\n• Gaps in employment becoming shorter or delayed\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad elements of the\nquestion.\nA narrow response or superficial, two stage chains of reasoning\nonly.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to the\nbroad elements of the question with evidence integrated into the\nanswer.\nAnalysis is clear and coheren",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Definition of a wage differentials\n• Recognition that labour is a derived demand\n• Use of labour market diagrams to show the reasons\nfor wage differentials\nLikely reasons:\n• Differing demand for labour\n• Differing levels of supply of labour\n• Compensatory reasons –\nskills/qualifications/experience/region/productivity/age\n• Public versus private sector workers\n• Problem of a monopsony employer for certain workers\n• Impact of trade union membership\n• Impact of immobility of labour\n• Impact of discrimination\n• Use of elasticity of demand for labour\n• Use of elasticity of supply of labour\n• Current labour market issues – gig economy/zero\nhours/austerity/gaps in employment for carers\nNB – For Level 4 the candidate must refer to a specific\nindustry and the reasons for the wage differentials\nthat exist within it.\nEvaluation\n• Significance of the reasons provided\n• Counterarguments made to the point raised\n• Extent to which wage differentials may reflect the fact\nthat labour market forces are working efficiently\n• Extent to which wage differentials may reflect\nimperfections in the labour market\n• Likely to be a combination of reasons\n• Wage differentials may ignore bonuses or other\nfinancial/non-financial rewards\n• Consideration as to whether the wage differentials are\nincreasing or decreasing within the industry\n• Contrast to alternative industries\n• Short run versus long run consideration\n• Increased transparency may reduce pay",
   "erKey": "7",
   "paper": 1,
   "series": "June 2019",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2019-q7"
  },
  {
@@ -524,12 +555,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "In October 2017 Scania, the Volkswagen-owned truck maker, was fined €880 million\n(£771 million) by the European Commission for colluding with five other truck\nmanufacturers over a 14-year period. The firms had agreed to coordinate prices after\nexperiencing additional costs of meeting emission regulations.\nWith reference to an industry of your choice, evaluate why some firms engage in\ncollusive behaviour.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Definition of collusion\n• Recognition of the concept of interdependence likely to\nexist in an oligopolistic market structure\n• Identification of the format in which collusion may take\nLikely reasons:\n• Reduce the level of competition & the cost of direct\ncompetition e.g. – marketing or price wars\n• Increase revenue and joint profit maximisation\n• Use of game theory and pay off matrix to show the\nbenefits of collusion v competition, e.g\nFirm B\n• To restrict choice and increase price setting power\n• To enable the cost of regulations & taxation to more\neasily be passed on to the consumer\n• To protect market share/dominance against new\nentrants and rivals\n• To reduce uncertainty within the market\n• To control supply\n• Higher producer surplus and shareholder value\n• Market rigging to allocate work between contractors\n• Anti-competitive practices to restrict access to the\nsupply chain\n• Poor regulation/asymmetric information/regulatory\ncapture so lack of detection/difficult to find evidence of\ntacit collusion.\nNB for a Level 4 response, candidates must refer to a\nspecific INDUSTRY in their answer.\nFirm\nA Evaluation\n• Likely problems that may occur:\nIllegal nature of collusion – risk of fines & criminal\nprosecution\nImpact on brand image\nRisk of cheating/breakdown of the agreement\nRisk of complacency and a lack of innovation –\nleading to x inefficiency/lack of\ncompetitiveness/threat from new entrant\n• Effectiveness of the collusion will depend on:\nNumber of firms involved\nRelative size of firms\nDegree of trust\nLevels of barriers to entry\nPED of product demand\nChances of whistleblower behaviour\nLevel and effectiveness of regulation\n• Debate over whether it is collusion or simply the\nnature of oligopoly markets e.g. airline industry\nshare safety features and check-in desks\n• Relative significance of arguments made\n• Use of contrasting examples to highlight significance\n• Collusive behaviour often breaks down, using pay-\noff matrix.\n• Non-collusive reasons for price stability e.g. price\nleadership\n• Arguments that it could bring benefits e.g. – the\nsurvival of a declining industry/benefits to\nconsumers and others - This point can count as KAA\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 5–8 Di",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Definition of collusion\n• Recognition of the concept of interdependence likely to\nexist in an oligopolistic market structure\n• Identification of the format in which collusion may take\nLikely reasons:\n• Reduce the level of competition & the cost of direct\ncompetition e.g. – marketing or price wars\n• Increase revenue and joint profit maximisation\n• Use of game theory and pay off matrix to show the\nbenefits of collusion v competition, e.g\nFirm B\n• To restrict choice and increase price setting power\n• To enable the cost of regulations & taxation to more\neasily be passed on to the consumer\n• To protect market share/dominance against new\nentrants and rivals\n• To reduce uncertainty within the market\n• To control supply\n• Higher producer surplus and shareholder value\n• Market rigging to allocate work between contractors\n• Anti-competitive practices to restrict access to the\nsupply chain\n• Poor regulation/asymmetric information/regulatory\ncapture so lack of detection/difficult to find evidence of\ntacit collusion.\nNB for a Level 4 response, candidates must refer to a\nspecific INDUSTRY in their answer.\nFirm\nA\nEvaluation\n• Likely problems that may occur:\nIllegal nature of collusion – risk of fines & criminal\nprosecution\nImpact on brand image\nRisk of cheating/breakdown of the agreement\nRisk of complacency and a lack of innovation –\nleading to x inefficiency/lack of\ncompetitiveness/threat from new entrant\n• Effectiveness of the collusi",
   "erKey": "8",
   "paper": 1,
   "series": "June 2019",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2019-q8"
  },
  {
@@ -537,13 +569,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Fuel duty is an excise tax imposed on the sale of petrol, included in the price paid by\nconsumers, set at 58 pence per litre. (a) Draw a supply and demand diagram to show the incidence of a specific petrol tax\non consumers and producers.\n(4)\n(b) The indirect tax on fuel is increased in a market in which the price elasticity of\ndemand is −0.1. Which one of the following is the most likely effect on consumer\nand producer surplus?\n(1)\nA Consumer surplus and producer surplus both decrease\nB Consumer surplus and producer surplus both increase\nC Consumer surplus decreases and producer surplus increases\nD Consumer surplus increases and producer surplus decreases",
-  "ms": "Knowledge 2, Application 2\nKnowledge\n- Correct drawing of a demand and supply diagram\nannotated to show a parallel left (1) shift in the supply\ncurve (1)\nApplication\n- consumer tax incidence shown (1)\n- producer tax incidence shown (1)\nNB: Award application mark for correctly identifying on\ndiagram amount of tax per litre is set at 58 pence per\nlitre. PED does not have to be price inelastic. (4)\nPMTPMT",
+  "text": "Fuel duty is an excise tax imposed on the sale of petrol, included in the price paid by\nconsumers, set at 58 pence per litre.\n\n(a) Draw a supply and demand diagram to show the incidence of a specific petrol tax\non consumers and producers.\n(4)\n(b) The indirect tax on fuel is increased in a market in which the price elasticity of\ndemand is −0.1. Which one of the following is the most likely effect on consumer\nand producer surplus?\n(1)\nA Consumer surplus and producer surplus both decrease\nB Consumer surplus and producer surplus both increase\nC Consumer surplus decreases and producer surplus increases\nD Consumer surplus increases and producer surplus decreases",
+  "ms": "(a)\nKnowledge 2, Application 2\nKnowledge\n- Correct drawing of a demand and supply diagram\nannotated to show a parallel left (1) shift in the supply\ncurve (1)\nApplication\n- consumer tax incidence shown (1)\n- producer tax incidence shown (1)\nNB: Award application mark for correctly identifying on\ndiagram amount of tax per litre is set at 58 pence per\nlitre. PED does not have to be price inelastic.\n(4)\nPMTPMT\n\n(b)\nAnalysis 1\nThe only correct answer is A\nB is not correct because both consumer surplus and producer\nsurplus decrease\nC is not correct because producer surplus decreases\nD is not correct because consumer surplus decreases\n(1)",
   "erKey": "1a",
   "paper": 1,
   "series": "June 2020",
   "theme": 1,
   "themeConfident": true,
+  "year": 1,
   "id": "p1-june2020-q1"
  },
  {
@@ -551,13 +584,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The external benefits of higher education include increased tax revenue, faster\neconomic growth, greater innovation and labour market flexibility.\n(Source adapted from: https://www.timeshighereducation.com/news/higher-education-its-\ngood-for-you-and-society/2008681.article#survey-answer)\n(a) Draw an externalities diagram to show the likely impact of the consumption of\nhigher education.\n(4)\n(b) On average, in the UK, a working-age graduate earns approximately £10 000 more\nper year than a non-graduate.\n(Source adapted from: https://assets.publishing.service.gov.uk/government/uploads/\nsystem/uploads/attachment_data/file/701720/GLMS_2017.pdf )\nThis suggests a university degree provides a substantial\n(1)\nA external benefit\nB external cost\nC private benefit\nD social cost",
-  "ms": "Knowledge 2, Application 2\n1 mark for the original market equilibrium where MPB = MSC\n(=MPC)\n1 mark for correct shift from MPB to MSB\n1 mark for showing the external benefit V to T\n1 mark for welfare gain identified VRT\n1 mark for the new equilibrium identified where MSB equals\nMSC (R) or (S) or Q2 Social Optimum.\nDiagram required e.g.\nQ1 Q2 Number of\nstudents\nME SO (4)\nPMTPMT",
+  "text": "The external benefits of higher education include increased tax revenue, faster\neconomic growth, greater innovation and labour market flexibility.\n\n(a) Draw an externalities diagram to show the likely impact of the consumption of\nhigher education.\n(4)\n(b) On average, in the UK, a working-age graduate earns approximately £10 000 more\nper year than a non-graduate.\n\nThis suggests a university degree provides a substantial\n(1)\nA external benefit\nB external cost\nC private benefit\nD social cost",
+  "ms": "(a)\nKnowledge 2, Application 2\n1 mark for the original market equilibrium where MPB = MSC\n(=MPC)\n1 mark for correct shift from MPB to MSB\n1 mark for showing the external benefit V to T\n1 mark for welfare gain identified VRT\n1 mark for the new equilibrium identified where MSB equals\nMSC (R) or (S) or Q2 Social Optimum.\nDiagram required e.g.\nQ1 Q2 Number of\nstudents\nME SO (4)\nPMTPMT\n\n(b)\nAnalysis 1\nThe only correct answer is C\nA is not correct because an external benefit to a third party is not\nidentified\nB is not correct because an external cost to a third party is not\nidentified\nD is not correct because a private cost plus external cost to a third\nparty is not identified\n(1)",
   "erKey": "2a",
   "paper": 1,
   "series": "June 2020",
-  "theme": 3,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2020-q2"
  },
  {
@@ -565,13 +599,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The EU tradable pollution permits scheme is expected to become more effective by\n2020, due to recent reductions in the number of tradable pollution permits.\n(Source adapted from: https://ec.europa.eu/clima/policies/ets_en)\n(a) Explain one likely effect of reducing the number of tradable pollution permits.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n..........................................................",
-  "ms": "Knowledge 2, Application 1, Analysis 1\nKnowledge and Application\n1 mark for understanding of pollution permits (1) 1 mark for\nappropriate linkage to industry/market/firms (1) 1 mark for how\nreducing permits reduce pollution (1)\nAward use of diagrams, for example:\nshifts the supply of permits inwards (1) which will push up the\nprice per permit (1)\nOR\nNegative externality reduced\nAnalysis: 1 mark for linked development of market\nincentives/government revenue e.g.\nReducing pollution/Increase in price of permits (1). (4)\nPMTPMT",
+  "text": "The EU tradable pollution permits scheme is expected to become more effective by\n2020, due to recent reductions in the number of tradable pollution permits.\n\n(a) Explain one likely effect of reducing the number of tradable pollution permits.\n(4)\n\n(b) Regulation of firms that pollute is likely to be a problem because it\n(1)\nA allows firms to use price signals\nB creates unintended consequences\nC fills information gaps for businesses\nD means lower administrative costs",
+  "ms": "(a)\nKnowledge 2, Application 1, Analysis 1\nKnowledge and Application\n1 mark for understanding of pollution permits (1) 1 mark for\nappropriate linkage to industry/market/firms (1) 1 mark for how\nreducing permits reduce pollution (1)\nAward use of diagrams, for example:\nshifts the supply of permits inwards (1) which will push up the\nprice per permit (1)\nOR\nNegative externality reduced\nAnalysis: 1 mark for linked development of market\nincentives/government revenue e.g.\nReducing pollution/Increase in price of permits (1).\n(4)\nPMTPMT\n\n(b)\nAnalysis 1\nThe only correct answer is B\nA is not correct because regulation may cause the distortion of price\nsignals as a problem\nC is not correct because regulation may result in the problem of\ninformation gaps\nD is not correct as regulation may result in the problem of excessive\nadministrative costs\n(1)",
   "erKey": "3a",
   "paper": 1,
   "series": "June 2020",
   "theme": 1,
   "themeConfident": true,
+  "year": 1,
   "id": "p1-june2020-q3"
  },
  {
@@ -579,13 +614,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The following illustrates the daily average cost curve for a doughnut producer:\nAverage Cost\n0 Z Output\nCosts (£)\n(a) Explain what happens to total cost at output levels greater than Z.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n...................................................................................................................................................................................",
-  "ms": "Knowledge 1, Analysis 1\nKnowledge / understanding and Analysis e.g :\n• Total cost rises (1) at an increasing rate (1)\n• Total costs continue to rise (1) but more steeply (1)\n• MC > AC, therefore AC rises (1)\n• • MC > AC (1) therefore TC increases at a faster rate (1)\ncandidates may draw the TC curve to show it rising\nmore rapidly\nNB : responses may be shown on the diagram beyond point\nZ. (2)\nPMTPMT",
+  "text": "The following illustrates the daily average cost curve for a doughnut producer:\nAverage Cost\n0 Z\nOutput\nCosts (£)\n(a) Explain what happens to total cost at output levels greater than Z.\n(2)\n\n(b) At output levels greater than Z, which one of the following correctly identifies\nwhat will happen to the cost?\n(1)\nAverage fixed cost Average variable cost Marginal cost\nA Falls Falls Rises\nB Falls Rises Rises\nC Rises Rises Falls\nD Rises Rises Rises\nPMTPMT\n6\n(c) For a luxury doughnut producer the average selling price is £2. The average\nvariable cost is 40% of the selling price and its fixed cost per day is £300.\nCalculate total costs per day assuming it produces 400 doughnuts per day.\n(2)",
+  "ms": "(a)\nKnowledge 1, Analysis 1\nKnowledge / understanding and Analysis e.g :\n• Total cost rises (1) at an increasing rate (1)\n• Total costs continue to rise (1) but more steeply (1)\n• MC > AC, therefore AC rises (1)\n• • MC > AC (1) therefore TC increases at a faster rate (1)\ncandidates may draw the TC curve to show it rising\nmore rapidly\nNB : responses may be shown on the diagram beyond point\nZ. (2)\nPMTPMT\n\n(b)\nApplication 1\nThe only correct answer is B\nA is not correct because AVC does not fall\nC is not correct because AFC falls as fixed costs are spread out over a\nlarger output\nD is not correct because AFC falls as fixed costs are spread out\nover a larger output\n(1)\n\n(c)\nApplication 2\nApplication: (up to 2 marks)\nCalculate total cost:\nAverage variable cost = 2 x 0.4 = 0.8 (1)\nTotal variable cost = 0.8 x 400 = £320 (1)\n£320 + £300 (1)\nAward 2 marks for correct answer = £620\n(accept 620)\nAward maximum 1 mark for partially correct answer\n(2)\nPMTPMT",
   "erKey": "4a",
   "paper": 1,
   "series": "June 2020",
-  "theme": null,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2020-q4"
  },
  {
@@ -593,13 +629,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "‘Bettys’ is a luxury café, first opened in Harrogate in 1919 specialising in afternoon tea\nservice. Since then it has opened a further five branches in Yorkshire. It has no plans\nto increase the number of cafés. The six branches have 2 million customers a year.\n(Source adapted from: https://www.forbes.com/sites/sarahturner/2018/03/22/the-famed-yorkshire-cafe-\nthat-blends-nostalgia-with-profits-and-conservation/#7eb50cec7a4e)\n(a) Explain one likely reason why this business has remained small.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.................................................................................................................................................",
-  "ms": "Knowledge 1, Analysis 1\nKnowledge and Analysis : 1 mark for likely reason for\nstaying small e.g.\n• Owners wish to maintain control (1)\n• Avoiding diseconomies of scale (1)\n• Bettys offers a more personal service (1)\n• Bettys act as a regional monopoly in Yorkshire (1)\n• Lack of finance for expansion (1)\n1 mark for linked development e.g.\n• 2 million customers allows them to profit satisfice (1)\n• Managerial diseconomies may settle in with many tea\nrooms (1)\n• As a regional monopoly they can charge higher prices\n(1)\n• Cost of opening an additional café (1)\n(2)",
+  "text": "‘Bettys’ is a luxury café, first opened in Harrogate in 1919 specialising in afternoon tea\nservice. Since then it has opened a further five branches in Yorkshire. It has no plans\nto increase the number of cafés. The six branches have 2 million customers a year.\n\n(a) Explain one likely reason why this business has remained small.\n(2)\n\n(b) Explain why the previous expansion of this business could be described as ‘organic growth’.\n(2)\n\n(c) Assume ‘Bettys’ merges with a major tea leaf supplier. Which one of the following\nis most likely to be an advantage as a result of this merger?\n(1)\nA External economies of scale will increase efficiency\nB Greater control to lower prices of tea\nC Industrial diversification increases risks\nD Lower monopoly power in the café market",
+  "ms": "(a)\nKnowledge 1, Analysis 1\nKnowledge and Analysis : 1 mark for likely reason for\nstaying small e.g.\n• Owners wish to maintain control (1)\n• Avoiding diseconomies of scale (1)\n• Bettys offers a more personal service (1)\n• Bettys act as a regional monopoly in Yorkshire (1)\n• Lack of finance for expansion (1)\n1 mark for linked development e.g.\n• 2 million customers allows them to profit satisfice (1)\n• Managerial diseconomies may settle in with many tea\nrooms (1)\n• As a regional monopoly they can charge higher prices\n(1)\n• Cost of opening an additional café (1)\n(2)\n\n(b)\nKnowledge 2\nKnowledge: (1+1) marks for likely reason growth can be\ndescribed as organic e.g.\n• Growth is internal (1) opening new tea rooms (1)\n• There is no evidence that growth is external (1)\nthrough integration, merger or takeover (1)\n• Reinvesting profits from 2 million customers (1) to\nopen new café (1)\n• Borrowing from banks (1) rather than finance from a\ntakeover (1)\n• The business has grown naturally (1) without the need\nto takeover or merge (1)\n(2)\nPMTPMT\n\n(c)\nApplication 1\nThe only correct answer is B\nA is not correct because external economies occur outside a firm but\nwithin an industry\nC is not correct because this is associated with a conglomerate\nmerger whereas this is a vertical backwards merger\nD is not correct because it could result in greater monopoly power\n(1)\nPMTPMT",
   "erKey": "5a",
   "paper": 1,
   "series": "June 2020",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2020-q5"
  },
  {
@@ -614,6 +651,7 @@ const ECO_QUESTIONS = [
   "series": "June 2020",
   "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2020-q6a"
  },
  {
@@ -626,8 +664,9 @@ const ECO_QUESTIONS = [
   "erKey": "6b",
   "paper": 1,
   "series": "June 2020",
-  "theme": 3,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2020-q6b"
  },
  {
@@ -641,7 +680,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2020",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2020-q6c"
  },
  {
@@ -656,6 +696,7 @@ const ECO_QUESTIONS = [
   "series": "June 2020",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2020-q6d"
  },
  {
@@ -664,12 +705,13 @@ const ECO_QUESTIONS = [
   "marks": 15,
   "section": "B",
   "text": "Discuss the likely benefits of price discrimination to rail passengers. Use a\ndiagram to support your answer.",
-  "ms": "Knowledge 3, Application 3, Analysis 3\nPrice discrimination – charging different prices to different\ngroups of consumers for the same service e.g. 16-25 railcard\nusers vs adult fare users. Allow peak and off-peak as service\nfrom A to B is the same, price discrimination just provides an\nincentive to travel slightly later.\n• Lower rail fares for 16-25 year olds\nYoung persons’ may increase their consumer\nsurplus as a result – prices may move towards\nbeing more allocatively efficient P=MC. May find\nbargain fares - £35.80 cheaper as in Figure 3.\nAllows lower income groups to consume service –\nseek employment.\n• More choice for rail travellers:\nPrice discrimination enables TOCs to make more\nrevenue so they can cross subsidise and provide\ndiscount fares for seats that would not have been\ntaken. In some cases without price discrimination\nrail operators may go out of business – preventing\nrail travel.\n• Avoids overcrowding\nTrail operators can use price discrimination to\nmanage demand, preventing overcrowded train in\npeak travel times and encouraging rail travel by\n16-25 year olds in less popular times off peak.\n• Improved customer service\nRail travellers receive a better-quality travelling\nexperience thanks to additional revenue raised\nthrough price discrimination. Investment in new\ntrains, station services, online ticketing, customer\ninformation, Improved food and drink service, Wi-\nFi access, seating and storage space.\nPMTPMT • Price discrimination diagram showing, for example:\nMarket profit maximising price and output P3 and\nQ3. At which no service would be provided for 16-\n25 year old customers. Price discrimination\nenables a lower price of P2 (£69.50) for young\npersons’ – so consumer surplus increases for\nconsumers with relatively more price elastic\ndemand\nNB: Other correct diagrams accepted.\nNB: For Level 3 a valid diagram such as above is required.\nAnalysis must link to benefits to consumers. Allow other\ntypes of rail fare price discrimination e.g advance\nbooking, Senior Railcard, 16-17 year olds half price travel. (9)\nPMTPMT Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad el",
+  "ms": "Knowledge 3, Application 3, Analysis 3\nPrice discrimination – charging different prices to different\ngroups of consumers for the same service e.g. 16-25 railcard\nusers vs adult fare users. Allow peak and off-peak as service\nfrom A to B is the same, price discrimination just provides an\nincentive to travel slightly later.\n• Lower rail fares for 16-25 year olds\nYoung persons’ may increase their consumer\nsurplus as a result – prices may move towards\nbeing more allocatively efficient P=MC. May find\nbargain fares - £35.80 cheaper as in Figure 3.\nAllows lower income groups to consume service –\nseek employment.\n• More choice for rail travellers:\nPrice discrimination enables TOCs to make more\nrevenue so they can cross subsidise and provide\ndiscount fares for seats that would not have been\ntaken. In some cases without price discrimination\nrail operators may go out of business – preventing\nrail travel.\n• Avoids overcrowding\nTrail operators can use price discrimination to\nmanage demand, preventing overcrowded train in\npeak travel times and encouraging rail travel by\n16-25 year olds in less popular times off peak.\n• Improved customer service\nRail travellers receive a better-quality travelling\nexperience thanks to additional revenue raised\nthrough price discrimination. Investment in new\ntrains, station services, online ticketing, customer\ninformation, Improved food and drink service, Wi-\nFi access, seating and storage space.\nPMTPMT • Price discrimination diagram showing, for example:\nMarket profit maximising price and output P3 and\nQ3. At which no service would be provided for 16-\n25 year old customers. Price discrimination\nenables a lower price of P2 (£69.50) for young\npersons’ – so consumer surplus increases for\nconsumers with relatively more price elastic\ndemand\nNB: Other correct diagrams accepted.\nNB: For Level 3 a valid diagram such as above is required.\nAnalysis must link to benefits to consumers. Allow other\ntypes of rail fare price discrimination e.g advance\nbooking, Senior Railcard, 16-17 year olds half price travel. (9)\nPMTPMT Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad elements of the\nquestion.\nA narrow response; chains of reasoning are developed but the\nanswer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied appropriately to\nec",
   "erKey": "6e",
   "paper": 1,
   "series": "June 2020",
-  "theme": null,
+  "theme": 3,
   "themeConfident": false,
+  "year": 2,
   "id": "p1-june2020-q6e"
  },
  {
@@ -677,13 +719,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "The International Energy Agency has predicted that oil use by cars will peak in 2025\nbecause of the increasing number of drivers switching to electric vehicles.\n(Source adapted from: https://www.thetimes.co.uk)\nEvaluate the likely microeconomic consequences of consumers shifting from vehicles\npowered by fuel obtained from oil to electric-powered vehicles.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Definition of microeconomic consequences\n• Identification of positive XED\nPositive consequences\n• Consequences for microeconomic agents of increased\ndemand for electricity – consumers, electric vehicle\nmanufacturers, electric vehicle dealers, battery\nmanufacturers, freight companies, retailers,\ngovernment, employees.\n• Use of cost and revenue diagram for to show the\neffect on profit of falling cost of electric powered\nvehicles/rising revenue.\n• Welfare effects on consumer and producer surplus of\nconsumers switching to electric powered vehicles.\n• Efficiency – allocative, productive, dynamic\n• Positive external benefits\n• Reduced negative external costs (MSC>MPC) closer to\nsocial optimum\nNegative consequences\n• Use of cost and revenue diagram to show the effect\non profit of rising cost of petrol or diesel/declining\nrevenue (D=AR).\n• Welfare effects on consumer and producer surplus of\nconsumers switching away from diesel or petrol.\n• Efficiency – x-inefficiency\n• Loss of government revenue as a large proportion of\npetrol or diesel price is tax\n• Negative external costs associated with e car\nmanufacturing\nNB: Negative consequences can be seen as KAA and\npositive consequences against as evaluation or vice\nversa.\nPMTPMT Evaluation\n• Predictions may be wrong – dynamic market forces\nbetween substitutes may result in cheaper sources of\noil, electric power becoming more expensive. Lack of\nelectric infrastructure. Distant substitutes, XED<+1.\n• Counterarguments made to the point raised e.g.\nSupernormal profits made may raise barriers to entry,\nfirms may pursue sales maximisation rather than\nprofit maximisation, congestion.\n• Information gaps\n• Different geographic markets – regulations and taxes\non oil powered vehicles\n• Impact on the oil market will depend on how\nelectricity is generated\n• Negative external costs partly offset by increased\ndemand for electricity\nNB: Negative consequences can be seen as KAA and\npositive consequences against as evaluation or vice\nversa.\n(25)\nPMTPMT Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad e",
+  "text": "The International Energy Agency has predicted that oil use by cars will peak in 2025\nbecause of the increasing number of drivers switching to electric vehicles.\n\nEvaluate the likely microeconomic consequences of consumers shifting from vehicles\npowered by fuel obtained from oil to electric-powered vehicles.",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Definition of microeconomic consequences\n• Identification of positive XED\nPositive consequences\n• Consequences for microeconomic agents of increased\ndemand for electricity – consumers, electric vehicle\nmanufacturers, electric vehicle dealers, battery\nmanufacturers, freight companies, retailers,\ngovernment, employees.\n• Use of cost and revenue diagram for to show the\neffect on profit of falling cost of electric powered\nvehicles/rising revenue.\n• Welfare effects on consumer and producer surplus of\nconsumers switching to electric powered vehicles.\n• Efficiency – allocative, productive, dynamic\n• Positive external benefits\n• Reduced negative external costs (MSC>MPC) closer to\nsocial optimum\nNegative consequences\n• Use of cost and revenue diagram to show the effect\non profit of rising cost of petrol or diesel/declining\nrevenue (D=AR).\n• Welfare effects on consumer and producer surplus of\nconsumers switching away from diesel or petrol.\n• Efficiency – x-inefficiency\n• Loss of government revenue as a large proportion of\npetrol or diesel price is tax\n• Negative external costs associated with e car\nmanufacturing\nNB: Negative consequences can be seen as KAA and\npositive consequences against as evaluation or vice\nversa.\nPMTPMT Evaluation\n• Predictions may be wrong – dynamic market forces\nbetween substitutes may result in cheaper sources of\noil, electric power becoming more expensive. Lack of\nelectric infrastructure. Distant substitut",
   "erKey": "7",
   "paper": 1,
   "series": "June 2020",
-  "theme": 1,
+  "theme": 3,
   "themeConfident": false,
+  "year": 2,
   "id": "p1-june2020-q7"
  },
  {
@@ -691,13 +734,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "‘Amazon.com, the giant online retailer, has too much power.’ It uses its market power\nto put a squeeze on publishers, in effect driving down the prices it pays for books. If\na publisher refuses, Amazon may take action by ‘delaying their delivery, raising their\nprices, and steering customers to other publishers’.\n(Source adapted from: https://www.nytimes.com)\nEvaluate the likely costs of a monopsony operating in a market such as book retailing.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Definition of monopsony – single dominant\nbuyer or bargaining power in their market\n• Identification of monopsony abuse\n• Explain the reason why suppliers will receive a\nlower price and/or lower sales\n• Cost to supplier – lower price, less revenue, less\nabnormal profit, reaching shut down point, less\nproducer surplus, less finance for investment,\n'delaying their delivery, raising their prices, and\nsteering customers to other publishers’ in the case of\nbook publishers facing Amazon.\n• Cost to consumers – less choice, monopsony power\nmay result in monopoly power so consumers do not\nbenefit from lower prices passed on.\n• Cost to employees at supplier firms - wage cuts, job\nlosses.\nNB: for a Level 4 response, candidates must refer to\na specific MARKET in their answer.\nEvaluation\n• Difficult to assess the strength of monopsony\npower – buyers may make strategic partnerships\nwith suppliers/other dominant buyers may exist\nor emerge/suppliers may work to establish their\nown monopoly power/bi-lateral negotiations.\n• Counterarguments made to the points raised\n• Lower prices for consumers, increased\nconsumer surplus and choice. Monopsony acts\nas a counter-weight to the selling power of a\nmonopolist.\n• Suppliers have a major buyer improving\nrevenue, long term investment decisions, profit.\n• Monopsony firm benefits\n• Supplier and monopsony firm employees\nbenefit\n• Government intervention to protect suppliers\nand employees\nPMTPMT • Government intervention to promote\ncompetition and contestability\n• Monopsony might be buying books from large\npublishers so creates a bilateral monopoly.\n(25)\nPMTPMT Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic problems\nin context, although does not focus on the broad elements of\nthe question.\nA narrow response or superficial, two stage chains of reasoning\nonly.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements of the question with evidence integrated\ninto the answer.\nAnalysis is clear and coherent, although it may lack balance",
+  "text": "‘Amazon.com, the giant online retailer, has too much power.’ It uses its market power\nto put a squeeze on publishers, in effect driving down the prices it pays for books. If\na publisher refuses, Amazon may take action by ‘delaying their delivery, raising their\nprices, and steering customers to other publishers’.\n\nEvaluate the likely costs of a monopsony operating in a market such as book retailing.",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Definition of monopsony – single dominant\nbuyer or bargaining power in their market\n• Identification of monopsony abuse\n• Explain the reason why suppliers will receive a\nlower price and/or lower sales\n• Cost to supplier – lower price, less revenue, less\nabnormal profit, reaching shut down point, less\nproducer surplus, less finance for investment,\n'delaying their delivery, raising their prices, and\nsteering customers to other publishers’ in the case of\nbook publishers facing Amazon.\n• Cost to consumers – less choice, monopsony power\nmay result in monopoly power so consumers do not\nbenefit from lower prices passed on.\n• Cost to employees at supplier firms - wage cuts, job\nlosses.\nNB: for a Level 4 response, candidates must refer to\na specific MARKET in their answer.\nEvaluation\n• Difficult to assess the strength of monopsony\npower – buyers may make strategic partnerships\nwith suppliers/other dominant buyers may exist\nor emerge/suppliers may work to establish their\nown monopoly power/bi-lateral negotiations.\n• Counterarguments made to the points raised\n• Lower prices for consumers, increased\nconsumer surplus and choice. Monopsony acts\nas a counter-weight to the selling power of a\nmonopolist.\n• Suppliers have a major buyer improving\nrevenue, long term investment decisions, profit.\n• Monopsony firm benefits\n• Supplier and monopsony firm employees\nbenefit\n• Government intervention to protect suppliers\nand employees\nPMTPMT • Gove",
   "erKey": "8",
   "paper": 1,
   "series": "June 2020",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2020-q8"
  },
  {
@@ -705,13 +749,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Statement 2\nNormative Normative\nNormative Positive\nPositive Normative\nPositive Positive 3\n(b) Explain the likely impact of migration on the wage level of engineers in Poland.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n..............................................................................................................................................................................................",
-  "ms": "Knowledge 1\nThe only correct answer is D\nA is not correct because Statement 1 and 2 are positive statements,\nthey are not value judgements\nB is not correct Statement 1 is positive as it is an objective statement\nwhich can be tested\nC is not correct because Statement 2 is positive\n(1)",
+  "text": "Statement 2\nNormative Normative\nNormative Positive\nPositive Normative\nPositive Positive\n\n3\n(b) Explain the likely impact of migration on the wage level of engineers in Poland.\n(4)",
+  "ms": "(a)\nKnowledge 1\nThe only correct answer is D\nA is not correct because Statement 1 and 2 are positive statements,\nthey are not value judgements\nB is not correct Statement 1 is positive as it is an objective statement\nwhich can be tested\nC is not correct because Statement 2 is positive\n(1)\n\n(b)\nKnowledge 2, Application 1, Analysis 1\nKnowledge / understanding: 2 marks for understanding\ne.g.\n• Supply of labour decreases (1)\n• Wage rises (1)\nApplication: 1 mark for e.g.\n• Takes time to train engineers (1)\n• Migration of 1 million workers (1)\n• Annotating diagram in context of engineers (1)\n• Shortage of engineers (1)\n• 'Many engineers have left Poland for higher paid jobs\nin other countries' (1)\nAnalysis: 1 mark for a linked development e.g.\n• Excess demand (1)\n• Firms offer higher wages (1)\n• Firms contract demand for labour (1)\n• New labour market equilibrium achieved (1)\nNB Full marks only to be awarded for specific reference\nto labour market.\n(4)\nWage rate",
   "erKey": "1a",
   "paper": 1,
   "series": "June 2021",
-  "theme": 3,
-  "themeConfident": true,
+  "theme": 1,
+  "themeConfident": false,
+  "year": 1,
   "id": "p1-june2021-q1"
  },
  {
@@ -719,13 +764,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Cobalt is a key metal used in the batteries of electric cars. China is the world’s largest\nproducer of electric cars but has recently cut subsidies to its manufacturers.\nThe Democratic Republic of the Congo (DRC) produces more than 60% of the world’s\nsupply of cobalt, from its small-scale mines. Many new small mines opened in 2018 as\na result of improved expectations of profit.\nThe following graph shows the price of cobalt between June 2018 and June 2019.\n$ per pound\nweight\n(454 grams)\nJune 2018 June 2019\n45\n40\n35\n30\n25\n20\n15\n10\n5\n0 5\n(a) With reference to the information provided, draw a supply and demand diagram\nto show why the price of cobalt fell between June 2018 and June 2019.\n(4)\n(b) Between June 2018 and June 2019 the price of cobalt fell by:\n(1)\nA 25%\nB 37.5%\nC 62.5%\nD 166.7%",
-  "ms": "Knowledge 2, Application 2\nKnowledge\n• Supply and demand diagram annotated to show:\na right shift in the supply curve (1) and\na left shift in the demand curve (1)\nApplication\n• New lower price (1)\n• New equilibrium price at D1 and S1 as illustrated below,\nfor example (1)\n(4)",
+  "text": "Cobalt is a key metal used in the batteries of electric cars. China is the world’s largest\nproducer of electric cars but has recently cut subsidies to its manufacturers.\nThe Democratic Republic of the Congo (DRC) produces more than 60% of the world’s\nsupply of cobalt, from its small-scale mines. Many new small mines opened in 2018 as\na result of improved expectations of profit.\nThe following graph shows the price of cobalt between June 2018 and June 2019.\n$ per pound\nweight\n(454 grams)\nJune 2018 June 2019\n45\n40\n35\n30\n25\n20\n15\n10\n5\n0\n\n5\n(a) With reference to the information provided, draw a supply and demand diagram\nto show why the price of cobalt fell between June 2018 and June 2019.\n(4)\n(b) Between June 2018 and June 2019 the price of cobalt fell by:\n(1)\nA 25%\nB 37.5%\nC 62.5%\nD 166.7%",
+  "ms": "(a)\nKnowledge 2, Application 2\nKnowledge\n• Supply and demand diagram annotated to show:\na right shift in the supply curve (1) and\na left shift in the demand curve (1)\nApplication\n• New lower price (1)\n• New equilibrium price at D1 and S1 as illustrated below,\nfor example (1)\n(4)\n\n(b)\nKnowledge 1\nThe only correct answer is C\nA is not correct because they have mistakenly only calculated the\nchange in price as a percentage change\nB is not correct because they have mistakenly calculated -the new\nprice divided by the original price initially\nD is not correct because they have mistakenly calculated the change\nin price by the new price.\n(1)",
   "erKey": "2a",
   "paper": 1,
   "series": "June 2021",
-  "theme": null,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2021-q2"
  },
  {
@@ -733,13 +779,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "River Island is a clothing retailer. Students are offered a River Island student\ndiscount code to benefit from a 10% price reduction as an attempt by the firm to\nincrease profit.\n(a) Complete the third-degree price discrimination diagram below. Draw the impact\non each sub-market by showing the price and profit.\n(4)\n0 0\nStudents (a) Non-students (b)\nPrice\na Price\nb\nAC = MC\nMR a AR\na MR\nb AR\nb\nQuantity a\nof clothing\nQuantity b\nof clothing 7\n(b) Which one of the following is necessary for a firm to be able to practise price\ndiscrimination?\n(1)\nA It has some degree of market power\nB It is able to store its product\nC Its product has different features in different markets\nD The costs of supplying some customers are higher",
-  "ms": "Knowledge 2, Application 2\nKnowledge\n- Profit maximisation price identified for students (Pa) (1)\n- Profit maximisation price identified for non-students (Pb)\n(1)\nApplication\n- Profit identified for students (1)\n- Profit identified for non-students (1)\n(4)",
+  "text": "River Island is a clothing retailer. Students are offered a River Island student\ndiscount code to benefit from a 10% price reduction as an attempt by the firm to\nincrease profit.\n(a) Complete the third-degree price discrimination diagram below. Draw the impact\non each sub-market by showing the price and profit.\n(4)\n0 0\nStudents (a) Non-students (b)\nPrice\na Price\nb\nAC = MC\nMR\na\nAR\na MR\nb\nAR\nb\nQuantity\na\nof clothing\nQuantity\nb\nof clothing\n\n7\n(b) Which one of the following is necessary for a firm to be able to practise price\ndiscrimination?\n(1)\nA It has some degree of market power\nB It is able to store its product\nC Its product has different features in different markets\nD The costs of supplying some customers are higher",
+  "ms": "(a)\nKnowledge 2, Application 2\nKnowledge\n- Profit maximisation price identified for students (Pa) (1)\n- Profit maximisation price identified for non-students (Pb)\n(1)\nApplication\n- Profit identified for students (1)\n- Profit identified for non-students (1)\n(4)\n\n(b)\nAnalysis 1\nThe only correct answer is A\nB is not correct because the price elasticity of supply does not\ninfluence price discrimination\nC is not correct because for it to be third-degree price discrimination\nthe same product is being bought; it is homogenous\nD is not correct because price discrimination is not associated with\ncosts of production reasons\n(1)",
   "erKey": "3a",
   "paper": 1,
   "series": "June 2021",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2021-q3"
  },
  {
@@ -747,13 +794,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Patrick Street Productions produces musicals. Its latest production is ‘It’s a Wonderful\nLife’ and the total cost of this production is $200 000. The ticket price is $40. The\ntheatre has a capacity of 300 seats. The company aims for revenue maximisation. If\nthis is achieved, revenue from ticket sales will cover 30% of total costs. Charitable\ndonations contribute 12.5% towards total cost and a government subsidy ensures the\nproduction covers all of its costs.\n(Source adapted from: https://www.cbc.ca/news/canada/british-columbia/a-bit-of-\na-desperate-time-as-costs-rise-professional-theatre-companies-survive-rather-than-\nthrive-1.5489733)\n(a) Calculate the total revenue from ticket sales for ‘It’s a Wonderful Life’, assuming it\nis shown only five times, all at full capacity. You are advised to show your working.\n(2)\n....................................................................................................................................................................................................................................................................................\n..................................................................................................",
-  "ms": "Application 2\nApplication: 1 mark for likely understanding e.g.\n• $40 x 300 seats (1)\nOR\n• $12 000 per show (1)\nOR\n• $12 000 x 5 (1)\nAnswer = $60 000\nAward 2 marks for correct answer (60 000)\n(2)",
+  "text": "Patrick Street Productions produces musicals. Its latest production is ‘It’s a Wonderful\nLife’ and the total cost of this production is $200 000. The ticket price is $40. The\ntheatre has a capacity of 300 seats. The company aims for revenue maximisation. If\nthis is achieved, revenue from ticket sales will cover 30% of total costs. Charitable\ndonations contribute 12.5% towards total cost and a government subsidy ensures the\nproduction covers all of its costs.\n\n(a) Calculate the total revenue from ticket sales for ‘It’s a Wonderful Life’, assuming it\nis shown only five times, all at full capacity. You are advised to show your working.\n(2)\n\n9\n(b) Calculate the value of the government subsidy necessary for this production to\ncover all of its costs.\n(2)\n\n(c) Which one of the following conditions is necessary for revenue maximisation\nto occur?\n(1)\nA Average revenue equals average cost\nB Average revenue equals marginal cost\nC Marginal revenue equals average revenue\nD Marginal revenue equals zero",
+  "ms": "(a)\nApplication 2\nApplication: 1 mark for likely understanding e.g.\n• $40 x 300 seats (1)\nOR\n• $12 000 per show (1)\nOR\n• $12 000 x 5 (1)\nAnswer = $60 000\nAward 2 marks for correct answer (60 000)\n(2)\n\n(b)\nApplication 2\nApplication: 1 mark for understanding e.g.\n• Subsidy is 57.5% (1)\nOR\n• 100% - 30% (tickets sales) – 12.5% (charitable\ndonations)\nOR\n• 57.5% x $ 200 000 (1)\nOR\n• 0.575 x 200 000 (1)\nAnswer = $115 000\nAward 2 marks for correct answer accept a range (114\n000 – 116 000)\n(2)\n\n(c)\nAnalysis 1\nThe only correct answer is D\nA is not correct because this is sales maximisation\nB is not correct because this is identifying allocative efficiency\nC is not correct because this is describing perfect competition market\nstructure. (1)",
   "erKey": "4a",
   "paper": 1,
   "series": "June 2021",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2021-q4"
  },
  {
@@ -762,12 +810,13 @@ const ECO_QUESTIONS = [
   "marks": 5,
   "section": "A",
   "text": "In Sicily, many households can grow lemons of the same quality as each other. Chiara\ndecides to sell lemons at her local market, expecting to make a normal profit. She\nnotices that all of the many lemon sellers are charging exactly the same price.\n(a) Draw diagrams showing the equilibrium positions for both the lemon market and\na typical firm in the long run.\n(4)\nMarket Firm\n(b) Which one of the following will exist in the short run if Chiara makes a loss?\n(1)\nA Allocative efficiency and productive efficiency\nB Allocative efficiency and productive inefficiency\nC Allocative inefficiency and productive efficiency\nD Allocative inefficiency and productive inefficiency",
-  "ms": "Knowledge 2, Application 2\nKnowledge\n- Market equilibrium price (1)\n- Horizontal demand for the firm, taking the market\nequilibrium price (1)\nApplication\n- Profit maximisation output and price for the firm (1)\n- Normal profit identified at the profit maximising\noutput/(ATC=AR) (1)\n(4)",
+  "ms": "(a)\nKnowledge 2, Application 2\nKnowledge\n- Market equilibrium price (1)\n- Horizontal demand for the firm, taking the market\nequilibrium price (1)\nApplication\n- Profit maximisation output and price for the firm (1)\n- Normal profit identified at the profit maximising\noutput/(ATC=AR) (1)\n(4)\n\n(b)\nAnalysis 1\nThe only correct answer is B\nA is not correct because the firm is not operating at its minimum\npoint on the AC curve\nC is not correct because P=MC so the firm is allocatively efficient\nD is not correct because of the reasons given in A and C. (1)",
   "erKey": "5a",
   "paper": 1,
   "series": "June 2021",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2021-q5"
  },
  {
@@ -781,7 +830,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2021",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2021-q6a"
  },
  {
@@ -790,12 +840,13 @@ const ECO_QUESTIONS = [
   "marks": 8,
   "section": "B",
   "text": "Examine the likely impact of Thomas Cook’s plan ‘to reduce their airline emissions’\n(Extract B, line 6) on the social optimum position. Use an appropriate externalities\ndiagram in your answer.",
-  "ms": "Knowledge 2, Analysis 2, Application 2,\nEvaluation 2\nKnowledge/understanding: 2 marks (1+1) e.g.\n• Social optimum is when MSC = MSB (1)\n• Social optimum position moves right (1)\n• Market equilibrium output (e.g. MO) position\nidentified (1)\n• Downward sloping MSB (1)\n• MSC = MPC + MEC (1)\nAnalysis: 1 mark for linked explanation of each identified\nbenefit (1+1) e.g.\n• Third party effects are lower (1) so external costs are\nlower/MEC falls (gi to ki) (1)\n• MSC shifts/skews right (1) showing new social\noptimum position (MSB=MSC) (1)\n• Welfare loss falls (1) from ghi to kji (1) Application: 2 marks for reference to Extract B e.g.\n• Thomas Cook airline emissions are lower/switch fuel\ntypes/new engines (1)\n• In 2018 Thomas Cook Group Airline was included in\nthe top 10 of the world’s most fuel-efficient airline (1)\n• Lower insurance bills/clean up bills for\ncompanies/households at risk of flood\ndamage/storms (1) loss of cattle/crops due to drought\ndeclines (1)\n• CO2 emissions per passenger declines (1) quantity of\nflights increases (1)\nNB These application points may be annotated on the\ndiagram.\nEvaluation: 2 marks for two evaluative comments,\nOR 2 marks for identification and linked development of one\nevaluative comment e.g.\n• Difficulty in measuring size of negative externality (1)\nthird party effects (1)\n• CO2 emissions from travel agents, hotels and holiday\nactivities increase/remain high (1+1)\n• Computational problems in measuring CO2 emissions\nfrom planes (1) faulty industry data (1)\n(8)",
+  "ms": "Knowledge 2, Analysis 2, Application 2,\nEvaluation 2\nKnowledge/understanding: 2 marks (1+1) e.g.\n• Social optimum is when MSC = MSB (1)\n• Social optimum position moves right (1)\n• Market equilibrium output (e.g. MO) position\nidentified (1)\n• Downward sloping MSB (1)\n• MSC = MPC + MEC (1)\nAnalysis: 1 mark for linked explanation of each identified\nbenefit (1+1) e.g.\n• Third party effects are lower (1) so external costs are\nlower/MEC falls (gi to ki) (1)\n• MSC shifts/skews right (1) showing new social\noptimum position (MSB=MSC) (1)\n• Welfare loss falls (1) from ghi to kji (1)\nApplication: 2 marks for reference to Extract B e.g.\n• Thomas Cook airline emissions are lower/switch fuel\ntypes/new engines (1)\n• In 2018 Thomas Cook Group Airline was included in\nthe top 10 of the world’s most fuel-efficient airline (1)\n• Lower insurance bills/clean up bills for\ncompanies/households at risk of flood\ndamage/storms (1) loss of cattle/crops due to drought\ndeclines (1)\n• CO2 emissions per passenger declines (1) quantity of\nflights increases (1)\nNB These application points may be annotated on the\ndiagram.\nEvaluation: 2 marks for two evaluative comments,\nOR 2 marks for identification and linked development of one\nevaluative comment e.g.\n• Difficulty in measuring size of negative externality (1)\nthird party effects (1)\n• CO2 emissions from travel agents, hotels and holiday\nactivities increase/remain high (1+1)\n• Computational problems in measuring CO2 emissions\nfrom planes (1) faulty industry data (1)\n(8)",
   "erKey": "6b",
   "paper": 1,
   "series": "June 2021",
-  "theme": 3,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2021-q6b"
  },
  {
@@ -809,7 +860,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2021",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2021-q6c"
  },
  {
@@ -818,12 +870,13 @@ const ECO_QUESTIONS = [
   "marks": 12,
   "section": "B",
   "text": "With reference to Extract C, discuss the proposed government subsidy to prevent\nThomas Cook from reaching its shut-down point.",
-  "ms": "Knowledge 2, Application 2, Analysis 4\nCase for subsidy:\n• Subsidy is financial aid, grant\n• In long run required more to cover AC\n• Subsidy may have lowered AC, may be shown as shift\non diagram\n• Benefit of subsidy to producer may cover their AVC in\nshort-run or AC in long-run.\n• Avoid government rescuing 600 000 travellers\n• Avoid government paying benefits to up to 21 000\nemployees and those losing jobs in related industries\ne.g. hotels\n• Subsidy may have leveraged help from banks and\nshareholders\n• Thomas Cook may have recovered - Package holidays\nmay have come back into fashion – aging population.\nRecession may have seen a rise in demand for\npackage holidays as an inferior good, YED negative\n• Diagram may be used, for example:\nOR NB a diagram is not required\nNB case against subsidy may be seen as KAA and case for\nas evaluation or vice versa.\n(8)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad elements of the\nquestion.\nA narrow response; chains of reasoning are developed but the\nanswer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied appropriately to\neconomic issues and problems. The answer demonstrates logical\nand coherent chains of reasoning.",
+  "ms": "Knowledge 2, Application 2, Analysis 4\nCase for subsidy:\n• Subsidy is financial aid, grant\n• In long run required more to cover AC\n• Subsidy may have lowered AC, may be shown as shift\non diagram\n• Benefit of subsidy to producer may cover their AVC in\nshort-run or AC in long-run.\n• Avoid government rescuing 600 000 travellers\n• Avoid government paying benefits to up to 21 000\nemployees and those losing jobs in related industries\ne.g. hotels\n• Subsidy may have leveraged help from banks and\nshareholders\n• Thomas Cook may have recovered - Package holidays\nmay have come back into fashion – aging population.\nRecession may have seen a rise in demand for\npackage holidays as an inferior good, YED negative\n• Diagram may be used, for example:\nOR\nNB a diagram is not required\nNB case against subsidy may be seen as KAA and case for\nas evaluation or vice versa.\n(8)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad elements of the\nquestion.\nA narrow response; chains of reasoning are developed but the\nanswer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied appropriately to\neconomic issues and problems. The answer demonstrates logical\nand coherent chains of reasoning.",
   "erKey": "6d",
   "paper": 1,
   "series": "June 2021",
   "theme": 1,
-  "themeConfident": false,
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2021-q6d"
  },
  {
@@ -832,12 +885,13 @@ const ECO_QUESTIONS = [
   "marks": 15,
   "section": "B",
   "text": "With reference to the information provided, discuss the decision by Jet2 to\nincrease its package holiday prices.",
-  "ms": "Knowledge 3, Application 3, Analysis 3\nExploiting market power\n• Jet2 increases ‘price per person’ by £36 after Thomas\nCook closes (Fig 2)\n• Thomas Cook, with a 13% market share in 2019, exits\nthe market causing Jet2 to gain market share, possibly\nclose to 25% - gaining monopoly\npower/duopoly/oligopoly (Fig 1)\n• Jet2 may be using its monopoly dominance to set a\nprice above the market clearing/allocatively market\nprice\n• Consumer surplus reduced, producer surplus gained.\n• With less competition for package holidays, Jet2’s PED\nbecomes relatively more price-inelastic resulting in\ngreater price setting powers for package holidays\n• Jet2 may now be able to set its price at a profit\nmaximising level of £824 rather than possible sales\nmaximisation/revenue pricing/limit pricing/predatory\npricing at £788\n• Demand for Jet2 holidays increasing as a close\nsubstitute to Thomas Cook\n• Remaining companies colluding, use of game theory.\nN.B KAA may be used as EV and vice-versa.\n(9) Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad elements of the\nquestion.\nA narrow response; chains of reasoning are developed but the\nanswer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied appropriately to\neconomic issues and problems. The answer demonstrates logical\nand coherent chains of reasoning.",
+  "ms": "Knowledge 3, Application 3, Analysis 3\nExploiting market power\n• Jet2 increases ‘price per person’ by £36 after Thomas\nCook closes (Fig 2)\n• Thomas Cook, with a 13% market share in 2019, exits\nthe market causing Jet2 to gain market share, possibly\nclose to 25% - gaining monopoly\npower/duopoly/oligopoly (Fig 1)\n• Jet2 may be using its monopoly dominance to set a\nprice above the market clearing/allocatively market\nprice\n• Consumer surplus reduced, producer surplus gained.\n• With less competition for package holidays, Jet2’s PED\nbecomes relatively more price-inelastic resulting in\ngreater price setting powers for package holidays\n• Jet2 may now be able to set its price at a profit\nmaximising level of £824 rather than possible sales\nmaximisation/revenue pricing/limit pricing/predatory\npricing at £788\n• Demand for Jet2 holidays increasing as a close\nsubstitute to Thomas Cook\n• Remaining companies colluding, use of game theory.\nN.B KAA may be used as EV and vice-versa.\n(9)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad elements of the\nquestion.\nA narrow response; chains of reasoning are developed but the\nanswer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied appropriately to\neconomic issues and problems. The answer demonstrates logical\nand coherent chains of reasoning.",
   "erKey": "6e",
   "paper": 1,
   "series": "June 2021",
   "theme": 3,
   "themeConfident": false,
+  "year": 2,
   "id": "p1-june2021-q6e"
  },
  {
@@ -845,13 +899,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "The national living wage, the minimum wage for 25-year-olds and over, is expected\nto rise to more than £10.50 an hour in 2024 compared with £8.72 in 2020. The wage\ndoes not apply to the UK’s self-employed and ‘gig economy’ workers.\nSome economists said the increase was ambitious. Business groups warned that\nemployers in sectors such as social care could be hit hard. In large parts of the north\nof England the living wage has already reached two-thirds of local median earnings,\nsaid Professor Shackleton.\n(Source adapted from: https://www.theguardian.com/uk-news/2020/mar/11/budget-2020-\nnational-living-wage-national-insurance)\nEvaluate the disadvantages of a significant increase in the national living wage on a\nspecific labour market, such as that for social care workers.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Minimum wage – legally enforced wage floor\n• Wage set above market equilibrium wage\n• Increasing from £8.72 to £10.50\n• Extension in supply of labour\n• Contraction in demand for labour\n• Excess supply of labour\nDrawback of increase\n• Unemployment in specific labour market\n• Firms close in specific market - rise in variable/fixed cost\ndepending on market\n• Additional drawbacks of minimum wage\nWage elasticity of demand\n• Proportion of labour costs relative to total costs\n• Ease and cost of factor substitution\n• PED for final product, derived demand\nWage elasticity of supply\n• Relative skills required in specific market\n• Income effect\n• Substitute effect\n• Allow suitable minimum wage diagram e.g.\n(25) NB a diagram is not required\nNB for Level 4 the candidate must refer to a specific labour\nmarket.\nEvaluation\n• Benefits of increase\n• Increased labour mobility into specific market\n• Increased productivity\n• Counters monopsony employer abuse\n• Firms decide to now train labour as paying higher wage\n• Improved customer service/social objectives achieved\n• Improved living standards/reduced relative poverty e.g. north of\nEngland\n• Additional benefits of minimum wage • Minimum wage set below equilibrium – in parts of country\n• Does not apply to some workers in specific market\n• Relative price elasticity of demand for labour\n• Relative price elasticity of supply\n• Short-run/Long-run considerations – substitute capital,\nqualifications and training\n• Labour in specific market is not homogenous\n• Backward bending supply of labour\n• Cost of labour relative to other factor inputs\n• Ability of firm to relocate/move into another market\n• Problems measuring productivity\nKnowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad elements of the\nquestion.\nA narrow response or superficial, two stage chains of reasoning\nonly.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to the\nbroad elements of the que",
+  "text": "The national living wage, the minimum wage for 25-year-olds and over, is expected\nto rise to more than £10.50 an hour in 2024 compared with £8.72 in 2020. The wage\ndoes not apply to the UK’s self-employed and ‘gig economy’ workers.\nSome economists said the increase was ambitious. Business groups warned that\nemployers in sectors such as social care could be hit hard. In large parts of the north\nof England the living wage has already reached two-thirds of local median earnings,\nsaid Professor Shackleton.\n\nEvaluate the disadvantages of a significant increase in the national living wage on a\nspecific labour market, such as that for social care workers.",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Minimum wage – legally enforced wage floor\n• Wage set above market equilibrium wage\n• Increasing from £8.72 to £10.50\n• Extension in supply of labour\n• Contraction in demand for labour\n• Excess supply of labour\nDrawback of increase\n• Unemployment in specific labour market\n• Firms close in specific market - rise in variable/fixed cost\ndepending on market\n• Additional drawbacks of minimum wage\nWage elasticity of demand\n• Proportion of labour costs relative to total costs\n• Ease and cost of factor substitution\n• PED for final product, derived demand\nWage elasticity of supply\n• Relative skills required in specific market\n• Income effect\n• Substitute effect\n• Allow suitable minimum wage diagram e.g.\n(25)\nNB a diagram is not required\nNB for Level 4 the candidate must refer to a specific labour\nmarket.\nEvaluation\n• Benefits of increase\n• Increased labour mobility into specific market\n• Increased productivity\n• Counters monopsony employer abuse\n• Firms decide to now train labour as paying higher wage\n• Improved customer service/social objectives achieved\n• Improved living standards/reduced relative poverty e.g. north of\nEngland\n• Additional benefits of minimum wage\n• Minimum wage set below equilibrium – in parts of country\n• Does not apply to some workers in specific market\n• Relative price elasticity of demand for labour\n• Relative price elasticity of supply\n• Short-run/Long-run considerations – substitute capital,\nqualification",
   "erKey": "7",
   "paper": 1,
   "series": "June 2021",
   "theme": 3,
   "themeConfident": false,
+  "year": 2,
   "id": "p1-june2021-q7"
  },
  {
@@ -860,12 +915,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "In many industries, such as banking, health insurance, internet search engines,\npharmaceuticals, social media and telecommunications, there have been increases in\nmarket concentration.\nEvaluate the possible consequences for business decision making of increased\nmarket concentration. Refer to industries of your choice in your answer.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• High concentration ratio – Oligopoly market structure/Monopoly\npower/Monopsony power\n• Decisions to erect/maintain high barriers to entry and exit\n• Interdependence of firms – use of game theory in decision making\n• Price leadership\n• Collusive and non-collusive behaviour\n• Product differentiation\n• Types of price competition – predatory pricing, limit pricing\n• Types of non-price competition\n• Monopoly power – limiting choice, profit maximising, price\ndiscrimination\n• Monopsony power – reducing producer surplus of suppliers\nThe role of competition in business decision making\n• Profit maximisation\n• Alternative business objectives\n• Mergers and take-overs\n• Revenue, Costs and Profits in different market structures\n• Pricing and output decisions of firms in different contexts\nEvaluation\n• Fines/Regulations by Government/Regulatory bodies curtails\nbusiness decision making\n• Regulatory capture\n• Asymmetric information\n• Price wars/limit pricing acts as a surrogate for competition\n• Non-price competition acts in consumer interest – technological\nadvances/customer service.\n• Wider benefits from new industry giants e.g. Amazon/Google – tax\nrevenue, employment, market for SME’s, re-investing profits\n• Loss of dynamic efficiency gains from incumbent dominant firms\n• CMA/EC preventing mergers/forcing demergers\nNB a diagram is not required\nNB KAA may be used as EV and vice-versa\nNB for Level 4 the candidate must refer to a specific industries. (25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems\nin context, although does not focus on the broad elements of the\nquestion.\nA narrow response or superficial, two stage chains of reasoning\nonly.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to the\nbroad elements of the question with evidence integrated into the\nanswer.\nAnalysis is clear and coherent, although it may lack balance.\nChains of reasoning are developed but the answer may lack\nbalance.\nLevel 4 13–16 Demonstrates precise knowl",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• High concentration ratio – Oligopoly market structure/Monopoly\npower/Monopsony power\n• Decisions to erect/maintain high barriers to entry and exit\n• Interdependence of firms – use of game theory in decision making\n• Price leadership\n• Collusive and non-collusive behaviour\n• Product differentiation\n• Types of price competition – predatory pricing, limit pricing\n• Types of non-price competition\n• Monopoly power – limiting choice, profit maximising, price\ndiscrimination\n• Monopsony power – reducing producer surplus of suppliers\nThe role of competition in business decision making\n• Profit maximisation\n• Alternative business objectives\n• Mergers and take-overs\n• Revenue, Costs and Profits in different market structures\n• Pricing and output decisions of firms in different contexts\nEvaluation\n• Fines/Regulations by Government/Regulatory bodies curtails\nbusiness decision making\n• Regulatory capture\n• Asymmetric information\n• Price wars/limit pricing acts as a surrogate for competition\n• Non-price competition acts in consumer interest – technological\nadvances/customer service.\n• Wider benefits from new industry giants e.g. Amazon/Google – tax\nrevenue, employment, market for SME’s, re-investing profits\n• Loss of dynamic efficiency gains from incumbent dominant firms\n• CMA/EC preventing mergers/forcing demergers\nNB a diagram is not required\nNB KAA may be used as EV and vice-versa\nNB for Level 4 the candidate must refer to a specific",
   "erKey": "8",
   "paper": 1,
   "series": "June 2021",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2021-q8"
  },
  {
@@ -873,13 +929,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Disney+ is a streaming service that distributes films and television series produced by\nthe Walt Disney Studios.\nDisney+ subscribers (million)\nNovember 2019 10\nDecember 2019 26.5\nFebruary 2020 28.6\nApril 2020 50\n(Source adapted from: https://www.businessofapps.com/data/disney-plus-statistics/)\n(a) Ceteris paribus, the most likely consequence of the above data is that Disney+ will\nexperience an increase in its:\n(1)\nA fixed costs\nB income elasticity of demand\nC price elasticity of demand\nD revenue 3\n(b) Draw a supply and demand diagram to show the likely effect of the change in the\nnumber of subscribers on the market equilibrium for Disney+ services.\n(4)",
-  "ms": "Analysis 1\nThe only correct answer is D\nA is not correct because fixed costs are not related directly\nwith output in the short-term\nB is not correct there is no information available on income\nchanges\nC is not correct because there is no information\navailable on price changes\n(1)",
+  "text": "Disney+ is a streaming service that distributes films and television series produced by\nthe Walt Disney Studios.\nDisney+ subscribers (million)\nNovember 2019 10\nDecember 2019 26.5\nFebruary 2020 28.6\nApril 2020 50\n\n(a) Ceteris paribus, the most likely consequence of the above data is that Disney+ will\nexperience an increase in its:\n(1)\nA fixed costs\nB income elasticity of demand\nC price elasticity of demand\nD revenue\n\n3\n(b) Draw a supply and demand diagram to show the likely effect of the change in the\nnumber of subscribers on the market equilibrium for Disney+ services.\n(4)",
+  "ms": "(a)\nAnalysis 1\nThe only correct answer is D\nA is not correct because fixed costs are not related directly\nwith output in the short-term\nB is not correct there is no information available on income\nchanges\nC is not correct because there is no information\navailable on price changes\n(1)\n\n(b)\nKnowledge 2, Application 2\nKnowledge\n- Correctly labelled original demand and supply (1)\nannotated to show the demand curve shifted to the right\n(1)\nApplication\nAs a result of demand shifting right:\n– Price increase (1)\n– Output increase (1)\n– Original and new equilibrium points identified (1+1)\nALLOW horizontal supply\nAward a maximum of three marks if supply also shifts\nDiagram e.g.\n(4)",
   "erKey": "1a",
   "paper": 1,
   "series": "June 2022",
   "theme": 1,
-  "themeConfident": false,
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2022-q1"
  },
  {
@@ -887,13 +944,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The table below shows data on the drinks market in Chile in 2017.\nPrice elasticity of demand for sweetened drinks –1.37\nCross price elasticity of demand for bottled water\nin response to a price change in sweetened drinks +0.63 (a) The price of sweetened drinks increases by 5%. Ceteris paribus, calculate the\npercentage change in the quantity demanded for sweetened drinks. You are\nadvised to show your working.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n......................................................................................................................................................................................................................................",
-  "ms": "Application 2\nApplication: 1 mark for likely understanding e.g.\n• 5% x -1.37 (1)\nOR\n• 5 % x 1.37 (1)\nAnswer = - 6.85%\nAward 2 marks for correct answer (accept any in\nthe range of 6.8 to 7 or -6.8 to -7)\n(2)",
+  "text": "The table below shows data on the drinks market in Chile in 2017.\nPrice elasticity of demand for sweetened drinks –1.37\nCross price elasticity of demand for bottled water\nin response to a price change in sweetened drinks\n+0.63\n\n(a) The price of sweetened drinks increases by 5%. Ceteris paribus, calculate the\npercentage change in the quantity demanded for sweetened drinks. You are\nadvised to show your working.\n(2)\n\n(b) The price of sweetened drinks increases by 5%. Ceteris paribus, calculate the\npercentage change in the quantity demanded for bottled water. You are advised\nto show your working.\n(2)\n\n5\n(c) Using the data on page 4, which one of the following is most likely?\n(1)\nA\nB\nC\nD\nA decrease in the price of\nsweetened drinks will have the\nfollowing effect on revenue:\nSweetened drinks and\nbottled water are:\nDecrease Complements\nDecrease Substitutes\nIncrease Complements\nIncrease Substitutes",
+  "ms": "(a)\nApplication 2\nApplication: 1 mark for likely understanding e.g.\n• 5% x -1.37 (1)\nOR\n• 5 % x 1.37 (1)\nAnswer = - 6.85%\nAward 2 marks for correct answer (accept any in\nthe range of 6.8 to 7 or -6.8 to -7)\n(2)\n\n(b)\nApplication 2\nApplication: 1 mark for likely understanding e.g.\n• 5% x 0.63 (1)\nOR\n• 5% x -0.63 (1)\nOR\nAnswer = 3.15%\nAward 2 marks for correct answer (accept any in the\nrange of 3 to 3.2)\n(2)\n\n(c)\nKnowledge 1\nThe only correct answer is D\nA is not correct because demand is price-elastic and XED is\npositive (substitute)\nB is not correct because demand is price-elastic and XED is\nless than +1\nC is not correct because XED is positive (substitute)\n(1)",
   "erKey": "2a",
   "paper": 1,
   "series": "June 2022",
-  "theme": null,
-  "themeConfident": false,
+  "theme": 1,
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2022-q2"
  },
  {
@@ -901,13 +959,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "A company that provides drinking water and treats waste water has been fined\n£180 000 after an incident that killed about 2 500 fish. The charges relate to an\nillegal discharge of sewage from the waste water treatment plant that polluted nine\nkilometres of the River Severn, a popular tourist destination. (a) Draw an externalities diagram to show the likely impact of the sewage discharge\non the local tourist industry.\n(4)\n(b) Which one of the following is the most likely effect of the £180 000 fine?\n(1)\nTo:\nA increase market failure\nB increase profits for the water company\nC reduce external costs\nD reduce government failure",
-  "ms": "Knowledge 2, Application 2\n1 mark for the correct labelling of MPC, MSB and/or MPB\n1 mark for correct shift from MPC to MSC, divergent or\nparallel\n1 mark for showing the external cost at market output\nQ (MSC>MPC)\n1 mark for the new social optimum equilibrium (Q1)\nidentified where MSC equals MSB (Q1) or\noverproduction\n1 mark for welfare loss/gain identified\n1 mark for quantity of waste water treatment\nDiagram required e.g.\n(4)",
+  "text": "A company that provides drinking water and treats waste water has been fined\n£180 000 after an incident that killed about 2 500 fish. The charges relate to an\nillegal discharge of sewage from the waste water treatment plant that polluted nine\nkilometres of the River Severn, a popular tourist destination.\n\n(a) Draw an externalities diagram to show the likely impact of the sewage discharge\non the local tourist industry.\n(4)\n(b) Which one of the following is the most likely effect of the £180 000 fine?\n(1)\nTo:\nA increase market failure\nB increase profits for the water company\nC reduce external costs\nD reduce government failure",
+  "ms": "(a)\nKnowledge 2, Application 2\n1 mark for the correct labelling of MPC, MSB and/or MPB\n1 mark for correct shift from MPC to MSC, divergent or\nparallel\n1 mark for showing the external cost at market output\nQ (MSC>MPC)\n1 mark for the new social optimum equilibrium (Q1)\nidentified where MSC equals MSB (Q1) or\noverproduction\n1 mark for welfare loss/gain identified\n1 mark for quantity of waste water treatment\nDiagram required e.g.\n(4)\n\n(b)\nAnalysis 1\nThe only correct answer is C\nA not correct because the fine will increase efforts by the\nfirm to reduce illegal discharges\nB not correct because the fine will increase costs and\nreduce profits\nD not correct because the intervention will not result in\na net welfare loss.\n(1)",
   "erKey": "3a",
   "paper": 1,
   "series": "June 2022",
   "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2022-q3"
  },
  {
@@ -915,13 +974,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Pilgrim’s Pride is the second-largest chicken supplier in the US. It will pay a\n$107.9 million fine for price fixing with Tyson Foods and other chicken suppliers.\nThe firms limited production to force prices higher and harm major customers,\nincluding KFC. Pilgrim’s Pride is thought to have gained at least $361 million in\ntotal revenue from the collusion. (a) Draw a simple two firm/two outcome game theory model to show why the\nchicken suppliers may have colluded.\n(4) 9\n(b) Which one of the following is most closely associated with tacit collusion?\n(1)\nA Overt sharing of information\nB Predatory pricing\nC Price wars\nD Unspoken agreements",
-  "ms": "Knowledge 2 Application 2\n1 mark for the Pilgrim’s revenue gain of e.g. $361\nmillion for charging a collusive high price with Tyson\n(High Price/High Price)\n1 mark for Low Price/Low Price revenue gain being\nlower than High Price/High Price e.g. Pilgrim’s $300\nmillion<$361 million\n1 mark for first mover revenue gain being higher than\nHigh Price/High Price or Low Price/Low Price e.g. $500\nmillion > $361 million\n1 mark for second mover revenue being less than High\nPrice/High Price and Low Price/Low Price e.g. Tyson’s\n$200 million\nDiagram required e.g.\nN.B Valid alternative figures or responses can\nbe used, including profit.\nN.B. award a maximum of three marks if the\nrationale for the second mover is inconsistent\n(4)",
+  "text": "Pilgrim’s Pride is the second-largest chicken supplier in the US. It will pay a\n$107.9 million fine for price fixing with Tyson Foods and other chicken suppliers.\nThe firms limited production to force prices higher and harm major customers,\nincluding KFC. Pilgrim’s Pride is thought to have gained at least $361 million in\ntotal revenue from the collusion.\n\n(a) Draw a simple two firm/two outcome game theory model to show why the\nchicken suppliers may have colluded.\n(4)\n\n9\n(b) Which one of the following is most closely associated with tacit collusion?\n(1)\nA Overt sharing of information\nB Predatory pricing\nC Price wars\nD Unspoken agreements",
+  "ms": "(a)\nKnowledge 2 Application 2\n1 mark for the Pilgrim’s revenue gain of e.g. $361\nmillion for charging a collusive high price with Tyson\n(High Price/High Price)\n1 mark for Low Price/Low Price revenue gain being\nlower than High Price/High Price e.g. Pilgrim’s $300\nmillion<$361 million\n1 mark for first mover revenue gain being higher than\nHigh Price/High Price or Low Price/Low Price e.g. $500\nmillion > $361 million\n1 mark for second mover revenue being less than High\nPrice/High Price and Low Price/Low Price e.g. Tyson’s\n$200 million\nDiagram required e.g.\nN.B Valid alternative figures or responses can\nbe used, including profit.\nN.B. award a maximum of three marks if the\nrationale for the second mover is inconsistent\n(4)\n\n(b)\nAnalysis 1\nThe only correct answer is D\nA is incorrect as tacit is the opposite to overt\nB predatory pricing aims to price below AVC to destroy a\ncompetitor rather than cooperate with them\nC Price war aims to steal customers from a competitor\nrather than cooperate with them.\n(1)",
   "erKey": "4a",
   "paper": 1,
   "series": "June 2022",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2022-q4"
  },
  {
@@ -929,13 +989,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The makers of Fiat cars merged with the makers of Vauxhall cars in 2021.\nFiat management had aggressively sought a merger to achieve economies of scale.\nThe competition authorities in the EU investigated the merger. (a) Which one of the following best describes the merger of the makers of Fiat cars\nand Vauxhall cars?\n(1)\nA Backward vertical integration\nB Forward vertical integration\nC Horizontal integration\nD Organic growth\n(b) Explain one type of internal economies of scale that the newly merged car\ncompany may achieve.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n...................................................................................................................",
-  "ms": "Knowledge 1\nThe only correct answer is C\nA is not correct because this would involve merging with a\nsupplier\nB is not correct because this would involve merging with a\nconsumer\nD is not correct because this is external not internal\ngrowth\n(1)",
+  "text": "The makers of Fiat cars merged with the makers of Vauxhall cars in 2021.\nFiat management had aggressively sought a merger to achieve economies of scale.\nThe competition authorities in the EU investigated the merger.\n\n(a) Which one of the following best describes the merger of the makers of Fiat cars\nand Vauxhall cars?\n(1)\nA Backward vertical integration\nB Forward vertical integration\nC Horizontal integration\nD Organic growth\n(b) Explain one type of internal economies of scale that the newly merged car\ncompany may achieve.\n(2)\n\n(c) Explain one likely concern the EU competition authorities may have had about\nthe merger.\n(2)",
+  "ms": "(a)\nKnowledge 1\nThe only correct answer is C\nA is not correct because this would involve merging with a\nsupplier\nB is not correct because this would involve merging with a\nconsumer\nD is not correct because this is external not internal\ngrowth\n(1)\n\n(b)\nKnowledge 1 Analysis 1\nKnowledge e.g.\n- Commercial/purchasing/ bulk buying (1)\n- Technical (1)\n- Financial (1)\n- Managerial (1)\n- Marketing (1)\nAnalysis e.g.\n- Lower LRAC (1)\n- Cheaper steel /monopsony buying power (1)\n- Larger factory space/delivery vehicles/robots (1)\n- Lower interest charge on larger loans to fund car\nfactory expansion (1)\n- New e-car design director/specialist managers (1)\n- Discounted advertising (1)\n(2)\n\n(c)\nKnowledge 1 Analysis 1\nKnowledge\nConcerns e.g.\n- Against consumer (1)\n- Against national economic interests (1)\n- Increased monopoly power/reduction in\ncompetition/increased market share (1)\nAnalysis\nLinked development e.g.\n- Lack of choice for consumers/loss of consumer\nsurplus/force competitors out (1)\n- Increased prices/exploit consumers (1)\n- X-inefficiency – lack of investment (1)\n(2)",
   "erKey": "5a",
   "paper": 1,
   "series": "June 2022",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2022-q5"
  },
  {
@@ -950,6 +1011,7 @@ const ECO_QUESTIONS = [
   "series": "June 2022",
   "theme": 3,
   "themeConfident": false,
+  "year": 2,
   "id": "p1-june2022-q6a"
  },
  {
@@ -958,12 +1020,13 @@ const ECO_QUESTIONS = [
   "marks": 8,
   "section": "B",
   "text": "With reference to Figure 2 and your understanding of price elasticity, examine\ntwo factors that may cause significant changes in the international price of\ncoffee beans.",
-  "ms": "Knowledge 2, Analysis 2, Application 2,\nEvaluation 2\nKnowledge/understanding: 2 marks (1+1) e.g.\n• Acknowledgement of price inelastic demand (1)\n• Acknowledgement of price inelastic supply (1)\n• Non-price determinants of demand (1)\n• Non-price determinants of supply (1)\n• Cross price elasticity of demand (1)\nAnalysis: 2 marks for linked explanation (1+1) e.g.\n• Speculative demand, change income, taste and\npreference (1)\n• Supply chain failure/ harvest\nfailure/weather/seasonality (1)\n• Price inelastic demand, lack of close substitutes,\nsmall proportion of income, necessity (1)\n• Price inelastic supply – time-lags with supply,\nstorage problems (1)\n• Closure of cafés/farms/freight in 2020 (1)\nApplication: 2 marks with at least 1 mark for reference\nto Figure 2 e.g.\n• May 2020 price falls 3.23% (1)\n• April 2020 price rises 4.28% (1)\n• Between April and May 2020 price moved by 7.51\npercentage points (1)\n• Price falls from $3.13 (Jan 2020) to $2.99 (Feb\n2020 (1+1)\n• Price rises $2.99 (Feb 2020) to 3.27 (March\n2020) (1+1)\n• Average price = $3.32 (2)\n• Coffee crop harvest failure (1)\n• Coffee addictive (1)\nNB allow up to 2 marks for diagram that enhances\nthe written explanation elsewhere\n(8) Evaluation: 2 marks for two evaluative comments,\nOR 2 marks for identification and linked development of\none evaluative comment e.g.\n• Depends upon the degree of price elasticity of\ndemand when supply shifts (1)\n• Depends upon the degree of price elasticity of\nsupply when demand shifts (1)\n• Use of buffer stocks (1) brings price stability (1)\n• Transitory changes (1) short-term shocks of\ndisappear over-time (1)\n• Futures market (1) dampens price\ninstability/removes volatility (1)\n• Easy to store (1) and therefore to release if there\nwas a poor harvest (1)\n• Short-run/long-run (1)\nNB award a maximum of 6/8 if no reference to Fig\n2 and/or price elasticity",
+  "ms": "Knowledge 2, Analysis 2, Application 2,\nEvaluation 2\nKnowledge/understanding: 2 marks (1+1) e.g.\n• Acknowledgement of price inelastic demand (1)\n• Acknowledgement of price inelastic supply (1)\n• Non-price determinants of demand (1)\n• Non-price determinants of supply (1)\n• Cross price elasticity of demand (1)\nAnalysis: 2 marks for linked explanation (1+1) e.g.\n• Speculative demand, change income, taste and\npreference (1)\n• Supply chain failure/ harvest\nfailure/weather/seasonality (1)\n• Price inelastic demand, lack of close substitutes,\nsmall proportion of income, necessity (1)\n• Price inelastic supply – time-lags with supply,\nstorage problems (1)\n• Closure of cafés/farms/freight in 2020 (1)\nApplication: 2 marks with at least 1 mark for reference\nto Figure 2 e.g.\n• May 2020 price falls 3.23% (1)\n• April 2020 price rises 4.28% (1)\n• Between April and May 2020 price moved by 7.51\npercentage points (1)\n• Price falls from $3.13 (Jan 2020) to $2.99 (Feb\n2020 (1+1)\n• Price rises $2.99 (Feb 2020) to 3.27 (March\n2020) (1+1)\n• Average price = $3.32 (2)\n• Coffee crop harvest failure (1)\n• Coffee addictive (1)\nNB allow up to 2 marks for diagram that enhances\nthe written explanation elsewhere\n(8)\nEvaluation: 2 marks for two evaluative comments,\nOR 2 marks for identification and linked development of\none evaluative comment e.g.\n• Depends upon the degree of price elasticity of\ndemand when supply shifts (1)\n• Depends upon the degree of price elasticity of\nsupply when demand shifts (1)\n• Use of buffer stocks (1) brings price stability (1)\n• Transitory changes (1) short-term shocks of\ndisappear over-time (1)\n• Futures market (1) dampens price\ninstability/removes volatility (1)\n• Easy to store (1) and therefore to release if there\nwas a poor harvest (1)\n• Short-run/long-run (1)\nNB award a maximum of 6/8 if no reference to Fig\n2 and/or price elasticity",
   "erKey": "6b",
   "paper": 1,
   "series": "June 2022",
   "theme": 1,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p1-june2022-q6b"
  },
  {
@@ -977,7 +1040,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2022",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2022-q6c"
  },
  {
@@ -986,12 +1050,13 @@ const ECO_QUESTIONS = [
   "marks": 12,
   "section": "B",
   "text": "Using a cost and revenue diagram, discuss the likely impact of ‘rising costs’ for\ncoffee shops on their profitability (Extract A, line 2).",
-  "ms": "Knowledge 2, Application 2, Analysis 4\nProfitability definition\nProfitability decreases\n• Increase in advertising/rent/wages (Fixed Cost)\nshifts AC upwards\n• Increase in price of coffee beans/wages (Variable\nCost) shifts AC and MC upwards\n• Loss area/smaller profit connected with MC=MR\n• Slow-down opening new outlets in 2020\n• Short-term (AVC) or long-term (AC) shut down\npoint\n• Coffee shops labour intensive\n• Diagram e.g.\nNB: For Level 3 response candidates must\nrefer to coffee shops. Must have an accurate\ndiagram.\nNB Allow diagrams showing e.g. rise in fixed\ncosts only, constant returns to scale.\nNB Profitability not decreasing can be seen as\nEV and decreases as evaluation or vice versa\n(8) Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
+  "ms": "Knowledge 2, Application 2, Analysis 4\nProfitability definition\nProfitability decreases\n• Increase in advertising/rent/wages (Fixed Cost)\nshifts AC upwards\n• Increase in price of coffee beans/wages (Variable\nCost) shifts AC and MC upwards\n• Loss area/smaller profit connected with MC=MR\n• Slow-down opening new outlets in 2020\n• Short-term (AVC) or long-term (AC) shut down\npoint\n• Coffee shops labour intensive\n• Diagram e.g.\nNB: For Level 3 response candidates must\nrefer to coffee shops. Must have an accurate\ndiagram.\nNB Allow diagrams showing e.g. rise in fixed\ncosts only, constant returns to scale.\nNB Profitability not decreasing can be seen as\nEV and decreases as evaluation or vice versa\n(8)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
   "erKey": "6d",
   "paper": 1,
   "series": "June 2022",
-  "theme": 3,
-  "themeConfident": true,
+  "theme": 1,
+  "themeConfident": false,
+  "year": 1,
   "id": "p1-june2022-q6d"
  },
  {
@@ -1005,7 +1070,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2022",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2022-q6e"
  },
  {
@@ -1013,13 +1079,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "Tesla held an 82% market share of the electric vehicle market in the United States\nduring the first half of 2020. Evaluate whether a monopoly is likely to operate efficiently. Refer to at least one\nmonopoly of your choice.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nDefinitions of efficiency:\n• Productive (lowest point of AC)\n• Allocative (P=MC)\n• Dynamic (technical – LRAC shifting down)\n• X-inefficiency (organisational slack – higher AC)\n• Social efficiency (MSC=MSB)\nCase For\n• Productive efficiency – larger economies of scale, types of\neconomies of scale e.g. purchasing, monopsony power to\nreduce costs, minimum efficient scale, natural monopoly\nDiagram e.g.\n• Allocative efficiency - Lower prices (limit pricing) and good\ncustomer care deter potential entrants, acts as a surrogate\nfor competition\n• Dynamic Efficiency - profits re-invested into cost-lowering\ninvestment, product innovation may increase AR\nNB a diagram is not required for Level 4\nNB For Level 4 the candidate must refer to at least one\nmonopoly.\n(25) Evaluation\nCase against\n• X-inefficiency –organisational slack due to managerial\ncomplacency as a result of lower competition\n• Allocative inefficiency –monopoly power that makes them\nprice makers and allows them to charge higher prices (less\nwelfare max)\n• Productive inefficiency – profit maximising,\n• Dynamic inefficiency might not reinvest but give profits to\nshareholders in the firm on higher dividends, principal agent\nproblem\n• Degree of monopoly power – ability of consumers to\nswitch to alternatives\n• Government intervention – price caps, tax\n• Government intervention damages efficiency, regulatory\ncapture, strength of regulator\nDiagram e.g.\nMonopoly price P1 is not productively efficient as output is at\npoint a and not the lowest point on the AC curve, b.\nMonopoly price P1 is not allocatively efficient as the price is not\nequal to MC (c ) resulting in a dead weight welfare loss.\nNB Monopoly not operating efficiently can be seen as KAA and\nefficiently as evaluation or vice versa. Diagram not required. Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles a",
+  "text": "Tesla held an 82% market share of the electric vehicle market in the United States\nduring the first half of 2020.\n\nEvaluate whether a monopoly is likely to operate efficiently. Refer to at least one\nmonopoly of your choice.",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nDefinitions of efficiency:\n• Productive (lowest point of AC)\n• Allocative (P=MC)\n• Dynamic (technical – LRAC shifting down)\n• X-inefficiency (organisational slack – higher AC)\n• Social efficiency (MSC=MSB)\nCase For\n• Productive efficiency – larger economies of scale, types of\neconomies of scale e.g. purchasing, monopsony power to\nreduce costs, minimum efficient scale, natural monopoly\nDiagram e.g.\n• Allocative efficiency - Lower prices (limit pricing) and good\ncustomer care deter potential entrants, acts as a surrogate\nfor competition\n• Dynamic Efficiency - profits re-invested into cost-lowering\ninvestment, product innovation may increase AR\nNB a diagram is not required for Level 4\nNB For Level 4 the candidate must refer to at least one\nmonopoly.\n(25)\nEvaluation\nCase against\n• X-inefficiency –organisational slack due to managerial\ncomplacency as a result of lower competition\n• Allocative inefficiency –monopoly power that makes them\nprice makers and allows them to charge higher prices (less\nwelfare max)\n• Productive inefficiency – profit maximising,\n• Dynamic inefficiency might not reinvest but give profits to\nshareholders in the firm on higher dividends, principal agent\nproblem\n• Degree of monopoly power – ability of consumers to\nswitch to alternatives\n• Government intervention – price caps, tax\n• Government intervention damages efficiency, regulatory\ncapture, strength of regulator\nDiagram e.g.\nMonopoly price P1 is not prod",
   "erKey": "7",
   "paper": 1,
   "series": "June 2022",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2022-q7"
  },
  {
@@ -1027,13 +1094,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "Some occupations in the UK are facing large labour shortages. Hard-to-fill\nvacancies include qualified chefs, software engineers, construction workers and\nqualified nurses. Evaluate the factors that might influence the supply of labour in an occupation of\nyour choice.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nFactors might include:\n• Net-wage financial advantages including rise in NMW,\nbenefits and tax (MTR); relative to other\noccupations/countries/leisure\n• Job satisfaction/safety - bonuses, employment rights\n• Skills required – cost and ease of education and training,\nqualifications needed, transferability of skills\n• Workforce demographics – early retirement, women\nentering workforce, cultural or social geographical ties\n• Housing costs in a particular area\n• Reduced net migration flows to UK from within EU\n• Infrastructure – ability to commute or work from home\n• Trade union power\n• Flexibility – willingness to sign up to zero-hour contracts to\novercome barriers to work due to caring or study\ncommitments\nNB: allow application to any industry/occupation. To\nsecure Level 4 requires application to at least one\noccupation.\nEvaluation\n• Prioritisation of factors.\n• Ease and cost of acquiring skills/language barriers\n• Barriers to work - social exclusion, study or care\ncommitments, disability discrimination\n• State of economy – recession\n• Increase in non-EU net-migration\n• Information problems\n• Government measures to improve/limit supply\n• Short-run/long-run\n• Rate entering versus rate leaving market\n• Significance of factors change over time with short run and\nlong run considerations\n• Combination of factors is likely to have a bigger impact on\nsupply of labour\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly\nto the broad elements of the question with evidence\nintegrated into the answer.\nAnalysis is clear and coherent, although it may lack balance.\nChains of reasoning are developed but the answer may lack\nbalance.\nLevel 4 13–16 Demonstrates precise knowledge and understanding of the\nconcepts, principles and models.\nAbility to link k",
+  "text": "Some occupations in the UK are facing large labour shortages. Hard-to-fill\nvacancies include qualified chefs, software engineers, construction workers and\nqualified nurses.\n\nEvaluate the factors that might influence the supply of labour in an occupation of\nyour choice.",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nFactors might include:\n• Net-wage financial advantages including rise in NMW,\nbenefits and tax (MTR); relative to other\noccupations/countries/leisure\n• Job satisfaction/safety - bonuses, employment rights\n• Skills required – cost and ease of education and training,\nqualifications needed, transferability of skills\n• Workforce demographics – early retirement, women\nentering workforce, cultural or social geographical ties\n• Housing costs in a particular area\n• Reduced net migration flows to UK from within EU\n• Infrastructure – ability to commute or work from home\n• Trade union power\n• Flexibility – willingness to sign up to zero-hour contracts to\novercome barriers to work due to caring or study\ncommitments\nNB: allow application to any industry/occupation. To\nsecure Level 4 requires application to at least one\noccupation.\nEvaluation\n• Prioritisation of factors.\n• Ease and cost of acquiring skills/language barriers\n• Barriers to work - social exclusion, study or care\ncommitments, disability discrimination\n• State of economy – recession\n• Increase in non-EU net-migration\n• Information problems\n• Government measures to improve/limit supply\n• Short-run/long-run\n• Rate entering versus rate leaving market\n• Significance of factors change over time with short run and\nlong run considerations\n• Combination of factors is likely to have a bigger impact on\nsupply of labour\n(25)\nKnowledge, application and analysis\nLevel Mark Descriptor\n0 A ",
   "erKey": "8",
   "paper": 1,
   "series": "June 2022",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2022-q8"
  },
  {
@@ -1041,13 +1109,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "In a major reform of its command economy, the Cuban government will allow small\nprivate businesses to operate in most fields. Free market economists have long called\nfor the role of small business to be expanded to help jump-start the economy and to\ncreate jobs.\n(Source adapted from: https://www.telegraph.co.uk/news/2021/02/07/\ncuba-allows-massive-expansion-private-businesses/)\n(a) With reference to the information provided, explain one advantage of a free\nmarket economy.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.....................................................................................................................................................................",
-  "ms": "Knowledge 2, Application 1, Analysis1\nK + An up to 3 marks e.g.:\n• More choice (1) because of consumer sovereignty\n(1) and profit motive / greater incentive (1)\n• More efficient allocation of resources (1) because of\nallocative efficiency / productive efficiency / dynamic\nefficiency / lack of X-inefficiency (1) because of profit\nmotive / greater incentive (1)\n• Lower prices (1) because of more competition (1)\nand greater incentive (1)\n• Better quality products (1) because of competition\n(1) and profit motive (1)\n• More innovation (1) because of competition (1) and\nprofit motive (1)\nApplication 1 mark for e.g.\no Cuban government allow small private businesses\no ‘Jump-start the economy’\no Create jobs\no Role of small business\no Reform of command economy\n(4)",
+  "text": "In a major reform of its command economy, the Cuban government will allow small\nprivate businesses to operate in most fields. Free market economists have long called\nfor the role of small business to be expanded to help jump-start the economy and to\ncreate jobs.\n\n(a) With reference to the information provided, explain one advantage of a free\nmarket economy.\n(4)\n\n3\n••••••••\n\n(b) Which one of the following economic thinkers supported the idea of a\ncommand economy?\n(1)\nA Adam Smith\nB Friedrich Hayek\nC John Maynard Keynes\nD Karl Marx",
+  "ms": "(a)\nKnowledge 2, Application 1, Analysis1\nK + An up to 3 marks e.g.:\n• More choice (1) because of consumer sovereignty\n(1) and profit motive / greater incentive (1)\n• More efficient allocation of resources (1) because of\nallocative efficiency / productive efficiency / dynamic\nefficiency / lack of X-inefficiency (1) because of profit\nmotive / greater incentive (1)\n• Lower prices (1) because of more competition (1)\nand greater incentive (1)\n• Better quality products (1) because of competition\n(1) and profit motive (1)\n• More innovation (1) because of competition (1) and\nprofit motive (1)\nApplication 1 mark for e.g.\no Cuban government allow small private businesses\no ‘Jump-start the economy’\no Create jobs\no Role of small business\no Reform of command economy\n(4)\n\n(b)\nKnowledge 1\nThe only correct answer is D\nA is not correct because Adam Smith supported the free\nmarket\nB is not correct because Friedrich Hayek supported the free\nmarket\nC is not correct because John Maynard Keynes did not\nadvocate a command economy, rather higher borrowing\nto provide an injection of demand into the economy\n(1)",
   "erKey": "1a",
   "paper": 1,
   "series": "June 2023",
-  "theme": 3,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2023-q1"
  },
  {
@@ -1055,13 +1124,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "3 4 5\nY\nX\nZ\nW\n(a) Calculate the opportunity cost of the decision by the farmer to harvest 6 units of\nwheat this year at point Y (movement from point X to point Y).\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.........................................................................................................................................................................................................",
-  "ms": "Application 2\nApplication 2 marks for e.g.\n• The opportunity cost is 1 unit of oats (2)\n• 2 more units of wheat to be produced (1) (2)",
+  "text": "3 4 5\nY\nX\nZ\nW\n(a) Calculate the opportunity cost of the decision by the farmer to harvest 6 units of\nwheat this year at point Y (movement from point X to point Y).\n(2)\n\n(b) Explain the impact on efficiency of producing at point W in the following year.\n(2)\n\n5\n••••••••\n\n(c) Which one of the following would be most likely to help the farmer\nreach point Z?\nAn increase in\n(1)\nA investment in milk production machinery\nB investment in modern farming technology\nC the demand for wheat\nD the price of oats",
+  "ms": "(a)\nApplication 2\nApplication 2 marks for e.g.\n• The opportunity cost is 1 unit of oats (2)\n• 2 more units of wheat to be produced (1) (2)\n\n(b)\nKnowledge 1, Analysis 1\nKnowledge 1 mark for understanding, e.g.\n• Efficiency will decrease\n• Inefficient allocation of resources\n• Not productively efficient\nAnalysis 1 mark for e.g.\n• Not producing at maximum potential output\n• Potentially produce more wheat and oats\n• Spare capacity\n• Unemployed resources\n• Lower output the next year\n• No opportunity cost from moving from W towards PPF\n(2)\n\n(c)\nKnowledge 1\nThe only correct answer is B\nA is not correct because the PPF shows the production of\noats and wheat, not milk\nC is not correct because a PPF does not show demand for a\nproduct\nD is not correct because a PPF does not consider the\nprice of the product once sold (1)",
   "erKey": "2a",
   "paper": 1,
   "series": "June 2023",
-  "theme": 3,
-  "themeConfident": false,
+  "theme": 1,
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2023-q2"
  },
  {
@@ -1070,12 +1140,13 @@ const ECO_QUESTIONS = [
   "marks": 5,
   "section": "A",
   "text": "A luxury brownie baker is faced with falling demand as incomes fall.\n(a) The likely income elasticity of demand for a luxury good is:\n(1)\nA –3.40\nB –0.74\nC +0.74\nD +3.40\n(b) Small local bakeries have many of the characteristics of monopolistic competition.\nDraw the short run profit maximising equilibrium of a loss‑making luxury\nbrownie baker.\n(4)",
-  "ms": "Application 1\nThe only correct answer is D\nA is not correct because -3.4 suggests an inferior good\nB is not correct because -0.74 suggests and inferior good\nC is not correct because +0.74 suggests a normal good\nwhich is a necessity (1)",
+  "ms": "(a)\nApplication 1\nThe only correct answer is D\nA is not correct because -3.4 suggests an inferior good\nB is not correct because -0.74 suggests and inferior good\nC is not correct because +0.74 suggests a normal good\nwhich is a necessity (1)\n\n(b)\nKnowledge 2, Application 2\nIdentification of profit maximising equilibrium where:\no Downward sloping AR and MR (1)\no AC above AR (1)\no MC=MR (1)\no Area of loss (1)\n(4)",
   "erKey": "3a",
   "paper": 1,
   "series": "June 2023",
-  "theme": null,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2023-q3"
  },
  {
@@ -1083,13 +1154,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "in 2023.\n(Source adapted from: https://commonslibrary.parliament.uk/\nhow-much-could-rail-fares-increase-by-in-2023-and-why)\n(a) With reference to the information provided, calculate the percentage change in\nthe price of an annual season ticket.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n........................................................................................................................",
-  "ms": "Application 2\nApplication 2 marks for e.g.\n• (5 664 - 5 044)/5 044 x 100 (1)\n• 12.3% (1)\nNB Allow 2 marks for correct answer (12.29, 12.3 or\n12)\n(2)",
+  "text": "in 2023.\n\n(a) With reference to the information provided, calculate the percentage change in\nthe price of an annual season ticket.\n(2)\n\n(b) Explain the likely impact of the increase in price of a season ticket on\nconsumer surplus.\n(2)\n\n9\n••••••••\n\nThe diagram below shows the demand and supply for sugary drinks.\nPrice of\nsugary\ndrinks\nQuantity of\nsugary drinks0\nM\nS\nG\nD\nE\nF\nH\nJ\nK\nP1\nPe\nL\nQ 1 Q e Q 2\nMinimum\nprice\n(c) Which one of the following areas represents the change in producer surplus when\na minimum price is imposed?\n(1)\nA FEPe P1\nB FMP 1\nC GEPeP1\nD GKP 1",
+  "ms": "(a)\nApplication 2\nApplication 2 marks for e.g.\n• (5 664 - 5 044)/5 044 x 100 (1)\n• 12.3% (1)\nNB Allow 2 marks for correct answer (12.29, 12.3 or\n12)\n(2)\n\n(b)\nKnowledge 1, Analysis 1\nKnowledge 1 mark for understanding e.g.\n• Understanding of consumer surplus (1) OR\n• Recognition that consumer surplus will fall (1)\nAnalysis 1 mark for e.g.\n• Understanding of why consumer surplus will fall (1)\nNB Can be shown via written or diagrammatic\nexplanation (2)\n\n(c)\nApplication 1\nThe only correct answer is C\nA is not correct because this is the change is consumer\nsurplus\nB is not correct because this is the new area of consumer\nsurplus\nD is not correct because this is the new area of producer\nsurplus (1)",
   "erKey": "4a",
   "paper": 1,
   "series": "June 2023",
-  "theme": 3,
-  "themeConfident": false,
+  "theme": 1,
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2023-q4"
  },
  {
@@ -1097,13 +1169,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "100\nIndex\n118\n114\n2018 2019 2020 2021 2022\n(Source adapted from: https://www.ft.com/content/48dafbb9-\n371d-4683-9afb-26652add888c)\n(a) Which one of the following is the ratio of public sector pay relative to private\nsector pay in 2022?\n(1)\nA 1 : 0.97\nB 1 : 1.04\nC 1 : 4.0\nD 1 : 14.0 11\n•••••••• (b) Over 90% of nurses work in the public sector. Nurses in the public sector\nhave experienced wage rises lower than those in the private sector over the\npast 10 years.\n(Source adapted from: https://www.nuffieldtrust.org.uk/resource/chart-of-\nthe-week-real-terms-nhs-staff-pay-from-2010-to-2020)\nUsing the information provided and the concept of monopsony, explain\nwhy nurses in the public sector have had lower wage rises than those in the\nprivate sector.\n(4)\n....................................................................................................................................................................................................................................................................................\n.......................................................................................................................................................................",
-  "ms": "Application 1\nThe only correct answer is B\nA is not correct because this is the ratio of private sector\npay to public sector pay\nC is not correct because 4.0 is the difference in the pay\nindex in 2022\nD is not correct because 14 is the % increase in public\nsector pay since 2018 (base year) (1)",
+  "text": "100\nIndex\n118\n114\n2018 2019 2020 2021 2022\n\n(a) Which one of the following is the ratio of public sector pay relative to private\nsector pay in 2022?\n(1)\nA 1 : 0.97\nB 1 : 1.04\nC 1 : 4.0\nD 1 : 14.0\n\n11\n••••••••\n\n(b) Over 90% of nurses work in the public sector. Nurses in the public sector\nhave experienced wage rises lower than those in the private sector over the\npast 10 years.\n\nUsing the information provided and the concept of monopsony, explain\nwhy nurses in the public sector have had lower wage rises than those in the\nprivate sector.\n(4)",
+  "ms": "(a)\nApplication 1\nThe only correct answer is B\nA is not correct because this is the ratio of private sector\npay to public sector pay\nC is not correct because 4.0 is the difference in the pay\nindex in 2022\nD is not correct because 14 is the % increase in public\nsector pay since 2018 (base year) (1)\n\n(b)\nKnowledge 2, Application 1, Analysis 1\nKnowledge 2 marks for understanding e.g.\n• Understanding of monopsony (1)\n• Understanding of public sector OR understanding of\nwage determination OR other relevant knowledge (1)\n• Understanding of private sector (1)\nApplication 1 mark for e.g.\n• Public sector have experienced wage rises lower than\nthose in the private sector over the past 10 years\n• Reference to the pay gap from the chart (1)\n• Over 90% of nurses work in the public sector (1)\nAnalysis 1 mark for a linked development e.g.\n• Lack of alternative employers (1)\n• Must accept a national pay scale (1)\n• Very few jobs available in private hospitals (1)\n• Government objective to balance the\nbudget/cut spending (1)\n• Pay freezes (1)\n• Reasons for higher pay in private sector (1)\n(4)",
   "erKey": "5a",
   "paper": 1,
   "series": "June 2023",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2023-q5"
  },
  {
@@ -1118,6 +1191,7 @@ const ECO_QUESTIONS = [
   "series": "June 2023",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2023-q6a"
  },
  {
@@ -1126,12 +1200,13 @@ const ECO_QUESTIONS = [
   "marks": 10,
   "section": "B",
   "text": "With reference to the information provided, assess whether Netflix subscribers\nbehave rationally.",
-  "ms": "Knowledge 2, Application 2, Analysis 2\n• Understanding of rational behaviour e.g. utility\nmaximisation\n• Consumers prioritising low prices (e.g. ‘free trials’) and\nbetter service\n• Consumers cancelling subscriptions due to decline in\n• ‘value for money and satisfaction with the quality of\nshows’\n• Consumers cancelling subscriptions due to cost\nof living concerns\n• Reported 200,000 cancelled subscriptions in the first\nquarter and another 2 million forecast to leave\n• Subscribers switching to Disney who has higher\ncustomer satisfaction rankings e.g. more original\ncontent and new release films.\n• Subscribers joining new streaming services during the\nglobal health crisis when less alternative forms of\nentertainment were available e.g. closed cinemas and\nrestaurants\nNB: For Level 3 candidates must refer to Netflix\nsubscribers\nNB: Netflix subscribers acting irrationally may be\nseen as KAA and then rational behaviour as EV\n(6)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no link between causes and\nconsequences.\nLevel 2 3–4 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or the answer may lack balance.\nLevel 3 5–6 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated. Economic ideas are applied appropriately to the broad\nelements of the question.\nIndicative content Mark\n6(b)\ncontinued\nEvaluation 4\ne.g.\n• Irrational behaviour by Netflix subscribers\n• Purchasing additional packages with similar\nservices/little differentiation\n• Computational weakness - consumers failing to\nunderstand correct price plans and not understanding\nprice changes\n• Habitual behaviour - regular direct debit that is paid\nregardless of usage, multiple subscriptions that aren’t\nused, unaware of need to cancel after short term trial\nperiod\n• ‘Forgetful subscribers’\n• Influencing by nudges e.g. ‘next-up’ and ‘auto-play’\n• features\n• Binge watching\n• Lack of information - may be on the wrong price plan\n(4)\nLevel Mark Descriptor\n0 No evaluative comments.\nLevel 1 1–2 Identification of generic evaluative comments without\nsupporting evidence/ r",
+  "ms": "Knowledge 2, Application 2, Analysis 2\n• Understanding of rational behaviour e.g. utility\nmaximisation\n• Consumers prioritising low prices (e.g. ‘free trials’) and\nbetter service\n• Consumers cancelling subscriptions due to decline in\n• ‘value for money and satisfaction with the quality of\nshows’\n• Consumers cancelling subscriptions due to cost\nof living concerns\n• Reported 200,000 cancelled subscriptions in the first\nquarter and another 2 million forecast to leave\n• Subscribers switching to Disney who has higher\ncustomer satisfaction rankings e.g. more original\ncontent and new release films.\n• Subscribers joining new streaming services during the\nglobal health crisis when less alternative forms of\nentertainment were available e.g. closed cinemas and\nrestaurants\nNB: For Level 3 candidates must refer to Netflix\nsubscribers\nNB: Netflix subscribers acting irrationally may be\nseen as KAA and then rational behaviour as EV\n(6)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no link between causes and\nconsequences.\nLevel 2 3–4 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or the answer may lack balance.\nLevel 3 5–6 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are applied appropriately to the broad\nelements of the question.\nIndicative content Mark\n6(b)\ncontinued\nEvaluation 4\ne.g.\n• Irrational behaviour by Netflix subscribers\n• Purchasing additional packages with similar\nservices/little differentiation\n• Computational weakness - consumers failing to\nunderstand correct price plans and not understanding\nprice changes\n• Habitual behaviour - regular direct debit that is paid\nregardless of usage, multiple subscriptions that aren’t\nused, unaware of need to cancel after short term trial\nperiod\n• ‘Forgetful subscribers’\n• Influencing by nudges e.g. ‘next-up’ and ‘auto-play’\n• features\n• Binge watching\n• Lack of information - may be on the wrong price plan\n(4)\nLevel Mark Descriptor\n0 No evaluative comments.\nLevel 1 1–2 Identification of generic evaluative comments without\nsupporting evidence/ reference to context.\nNo evidence of a logical chain of reasoning.\nLevel 2 3–4 Evaluative comments supported by relevant reasoning and\nappropriate reference to context.\nEvaluation recognises different viewpoints and/or is critical of\nthe evidence.",
   "erKey": "6b",
   "paper": 1,
   "series": "June 2023",
-  "theme": 3,
-  "themeConfident": true,
+  "theme": 1,
+  "themeConfident": false,
+  "year": 1,
   "id": "p1-june2023-q6b"
  },
  {
@@ -1140,12 +1215,13 @@ const ECO_QUESTIONS = [
   "marks": 8,
   "section": "B",
   "text": "With reference to the information provided, examine the likely numerical value of\nthe cross elasticity of demand between UK online streaming services.",
-  "ms": "Knowledge 2, Application 2, Analysis 2, Evaluation 2\nKnowledge/implicit understanding: (1+1) e.g.\n• Cross elasticity of demand shows the responsiveness\nof demand for one good to a change in the price of\nanother / XED formula (1)\n• Value greater than 0 (1)\nApplication: (1+1) e.g.\n• Declining market share of Netflix in figure 1 (1)\n• Rising market share of Disney+ in figure 1 (1)\n• Planned cancellations at Disney+ are lower than\nNetflix (1+1)\n• Subscribers rethinking their commitment to\nmultiple subscriptions (1)\n• Example calculation of price changes e.g. Netflix price\nrise £1 leads to a greater percentage change at\nDisney+ (1+1)\n• Figure 1 shows the range of online streaming\nservices providing similar service/growth of\ncompetition in the market/use of ‘other’ market\nshare (1+1)\n• Netflix cutting its prices in India to compete with\nDisney+ and Prime (1)\nAnalysis: 2 marks for linked explanation (1+1)\n• Explanation of substitutes, e.g. increase in the price\nof one streaming service will lead to an increase in\nthe demand for other streaming services. (1+1)\n• Explanation of substitutes, e.g. declining satisfaction,\ncancellation and demand at one provider will lead to\nan increase in demand at an alternative (1+1)\n• Diagrammatic representation of positive correlation\nbetween substitutes (up to 2 marks)\nEvaluation: 2 marks for two evaluative comments, OR 2\nmarks for identification and linked development of one\nevaluative comment e.g.\n• Strength of substitutes\n• Each provider offers subscribers different shows\nthat could be original and unique to them e.g.\nStranger Things, so XED may be low causing\nthem to be weak substitutes (positive XED less\nthan 1)\n• XED can vary over time (1) - they were not viewed as\nsubstitutes during lockdown, they were viewed as\ncomplements, so many consumers had multiple\nsubscriptions (1)\n• XED can vary over time with changes in real income\n(1) - they are viewed as stronger substitutes due to consumers’ cost of living rising. Consumers are now\nforced to make a choice due to a lack of affordability. (1)\n(8)",
+  "ms": "Knowledge 2, Application 2, Analysis 2, Evaluation 2\nKnowledge/implicit understanding: (1+1) e.g.\n• Cross elasticity of demand shows the responsiveness\nof demand for one good to a change in the price of\nanother / XED formula (1)\n• Value greater than 0 (1)\nApplication: (1+1) e.g.\n• Declining market share of Netflix in figure 1 (1)\n• Rising market share of Disney+ in figure 1 (1)\n• Planned cancellations at Disney+ are lower than\nNetflix (1+1)\n• Subscribers rethinking their commitment to\nmultiple subscriptions (1)\n• Example calculation of price changes e.g. Netflix price\nrise £1 leads to a greater percentage change at\nDisney+ (1+1)\n• Figure 1 shows the range of online streaming\nservices providing similar service/growth of\ncompetition in the market/use of ‘other’ market\nshare (1+1)\n• Netflix cutting its prices in India to compete with\nDisney+ and Prime (1)\nAnalysis: 2 marks for linked explanation (1+1)\n• Explanation of substitutes, e.g. increase in the price\nof one streaming service will lead to an increase in\nthe demand for other streaming services. (1+1)\n• Explanation of substitutes, e.g. declining satisfaction,\ncancellation and demand at one provider will lead to\nan increase in demand at an alternative (1+1)\n• Diagrammatic representation of positive correlation\nbetween substitutes (up to 2 marks)\nEvaluation: 2 marks for two evaluative comments, OR 2\nmarks for identification and linked development of one\nevaluative comment e.g.\n• Strength of substitutes\n• Each provider offers subscribers different shows\nthat could be original and unique to them e.g.\nStranger Things, so XED may be low causing\nthem to be weak substitutes (positive XED less\nthan 1)\n• XED can vary over time (1) - they were not viewed as\nsubstitutes during lockdown, they were viewed as\ncomplements, so many consumers had multiple\nsubscriptions (1)\n• XED can vary over time with changes in real income\n(1) - they are viewed as stronger substitutes due to\nconsumers’ cost of living rising. Consumers are now\nforced to make a choice due to a lack of affordability. (1)\n(8)",
   "erKey": "6c",
   "paper": 1,
   "series": "June 2023",
   "theme": 1,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p1-june2023-q6c"
  },
  {
@@ -1154,12 +1230,13 @@ const ECO_QUESTIONS = [
   "marks": 12,
   "section": "B",
   "text": "With reference to Extract C, discuss the likely private and external benefits of\nviewing educational websites and TV programmes.",
-  "ms": "Knowledge 2, Application 2, Analysis 4\n• Understanding of private benefits and external\nbenefits (may be implicit)\n• Explanation of private benefits gained from\nwatching educational programmes: satisfaction from\nwatching, improved progress at school, GCSE and\nSATs success, career development, higher earnings\npotential, less need to buy expensive revision guides,\nless requirement for private tutors, and increased\nconsumer surplus\n• Two million weekly unique browsers\n• Peak use of 3.3million in GCSE exam period\n• £43 million to fund the Oak National Academy\n• Written by subject experts\n• Explanation of external benefits: skilled workforce,\nhigher productivity, increased potential output,\ngreater innovation, and wider third party effects\n• Diagram depicting private and external benefits e.g.\n• Identification of market equilibrium (Q1) and social\noptimum (Q2)\n• Identification of triangle of welfare gain RXU\n• Identification of the external benefit (UT)\n• Equation showing MPB + MEB = MSB\nNB: For KAA L3 candidates must refer to a private and\nan external benefit\n(8) Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
+  "ms": "Knowledge 2, Application 2, Analysis 4\n• Understanding of private benefits and external\nbenefits (may be implicit)\n• Explanation of private benefits gained from\nwatching educational programmes: satisfaction from\nwatching, improved progress at school, GCSE and\nSATs success, career development, higher earnings\npotential, less need to buy expensive revision guides,\nless requirement for private tutors, and increased\nconsumer surplus\n• Two million weekly unique browsers\n• Peak use of 3.3million in GCSE exam period\n• £43 million to fund the Oak National Academy\n• Written by subject experts\n• Explanation of external benefits: skilled workforce,\nhigher productivity, increased potential output,\ngreater innovation, and wider third party effects\n• Diagram depicting private and external benefits e.g.\n• Identification of market equilibrium (Q1) and social\noptimum (Q2)\n• Identification of triangle of welfare gain RXU\n• Identification of the external benefit (UT)\n• Equation showing MPB + MEB = MSB\nNB: For KAA L3 candidates must refer to a private and\nan external benefit\n(8)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
   "erKey": "6d",
   "paper": 1,
   "series": "June 2023",
-  "theme": null,
-  "themeConfident": false,
+  "theme": 1,
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2023-q6d"
  },
  {
@@ -1168,12 +1245,13 @@ const ECO_QUESTIONS = [
   "marks": 15,
   "section": "B",
   "text": "Using examples from Figure 2 or Extract B, discuss the likely impact of price\ndiscrimination on a firm’s profits. Use a relevant diagram to support your answer.",
-  "ms": "Knowledge 3, Application 3, Analysis 3\n• Understanding of price discrimination\n• Use of data - same online streaming service but at a\ndifferent price\n• Student v Adult prices at Amazon\n• Different countries charged different prices at Netflix\ne.g. India (lower prices) v UK (higher prices)\n• Conditions necessary for price discrimination to\noperate\n• Explanation of increased revenue following\nidentification of different PED given same\ncost structure leads to higher profit\n• Adults/UK - demand is more inelastic so willing to pay\nmore and respond less to price rises\n• Students/India - demand is elastic and more\nresponsive to change in prices/will pay a lower\nprice\n• Netflix became a 100 billion dollar company in 20\nyears\n• Identification of higher profit areas on diagram\n• Comparison of firm’s total SNP with and without\nprice discrimination\nDiagram e.g. (NB a 2 sub-market elastic/inelastic diagram\nis acceptable)\nNB For level 3 KAA answers must include a relevant\ndiagram and reference to online streaming services\nNB Analysis must link to impact on firm’s profits\nNB Other correct diagrams accepted e.g. with kink\n(9) for combined market AR and MR\nLevel Mark Descriptor 0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
+  "ms": "Knowledge 3, Application 3, Analysis 3\n• Understanding of price discrimination\n• Use of data - same online streaming service but at a\ndifferent price\n• Student v Adult prices at Amazon\n• Different countries charged different prices at Netflix\ne.g. India (lower prices) v UK (higher prices)\n• Conditions necessary for price discrimination to\noperate\n• Explanation of increased revenue following\nidentification of different PED given same\ncost structure leads to higher profit\n• Adults/UK - demand is more inelastic so willing to pay\nmore and respond less to price rises\n• Students/India - demand is elastic and more\nresponsive to change in prices/will pay a lower\nprice\n• Netflix became a 100 billion dollar company in 20\nyears\n• Identification of higher profit areas on diagram\n• Comparison of firm’s total SNP with and without\nprice discrimination\nDiagram e.g. (NB a 2 sub-market elastic/inelastic diagram\nis acceptable)\nNB For level 3 KAA answers must include a relevant\ndiagram and reference to online streaming services\nNB Analysis must link to impact on firm’s profits\nNB Other correct diagrams accepted e.g. with kink\n(9)\nfor combined market AR and MR\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
   "erKey": "6e",
   "paper": 1,
   "series": "June 2023",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2023-q6e"
  },
  {
@@ -1181,13 +1259,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "The average UK household energy bill (gas and electric combined) rose 80% from\n£1 971 in 2021 to £3 549 in 2022.\n(Source adapted from: https://www.telegraph.co.uk/money/consumer-affairs/\nenergy-price-cap-rise-october-2022-what-happen-household-bills/)\nEvaluate possible methods of government intervention to control household energy\nbills in the UK.",
-  "ms": "Knowledge 4, Application 4, Analysis 8\nExplanation of methods of government intervention may include:\n• price regulation e.g. energy price cap\n• direct support from government to households\n• grants/subsidies\n• enhancing competition through promotion of small\nbusiness/ breaking up large energy suppliers\n• state ownership arguments\n• threat of windfall tax which forces companies to pass on falls in\nwholesale costs to households\n• separate retail and wholesale divisions\n• education/information campaigns to help households reduce\nenergy usage\n• CMA investigation into price fixing/collusive behaviour\n• Legislation to decouple gas and electric prices\n• Encouragement of smart meters to reduce information gap\nNB - for Level 4 KAA candidates must refer to the energy\nmarket\nNB – Must be at least TWO METHODS FOR KL4 as\n“methods”\nEvaluation 9\n• Asymmetric information\n• Regulatory capture\n• Time lags\n• Prioritisation arguments\n• Short run v long run arguments\n• Combination of policies required\n• Government failure\n• Unintended consequence e.g. energy retailers leave market\n• Cost and opportunity cost arguments\n• Scale of support needed could change\n• Other sources of gas supply\n• Depends on type of tariff e.g. pre-payment meters are more\nexpensive\n• Depends on type of household\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements of the question with evidence integrated\ninto the answer.\nAnalysis is clear and coherent, although it may lack balance.\nChains of reasoning are developed but the answer may lack\nbalance.\nLevel 4 13–16 Demonstrates precise knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nappropriate examples. Analysis is relevant and focused with\nevidence fully and reliably integrated.\nEc",
+  "text": "The average UK household energy bill (gas and electric combined) rose 80% from\n£1 971 in 2021 to £3 549 in 2022.\n\nEvaluate possible methods of government intervention to control household energy\nbills in the UK.",
+  "ms": "Knowledge 4, Application 4, Analysis 8\nExplanation of methods of government intervention may include:\n• price regulation e.g. energy price cap\n• direct support from government to households\n• grants/subsidies\n• enhancing competition through promotion of small\nbusiness/ breaking up large energy suppliers\n• state ownership arguments\n• threat of windfall tax which forces companies to pass on falls in\nwholesale costs to households\n• separate retail and wholesale divisions\n• education/information campaigns to help households reduce\nenergy usage\n• CMA investigation into price fixing/collusive behaviour\n• Legislation to decouple gas and electric prices\n• Encouragement of smart meters to reduce information gap\nNB - for Level 4 KAA candidates must refer to the energy\nmarket\nNB – Must be at least TWO METHODS FOR KL4 as\n“methods”\nEvaluation 9\n• Asymmetric information\n• Regulatory capture\n• Time lags\n• Prioritisation arguments\n• Short run v long run arguments\n• Combination of policies required\n• Government failure\n• Unintended consequence e.g. energy retailers leave market\n• Cost and opportunity cost arguments\n• Scale of support needed could change\n• Other sources of gas supply\n• Depends on type of tariff e.g. pre-payment meters are more\nexpensive\n• Depends on type of household\n(25)\nKnowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUs",
   "erKey": "7",
   "paper": 1,
   "series": "June 2023",
-  "theme": null,
+  "theme": 3,
   "themeConfident": false,
+  "year": 2,
   "id": "p1-june2023-q7"
  },
  {
@@ -1195,13 +1274,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "Using 2021 estimates of carbon emissions, it is estimated that a petrol car journey\nfrom London to Glasgow emits approximately 3.3 times more carbon dioxide per\npassenger than the equivalent journey by train.\n(Source adapted from: https://www.gov.uk/government/statistics/transport-and-\nenvironment-statistics-autumn-2021/transport-and-environment-statistics-autumn-2021)\nEvaluate possible methods of government intervention to reduce carbon emissions\ncaused by road transport in the UK.",
-  "ms": "Explanation of methods of government intervention may include:\n• price regulation e.g. energy price cap\n• direct support from government to households\n• grants/subsidies\n• enhancing competition through promotion of small\nbusiness/ breaking up large energy suppliers\n• state ownership arguments\n• threat of windfall tax which forces companies to pass on falls in\nwholesale costs to households\n• separate retail and wholesale divisions\n• education/information campaigns to help households reduce\nenergy usage\n• CMA investigation into price fixing/collusive behaviour\n• Legislation to decouple gas and electric prices\n• Encouragement of smart meters to reduce information gap\nNB - for Level 4 KAA candidates must refer to the energy\nmarket\nNB – Must be at least TWO METHODS FOR KL4 as\n“methods”\nEvaluation 9\n• Asymmetric information\n• Regulatory capture\n• Time lags\n• Prioritisation arguments\n• Short run v long run arguments\n• Combination of policies required\n• Government failure\n• Unintended consequence e.g. energy retailers leave market\n• Cost and opportunity cost arguments\n• Scale of support needed could change\n• Other sources of gas supply\n• Depends on type of tariff e.g. pre-payment meters are more\nexpensive\n• Depends on type of household\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements of the question with evidence integrated\ninto the answer.\nAnalysis is clear and coherent, although it may lack balance.\nChains of reasoning are developed but the answer may lack\nbalance.\nLevel 4 13–16 Demonstrates precise knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nappropriate examples. Analysis is relevant and focused with\nevidence fully and reliably integrated.\nEconomic ideas are carefully selected and",
+  "text": "Using 2021 estimates of carbon emissions, it is estimated that a petrol car journey\nfrom London to Glasgow emits approximately 3.3 times more carbon dioxide per\npassenger than the equivalent journey by train.\n\nEvaluate possible methods of government intervention to reduce carbon emissions\ncaused by road transport in the UK.",
+  "ms": "Knowledge 4, Application 4, Analysis 8\nMethods of government intervention may include:\n• indirect taxation - e.g. tax on petrol & diesel or new car sales\n• subsidies on public transport\n• subsidies on the development on electric vehicles\n• minimum prices e.g. on new petrol/diesel cars\n• maximum prices e.g. on public transport or electric vehicles\n• Emissions Trading Scheme on aviation but proposed extension to\nroad transport\n• regulation e.g. ban on sale of petrol & diesel vehicles, vehicle\nemission checks, ban cars in certain areas, new builds to have\ncharging points\n• road pricing schemes - congestion charges, low emission zones\n• improved public transport infrastructure\n• education & information schemes\n• further deregulation of public transport/creation of greater\ncompetition in markets\n• regulation by CMA of train operators to improve reliability of\nservices/reduce prices\n• increase road tax/road tax incentives for low carbon emission\nvehicles\n• promotion of alternative forms of transport e.g. electric bikes,\ncycle lanes, car sharing, bus only lanes\n• incentives for working from home e.g. tax breaks\n• behavioural arguments\nNB: For Level 4 KAA candidates must refer to the transport\nmarket (cars, roads, public transport etc.)\nNB – AT LEAST TWO METHODS FOR KL4 as “methods”\nEvaluation 9\n• Criticisms of the likely effectiveness of policies\n• Government failure\n• Inelastic PED arguments\n• Weak substitute/XED arguments\n• Asymmetric information\n• Regulatory capture\n• Time lags\n•",
   "erKey": "8",
   "paper": 1,
   "series": "June 2023",
-  "theme": 3,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2023-q8"
  },
  {
@@ -1209,13 +1289,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Age Price elasticity of demand\n18+ Student −0.7\nAdult −0.4\n(Source adapted from: https://assets.publishing.service.gov.uk/government/uploads/\nsystem/uploads/attachment_data/file/669090/youth-travel-concessions-price-elasticity.pdf\nand https://tfl.gov.uk/fares/find-fares/bus-and-tram-fares#on-this-page-4)\n(a) Explain one likely reason for the difference in the price elasticity of demand for the\n18+ student bus ticket and the adult bus ticket.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................",
-  "ms": "Knowledge 2 Application 1 Analysis 1\nKnowledge/Analysis: Up to 3 marks for one reason\ne.g.\n• Price elasticity of demand measures the\nresponsiveness of demand to a proportionate change\nin price/formula (1)\n• Closeness of substitutes (1) young people have\ngreater availability of substitutes – bus, walk,\ncycle/closer substitutes/adults bus dependent (1)\n• Proportion of income spent (1) greater proportion for\nyounger people spent on bus travel (1)\n• Degree of necessity (1) adults getting to work may\nbe more important than students getting to classes\non time (1)\nApplication: 1 mark for reference to data e.g.\n• Adult PED is -0.4, student PED is -0.7 (1)\n• Calculation e.g. 10% increase in price leads to a\n7% decrease in demand for student tickets (1)\n• PED for young people is relatively less price inelastic\n(1)\n• PED for adults is relatively more price inelastic (1)\n(4) N.B. Could be illustrated using a demand curve\nand may be awarded as application or analysis",
+  "text": "Age Price elasticity of demand\n18+ Student −0.7\nAdult −0.4\n\n(a) Explain one likely reason for the difference in the price elasticity of demand for the\n18+ student bus ticket and the adult bus ticket.\n(4)\n\n3\n••••••••\n\n(b) In 2021, the adult 7-day bus ticket was £21.90. Bus ticket prices in London in 2022\nincreased by 4.8%. Ceteris paribus, which one of the following is the percentage\ndecrease in the 7-day bus ticket demand by adults?\n(1)\nA 0.08\nB 1.92\nC 3.36\nD 12.00",
+  "ms": "(a)\nKnowledge 2 Application 1 Analysis 1\nKnowledge/Analysis: Up to 3 marks for one reason\ne.g.\n• Price elasticity of demand measures the\nresponsiveness of demand to a proportionate change\nin price/formula (1)\n• Closeness of substitutes (1) young people have\ngreater availability of substitutes – bus, walk,\ncycle/closer substitutes/adults bus dependent (1)\n• Proportion of income spent (1) greater proportion for\nyounger people spent on bus travel (1)\n• Degree of necessity (1) adults getting to work may\nbe more important than students getting to classes\non time (1)\nApplication: 1 mark for reference to data e.g.\n• Adult PED is -0.4, student PED is -0.7 (1)\n• Calculation e.g. 10% increase in price leads to a\n7% decrease in demand for student tickets (1)\n• PED for young people is relatively less price inelastic\n(1)\n• PED for adults is relatively more price inelastic (1)\n(4)\nN.B. Could be illustrated using a demand curve\nand may be awarded as application or analysis\n\n(b)\nThe only correct answer is B\nA is not correct because 0.4/4.8 is an incorrect use of the\nformula\nC is not correct because the wrong PED has been\nselected,\n4.8x0.7\nD is not correct because 4.8/0.4 is an incorrect use of\nthe formula\n(1)",
   "erKey": "1a",
   "paper": 1,
   "series": "June 2024",
   "theme": 1,
-  "themeConfident": false,
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2024-q1"
  },
  {
@@ -1223,13 +1304,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The table below shows price elasticity of supply for housing in the US in 2020.\nUS State Price elasticity of supply\nNew York +0.5\nTexas +1.8\n(Source adapted from: https://bankunderground.co.uk/2020/02/25/\nthe-declining-elasticity-of-us-housing-supply/)\n(a) With reference to the data above, explain one likely reason for the difference in\nthe price elasticity of supply.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n...............................................................................................................................................................................................................................................................................",
-  "ms": "Knowledge 2 Application 1 Analysis 1\nKnowledge and Analysis: Up to 3 marks for one reason\ne.g.\n• Price elasticity of supply measures the\nresponsiveness of supply to a proportionate change\nin price/formula (1)\n• Regulations (1) takes time to build/planning\npermission/immobile factors (1)\n• Lack of resources (1) shortage of land/materials/\nlabour/operating at full capacity (1)\nApplication: 1 mark for reference to data e.g.\n• New York (PES 0.5), price inelastic supply (1)\nOR\n• Texas (PES 1.8), price elastic supply (1)\n• Calculation e.g. 10% increase in price in New York\nleads to a 5% increase in supply (1)\n• Supply of housing is relatively more price inelastic in\nNew York than Texas/more price elastic in\nTexas than New York (1)\nN.B. Could be illustrated using a supply curve and\nmay be awarded as application or analysis (up to\n2 marks)\n(4)",
+  "text": "The table below shows price elasticity of supply for housing in the US in 2020.\nUS State Price elasticity of supply\nNew York +0.5\nTexas +1.8\n\n(a) With reference to the data above, explain one likely reason for the difference in\nthe price elasticity of supply.\n(4)\n\n5\n••••••••\n\n(b) In Texas the price elasticity of supply is +1.8.\nWhich one of the following is the percentage increase in price if the quantity of\nhousing supplied in Texas is increased by 12%?\n(1)\nA 0.15\nB 1.50\nC 6.67\nD 21.60",
+  "ms": "(a)\nKnowledge 2 Application 1 Analysis 1\nKnowledge and Analysis: Up to 3 marks for one reason\ne.g.\n• Price elasticity of supply measures the\nresponsiveness of supply to a proportionate change\nin price/formula (1)\n• Regulations (1) takes time to build/planning\npermission/immobile factors (1)\n• Lack of resources (1) shortage of land/materials/\nlabour/operating at full capacity (1)\nApplication: 1 mark for reference to data e.g.\n• New York (PES 0.5), price inelastic supply (1)\nOR\n• Texas (PES 1.8), price elastic supply (1)\n• Calculation e.g. 10% increase in price in New York\nleads to a 5% increase in supply (1)\n• Supply of housing is relatively more price inelastic in\nNew York than Texas/more price elastic in\nTexas than New York (1)\nN.B. Could be illustrated using a supply curve and\nmay be awarded as application or analysis (up to\n2 marks)\n(4)",
   "erKey": "2a",
   "paper": 1,
   "series": "June 2024",
-  "theme": 3,
-  "themeConfident": false,
+  "theme": 1,
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2024-q2"
  },
  {
@@ -1237,13 +1319,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Peloton is a firm which makes exercise bikes. Peloton’s objective is to prioritise selling\nfitness services rather than to achieve short-term profit maximisation.\n(Source adapted from: https://www.forbes.com/sites/shelleykohan/2022/01/26/\npeloton-prioritizes-access-and-acquisition-over-profits/?sh=13d8ee474f40 )\n(a) Draw a cost and revenue diagram to illustrate the different business objectives:\nprofit maximisation and revenue maximisation.\n(4)\n(b) If Peloton changes its objective to sales maximisation, then without making a loss,\nit operates at an output where:\n(1)\nA average cost equals average revenue\nB average cost is minimised\nC price elasticity of demand is equal to -1\nD price equals marginal cost",
-  "ms": "Knowledge 2, Application 2\n1 mark profit maximisation output where MC=MR\n1 mark profit maximisation price\n1 mark revenue maximisation output where MR=0\n1 mark revenue maximisation price\nDiagram required e.g.\n(4)",
+  "text": "Peloton is a firm which makes exercise bikes. Peloton’s objective is to prioritise selling\nfitness services rather than to achieve short-term profit maximisation.\n\n(a) Draw a cost and revenue diagram to illustrate the different business objectives:\nprofit maximisation and revenue maximisation.\n(4)\n(b) If Peloton changes its objective to sales maximisation, then without making a loss,\nit operates at an output where:\n(1)\nA average cost equals average revenue\nB average cost is minimised\nC price elasticity of demand is equal to -1\nD price equals marginal cost",
+  "ms": "(a)\nKnowledge 2, Application 2\n1 mark profit maximisation output where MC=MR\n1 mark profit maximisation price\n1 mark revenue maximisation output where MR=0\n1 mark revenue maximisation price\nDiagram required e.g.\n(4)\n\n(b)\nThe only correct answer is A\nB is not correct because this is associated with\nproductive efficiency rather than sales maximisation\nC is not correct because this is revenue maximisation\nD is not correct because this is allocative efficiency (1)",
   "erKey": "3a",
   "paper": 1,
   "series": "June 2024",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2024-q3"
  },
  {
@@ -1251,13 +1334,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "In 2022 the government announced that the maximum undergraduate tuition fee for\nuniversities in England will remain at £9 250 per year for the next two years.\n(Source adapted from: https://questions-statements.parliament.uk/\nwritten-statements/detail/2021-10-21/HCWS339)\n(a) Explain one likely reason for the maximum price for an undergraduate\nuniversity programme.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................",
-  "ms": "Knowledge 2 Application 1 Analysis 1\nKnowledge and Analysis: Up to 3 marks for one reason\ne.g.\n• Maximum price is the ceiling price above which the\nprice does not go (1)\n• Maximum price is set below the market equilibrium\nprice (1)\n• Increases student affordability (1) causing an\nextension in demand / low-income students\nincrease uptake (1)\n• Encourages consumption (1) internalising external\nbenefits / third party effects (1)\n• Increase in consumer surplus (1) because the\nprice of tuition has fallen (1)\n• Government may want to increase the proportion\nof young people at university (1) to increase future\nlabour productivity (1) and therefore increase the\nexternal benefit/tax yield/revenue\n(1)\nApplication: Up to 1 mark for a relevant example\ne.g.\n• Maximum undergraduate tuition fees in England\nare £9 250 (1)\n• Fees at the same level for 2 years (1)\nNB A diagram may be used to earn knowledge,\napplication or analysis marks (2)\nNB Must be one reason\n(4)",
+  "text": "In 2022 the government announced that the maximum undergraduate tuition fee for\nuniversities in England will remain at £9 250 per year for the next two years.\n\n(a) Explain one likely reason for the maximum price for an undergraduate\nuniversity programme.\n(4)\n\n(b) Which one of the following is an example of government failure associated with\nthe maximum price?\n(1)\nA Contraction in demand\nB Distortion of price signals\nC Excess supply\nD Extension in supply",
+  "ms": "(b)\nThe only correct answer is B\nA is incorrect as there would be an extension in demand\nC is incorrect as there would be excess demand\nD is incorrect as there would be a contraction in supply (1)",
   "erKey": "4a",
   "paper": 1,
   "series": "June 2024",
   "theme": 1,
   "themeConfident": true,
+  "year": 1,
   "id": "p1-june2024-q4"
  },
  {
@@ -1265,13 +1349,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "12.7%\n11.1% 10.9% 9.8%\n7.2%\n3.9%\n24.9%\n%\n(Source adapted from: https://www.statista.com/statistics/727348/\nuk-banks-gross-lending-market-share/) 9\n•••••••• (a) With reference to the information on the preceding page, explain the market\nstructure of mortgage lending in the UK.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n........................................................................................",
-  "ms": "Knowledge 2 Application 1 Analysis 1\nThe market structure is oligopoly (1)\n• Few dominant firms (1)\n• High concentration ratio (1)\n• Four/five firms more than 50% (1)\n• High barriers to entry (1)\n• Interdependence (1)\n• Lloyds is market leader (19.5%) (1)\n• Two marks for a correct calculation of the\nconcentration ratio:\nTwo firm 32.2%\nThree firm 43.3%\nFour firm 54.2%\nFive firm 64%\nSix firm 71.2\nSeven firm 75.1\n(4)",
+  "text": "12.7%\n11.1% 10.9%\n9.8%\n7.2%\n3.9%\n24.9%\n%\n\n9\n••••••••\n\n(a) With reference to the information on the preceding page, explain the market\nstructure of mortgage lending in the UK.\n(4)\n\n(b) The value of all mortgage loans was £1 601 billion at the end of 2020.\nWhich one of the following is the value of Lloyds’ market share?\n(1)\nA £82 billion\nB £126 billion\nC £312 billion\nD £8 210 billion",
+  "ms": "(a)\nKnowledge 2 Application 1 Analysis 1\nThe market structure is oligopoly (1)\n• Few dominant firms (1)\n• High concentration ratio (1)\n• Four/five firms more than 50% (1)\n• High barriers to entry (1)\n• Interdependence (1)\n• Lloyds is market leader (19.5%) (1)\n• Two marks for a correct calculation of the\nconcentration ratio:\nTwo firm 32.2%\nThree firm 43.3%\nFour firm 54.2%\nFive firm 64%\nSix firm 71.2\nSeven firm 75.1\n(4)\n\n(b)\nThe only correct answer is C\nA is not correct because they have miscalculated by\nusing 1601/19.5\nB is not correct because they have selected the wrong\nmarket share thus calculating 1601/12.7 and wrong\nmiscalculation\nD is not correct because they have miscalculated using\n1601/0.195\n(1)",
   "erKey": "5a",
   "paper": 1,
   "series": "June 2024",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2024-q5"
  },
  {
@@ -1280,12 +1365,13 @@ const ECO_QUESTIONS = [
   "marks": 5,
   "section": "B",
   "text": "With reference to Extract A, explain the likely reasons for the change in price of\nelectronic devices. Include a supply and demand diagram in your answer.",
-  "ms": "Knowledge 1, Application 1, Analysis 3\nKnowledge and Analysis: (up to 4 marks)\nCorrectly labelled diagram annotated to show a shift left\nin supply curve and right in demand curve (1+1) e.g.\nNB two KAA marks are reserved for an accurate\ndiagram: 1 mark for shifting demand, one for shifting\nsupply. Or two separate diagrams, i.e. one showing\nshift in demand and another showing shift in supply\ncan still get all 2 KAA\n• Explanation that increased cost of production shift\nsupply left causing price to rise (1)\n• Explanation that growing popularity shifts demand\nright causing price to rise (1)\nApplication: 1 for reference to Extract A e.g.\n• Higher material costs/cost of components (chips) for\nconsoles computers and smartphones (1)\n• Data reference to price of chips e.g. $0.20 each to\nmore than $1 (1)\n• ‘Growing popularity of home entertainment’ or\nincrease in demand for game consoles (1)\n(5)",
+  "ms": "",
   "erKey": "6a",
   "paper": 1,
   "series": "June 2024",
-  "theme": null,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2024-q6a"
  },
  {
@@ -1294,12 +1380,13 @@ const ECO_QUESTIONS = [
   "marks": 8,
   "section": "B",
   "text": "Examine two factors which might influence the supply of labour in the\nelectronics industry.",
-  "ms": "Knowledge 2, Analysis 2, Application 2,\nEvaluation 2\nKnowledge/understanding: 2 marks for identification of\ntwo factors (1+1) e.g.\nFactors could affect either the position or the elasticity of the\nlabour supply curve\n• Wage rate (1)\n• Demographics (1)\n• Activity rates e.g. change in retirement age/ numbers\nretiring (1)\n• Educational opportunities (1)\n• Length of training/skills (1)\n• Pay in other occupations (1)\n• Occupational mobility (1)\n• Geographical mobility (1)\n• Net migration (1)\n• Other non-wage factors e.g. desirability of the job,\nmotivational factors, home working (1)\nAnalysis: 1 mark for linked explanation of each factor (1+1)\ne.g.\n• Lack of students completing engineering and\ncomputing degrees leading to a smaller qualified\nworkforce (1)\n• More problem solving and analysis skills required\nleading to a smaller supply of labour (1)\n• Lower proportion of female students studying STEM\nsubjects (1)\nApplication: 2 marks for reference to the electronics industry\ne.g.\n• Loss of experienced/skilled employees (1)\n• Few computing/engineering graduates (1)\n• High skilled/automated technical industry/ requiring\nproblem solving skills (1)\n• Hazardous, repetitive, grimy work (1)\n• Electronics industry compared to another e.g.\nfinance (1)\nEvaluation: 2 marks for two evaluative comments, OR\n2 marks for identification and linked development of\none evaluative comment e.g.\n• Government intervention might correct this e.g. by\nchanging retirement age, education/ training reforms\n• Price mechanism could increase supply in the long run\nproviding a wage incentive\n(8) • Financial incentives to invest in AI/new technologies can\nhelp fill some of the skills gap\n• AI reduces health risks of job\n• AI increases analytical/creative skills needed\n• Combination of factors affect labour supply",
+  "ms": "",
   "erKey": "6b",
   "paper": 1,
   "series": "June 2024",
-  "theme": 3,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-june2024-q6b"
  },
  {
@@ -1308,12 +1395,13 @@ const ECO_QUESTIONS = [
   "marks": 10,
   "section": "B",
   "text": "Assess whether firms in the electronics industry benefit from economies of scale.",
-  "ms": "Knowledge 2, Application 2, Analysis 2\nDefinition or understanding of economies of scale\nEconomies of scale may include:\n• Purchasing economies – bulk buying computer chips\n• Financial economies – accessing loans at low rates of\ninterest from commercial banks\n• Managerial economies – Arm and Nvidia removing\nmiddle managers; greater specialisation and division\nof labour\n• Technical economies – greater investment in R&D and\ninnovation, larger warehouses etc.\n• Marketing economies – ease of access to many\neffective media outlets, discounts on advertising space\netc.\n• External economies – information sharing on selling\nproducts into emerging markets\nRemoving wasteful duplication e.g. research into AI\nadvances in games consoles, data centres and smartphones\nNB A diagram may be used to illustrate economies of\nscale/diseconomies of scale\nNB For KAA level 3, candidates should refer to\nelectronics industry\n(6)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no link between causes and\nconsequences.\nLevel 2 3–4 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or the answer may lack balance. Level 3 5–6 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are applied appropriately to the broad\nelements of the question.",
+  "ms": "Knowledge 2, Application 2, Analysis 2\nDefinition or understanding of economies of scale\nEconomies of scale may include:\n• Purchasing economies – bulk buying computer chips\n• Financial economies – accessing loans at low rates of\ninterest from commercial banks\n• Managerial economies – Arm and Nvidia removing\nmiddle managers; greater specialisation and division\nof labour\n• Technical economies – greater investment in R&D and\ninnovation, larger warehouses etc.\n• Marketing economies – ease of access to many\neffective media outlets, discounts on advertising space\netc.\n• External economies – information sharing on selling\nproducts into emerging markets\nRemoving wasteful duplication e.g. research into AI\nadvances in games consoles, data centres and smartphones\nNB A diagram may be used to illustrate economies of\nscale/diseconomies of scale\nNB For KAA level 3, candidates should refer to\nelectronics industry\n(6)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no link between causes and\nconsequences.\nLevel 2 3–4 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or the answer may lack balance.\nLevel 3 5–6 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are applied appropriately to the broad\nelements of the question.",
   "erKey": "6c",
   "paper": 1,
   "series": "June 2024",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2024-q6c"
  },
  {
@@ -1322,12 +1410,13 @@ const ECO_QUESTIONS = [
   "marks": 12,
   "section": "B",
   "text": "Discuss the likely concerns of the competition authorities regarding the proposed\nmerger of the two companies referred to in Extract C.",
-  "ms": "Knowledge 2, Application 2, Analysis 4\n• CMA role/concerns/rejects merger\n• Reference to Nvidia and Arm\nConcerns might include:\n• Greater monopoly power/higher prices/lowering\nconsumer surplus/less allocative efficiency\n• Lower output/choice\n• Lower quality/customer service\n• X-inefficiency or diseconomies of scale resulting in\nless innovation/higher prices\n• Less competition/higher barriers to entry\n• Collusion/other anti-competitive practices\n• Shareholders put before consumers\nN.B. A diagram may be used to illustrate some of\nthese concerns e.g. higher supernormal profits or\na lack of allocative efficiency\nN.B. Two concerns required for KL3\nN.B. KAA may be used as Evaluation and viceversa\n(8)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance. Level 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
+  "ms": "continued\nEvaluation 4\n• Economies of scale from horizontal merger - lower\nprices/increased output\n• Improved customer service – being closer to the\nconsumer due to vertical integration\n• ‘Finance high-risk innovation and global advertising’\n• Increased global market share/sales\n• Dynamic efficiency/synergy – profits reinvested into\ninnovation/higher quality\n• Investment deal of £29.5bn funds innovation/quality\n/choice\n• The CMA investigation itself may prevent merger/\nthere may be fines if the firm exploits consumers\n• Imposition of price caps\n• The merger may not reduce competition\n(4)\nLevel Mark Descriptor\n0 No evaluative comments.\nLevel 1 1–2 Identification of generic evaluative comments without\nsupporting evidence/reference to context. No evidence of a\nlogical chain of reasoning.\nLevel 2 3–4 Evaluative comments supported by relevant reasoning and\nappropriate reference to context.\nEvaluation recognises different viewpoints and/or is critical of\nthe evidence.",
   "erKey": "6d",
   "paper": 1,
   "series": "June 2024",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2024-q6d"
  },
  {
@@ -1336,12 +1425,13 @@ const ECO_QUESTIONS = [
   "marks": 15,
   "section": "B",
   "text": "With reference to Extract D, discuss possible methods of government intervention\nto reduce electronic waste.",
-  "ms": "Knowledge 3, Application 3, Analysis 3\nGovernment intervention to correct market failure –\nnegative externalities of production\nReduce overproduction – market output greater than social\noptimum\nCorrect misallocation of resources – reduce welfare loss\nReduce external cost/third party effects\nGovernment methods:\n• Indirect tax on electronic waste (specific) or on\nmanufacturers of devices\n• Subsidies extending longevity of electronic items/\nincrease recyclable content\n• Provision of information/education – on electronic\nwaste problems on packaging\n• Regulation – extending longevity of electronic items/\nincreasing recyclable content/fines for not recycling\n• Tradable pollution permits\nReward relevant application e.g. candidates work out how\nmuch is not being recycled (700 000 tonnes)\nNB for a level 3 answer there must be at least one\nreference to Extract D and two methods\nNB reward relevant diagram\n(9)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance. Level 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
+  "ms": "continued\nEvaluation 6\n• Discussion of the effectiveness of the policies\n• Difficulty in measuring/quantifying and giving a\nmonetary value to scale of negative externality/\noverproduction/external costs\n• Consideration of the price elasticity of demand and\nsupply/difficulty in changing behaviours\n• Some initiatives have worked in the past e.g. the\nrecycling rate for big appliances, such as fridges and\ncookers, is about 80%\n• Depends on technological advances e.g. may reduce\nwaste from small appliances/re-use/longer life-span\nof products\n• Information gaps: Consumers ignore the electronic\nwaste labelling\n• Government failure: Unintended consequences -\nillegal dumping of small electronic products is likely\nto increase\n• Government failure: Excessive administrative costs\n– targeting subsidies, imposing fines\n• Timescale e.g. improving new products will take\nlonger than recycling current items\n(6)\nLevel Mark Descriptor\n0 No evaluative comments.\nLevel 1 1–2 Identification of generic evaluative comments without\nsupporting evidence/reference to context. No evidence of a\nlogical chain of reasoning.\nLevel 2 3–4 Evidence of evaluation of alternative approaches which is\nunbalanced.\nEvaluative comments with supporting evidence/reference to\ncontext and a partially-developed chain of reasoning.\nLevel 3 5–6 Evaluative comments supported by relevant chain of\nreasoning and appropriate reference to context.\nEvaluation recognises different viewpoints and/or is critical of\nthe evidence.",
   "erKey": "6e",
   "paper": 1,
   "series": "June 2024",
   "theme": 1,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p1-june2024-q6e"
  },
  {
@@ -1349,13 +1439,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "A small hotel in Scarborough has seen its energy bills increase from £2 000 to £8 000\nper month. Small businesses do not have the energy management teams of larger\ncompanies to negotiate better deals.\n(Source adapted from: https://www.ft.com/content/d07797e7-\n2eb7-4240-b15d-692b39510def )\nEvaluate the microeconomic effects of rising energy bills on the hotel industry or an\nindustry of your choice.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Increase in energy bills (Fixed Cost) shifts AC upwards OR\nVariable Costs increase shifting AC and MC upwards\n• Loss area/smaller profit connected with MC=MR\n• Short-term (AVC) or long-term (AC) shut down point reached\nfor firms in industry\n• Cost and Revenue/Supply and Demand analysis - higher prices\nand lower output\n• Industry energy intensive\n• Cut in costs – wages/redundancies/investment/impact on\nhotel guests/customers\n• Wider impacts on employees and suppliers\n• Reduction in the level of competition/contestability in the\nindustry as smaller firms are forced to exit\nDiagram (showing fixed costs changing) e.g.\n• Change in business objective e.g. to sales maximisation\n• Incentive to put in place energy saving devices, insulation,\nsolar panels to reduce energy use\nN.B. For Level 4 response a diagram is not required\nN.B. For Level 4 KAA candidates must refer to a specific\nindustry\nEvaluation\n• Energy prices are very volatile\n• Energy bill as proportion of total cost\n• Cover AVC in short run – contribute to energy bills • Cover AC\nin long run (25) • Long-term changes e.g. energy price falls\n• Industry/market structure – monopsony power - larger\ncompanies can negotiate better deals\n• Information/education campaigns to encourage customers to\nreduce energy consumption e.g. reminders to turn the\nheating down and turn lights off\n• Reward magnitude arguments e.g. the size of the increase in\nenergy costs\n• Extent to which costs can be offset by energy saving\nmeasures/or increase in demand for hotel rooms\n• Government intervention to support businesses with higher\nbills\n• Impact depends on size of the hotel e.g. Premier Inn\n• Candidates can use PED as impact on revenue Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements ",
+  "text": "A small hotel in Scarborough has seen its energy bills increase from £2 000 to £8 000\nper month. Small businesses do not have the energy management teams of larger\ncompanies to negotiate better deals.\n\nEvaluate the microeconomic effects of rising energy bills on the hotel industry or an\nindustry of your choice.",
+  "ms": "",
   "erKey": "7",
   "paper": 1,
   "series": "June 2024",
   "theme": 3,
   "themeConfident": true,
+  "year": 2,
   "id": "p1-june2024-q7"
  },
  {
@@ -1363,13 +1454,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "Bytedance, which owns TikTok, has launched its own fragrance ‘Emotif’.\nThe Beijing-based social media giant has already entered the food and drink markets.\n(Source adapted from: https://www.businessoffashion.com/news/china/\ntiktoks-parent-company-enters-chinas-perfume-market/)\nEvaluate the level of contestability in the fragrance industry or another industry of\nyour choice.",
-  "ms": "is an incorrect use of the\nformula\nC is not correct because the wrong PED has been\nselected,\n4.8x0.7\nD is not correct because 4.8/0.4 is an incorrect use of\nthe formula (1)",
+  "text": "Bytedance, which owns TikTok, has launched its own fragrance ‘Emotif’.\nThe Beijing-based social media giant has already entered the food and drink markets.\n\nEvaluate the level of contestability in the fragrance industry or another industry of\nyour choice.",
+  "ms": "=====\n2(b) The only correct answer is C\nA is not correct because 1.8/12 is an incorrect use of the\nformula\nB is not correct because 1.8/1.2 is an incorrect use of\nthe formula\nD is not correct because 1.8x12 is an incorrect use of the\nformula\n(1)",
   "erKey": "8",
   "paper": 1,
   "series": "June 2024",
   "theme": 3,
   "themeConfident": false,
+  "year": 2,
   "id": "p1-june2024-q8"
  },
  {
@@ -1377,13 +1469,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#\n3\n!\"#$#%$&'(%(! (c) Given the price elasticity of demand for Derby County Football Club’s tickets,\nexplain the likely impact on their revenue of an increase in ticket prices.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................",
-  "ms": "Application 2\nApplication: 1 mark for applying the formula and 1\nmark for correct answer\n∞ Calculate the PED 5/11 (1) = 0.4545 (1)\nNB if the answer given is 0.4545 award 2 marks.\n(2)",
+  "text": "6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#\n3\n!\"#$#%$&'(%(!\n(c) Given the price elasticity of demand for Derby County Football Club’s tickets,\nexplain the likely impact on their revenue of an increase in ticket prices.\n(2)",
+  "ms": "(a)\nApplication 2\nApplication: 1 mark for applying the formula and 1\nmark for correct answer\n∞ Calculate the PED 5/11 (1) = 0.4545 (1)\nNB if the answer given is 0.4545 award 2 marks.\n(2)\n\n(b)\nD\n(1)\n\n(c)\nKnowledge 1, Analysis 1\nKnowledge/understanding: 1 mark for identifying\nthe impact of the change in price and quantity\nAnalysis: 1 mark for linking this to overall impact on\ntotal revenue, e.g.\n∞ relatively inelastic demand so additional revenue\nearned from additional price will be greater than\nlost revenue due to lost quantity (1) so as price\nrises total revenue rises (1)\n∞ may be illustrated diagrammatically – showing\ntotal revenue rising as price rises (1) with\ninelastic demand. (1)\n(2)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#$",
   "erKey": "1a",
   "paper": 1,
   "series": "Specimen",
-  "theme": null,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-specimen-q1"
  },
  {
@@ -1391,13 +1484,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The table shows the quantity of PlayStation 4 games demanded and supplied.\nPrice\nQuantity\ndemanded per\nmonth (000s)\nQuantity supplied\nper month (000s)\nNew quantity\nsupplied per\nmonth (000s)\n£25 400 320\n£30 360 360\n£35 320 400\n£40 280 440\n£45 240 480\nAs a result of an increase in packaging costs for the games, supply decreased by\n80 000 at all prices.\n(a) Calculate the change in equilibrium price given the increase in packaging costs.\nUse the last column for your workings.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.....................................................................................................................................................................",
-  "ms": "Application 2, Knowledge 2\nApplication: up to 2 marks for completing the table\naccurately.\n1 mark for any correct answer in the column and 2 for\nall accurately complete/completed to the appropriate\npoint.\nPrice Quantity\ndemanded\nper month\n(000s)\nQuantity\nsupplied\nper month\n(000s)\nNew\nquantity\nsupplied\nper month\n(000s)\n£25 400 320 240\n£30 360 360 280\n£35 320 400 320\n£40 280 440 360\n£45 240 480 400\nKnowledge/understanding:\n1 mark for identifying the original and new equilibrium\n(1)\nCurrent equilibrium price = £30\nNew equilibrium identified = £35 (where QD = 320 and\nQS = 320) (1)\n1 mark for calculating the change in the equilibrium\nprice (1)\n£35–£30 = £5 increase\n(4)",
+  "text": "The table shows the quantity of PlayStation 4 games demanded and supplied.\nPrice\nQuantity\ndemanded per\nmonth (000s)\nQuantity supplied\nper month (000s)\nNew quantity\nsupplied per\nmonth (000s)\n£25 400 320\n£30 360 360\n£35 320 400\n£40 280 440\n£45 240 480\nAs a result of an increase in packaging costs for the games, supply decreased by\n80 000 at all prices.\n(a) Calculate the change in equilibrium price given the increase in packaging costs.\nUse the last column for your workings.\n(4)\n\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n%\n5\n!\"#$#%$&'(%)!\n(b) PlayStation 4 games and PlayStation 4 consoles have a negative cross-elasticity of\ndemand. This implies that these goods are:\n(1)\nA complements\nB inferior\nC normal\nD substitutes\n! ! Answer",
+  "ms": "(a)\nApplication 2, Knowledge 2\nApplication: up to 2 marks for completing the table\naccurately.\n1 mark for any correct answer in the column and 2 for\nall accurately complete/completed to the appropriate\npoint.\nPrice Quantity\ndemanded\nper month\n(000s)\nQuantity\nsupplied\nper month\n(000s)\nNew\nquantity\nsupplied\nper month\n(000s)\n£25 400 320 240\n£30 360 360 280\n£35 320 400 320\n£40 280 440 360\n£45 240 480 400\nKnowledge/understanding:\n1 mark for identifying the original and new equilibrium\n(1)\nCurrent equilibrium price = £30\nNew equilibrium identified = £35 (where QD = 320 and\nQS = 320) (1)\n1 mark for calculating the change in the equilibrium\nprice (1)\n£35–£30 = £5 increase\n(4)\n\n(b)\nA\n(1)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#%",
   "erKey": "2a",
   "paper": 1,
   "series": "Specimen",
-  "theme": 3,
-  "themeConfident": false,
+  "theme": 1,
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-specimen-q2"
  },
  {
@@ -1405,13 +1499,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Hawaii has a tax on packets of cigarettes. The diagram below shows the effect\nof this tax.\nPrice of\ncigarettes\n($)\nQuantity of cigarettes\n(thousands)\n$7.39\n$5.10\n$3.58\n10 14\nD\nS1\nS\n(a) The tax imposed on a packet of cigarettes in the diagram above is an example of:\n(1)\nA an income tax\nB a subsidy\nC a specific tax\nD an ad valorem tax\nAnswer !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&&\n7\n!\"#$#%$&'$%(! (b) Calculate the total incidence of the tax on consumers. You are advised to show\nyour working.\n(2)\n.....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n...........................................",
-  "ms": "C\n(1)",
+  "text": "Hawaii has a tax on packets of cigarettes. The diagram below shows the effect\nof this tax.\nPrice of\ncigarettes\n($)\nQuantity of cigarettes\n(thousands)\n$7.39\n$5.10\n$3.58\n10 14\nD\nS1\nS\n(a) The tax imposed on a packet of cigarettes in the diagram above is an example of:\n(1)\nA an income tax\nB a subsidy\nC a specific tax\nD an ad valorem tax\nAnswer\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&&\n7\n!\"#$#%$&'$%(!\n(b) Calculate the total incidence of the tax on consumers. You are advised to show\nyour working.\n(2)\n\n(c) Calculate the total tax revenue. You are advised to show your working.\n(2)",
+  "ms": "(a)\nC\n(1)\n\n(b)\nApplication 2\nApplication: 1 mark for calculating the unit incidence\nof the tax on consumers and 1 mark for calculating the\ntotal e.g.\n7.39-5.10 = 2.29 (1) x 10 000 = $22 900 (1)\nNB if the answer given is $22 900 award 2 marks.\n(2)\n\n(c)\nApplication 2\nApplication: 1 mark for tax per packet of cigarettes\nand 1 mark for calculating the total tax revenue.\n7.39-3.58 = $3.81 (1) x 10 000 = $38 100 (1)\nNB if the answer given is $38 100 award 2 marks. (2)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#!",
   "erKey": "3a",
   "paper": 1,
   "series": "Specimen",
-  "theme": null,
-  "themeConfident": false,
+  "theme": 1,
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-specimen-q3"
  },
  {
@@ -1419,13 +1514,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "2.3\nAcer 0.3 1.2\nothers 13.5 16.8\nTotal 34.8 47.6 (a) The 3-firm concentration ratio in quarter 3, 2012 was 59.2%.\nCalculate the 3-firm concentration ratio in quarter 3, 2013 in this market.\nYou are advised to show your working.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n........................................................................................................................................",
-  "ms": "Application 2\nApplication: 1 mark for applying the 3-firm\nconcentration formula and 1 mark for accurate answer,\ne.g.\n14.1+9.7+3.5 = 27.3 (1)/47.6 x 100 = 57.4% (q3\n13) (1)\nNB if the answer given is 57.4% award 2 marks. (2)",
+  "text": "2.3\nAcer 0.3 1.2\nothers 13.5 16.8\nTotal 34.8 47.6\n\n(a) The 3-firm concentration ratio in quarter 3, 2012 was 59.2%.\nCalculate the 3-firm concentration ratio in quarter 3, 2013 in this market.\nYou are advised to show your working.\n(2)\n\n(b) It can be deduced from this data that the tablet computer market is:\n(1)\nA monopolistically competitive\nB perfectly competitive\nC oligopolistic\nD a natural monopoly\n! ! Answer\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&)\n9\n!\"#$#%$&'(%)!\n(c) Explain one barrier to entry that is likely to exist in the tablet computer market.\n(2)",
+  "ms": "(a)\nApplication 2\nApplication: 1 mark for applying the 3-firm\nconcentration formula and 1 mark for accurate answer,\ne.g.\n14.1+9.7+3.5 = 27.3 (1)/47.6 x 100 = 57.4% (q3\n13) (1)\nNB if the answer given is 57.4% award 2 marks. (2)\n\n(b)\nC\n(1)\n\n(c)\nKnowledge 1, Analysis 1\nKnowledge/understanding: 1 mark for identifying\nbarrier to entry\nAnalysis: 1 mark for a linked development,\ne.g.\n∞ economies of scale (1) large quantity for Apple,\nSamsung mean they are likely to reap marketing,\npurchasing economies (1)\n∞ limit pricing (1) where tablet producers lower price\nbelow profit maximisation to restrict entrance of\ncompetitors (1)\n∞ branding (1) significant marketing budgets spent by\ntablet manufacturers which it would be expensive\nfor new entrants to afford (1)\n∞ patents (1) the technology including batteries will\nbe protected meaning competitors cannot replicate\n(1)\n∞ sunk cost (1) costs a lot to invest in manufacturing\nunits which small firms will not have the resources\nto do. (1)\n(2)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n##",
   "erKey": "4a",
   "paper": 1,
   "series": "Specimen",
   "theme": 3,
-  "themeConfident": false,
+  "themeConfident": true,
+  "year": 2,
   "id": "p1-specimen-q4"
  },
  {
@@ -1433,13 +1529,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Blackberry made a loss of $4.4 billion in quarter 3, 2013 but continued to operate.\n(a) Explain one condition under which loss-making firms might continue to operate\nin the short-run.\n(4)\n.....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................",
-  "ms": "Knowledge 2, Application 1, Analysis 1\nKnowledge/understanding: 1 mark for knowledge of\nshort-run shut down point and 1 mark for identifying\nthat this condition does not hold\n(this knowledge may be shown by identifying points on\na diagram).\nOR\n1 mark for identifying alternative plausible economic\nreason and 1 mark for development.\nApplication: 1 mark for application to Blackberry.\nAnalysis: 1 mark for linked development.\ne.g.\nShort-run shut down point where AR=AVC (1). AR>AVC\nin short run so continues to operate (1). At Blackberry\n$4.4bn loss (1) but each additional unit sold contributes\nto reducing the size of losses. (1)\nDiagram showing AR<AC (1) and AR>AVC (1), e.g.\nAlternative response, e.g.:\n∞ if the firm has significant reserves (1) from previous\nyears that it can cover any losses (1) which at\nBlackberry were £4.4 billion (1) this means the business\ncontinues to operate if it believes it can make future\nprofits. (1)\n(4)",
+  "text": "Blackberry made a loss of $4.4 billion in quarter 3, 2013 but continued to operate.\n(a) Explain one condition under which loss-making firms might continue to operate\nin the short-run.\n(4)\n\n(b) If Blackberry is currently a profit-maximising firm but changes its objective to\nsales maximisation, it can be deduced that Blackberry will move from setting\nprices at which:\n(1)\nA marginal revenue equals zero to where marginal revenue equals marginal\ncosts\nB marginal revenue equals marginal costs to where marginal revenue equals\nzero\nC marginal revenue equals marginal costs to where average revenue equals\naverage costs\nD average revenue equals average costs to where marginal revenue equals\nmarginal costs\n! ! Answer",
+  "ms": "(a)\nKnowledge 2, Application 1, Analysis 1\nKnowledge/understanding: 1 mark for knowledge of\nshort-run shut down point and 1 mark for identifying\nthat this condition does not hold\n(this knowledge may be shown by identifying points on\na diagram).\nOR\n1 mark for identifying alternative plausible economic\nreason and 1 mark for development.\nApplication: 1 mark for application to Blackberry.\nAnalysis: 1 mark for linked development.\ne.g.\nShort-run shut down point where AR=AVC (1). AR>AVC\nin short run so continues to operate (1). At Blackberry\n$4.4bn loss (1) but each additional unit sold contributes\nto reducing the size of losses. (1)\nDiagram showing AR<AC (1) and AR>AVC (1), e.g.\nAlternative response, e.g.:\n∞ if the firm has significant reserves (1) from previous\nyears that it can cover any losses (1) which at\nBlackberry were £4.4 billion (1) this means the business\ncontinues to operate if it believes it can make future\nprofits. (1)\n(4)\n\n(b)\nC\n(1)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#&",
   "erKey": "5a",
   "paper": 1,
   "series": "Specimen",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-specimen-q5"
  },
  {
@@ -1448,12 +1545,13 @@ const ECO_QUESTIONS = [
   "marks": 5,
   "section": "B",
   "text": "Explain why the price of ‘the average top-price ticket has risen by almost £10’\n(Extract A, line 2). Use a supply and demand diagram in your answer.",
-  "ms": "Knowledge 1, Application 1, Analysis 3\nKnowledge/understanding: 1 mark for:\n∞ accurate supply and demand with original\nequilibrium. (1)\nApplication: 1 mark for identifying either:\n∞ record numbers of people wanting to buy tickets for\nshows (1)\n∞ costs of running the theatres has risen to pay for\nrestoration and absorb the cost of booking fees. (1)\nAnalysis: 1 mark for each of the following:\n∞ supply shifted leftwards (1)\n∞ demand shifted rightwards (1)\n∞ accurate new equilibrium showing higher price. (1)\nFor example:\n(5) !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#'",
+  "ms": "Knowledge 1, Application 1, Analysis 3\nKnowledge/understanding: 1 mark for:\n∞ accurate supply and demand with original\nequilibrium. (1)\nApplication: 1 mark for identifying either:\n∞ record numbers of people wanting to buy tickets for\nshows (1)\n∞ costs of running the theatres has risen to pay for\nrestoration and absorb the cost of booking fees. (1)\nAnalysis: 1 mark for each of the following:\n∞ supply shifted leftwards (1)\n∞ demand shifted rightwards (1)\n∞ accurate new equilibrium showing higher price. (1)\nFor example:\n(5)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#'",
   "erKey": "6a",
   "paper": 1,
   "series": "Specimen",
-  "theme": null,
+  "theme": 1,
   "themeConfident": false,
+  "year": 1,
   "id": "p1-specimen-q6a"
  },
  {
@@ -1462,12 +1560,13 @@ const ECO_QUESTIONS = [
   "marks": 8,
   "section": "B",
   "text": "Examine two reasons Cineworld plans to merge with CCI.",
-  "ms": "Knowledge 2, Analysis 2, Application 2,\nEvaluation 2\nKnowledge/understanding: 2 marks for identification\nof two reasons (1+1).\nAnalysis: 2 marks for linked explanation of these\nreasons (1+1).\nApplication: 2 marks for reference to the data (1+1),\ne.g.\n∞ to enter seven overseas markets (1) – including\nBulgaria, Czech Republic, Romania, Hungary, Israel,\nPoland, Romania and Slovakia/ operates almost 100\nmultiplexes (1) which increases the quantity of\npotential consumers (1)\n∞ to establish a European mulitplex powerhouse (1) –\nCCI operates almost 100 multiplexes (1) which\nincreases the quantity of potential consumers at\neach location (1)\n∞ Cineworld was ordered by competition regulators to\noffload three cinemas following its takeover of the\nPicturehouse chain (1). Difficulty of finding new\ngrowth opportunities in the company's home market\n(1) so moving abroad enables expansion (1)\n∞ industry data by Rentrak showing that UK and\nIreland box office takings in 2013 fell by 1% to\n£1.17bn (1) falling demand in UK (1) and markets in\nEurope may be growing (1)\n∞ rivals have also grown overseas, with Odeon UCI and\nVue Entertainment (1) and this suggests is a rational\ndecision for the business to make (1) as their\ncompetitors are likely to have moved to maximise\nprofits. (1)\nEvaluation: 2 marks for two evaluative comments,\ne.g.\n∞ however, some of the countries they are moving to\nare poorer than the UK (1)\n∞ even in these countries they will be scrutinised by EU\nregulation (1)\nOR 2 marks for identification and linked development\ne.g.\n∞ magnitude of fall in cinema sales – fall 1% (1) could\njust be a bad year for films (1)\n∞ unlikely to want to copy them (1) it is more the\nimpact on their competitors’ profitability they are\nconcerned about. (1)\n(8) !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#(",
+  "ms": "Knowledge 2, Analysis 2, Application 2,\nEvaluation 2\nKnowledge/understanding: 2 marks for identification\nof two reasons (1+1).\nAnalysis: 2 marks for linked explanation of these\nreasons (1+1).\nApplication: 2 marks for reference to the data (1+1),\ne.g.\n∞ to enter seven overseas markets (1) – including\nBulgaria, Czech Republic, Romania, Hungary, Israel,\nPoland, Romania and Slovakia/ operates almost 100\nmultiplexes (1) which increases the quantity of\npotential consumers (1)\n∞ to establish a European mulitplex powerhouse (1) –\nCCI operates almost 100 multiplexes (1) which\nincreases the quantity of potential consumers at\neach location (1)\n∞ Cineworld was ordered by competition regulators to\noffload three cinemas following its takeover of the\nPicturehouse chain (1). Difficulty of finding new\ngrowth opportunities in the company's home market\n(1) so moving abroad enables expansion (1)\n∞ industry data by Rentrak showing that UK and\nIreland box office takings in 2013 fell by 1% to\n£1.17bn (1) falling demand in UK (1) and markets in\nEurope may be growing (1)\n∞ rivals have also grown overseas, with Odeon UCI and\nVue Entertainment (1) and this suggests is a rational\ndecision for the business to make (1) as their\ncompetitors are likely to have moved to maximise\nprofits. (1)\nEvaluation: 2 marks for two evaluative comments,\ne.g.\n∞ however, some of the countries they are moving to\nare poorer than the UK (1)\n∞ even in these countries they will be scrutinised by EU\nregulation (1)\nOR 2 marks for identification and linked development\ne.g.\n∞ magnitude of fall in cinema sales – fall 1% (1) could\njust be a bad year for films (1)\n∞ unlikely to want to copy them (1) it is more the\nimpact on their competitors’ profitability they are\nconcerned about. (1)\n(8)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#(",
   "erKey": "6b",
   "paper": 1,
   "series": "Specimen",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-specimen-q6b"
  },
  {
@@ -1476,12 +1575,13 @@ const ECO_QUESTIONS = [
   "marks": 12,
   "section": "B",
   "text": "With reference to Figure 1, discuss the likely impact of price discrimination on\nCineworld’s profit. Include an appropriate diagram in your answer.",
-  "ms": "Knowledge 2, Application 2, Analysis 4\n∞ Define price discrimination.\n∞ Application- same screening but different prices –\nexamples from data.\n∞ Third degree price discrimination diagram.\n∞ If they do not discriminate and MR=MC profit is\nP2MC2Y2X2.\n∞ Adults – demand more inelastic so willing to pay\nmore and respond less as price rises.\n∞ Children – demand more responsive to change in\nprice – elastic.\n∞ If firms splits up the market and charges different\nprices to each group the area of profit PMCYX and\nP1MC1YX1 will be greater than if do not discriminate.\n∞ Profits will rise if they price discriminate depending\non different groups elasticities.\n(8) !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning. !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#*",
+  "ms": "Knowledge 2, Application 2, Analysis 4\n∞ Define price discrimination.\n∞ Application- same screening but different prices –\nexamples from data.\n∞ Third degree price discrimination diagram.\n∞ If they do not discriminate and MR=MC profit is\nP2MC2Y2X2.\n∞ Adults – demand more inelastic so willing to pay\nmore and respond less as price rises.\n∞ Children – demand more responsive to change in\nprice – elastic.\n∞ If firms splits up the market and charges different\nprices to each group the area of profit PMCYX and\nP1MC1YX1 will be greater than if do not discriminate.\n∞ Profits will rise if they price discriminate depending\non different groups elasticities.\n(8)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#*",
   "erKey": "6c",
   "paper": 1,
   "series": "Specimen",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-specimen-q6c"
  },
  {
@@ -1490,12 +1590,13 @@ const ECO_QUESTIONS = [
   "marks": 10,
   "section": "B",
   "text": "Apart from price discrimination, assess one pricing and one non-pricing strategy\nCineworld could adopt to increase sales.",
-  "ms": "Knowledge 2, Application 2, Analysis 2\n∞ Define price and non-price competition.\n∞ Identify relevant price and non-price strategies\nsuitable for Cineworld.\n∞ Application – competitors such as Odeon and Vue\ncinema.\nBenefits and limitations of each can be taken as\nKnowledge, Application and Analysis, or\nEvaluation\n∞ Price wars – lowering the price to attract customers\nfrom competition – increasing sales.\n∞ Predatory pricing – where a firm prices below\nAVC/AC of competitors – enables competitors to be\ndriven out of the market and increases sales\nenabling the firm to drive up prices later.\n∞ Price leadership – where Cineworld sets its price first\nin order for competitors to follow – leading price may\nenable the firm to under-cut competitors for a time\nor push up the price as competitors follow.\n∞ Limit pricing – keep price low – to avoid firms\ncontesting/entering market – lower price means\nhigher output and sales, lack of competition means\nless fierce advertising and price reduction needed.\nTypes of non-price competition\n∞ Advertising – this will raise awareness, interest,\ndesire and action to increase sales of cinema tickets.\n∞ Branding – investing in the image, logo, slogan of\nthe business – to build trust amongst customers.\n(6) !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&$\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no link between causes and\nconsequences.\nLevel 2 3–4 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or the answer may lack balance.\nLevel 3 5–6 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are applied appropriately to the broad\nelements of the question. !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&%",
+  "ms": "Knowledge 2, Application 2, Analysis 2\n∞ Define price and non-price competition.\n∞ Identify relevant price and non-price strategies\nsuitable for Cineworld.\n∞ Application – competitors such as Odeon and Vue\ncinema.\nBenefits and limitations of each can be taken as\nKnowledge, Application and Analysis, or\nEvaluation\n∞ Price wars – lowering the price to attract customers\nfrom competition – increasing sales.\n∞ Predatory pricing – where a firm prices below\nAVC/AC of competitors – enables competitors to be\ndriven out of the market and increases sales\nenabling the firm to drive up prices later.\n∞ Price leadership – where Cineworld sets its price first\nin order for competitors to follow – leading price may\nenable the firm to under-cut competitors for a time\nor push up the price as competitors follow.\n∞ Limit pricing – keep price low – to avoid firms\ncontesting/entering market – lower price means\nhigher output and sales, lack of competition means\nless fierce advertising and price reduction needed.\nTypes of non-price competition\n∞ Advertising – this will raise awareness, interest,\ndesire and action to increase sales of cinema tickets.\n∞ Branding – investing in the image, logo, slogan of\nthe business – to build trust amongst customers.\n(6)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&$\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no link between causes and\nconsequences.\nLevel 2 3–4 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or the answer may lack balance.\nLevel 3 5–6 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are applied appropriately to the broad\nelements of the question.\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&%",
   "erKey": "6d",
   "paper": 1,
   "series": "Specimen",
-  "theme": 3,
-  "themeConfident": true,
+  "theme": 1,
+  "themeConfident": false,
+  "year": 1,
   "id": "p1-specimen-q6d"
  },
  {
@@ -1504,12 +1605,13 @@ const ECO_QUESTIONS = [
   "marks": 15,
   "section": "B",
   "text": "Discuss the likely impact of ‘a substantial lessening of competition in the cinema\nmarket in Aberdeen, Bury St Edmunds and Cambridge’ (Extract C, line 6–7).",
-  "ms": "Knowledge 3, Application 3, Analysis 3\n∞ Competition Commission (CC) concluded merger\nwould lead to higher prices for customers in\nAberdeen, Bury St Edmunds and Cambridge.\n∞ Diagram, e.g. monopoly or comparing monopoly and\nperfect competition.\n∞ Increased producer surplus/decreased consumer\nsurplus – fairness.\n∞ Deadweight loss from monopolist.\n∞ Lack of productive efficiency/allocative efficiency\n(P>MC).\n∞ X-inefficiency/organisational slack.\n(9)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning. !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&&",
+  "ms": "Knowledge 3, Application 3, Analysis 3\n∞ Competition Commission (CC) concluded merger\nwould lead to higher prices for customers in\nAberdeen, Bury St Edmunds and Cambridge.\n∞ Diagram, e.g. monopoly or comparing monopoly and\nperfect competition.\n∞ Increased producer surplus/decreased consumer\nsurplus – fairness.\n∞ Deadweight loss from monopolist.\n∞ Lack of productive efficiency/allocative efficiency\n(P>MC).\n∞ X-inefficiency/organisational slack.\n(9)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&&",
   "erKey": "6e",
   "paper": 1,
   "series": "Specimen",
   "theme": 3,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-specimen-q6e"
  },
  {
@@ -1518,12 +1620,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "‘Tradable permits are less effective than taxation in reducing carbon emissions.’\nTo what extent do you agree with this statement?",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n∞ Definition of external costs.\n∞ Identification of external costs likely in the energy\nmarket.\n∞ Explain the reason for government intervention, e.g.\noverconsumption and the need to reduce it.\n∞ Diagram identifying external costs and the need to\nreduce it – linking to overproduction/deadweight\nloss:\n– Indirect taxation – ad valorem and specific – costs\nrise for firm – reducing supply and quantity/may used\nfunds to compensate third party/increases incentive\nto move to production of energy with lower external\ncosts. But if demand inelastic just passed on to\nconsumer/little impact on consumer/measurement\nproblem to decide size of tax/may not be\nreinvested/used to compensate third parties/\navoidance/evasion\n– Tradable pollution permits – how it works/incentive to\nreduce pollution to be able to sell them/those that do\nrewarded/ those that don’t have added costs/\nBut only works if right quantity sold/some may not\nbother if surplus permits/costs to administer/monitor\n– Extension of property rights – third party can seek\ncompensation. But only those that can afford to\npursue will/no guarantee that you can prove they are\nthe guilty party/energy companies large have\nexpensive and powerful lawyers\n– Regulation – banning or setting limits on energy\nproduction. But expensive to police/measurement\nproblem – what limits to set.\n∞ Diagrams may be rewarded where appropriate.\nNB For a Level 4 response, candidates must\nconsider two methods in their answer.\n(25) !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&(\nKnowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relates them directly\nto the broad elements of the question with evidence\nintegrated into the answer.\nAnalysis is clear and ",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n∞ Definition of external costs.\n∞ Identification of external costs likely in the energy\nmarket.\n∞ Explain the reason for government intervention, e.g.\noverconsumption and the need to reduce it.\n∞ Diagram identifying external costs and the need to\nreduce it – linking to overproduction/deadweight\nloss:\n– Indirect taxation – ad valorem and specific – costs\nrise for firm – reducing supply and quantity/may used\nfunds to compensate third party/increases incentive\nto move to production of energy with lower external\ncosts. But if demand inelastic just passed on to\nconsumer/little impact on consumer/measurement\nproblem to decide size of tax/may not be\nreinvested/used to compensate third parties/\navoidance/evasion\n– Tradable pollution permits – how it works/incentive to\nreduce pollution to be able to sell them/those that do\nrewarded/ those that don’t have added costs/\nBut only works if right quantity sold/some may not\nbother if surplus permits/costs to administer/monitor\n– Extension of property rights – third party can seek\ncompensation. But only those that can afford to\npursue will/no guarantee that you can prove they are\nthe guilty party/energy companies large have\nexpensive and powerful lawyers\n– Regulation – banning or setting limits on energy\nproduction. But expensive to police/measurement\nproblem – what limits to set.\n∞ Diagrams may be rewarded where appropriate.\nNB For a Level 4 response, candidates must\nconsider two methods i",
   "erKey": "7",
   "paper": 1,
   "series": "Specimen",
   "theme": 1,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p1-specimen-q7"
  },
  {
@@ -1532,12 +1635,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "Evaluate the likely microeconomic impact of an increase in the UK national minimum\nwage.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nDefine minimum wage.\nPositive impacts:\n∞ above-inflation increase to the rate of £6.31 per\nhour/ real term rises – could help people cover the\nrising cost of living\n∞ a rise of more than 50p an hour – helps reduce\npoverty\n∞ lowers inequality\n∞ higher rewards may improve productivity.\nNegative impacts:\n∞ big rise could cost people their jobs\n∞ diagram- showing minimum wage above equilibrium\n– labelling unemployment\n∞ above-inflation increase to the rate of £6.31 per hour\n– could be inflationary\n∞ not supporting business – adds to costs/growth\n∞ may make informal/ grey economy more attractive\nfor employers to pursue – less protection/less tax\nrevenue\nEvaluation\n∞ May not be a problem in many markets where wages\nare well above minimum wage.\n∞ Depends on the proportion of costs that are allocated\nto wages.\n∞ Depends on how labour intensive production is – big\nimpact if labour intensive.\n∞ Short term – firms may be slow to adjust to new cost\nconditions.\n(25) !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&*\nKnowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements of the question with evidence integrated\ninto the answer.\nAnalysis is clear and coherent, although it may lack balance.\nChains of reasoning are developed but the answer may lack\nbalance.\nLevel 4 13–16 Demonstrates precise knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nappropriate examples. Analysis is relevant and focused with\nevidence fully and reliably integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical a",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nDefine minimum wage.\nPositive impacts:\n∞ above-inflation increase to the rate of £6.31 per\nhour/ real term rises – could help people cover the\nrising cost of living\n∞ a rise of more than 50p an hour – helps reduce\npoverty\n∞ lowers inequality\n∞ higher rewards may improve productivity.\nNegative impacts:\n∞ big rise could cost people their jobs\n∞ diagram- showing minimum wage above equilibrium\n– labelling unemployment\n∞ above-inflation increase to the rate of £6.31 per hour\n– could be inflationary\n∞ not supporting business – adds to costs/growth\n∞ may make informal/ grey economy more attractive\nfor employers to pursue – less protection/less tax\nrevenue\nEvaluation\n∞ May not be a problem in many markets where wages\nare well above minimum wage.\n∞ Depends on the proportion of costs that are allocated\nto wages.\n∞ Depends on how labour intensive production is – big\nimpact if labour intensive.\n∞ Short term – firms may be slow to adjust to new cost\nconditions.\n(25)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&*\nKnowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between cause",
   "erKey": "8",
   "paper": 1,
   "series": "Specimen",
-  "theme": 3,
-  "themeConfident": true,
+  "theme": 1,
+  "themeConfident": false,
+  "year": 1,
   "id": "p1-specimen-q8"
  },
  {
@@ -1545,13 +1649,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "2012 2013 2014 2015\nYear\n% of all\neconomically\nactive (a) Which one of the following types of unemployment best explains the change in\nthe data between 2008 and 2010?\n(1)\nA Cyclical\nB Frictional\nC Seasonal\nD Voluntary 3\n(b) Explain the likely effects on the circular flow of income of the change in\nunemployment between 2013 and 2015.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n..............................",
-  "ms": "A\n(1)",
+  "text": "2012 2013 2014 2015\nYear\n% of all\neconomically\nactive\n\n(a) Which one of the following types of unemployment best explains the change in\nthe data between 2008 and 2010?\n(1)\nA Cyclical\nB Frictional\nC Seasonal\nD Voluntary\n3\n(b) Explain the likely effects on the circular flow of income of the change in\nunemployment between 2013 and 2015.\n(4)",
+  "ms": "(a)\nA\n(1)\n\n(b)\nKnowledge 2, Application 1, Analysis 1\nKnowledge/understanding:\n1 mark for identifying an effect on the circular flow of\nincome.\n1 mark for any specific reference to injections (I, G, X)\nand/or withdrawals (S, T, M).\n1 mark for any specific reference to flows between\nhouseholds and firms.\nCandidates may achieve these marks using a diagram.\nApplication: 1 mark for reference to the chart, e.g.\nunemployment has fallen.\nAnalysis: 1 mark for linked development, explaining link\nbetween unemployment and circular flow.\nFor example:\nUnemployment fell by three percentage points resulting in\nrising consumption and investment (1) and further rounds\nof increases in disposable income (1) however household\nmay also spend more on imports (1).\n(4)",
   "erKey": "1a",
   "paper": 2,
   "series": "June 2017",
   "theme": 2,
   "themeConfident": true,
+  "year": 1,
   "id": "p2-june2017-q1"
  },
  {
@@ -1560,12 +1665,13 @@ const ECO_QUESTIONS = [
   "marks": 5,
   "section": "A",
   "text": "and marginal propensity to import of 0.1.\n(c) Which one of the following is the correct size of the multiplier?\n(1)\nA 0.4\nB 0.6\nC 1.7\nD 2.5",
-  "ms": "Knowledge 2\nKnowledge/understanding: 1 mark for identifying one\nreason; 1 mark for linked development, e.g.\n• The decrease in the mps reflects a rise in the\nmarginal propensity to consume (1) due to rising\nconsumer confidence (1)\n• Decrease in mps due to rise in marginal propensity to\ntax (1) to reduce the budget deficit. (1)\n• Low interest rates (1) reducing the incentive to\nsave/lower rate of return (1) (2)",
+  "ms": "(a)\nKnowledge 2\nKnowledge/understanding: 1 mark for identifying one\nreason; 1 mark for linked development, e.g.\n• The decrease in the mps reflects a rise in the\nmarginal propensity to consume (1) due to rising\nconsumer confidence (1)\n• Decrease in mps due to rise in marginal propensity to\ntax (1) to reduce the budget deficit. (1)\n• Low interest rates (1) reducing the incentive to\nsave/lower rate of return (1) (2)\n\n(b)\nKnowledge 2\nKnowledge/understanding: 1 mark for identifying the\neffect on the value of the multiplier; 1 mark for the linked\ndevelopment on the size of the multiplier, e.g.\n• The value of the multiplier is likely to increase (1), due\na decrease in withdrawals (1).\n(2)\n\n(c)\nD\n(1)",
   "erKey": "2a",
   "paper": 2,
   "series": "June 2017",
   "theme": 2,
   "themeConfident": true,
+  "year": 1,
   "id": "p2-june2017-q2"
  },
  {
@@ -1573,13 +1679,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Jan 2014 Jan 2015\nCPI Food and fuel Other goods and services\nAnnual\npercentage\nchange\nin prices\nYear (a) Which one of the following statements is correct about the UK’s inflation record\nbetween September 2011 and January 2013?\nBased on the data shown, the UK experienced:\n(1)\nA deflation\nB disinflation\nC falling average prices\nD falling money supply 7\n(b) With reference to the data provided, explain the process of calculating the rate\nof inflation in the UK using the Consumer Prices Index. Refer to the concept of\nweights in your answer.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................",
-  "ms": "B\n(1)",
+  "text": "Jan 2014 Jan 2015\nCPI Food and fuel Other goods and services\nAnnual\npercentage\nchange\nin prices\nYear\n\n(a) Which one of the following statements is correct about the UK’s inflation record\nbetween September 2011 and January 2013?\nBased on the data shown, the UK experienced:\n(1)\nA deflation\nB disinflation\nC falling average prices\nD falling money supply\n7\n(b) With reference to the data provided, explain the process of calculating the rate\nof inflation in the UK using the Consumer Prices Index. Refer to the concept of\nweights in your answer.\n(4)",
+  "ms": "(a)\nB\n(1)\n\n(b)\nKnowledge 2, Analysis 1, Application 1\nKnowledge/understanding: 2 marks for identifying how\nUK inflation is measured by the Consumer Prices Index\n(CPI);\n• Inflation rate measures change in average prices in\nan economy over a year (1)\n• A representative basket of goods and services used\nby average households is recorded (1)\n• A survey of average prices is recorded (1)\n• Reference to a base year (1)\n• Reference to Family/Household/Consumer\nExpenditure Survey (1)\nAnalysis:\nItems are weighted according to proportion of spending on\neach product (1)\nApplication: 1 mark for reference to the chart, e.g. Food and\nFuel is dragging inflation downwards\nFor example:\nA household expenditure survey (1) is completed to decide\nwhat goes in to the basket of goods (1). This is used to\nattach weights to products based on proportion of spending\n(1). In January 2015 CPI inflation was 0%. (1)\nNB: Candidates must refer to weights for the analysis\nmark.\n(4)",
   "erKey": "3a",
   "paper": 2,
   "series": "June 2017",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2017-q3"
  },
  {
@@ -1587,13 +1694,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "0.36\n0.38\n0.40\n2007 2009 2011 20132008 2010 2012\nGini\ncoefficient\nYear (a) Explain one likely reason for the change in UK income inequality since 2007.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.....................................................................................................................................................................................................................",
-  "ms": "Application 3, Analysis 1\nApplication: 3 marks for: e.g.\n• Gini coefficient/inequality fell (1) from 0.36 in 2007\nto 0.34 in 2010 (1)\n• Global Financial Crisis began in 2008 (1)\n• Changes in taxation and/or government policies (1)\nAnalysis: 1 mark for inferences from data, e.g.\n• Inequality fell due to falling incomes at top of\nthe distribution (top quintiles) (1)\n• Inequality fell due to increases in benefits at\nvery bottom (quintile). (1)\n• Inequality constant due to wage/benefit\nfreezes (1).\n(4)",
+  "text": "0.36\n0.38\n0.40\n2007 2009 2011 20132008 2010 2012\nGini\ncoefficient\nYear\n\n(a) Explain one likely reason for the change in UK income inequality since 2007.\n(4)\n\n9\n(b) Which one of the following values for the Gini coefficient is correct if there is\nperfect income equality?\n(1)\nA 0\nB 0.5\nC 1\nD 50:50",
+  "ms": "(a)\nApplication 3, Analysis 1\nApplication: 3 marks for: e.g.\n• Gini coefficient/inequality fell (1) from 0.36 in 2007\nto 0.34 in 2010 (1)\n• Global Financial Crisis began in 2008 (1)\n• Changes in taxation and/or government policies (1)\nAnalysis: 1 mark for inferences from data, e.g.\n• Inequality fell due to falling incomes at top of\nthe distribution (top quintiles) (1)\n• Inequality fell due to increases in benefits at\nvery bottom (quintile). (1)\n• Inequality constant due to wage/benefit\nfreezes (1).\n(4)\n\n(b)\nA\n(1)",
   "erKey": "4a",
   "paper": 2,
   "series": "June 2017",
   "theme": 4,
-  "themeConfident": false,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2017-q4"
  },
  {
@@ -1601,13 +1709,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "497 0.609 (a) Which one of the following statements can be deduced from the data in the table?\n(1)\nA Average incomes are higher in India than in Vietnam.\nB Levels of absolute poverty are higher in Vietnam.\nC Life expectancy is higher in India than in Vietnam.\nD Provision of healthcare and education is less effective in Vietnam than\nin India. 11\n(b) With reference to the data provided, explain two limitations of using the HDI to\ncompare levels of development between countries and over time.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n...................................................................................................................................................",
-  "ms": "A\n(1)",
+  "text": "497 0.609\n\n(a) Which one of the following statements can be deduced from the data in the table?\n(1)\nA Average incomes are higher in India than in Vietnam.\nB Levels of absolute poverty are higher in Vietnam.\nC Life expectancy is higher in India than in Vietnam.\nD Provision of healthcare and education is less effective in Vietnam than\nin India.\n11\n(b) With reference to the data provided, explain two limitations of using the HDI to\ncompare levels of development between countries and over time.\n(4)",
+  "ms": "(a)\nA\n(1)\n\n(b)\nKnowledge 2, Application 1, Analysis 1\nKnowledge/understanding: 1+ 1 for limitations:\n• ignores qualitative factors, such democracy, quality of\neducation or human rights for example (1)\n• ignores other measures ranging from gender equity,\nproportion of workforce in agriculture to environmental\nbiodiversity (1)\n• ignores income distribution (1)\n• PPP values change very quickly and are likely to be\ninaccurate or misleading (1)\nAnalysis: 1 mark for linked development.\nApplication: 1 mark for reference to the data e.g. Vietnam’s\nHDI 0.666.\n(4)",
   "erKey": "5a",
   "paper": 2,
   "series": "June 2017",
   "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-june2017-q5"
  },
  {
@@ -1621,7 +1730,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2017",
   "theme": 4,
-  "themeConfident": false,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2017-q6a"
  },
  {
@@ -1634,8 +1744,9 @@ const ECO_QUESTIONS = [
   "erKey": "6b",
   "paper": 2,
   "series": "June 2017",
-  "theme": null,
+  "theme": 2,
   "themeConfident": false,
+  "year": 1,
   "id": "p2-june2017-q6b"
  },
  {
@@ -1648,8 +1759,9 @@ const ECO_QUESTIONS = [
   "erKey": "6c",
   "paper": 2,
   "series": "June 2017",
-  "theme": 2,
+  "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-june2017-q6c"
  },
  {
@@ -1662,8 +1774,9 @@ const ECO_QUESTIONS = [
   "erKey": "6d",
   "paper": 2,
   "series": "June 2017",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2017-q6d"
  },
  {
@@ -1676,8 +1789,9 @@ const ECO_QUESTIONS = [
   "erKey": "6e",
   "paper": 2,
   "series": "June 2017",
-  "theme": 2,
+  "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-june2017-q6e"
  },
  {
@@ -1686,12 +1800,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "Since the global financial crisis of 2008 there have been over 5 700 increases in tariffs,\nquotas and administrative controls on international trade.\nEvaluate the likely effects of an increase in protectionism on the economy of a\ndeveloping country of your choice.",
-  "ms": "Knowledge 4, Application 4, Analysis 8\nEvaluation 9\nNB Candidates may refer to countries imposing\nprotectionist policies themselves or facing\nprotectionist policies from other countries\nEffects might include:\n• Falling output and living standards (analysis\nbased on the law of comparative advantage and\nempirical evidence of countries following\nprotectionist policies)\n• Prices increase for consumers and welfare\n(analysis based on tariff diagram)\n• Levels of unemployment\n• Economies of scale for firms\n• Analysis based on AD/AS – e.g. on inflation\n• Retaliation by other countries Evaluation points\n• Depends on the type of protectionism. Quotas\nmight be compared/contrasted with tariffs, for\nexample\n• Depends on whether the country is in a trade bloc\nor is exporting to trade blocs. Award other\nconsideration of changes in the patterns of trade\n• Short run/long run effects, e.g. dumping might\nhave short term benefits and long term costs\n• Extent of the country’s dependency on world\ntrade\n• Extent of increase in protectionism for the\nparticular country\n• After the recession the protectionism might start\nto fall again, or comparison with the 1930s\nprotectionism after the Great Depression\n• Fear of WTO might mean that protectionism is\nmore insidious. Answers might consider relative\nsuccess of WTO because rulings are more closely\nadhered to even if there are more incidences of\nprotectionism, numerically\n• Justification for protectionism, e.g. inability to\nchange exchange rates, retaliation\n• Questioning the figure (from Global Trade Alert) –\nit includes forms other than traditional\nprotectionism, e.g. subsidies to domestic\nresearchers\nNB For a Level 4 response, candidates must refer\nto developing economy in their answer.\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements o",
+  "ms": "Knowledge 4, Application 4, Analysis 8\nEvaluation 9\nNB Candidates may refer to countries imposing\nprotectionist policies themselves or facing\nprotectionist policies from other countries\nEffects might include:\n• Falling output and living standards (analysis\nbased on the law of comparative advantage and\nempirical evidence of countries following\nprotectionist policies)\n• Prices increase for consumers and welfare\n(analysis based on tariff diagram)\n• Levels of unemployment\n• Economies of scale for firms\n• Analysis based on AD/AS – e.g. on inflation\n• Retaliation by other countries Evaluation points\n• Depends on the type of protectionism. Quotas\nmight be compared/contrasted with tariffs, for\nexample\n• Depends on whether the country is in a trade bloc\nor is exporting to trade blocs. Award other\nconsideration of changes in the patterns of trade\n• Short run/long run effects, e.g. dumping might\nhave short term benefits and long term costs\n• Extent of the country’s dependency on world\ntrade\n• Extent of increase in protectionism for the\nparticular country\n• After the recession the protectionism might start\nto fall again, or comparison with the 1930s\nprotectionism after the Great Depression\n• Fear of WTO might mean that protectionism is\nmore insidious. Answers might consider relative\nsuccess of WTO because rulings are more closely\nadhered to even if there are more incidences of\nprotectionism, numerically\n• Justification for protectionism, e.g. inability to\nchange exchange rates, retaliati",
   "erKey": "7",
   "paper": 2,
   "series": "June 2017",
   "theme": 4,
   "themeConfident": false,
+  "year": 2,
   "id": "p2-june2017-q7"
  },
  {
@@ -1700,12 +1815,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "Global oil prices fell from a 2008 peak of $147 a barrel to $27 in 2016.\nEvaluate the likely macroeconomic consequences of a significant fall in global\noil prices.",
-  "ms": "Evaluation 9\nNB Candidates may refer to countries imposing\nprotectionist policies themselves or facing\nprotectionist policies from other countries\nEffects might include:\n• Falling output and living standards (analysis\nbased on the law of comparative advantage and\nempirical evidence of countries following\nprotectionist policies)\n• Prices increase for consumers and welfare\n(analysis based on tariff diagram)\n• Levels of unemployment\n• Economies of scale for firms\n• Analysis based on AD/AS – e.g. on inflation\n• Retaliation by other countries Evaluation points\n• Depends on the type of protectionism. Quotas\nmight be compared/contrasted with tariffs, for\nexample\n• Depends on whether the country is in a trade bloc\nor is exporting to trade blocs. Award other\nconsideration of changes in the patterns of trade\n• Short run/long run effects, e.g. dumping might\nhave short term benefits and long term costs\n• Extent of the country’s dependency on world\ntrade\n• Extent of increase in protectionism for the\nparticular country\n• After the recession the protectionism might start\nto fall again, or comparison with the 1930s\nprotectionism after the Great Depression\n• Fear of WTO might mean that protectionism is\nmore insidious. Answers might consider relative\nsuccess of WTO because rulings are more closely\nadhered to even if there are more incidences of\nprotectionism, numerically\n• Justification for protectionism, e.g. inability to\nchange exchange rates, retaliation\n• Questioning the figure (from Global Trade Alert) –\nit includes forms other than traditional\nprotectionism, e.g. subsidies to domestic\nresearchers\nNB For a Level 4 response, candidates must refer\nto developing economy in their answer.\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements of the question with evidence integrated",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nUnderstanding that oil has a macroeconomic\nconsequence through the effect on the net trade\ncomponent of AD and/or shifting the costs of\nproduction for all firms as SRAS or LRAS shift.\nPossible macroeconomic consequences may include:\n• An increase in overall economic activity (real GDP) as\nthe cost of production decreases for businesses,\nespecially for those that are heavily dependent on oil\ninputs. Application, e.g. a 10% fall in oil prices boosts\ngrowth by 0.1 to 0.5 percentage points.\n• Some sectors such as agriculture, air transport,\nservices involving other travel and oil-intensive\nmanufacturing sectors will benefit as the price of their\nkey input falls.\n• Benefits for consumers, e.g. real household incomes\nafter essential costs also rise as oil prices fall, which\nmay increase consumer spending, but this is not\nautomatically awarded as a factor increasing\nAD. The connection involves two possible\nmechanisms: overall consumer prices fall as cost\nsavings are passed on to households which spend\nmore in domestic markets, and real wages increase\nas demand for labour rises in fast-expanding sectors.\n• Oil importing countries e.g. S Korea can stop\nsubsidising energy, enjoy reduced external debt\n• As a result of growing economic activity, government\ntax revenues may rise as the tax take from corporate\nand personal income taxes increase\n• The fall in the oil price should also have a small\nimpact in narrowing the UK trade deficit.",
   "erKey": "8",
   "paper": 2,
   "series": "June 2017",
   "theme": 2,
   "themeConfident": false,
+  "year": 1,
   "id": "p2-june2017-q8"
  },
  {
@@ -1713,13 +1829,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The trade deal known as the Comprehensive Economic and Trade Agreement (CETA)\nis designed to eliminate or reduce trade barriers between the European Union (EU)\nand Canada. It is estimated that it will increase trade by 20% and boost EU GDP by\n12 billion euros. (a) Which one of the following is most likely to decrease as a result of CETA?\n(1)\nA Economic growth in EU countries\nB Exports from EU countries to Canada\nC Imports from Canada to EU countries\nD Tariffs on European exports to Canada 3\n(b) With reference to the theory of comparative advantage, explain how CETA may\nincrease the GDP of both the EU and Canada.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n......................",
-  "ms": "The only correct answer is D\nA is not correct because this is likely to increase\nB is not correct because this is likely to increase\nC is not correct because this is likely to increase\n(1)",
+  "text": "The trade deal known as the Comprehensive Economic and Trade Agreement (CETA)\nis designed to eliminate or reduce trade barriers between the European Union (EU)\nand Canada. It is estimated that it will increase trade by 20% and boost EU GDP by\n12 billion euros.\n\n(a) Which one of the following is most likely to decrease as a result of CETA?\n(1)\nA Economic growth in EU countries\nB Exports from EU countries to Canada\nC Imports from Canada to EU countries\nD Tariffs on European exports to Canada\n3\n(b) With reference to the theory of comparative advantage, explain how CETA may\nincrease the GDP of both the EU and Canada.\n(4)",
+  "ms": "(a)\nThe only correct answer is D\nA is not correct because this is likely to increase\nB is not correct because this is likely to increase\nC is not correct because this is likely to increase\n(1)\n\n(b)\nKnowledge 2, Application 1, Analysis 1\nKnowledge/understanding: 2 marks for e.g.\n• Countries specialise in the goods in which they\nhave a comparative advantage (1) lower\nopportunity cost (1)\n• Through trade each country can now consume\nmore in total as they focus on what they can\nproduce more efficiently (1)\n• Identification of concept with numerical or\ndiagrammatic example (1)\n• Movement to freer trade thanks to CETA\nagreement (1)\nApplication: 1 mark for e.g.\n• Related to Europe/Canada, e.g. Canadian timber\nexports, EU car exports, or other relevant\nexamples (1)\n• Use of numerical or diagrammatic example (1)\n• Reference to data, e.g. increase trade by 20% (1)\nAnalysis:\nLinked development 1 mark for e.g.\n• Countries are now producing/consuming more so\nthis means an increase in GDP (1)\n• Explanation of numerical or diagrammatic\nexample (1) (4)",
   "erKey": "1a",
   "paper": 2,
   "series": "June 2018",
-  "theme": null,
+  "theme": 4,
   "themeConfident": false,
+  "year": 2,
   "id": "p2-june2018-q1"
  },
  {
@@ -1728,12 +1845,13 @@ const ECO_QUESTIONS = [
   "marks": 5,
   "section": "A",
   "text": "(a) Which one of the following would be most likely to cause aggregate demand to\nincrease?\nA fall in:\n(1)\nA government spending\nB net trade (X–M)\nC the marginal propensity to consume\nD the marginal propensity to save\n(b) Draw an aggregate demand and aggregate supply diagram illustrating the likely\nimpact of a rise in interest rates on the price level and real output.\n(4)",
-  "ms": "The only correct answer is D\nB is not correct because this would cause AD to decrease\nC is not correct because this would cause AD to decrease\nD is not correct because this would cause AD to decrease\n(1)",
+  "ms": "(a)\nThe only correct answer is D\nB is not correct because this would cause AD to decrease\nC is not correct because this would cause AD to decrease\nD is not correct because this would cause AD to decrease\n(1)\n\n(b)\nKnowledge 2, Application 2\nKnowledge/understanding:\nCorrect labels on axes (1) and lines (1)\nApplication:\nCorrect shift of line(s) (1) showing change in price level\nand/or real output (1)\nFor example:\nN.B. Other AS curves are acceptable\n(4)",
   "erKey": "2a",
   "paper": 2,
   "series": "June 2018",
   "theme": 2,
   "themeConfident": true,
+  "year": 1,
   "id": "p2-june2018-q2"
  },
  {
@@ -1741,13 +1859,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "United States current account of the balance of payments, 1993–2015\n–800\nUS$\n(billions)\n–700\n–600\n–500\n–400\n–300\n–200\n–100\n0\n1994 1996 1998 2000 2002 2004 2006 2008 2010 2012 2014\n–900\n–1000\nYear (a) Calculate the percentage change in the United States current account deficit on\nthe balance of payments between 1998 and 2006.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n......................................",
-  "ms": "Application 2\nApplication: 1 mark for correct appropriate calculation\ne.g.\n% change = change/original X 100\n= 600/200 X 100 (1)\nAnswer = 300% or 300\nAward 2 marks for correct answer\n(2)",
+  "text": "United States current account of the balance of payments, 1993–2015\n–800\nUS$\n(billions)\n–700\n–600\n–500\n–400\n–300\n–200\n–100\n0\n1994 1996 1998 2000 2002 2004 2006 2008 2010 2012 2014\n–900\n–1000\nYear\n\n(a) Calculate the percentage change in the United States current account deficit on\nthe balance of payments between 1998 and 2006.\n(2)\n\n7\n(b) Explain the term ‘current account of the balance of payments’.\n(2)\n\n(c) Using the chart on page 6, which one of the following may be inferred about the\nUnited States balance of payments?\n(1)\nA The current account deficit decreased between 2001 and 2006\nB The current account surplus increased between 2001 and 2006\nC There was a current account deficit for the entire period shown\nD There was a current account surplus for the entire period shown",
+  "ms": "(a)\nApplication 2\nApplication: 1 mark for correct appropriate calculation\ne.g.\n% change = change/original X 100\n= 600/200 X 100 (1)\nAnswer = 300% or 300\nAward 2 marks for correct answer\n(2)\n\n(b)\nKnowledge 2\nKnowledge/understanding:\n1 mark for partially correct explanation e.g.\n• Referring to exports – imports\n• Exports of goods and services minus imports of\ngoods and services\n2 marks for correct explanation e.g.\n• Measures total value of exports – total value of\nimports\n• Inflows minus outflows in money terms\n• Reference to four parts of the current account\no Trade in goods\no Trade in services\no Primary income\no Secondary income (2)\n\n(c)\nThe only correct answer is C\nA is not correct because the deficit increased\nB is not correct because there hasn’t been a surplus\nD is not correct because there hasn’t been a surplus\n(1)",
   "erKey": "3a",
   "paper": 2,
   "series": "June 2018",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2018-q3"
  },
  {
@@ -1755,28 +1874,15 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The UK has experienced a budget deficit since 2001. The government aimed to reach\na budget surplus by 2019, but in 2016 this target was abandoned. (a) Explain one likely reason why the 2019 budget surplus target was abandoned.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n..........................................................................................................................................",
-  "ms": "Knowledge 1, Analysis 1\nKnowledge 1 mark e.g.\n• Fall in UK economic growth (1)\n• Reduction in UK business confidence (1)\nAnalysis 1 mark for linked development e.g.\n• Fall in growth means economy may need more\ngovernment support for longer to ensure stable\ngrowth (1)\n• Less business confidence likely to lead to less\nprivate sector investment and so government\nmay need to counteract this (1)\n(2)",
+  "text": "The UK has experienced a budget deficit since 2001. The government aimed to reach\na budget surplus by 2019, but in 2016 this target was abandoned.\n\n(a) Explain one likely reason why the 2019 budget surplus target was abandoned.\n(2)\n\n(b) Explain the likely impact of abandoning the budget surplus target on the UK\nnational debt.\n(2)\n\n9\n(c) If a government takes decisions to target a budget surplus, this is an example of:\n(1)\nA contractionary monetary policy\nB discretionary fiscal policy\nC expansionary fiscal policy\nD expansionary monetary policy",
+  "ms": "(a)\nKnowledge 1, Analysis 1\nKnowledge 1 mark e.g.\n• Fall in UK economic growth (1)\n• Reduction in UK business confidence (1)\nAnalysis 1 mark for linked development e.g.\n• Fall in growth means economy may need more\ngovernment support for longer to ensure stable\ngrowth (1)\n• Less business confidence likely to lead to less\nprivate sector investment and so government\nmay need to counteract this (1)\n(2)\n\n(b)\nKnowledge 1, Analysis 1\nKnowledge 1 mark e.g.\n• National debt will continue to increase (1)\nAnalysis 1 mark for linked development e.g.\n• Running a budget deficit means expenditure is\ngreater than tax revenue (1)\n• Government will have to finance a budget deficit\nby borrowing money (1) (2)\n\n(c)\nThe only correct answer is B\nA is not correct because this is monetary policy not fiscal\npolicy\nC is not correct because this would involve a budget deficit\nD is not correct because this is monetary policy not fiscal\npolicy\n(1)",
   "erKey": "4a",
   "paper": 2,
   "series": "June 2018",
   "theme": 2,
   "themeConfident": true,
+  "year": 1,
   "id": "p2-june2018-q4"
- },
- {
-  "q": "5",
-  "part": "",
-  "marks": 5,
-  "section": "A",
-  "text": "as a base year.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n........................................................................",
-  "ms": "Knowledge 1, Analysis 1\nKnowledge/understanding:\nIdentification of one reason (1), e.g.\n• Lower interest rates (1)\n• Increase in consumer confidence (1)\nAnalysis:\nLinked development (1), e.g.\n• Lower interest rates makes loans more affordable\n(1)\n• Higher consumer confidence encourages\nconsumers to borrow believing they can repay in\nthe future (1)\n(2)",
-  "erKey": "5a",
-  "paper": 2,
-  "series": "June 2018",
-  "theme": 2,
-  "themeConfident": true,
-  "id": "p2-june2018-q5"
  },
  {
   "q": "6",
@@ -1790,6 +1896,7 @@ const ECO_QUESTIONS = [
   "series": "June 2018",
   "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-june2018-q6a"
  },
  {
@@ -1804,6 +1911,7 @@ const ECO_QUESTIONS = [
   "series": "June 2018",
   "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-june2018-q6b"
  },
  {
@@ -1816,8 +1924,9 @@ const ECO_QUESTIONS = [
   "erKey": "6c",
   "paper": 2,
   "series": "June 2018",
-  "theme": null,
+  "theme": 4,
   "themeConfident": false,
+  "year": 2,
   "id": "p2-june2018-q6c"
  },
  {
@@ -1830,8 +1939,9 @@ const ECO_QUESTIONS = [
   "erKey": "6d",
   "paper": 2,
   "series": "June 2018",
-  "theme": 2,
-  "themeConfident": false,
+  "theme": 4,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2018-q6d"
  },
  {
@@ -1845,7 +1955,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2018",
   "theme": 4,
-  "themeConfident": false,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2018-q6e"
  },
  {
@@ -1854,12 +1965,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "In 2016 the UK Chancellor of the Exchequer announced that the government would\nspend an extra £23 billion on innovation and infrastructure over the following five\nyears.\nEvaluate the likely economic effects of this planned increase in government\nexpenditure.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nLikely effects might include:\n• Government spending is part of aggregate\ndemand and increased spending will increase\naggregate demand\n• Increase in injections into the circular flow of\nincome and subsequent multiplier effects\n• Improvement in UK productivity- developing new,\nmore efficient ways of working can boost\ngrowth/raise living standards\n• Improved innovation means UK may have more\nnew goods and services that can be exported to\nother countries, improving current account and\naggregate demand\n• Improved infrastructure will boost productivity-\ne.g. better transport means less time spent in\ntraffic jams, fewer delayed trains, etc\n• Diagrammatic analysis may be used (e.g. AD/AS)\nEvaluation might include e.g.:\n• This is not really a very large amount of money,\nespecially over five years and for the whole of the\nUK economy\n• Many significant issues with poor quality\ninfrastructure that will need a lot more money to\nsolve- e.g. average speeds falling on roads in\nLondon, ageing rail infrastructure causing lots of\ndelays\n• UK productivity has lagged behind other countries\nfor some time so will need a significant boost just\nto catch up with the rest of the world\n• No guarantee that innovation will boost growth\n• Depends on effectiveness of government at\nallocating resources\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements of the question with evidence integrated\ninto the answer.\nAnalysis is clear and coherent, although it may lack balance.\nChains of reasoning are developed but the answer may lack\nbalance.\nLevel 4 13–16 Demonstrates precise knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nappropriate examples. Analysis is relevant an",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nLikely effects might include:\n• Government spending is part of aggregate\ndemand and increased spending will increase\naggregate demand\n• Increase in injections into the circular flow of\nincome and subsequent multiplier effects\n• Improvement in UK productivity- developing new,\nmore efficient ways of working can boost\ngrowth/raise living standards\n• Improved innovation means UK may have more\nnew goods and services that can be exported to\nother countries, improving current account and\naggregate demand\n• Improved infrastructure will boost productivity-\ne.g. better transport means less time spent in\ntraffic jams, fewer delayed trains, etc\n• Diagrammatic analysis may be used (e.g. AD/AS)\nEvaluation might include e.g.:\n• This is not really a very large amount of money,\nespecially over five years and for the whole of the\nUK economy\n• Many significant issues with poor quality\ninfrastructure that will need a lot more money to\nsolve- e.g. average speeds falling on roads in\nLondon, ageing rail infrastructure causing lots of\ndelays\n• UK productivity has lagged behind other countries\nfor some time so will need a significant boost just\nto catch up with the rest of the world\n• No guarantee that innovation will boost growth\n• Depends on effectiveness of government at\nallocating resources\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and ",
   "erKey": "7",
   "paper": 2,
   "series": "June 2018",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2018-q7"
  },
  {
@@ -1868,12 +1980,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "The British pound fell by over 10% to a 30-year low against the US dollar after the UK\nvoted to leave the European Union.\nTo what extent will this depreciation impact on future economic growth in the UK?",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nLikely impacts include:\n• UK exports are now cheaper when priced in\ndollars, so should mean an improvement in UK\nprice competitiveness leading to increased\ndemand for UK exports and AD However depends\non quality of UK exports or if US firms/consumers\ndemand what we are producing\n• UK imports from the US are now more expensive\nso likely to lead to less demand for US imports\nwhich improves net trade and therefore AD\nHowever, depends if there are domestic\nalternatives to the US imports. If not prices will\nsimply rise\n• Imported inflation: as prices of imports rise,\nparticularly of necessities, then UK inflation will\nincrease.\n• Lower exchange rate might attract inward\ninvestment with multiplier effects on AD\n• Other factors which cause growth might be\nconsidered as more than one factor\n• Diagrammatic analysis may be used (e.g. AD/AS)\nOther evaluative comments may include e.g.:\n• Imported inflation will be a particular problem if\nwages do not increase in line with inflation.\n• Depends if this is a temporary fall or a permanent\nadjustment to the exchange rate\n• Depends on UK exchange rate with other\ncurrencies as well\n• US is a significant trade partner for the UK so the\nimpact is likely to be significant\n• Consideration of the Marshall-Lerner condition\nand J curve effect\n• Other factors which cause growth might be\nconsidered as evaluative comments\n• EU is a very significant trading partner for the UK\nand thus the impact is likely to be significant\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements of the question with evidence integrated\ninto the answer.\nAnalysis is clear and coherent, although it may lack balance.\nChains of reasoning are developed but the answer may lack\nbalance.\nLevel 4 13–16 Demonstrates preci",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nLikely impacts include:\n• UK exports are now cheaper when priced in\ndollars, so should mean an improvement in UK\nprice competitiveness leading to increased\ndemand for UK exports and AD However depends\non quality of UK exports or if US firms/consumers\ndemand what we are producing\n• UK imports from the US are now more expensive\nso likely to lead to less demand for US imports\nwhich improves net trade and therefore AD\nHowever, depends if there are domestic\nalternatives to the US imports. If not prices will\nsimply rise\n• Imported inflation: as prices of imports rise,\nparticularly of necessities, then UK inflation will\nincrease.\n• Lower exchange rate might attract inward\ninvestment with multiplier effects on AD\n• Other factors which cause growth might be\nconsidered as more than one factor\n• Diagrammatic analysis may be used (e.g. AD/AS)\nOther evaluative comments may include e.g.:\n• Imported inflation will be a particular problem if\nwages do not increase in line with inflation.\n• Depends if this is a temporary fall or a permanent\nadjustment to the exchange rate\n• Depends on UK exchange rate with other\ncurrencies as well\n• US is a significant trade partner for the UK so the\nimpact is likely to be significant\n• Consideration of the Marshall-Lerner condition\nand J curve effect\n• Other factors which cause growth might be\nconsidered as evaluative comments\n• EU is a very significant trading partner for the UK\nand thus the impact is like",
   "erKey": "8",
   "paper": 2,
   "series": "June 2018",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2018-q8"
  },
  {
@@ -1881,13 +1994,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Monthly additions to UK credit card lending, £ billions, 2015 – 2017\n£ billions\n16 000\n15 500\n15 000\n14 500\n14 000\n13 500\n13 000\n12 500\n12 000\n0\nSep 2015Nov 2015Jan 2016Mar 2016May 2016\nJul 2016Sep 2016Nov 2016Jan 2017Mar 2017May 2017\nJul 2017Sep 2017 (a) Which one of the following would be most likely to cause an increase in credit\ncard lending?\n(1)\nA A fall in interest rates\nB A fall in investment\nC An increase in the deficit on the current account of the balance\nof payments\nD An increase in savings 3\n(b) Using the chart, calculate an index number for additions to credit card lending\nin March 2017, using January 2016 as the base. You are advised to show your\nworking.\n(2)\n....................................................................................................................................................................................................................................................................................\n.................................................................................................................................................................................................................................................",
-  "ms": "The only correct answer is A\nB is not correct because investment is by firms, and would\nnot be related to credit cards\nC is not correct because this is about trade and wouldn’t\naffect credit cards\nD is not correct because this would mean less consumption (1)",
+  "text": "Monthly additions to UK credit card lending, £ billions, 2015 – 2017\n£ billions\n16 000\n15 500\n15 000\n14 500\n14 000\n13 500\n13 000\n12 500\n12 000\n0\nSep 2015Nov 2015Jan 2016Mar 2016May 2016\nJul 2016Sep 2016Nov 2016Jan 2017Mar 2017May 2017\nJul 2017Sep 2017\n\n(a) Which one of the following would be most likely to cause an increase in credit\ncard lending?\n(1)\nA A fall in interest rates\nB A fall in investment\nC An increase in the deficit on the current account of the balance\nof payments\nD An increase in savings\n\n3\n(b) Using the chart, calculate an index number for additions to credit card lending\nin March 2017, using January 2016 as the base. You are advised to show your\nworking.\n(2)\n\n(c) Explain one possible link between an increase in credit card lending and the rate\nof inflation.\n(2)",
+  "ms": "(a)\nThe only correct answer is A\nB is not correct because investment is by firms, and would\nnot be related to credit cards\nC is not correct because this is about trade and wouldn’t\naffect credit cards\nD is not correct because this would mean less consumption (1)\n\n(b)\nApplication 2\nIdentify correct data (1):\nJanuary 2016: 13 000\nMarch 2017: 15 000\nCorrect manipulation of formula (1)\ne.g. (Final value ÷ Initial value) X 100\n(15 000 ÷ 13 000) X 100\nCorrect answer: 115.4 (allow range 115 to 115.4)\nAlso allow:\nFeb-March 113.6 (range 113 to 114)\nMar-April 91.33 (range 91 to 92)\nNB Award full marks for correct answer (2)\n\n(c)\nKnowledge 1, Application 1\nIdentify link e.g. rise in inflation (1):\nLinked development (1)\ne.g. rise in AD (1) causes an increase in inflation (1)\nAccept other possible approaches\nNB Allow answers explaining how inflation might lead\nto an increase in credit card lending\n(2)",
   "erKey": "1a",
   "paper": 2,
   "series": "June 2019",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2019-q1"
  },
  {
@@ -1895,13 +2009,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The International Monetary Fund has called on the G20 group of large industrialised\ncountries to boost government spending on infrastructure. (a) Draw an aggregate demand and aggregate supply diagram to show the likely\nimpact of an increase in government spending on infrastructure on a country’s\nprice level and real output.\n(4) 5\n(b) Which one of the following would be an example of government spending on\ninfrastructure?\n(1)\nAn increase in:\nA construction work on new railway lines\nB interest payments on the national debt\nC salaries for teachers\nD unemployment benefit payments",
-  "ms": "Knowledge 2, Application 2\nKnowledge/understanding:\nAccurate diagram with correct labels on axes (1) and\nlines (1)\nApplication:\nCorrect shift of line(s) (1) showing change in price level\nand/or real output (1)\nFor example:\nN.B. Other AS curves are acceptable. Allow outward shift of\nboth AD and AS. (4)",
+  "text": "The International Monetary Fund has called on the G20 group of large industrialised\ncountries to boost government spending on infrastructure.\n\n(a) Draw an aggregate demand and aggregate supply diagram to show the likely\nimpact of an increase in government spending on infrastructure on a country’s\nprice level and real output.\n(4)\n\n5\n(b) Which one of the following would be an example of government spending on\ninfrastructure?\n(1)\nAn increase in:\nA construction work on new railway lines\nB interest payments on the national debt\nC salaries for teachers\nD unemployment benefit payments",
+  "ms": "(a)\nKnowledge 2, Application 2\nKnowledge/understanding:\nAccurate diagram with correct labels on axes (1) and\nlines (1)\nApplication:\nCorrect shift of line(s) (1) showing change in price level\nand/or real output (1)\nFor example:\nN.B. Other AS curves are acceptable. Allow outward shift of\nboth AD and AS.\n(4)\n\n(b)\nThe only correct answer is A\nB is not correct because it is not infrastructure\nC is not correct because it is spending on salaries, not\ninfrastructure\nD is not correct because it is spending on welfare, not\ninfrastructure (1)",
   "erKey": "2a",
   "paper": 2,
   "series": "June 2019",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2019-q2"
  },
  {
@@ -1909,13 +2024,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Hungary 120\nEstonia 129\nFrance 107 (a) Explain one likely reason for Estonia’s unit labour costs rising faster than in other\nEuropean countries.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n............................................................................................................................................................................................................................",
-  "ms": "Knowledge 1, Analysis 1\nKnowledge/understanding (1):\nIdentification of relevant reason, e.g.\n• Faster economic growth in Estonia\n• Lower unemployment in Estonia\n• Lower labour productivity in Estonia\n• Increase in the national minimum wage\n• Power of trade unions\n• Shortage of labour\nAnalysis: 1 mark for linked development, e.g.\n• Workers able to negotiate higher pay due to low\nunemployment (2)",
+  "text": "Hungary 120\nEstonia 129\nFrance 107\n\n(a) Explain one likely reason for Estonia’s unit labour costs rising faster than in other\nEuropean countries.\n(2)\n\n7\n(b) Explain how Estonia’s competitiveness could be affected by rising unit labour\ncosts.\n(2)\n\n(c) The increase in Austria’s unit labour costs between 2010 and 2017 is:\n(1)\nA 3%\nB 11.3%\nC 13%\nD 113%",
+  "ms": "(a)\nKnowledge 1, Analysis 1\nKnowledge/understanding (1):\nIdentification of relevant reason, e.g.\n• Faster economic growth in Estonia\n• Lower unemployment in Estonia\n• Lower labour productivity in Estonia\n• Increase in the national minimum wage\n• Power of trade unions\n• Shortage of labour\nAnalysis: 1 mark for linked development, e.g.\n• Workers able to negotiate higher pay due to low\nunemployment (2)\n\n(b)\nKnowledge 1, Analysis 1\nKnowledge/understanding (1):\nIdentification of reduced competitiveness for Estonia\nAnalysis: 1 mark for linked development, e.g. With rapidly\nrising labour costs Estonia’s exports may become more\nexpensive than those of other countries such as France (2)\n\n(c)\nThe only correct answer is C\nA, B and D are not correct because they give incorrect\nanswers to the calculation:\nBase year 2010=100. Austria’s figure for 2017 is 113.\n113-100=13\n(1)",
   "erKey": "3a",
   "paper": 2,
   "series": "June 2019",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2019-q3"
  },
  {
@@ -1923,13 +2039,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The UK Government is planning to cut the rate of corporation tax on all pre-tax\nprofits of companies to 17% by 2020. (a) This would be an example of:\n(1)\nA a contractionary monetary policy\nB an exchange rate policy\nC an expansionary monetary policy\nD a supply-side policy\n(b) If a company makes £500 000 pre-tax profit in 2020, calculate how much\ncorporation tax it will pay. Assume that the government cuts the rate of\ncorporation tax as planned.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n..................................................................................................................................................................................................",
-  "ms": "The only correct answer is D\nA is not correct because that would involve interest\nrates/QE\nB is not correct because that would involve changing the\nvalue of the pound\nC is not correct because that would involve interest\nrates/QE (1)",
+  "text": "The UK Government is planning to cut the rate of corporation tax on all pre-tax\nprofits of companies to 17% by 2020.\n\n(a) This would be an example of:\n(1)\nA a contractionary monetary policy\nB an exchange rate policy\nC an expansionary monetary policy\nD a supply-side policy\n(b) If a company makes £500 000 pre-tax profit in 2020, calculate how much\ncorporation tax it will pay. Assume that the government cuts the rate of\ncorporation tax as planned.\n(2)\n\n9\n(c) Explain one possible reason why the revenue from corporation tax could\nincrease if the government cuts the rate of tax.\n(2)",
+  "ms": "(b)\nApplication 2\nApplication: 2 marks for e.g.\n500 000 X 0.17 (1)\n= 85 000\nNB Award full marks for correct answer (2)\n\n(c)\nKnowledge 1, Analysis 1\nKnowledge/understanding (1):\nIdentification of one reason, e.g.\n• Increase in firms choosing to base themselves in\nthe UK\n• Increased investment by UK firms leading to\nincreased profits\n• Reduced tax evasion/avoidance\nAnalysis: 1 mark for linked development, e.g.\n• With more firms locating in the UK there will be more\nfirms paying UK corporation tax\n• A labelled Laffer curve (2)\n\n(a)\nThe only correct answer is D\nA is not correct because that would involve interest\nrates/QE\nB is not correct because that would involve changing the\nvalue of the pound\nC is not correct because that would involve interest\nrates/QE (1)",
   "erKey": "4a",
   "paper": 2,
   "series": "June 2019",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2019-q4"
  },
  {
@@ -1937,13 +2054,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "According to the charity Oxfam, the combined wealth of the 62 richest people\nin the world is the same as the wealth of the poorest half of the world’s population.\nThe value of the combined wealth of the poorest half of the world’s population has\nfallen by 38% between 2010 and 2016. (a) Explain the distinction between income and wealth.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n...........................",
-  "ms": "Knowledge 2\nKnowledge 1+1 mark e.g.\nDefinition of income (1) and/or wealth (1)\n• Income is a flow (1) whereas wealth is a stock (1)\n• Income can create wealth (1) and/or wealth can\ncreate income (1)\n• Income comes from\nsalaries/wages/dividends/profits/interest/rent (1)\nwhereas wealth is the value of assets (1) (2)",
+  "text": "According to the charity Oxfam, the combined wealth of the 62 richest people\nin the world is the same as the wealth of the poorest half of the world’s population.\nThe value of the combined wealth of the poorest half of the world’s population has\nfallen by 38% between 2010 and 2016.\n\n(a) Explain the distinction between income and wealth.\n(2)\n\n(b) Explain one likely reason why global wealth inequality has increased.\n(2)\n\n11\n(c) Which one of the following would be most likely to reduce a country’s Gini\ncoefficient?\nAn increase in:\n(1)\nA import tariffs\nB progressive taxes\nC regressive taxes\nD value added tax",
+  "ms": "(a)\nKnowledge 2\nKnowledge 1+1 mark e.g.\nDefinition of income (1) and/or wealth (1)\n• Income is a flow (1) whereas wealth is a stock (1)\n• Income can create wealth (1) and/or wealth can\ncreate income (1)\n• Income comes from\nsalaries/wages/dividends/profits/interest/rent (1)\nwhereas wealth is the value of assets (1) (2)\n\n(b)\nKnowledge 1, Analysis 1\nKnowledge/understanding:\nIdentification of one reason (1), e.g.\n• Rise in asset prices\n• Lack of education\n• Lack of healthcare\n• Inheritance entrenches inequality\n• Rise of MNCs\n• Lack of government intervention to reduce\ninequality\n• Government policy e.g. regressive taxes,\ncorruption\n• External shocks\nAnalysis:\nLinked development relating to wealth (1), e.g.\n• Poor education means people lack the skills to\ntake on higher-paying jobs which could lead to\nwealth creation\n(2)\n\n(c)\nThe only correct answer is B\nA is not correct because that would affect imports/exports,\nnot income inequality\nC is not correct because that would increase the Gini\ncoefficient\nD is not correct because that would increase the Gini\ncoefficient\n(1)",
   "erKey": "5a",
   "paper": 2,
   "series": "June 2019",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2019-q5"
  },
  {
@@ -1956,8 +2074,9 @@ const ECO_QUESTIONS = [
   "erKey": "6a",
   "paper": 2,
   "series": "June 2019",
-  "theme": null,
-  "themeConfident": false,
+  "theme": 4,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2019-q6a"
  },
  {
@@ -1971,7 +2090,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2019",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2019-q6b"
  },
  {
@@ -1984,8 +2104,9 @@ const ECO_QUESTIONS = [
   "erKey": "6c",
   "paper": 2,
   "series": "June 2019",
-  "theme": 2,
-  "themeConfident": false,
+  "theme": 4,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2019-q6c"
  },
  {
@@ -1999,7 +2120,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2019",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2019-q6d"
  },
  {
@@ -2012,8 +2134,9 @@ const ECO_QUESTIONS = [
   "erKey": "6e",
   "paper": 2,
   "series": "June 2019",
-  "theme": null,
-  "themeConfident": false,
+  "theme": 4,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2019-q6e"
  },
  {
@@ -2021,13 +2144,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "Three of Africa’s main trading blocs have agreed to form the Tripartite Free Trade\nAgreement (TFTA). This will create one of the world’s largest free trade areas,\nstretching across 26 countries with a combined GDP of around £1 trillion. Evaluate the effects of the growth of trading blocs such as the TFTA on global trading\npatterns.",
-  "ms": "Knowledge 4, Application 4, Analysis 8\nEvaluation 9\nEffects might include:\n• Trade creation: domestic production is replaced\nwith more efficient imports from a member of the\ntrading bloc\n• More trade within the trade bloc\n• Increased exports due to the larger market firms\ncan now enjoy\n• Increased imports due to removal of protectionist\nbarriers that previously existed between member\ncountries\n• Increased specialisation/economies of scale as\ncan now sell to a larger market\n• Use of comparative advantage to support\nargument\nDiagrammatic analysis may be used to aid explanation\ne.g. tariff diagram\nEvaluation points might include:\n• Trade diversion: Due to protectionist measures\nimposed on non-member countries, countries\nmay purchase imports from less efficient\ncountries within a trading bloc instead of more\nefficient ones outside of the bloc\n• Products may still be cheaper from outside the\ntrading bloc due to economies of scale/lower\nproduction costs\n• Possibility for countries to benefit from bilateral\ntrade deals without needing to join a trading bloc\n• Other factors affect ability to import/export such\nas quality of infrastructure at airports/ports\n• Possible conflict with WTO rules\n• Only within Africa so effect may be limited\nNB For a level 4 answer candidates must use\nexamples of real trading blocs\nNB For a level 4 answer candidates must make\nexplicit reference to trading patterns\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements of the question with evidence integrated\ninto the answer.\nAnalysis is clear and coherent, although it may lack balance.\nChains of reasoning are developed but the answer may lack\nbalance.\nLevel 4 13–16 Demonstrates precise knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding",
+  "text": "Three of Africa’s main trading blocs have agreed to form the Tripartite Free Trade\nAgreement (TFTA). This will create one of the world’s largest free trade areas,\nstretching across 26 countries with a combined GDP of around £1 trillion.\n\nEvaluate the effects of the growth of trading blocs such as the TFTA on global trading\npatterns.",
+  "ms": "Knowledge 4, Application 4, Analysis 8\nEvaluation 9\nEffects might include:\n• Trade creation: domestic production is replaced\nwith more efficient imports from a member of the\ntrading bloc\n• More trade within the trade bloc\n• Increased exports due to the larger market firms\ncan now enjoy\n• Increased imports due to removal of protectionist\nbarriers that previously existed between member\ncountries\n• Increased specialisation/economies of scale as\ncan now sell to a larger market\n• Use of comparative advantage to support\nargument\nDiagrammatic analysis may be used to aid explanation\ne.g. tariff diagram\nEvaluation points might include:\n• Trade diversion: Due to protectionist measures\nimposed on non-member countries, countries\nmay purchase imports from less efficient\ncountries within a trading bloc instead of more\nefficient ones outside of the bloc\n• Products may still be cheaper from outside the\ntrading bloc due to economies of scale/lower\nproduction costs\n• Possibility for countries to benefit from bilateral\ntrade deals without needing to join a trading bloc\n• Other factors affect ability to import/export such\nas quality of infrastructure at airports/ports\n• Possible conflict with WTO rules\n• Only within Africa so effect may be limited\nNB For a level 4 answer candidates must use\nexamples of real trading blocs\nNB For a level 4 answer candidates must make\nexplicit reference to trading patterns\n(25)\nKnowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate resp",
   "erKey": "7",
   "paper": 2,
   "series": "June 2019",
   "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-june2019-q7"
  },
  {
@@ -2036,12 +2160,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "Japan’s budget deficit for 2017/18 is expected to be 4.6% of GDP. Its national debt is\nforecast to increase to above 250% of GDP by 2019.\nEvaluate the impact of a large fiscal deficit and national debt on a country’s economy.",
-  "ms": "Evaluation 9\nEffects might include:\n• Trade creation: domestic production is replaced\nwith more efficient imports from a member of the\ntrading bloc\n• More trade within the trade bloc\n• Increased exports due to the larger market firms\ncan now enjoy\n• Increased imports due to removal of protectionist\nbarriers that previously existed between member\ncountries\n• Increased specialisation/economies of scale as\ncan now sell to a larger market\n• Use of comparative advantage to support\nargument\nDiagrammatic analysis may be used to aid explanation\ne.g. tariff diagram\nEvaluation points might include:\n• Trade diversion: Due to protectionist measures\nimposed on non-member countries, countries\nmay purchase imports from less efficient\ncountries within a trading bloc instead of more\nefficient ones outside of the bloc\n• Products may still be cheaper from outside the\ntrading bloc due to economies of scale/lower\nproduction costs\n• Possibility for countries to benefit from bilateral\ntrade deals without needing to join a trading bloc\n• Other factors affect ability to import/export such\nas quality of infrastructure at airports/ports\n• Possible conflict with WTO rules\n• Only within Africa so effect may be limited\nNB For a level 4 answer candidates must use\nexamples of real trading blocs\nNB For a level 4 answer candidates must make\nexplicit reference to trading patterns\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements of the question with evidence integrated\ninto the answer.\nAnalysis is clear and coherent, although it may lack balance.\nChains of reasoning are developed but the answer may lack\nbalance.\nLevel 4 13–16 Demonstrates precise knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nappropriate examples.",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nImpacts might include:\n• Impact on AD and economic growth of fiscal stimulus,\nwith multiplier effects (net injection to circular flow)\n• Higher purchases of government bonds/debt leading\nto crowding out, so less funds for investment by firms\n• Higher contractionary fiscal policy in the future as\ngovernments start to pay off these fiscal deficits\n• Higher interest costs of servicing debt means less\nmoney for public services and so lower standard of\nliving\n• Impact on a country’s financial account on the\nbalance of payments of large inflows of finance into\ngovernment bonds\n• Impact on a country’s exchange rate\nPossible evaluation points might include:\n• Government debt isn’t necessarily a problem as long\nas there are plenty of people/firms willing to buy it\n• Higher debts may mean governments are investing\nmore into improving public services, which if it\nimproves investment in the economy will help boost\nGDP & pay for itself over time\n• Short-term fiscal deficits can be balanced out by\nsurpluses in the future\nNB For a level 4 answer candidates must use\nexamples of a country\nNB For a level 4 answer candidates must refer to\nboth fiscal deficit and national debt (25)\nKnowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescri",
   "erKey": "8",
   "paper": 2,
   "series": "June 2019",
-  "theme": 4,
-  "themeConfident": true,
+  "theme": 2,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2019-q8"
  },
  {
@@ -2049,13 +2174,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "2\n3\n2014 2015 2016 2017\n2.9%\n2.3%\n1.8% 1.7% (a) Total real UK GDP in 2016 was £200 000 million. With reference to the chart above,\ncalculate the total real UK GDP for 2017. You are advised to show your working.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n..........................................................................................................................................................",
-  "ms": "Application 2\n1.7% growth in 2017\n£200 000m X 1.017 (1) = £203 400m (1)\nAward 2 marks for correct answer e.g. 203.4 billion (2)",
+  "text": "2\n3\n2014 2015 2016 2017\n2.9%\n2.3%\n1.8% 1.7%\n\n(a) Total real UK GDP in 2016 was £200 000 million. With reference to the chart above,\ncalculate the total real UK GDP for 2017. You are advised to show your working.\n(2)\n\nPMTPMT\n3\n(b) Explain the term ‘real gross domestic product’.\n(2)\n\n(c) With reference to the chart on page 2, which one of the following is correct over\nthe period shown?\n(1)\nA GDP per capita was highest in 2014\nB Inflation rose in 2015\nC The UK economy grew at the fastest rate in 2014\nD The UK economy was in recession in 2015",
+  "ms": "(a)\nApplication 2\n1.7% growth in 2017\n£200 000m X 1.017 (1) = £203 400m (1)\nAward 2 marks for correct answer e.g. 203.4 billion (2)\n\n(b)\nKnowledge 2\nKnowledge/understanding:\n1 mark for explaining ‘real’, e.g.\n• Taking inflation into account\n• Adjusted for inflation\n• Removing the effects of inflation from the data\n• Constant prices\n1 mark for explaining GDP, e.g.\n• Total output of the economy\n• Total income of the country\n• Total expenditure of the country (2)\n\n(c)\nApplication 1\nThe only correct answer is C\nA is not correct because we do not have any data on population\nB is not correct because we do not have any data on inflation\nD is not correct because economic growth is positive in 2015 (1)\nPMTPMT",
   "erKey": "1a",
   "paper": 2,
   "series": "June 2020",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2020-q1"
  },
  {
@@ -2063,13 +2189,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The planned investment in the redevelopment of Dover Port will cost £115 million. The\nChief Executive said it will lead to many ‘new job opportunities for local people and a\ntransformed waterfront experience’ with new cafés, bars, and shops.\n(Source adapted from: https://www.kentonline.co.uk/dover/news/docklands‑\nredevelopment‑work‑to‑start‑118581/)\n(a) If the value of the multiplier is 1.8, which one of the following will be the total increase\nin GDP from the redevelopment, assuming other things are equal?\n(1)\nA £64 million\nB £115 million\nC £207 million\nD £230 million\n(b) Using the example above, explain how the multiplier process leads to an increase\nin aggregate demand.\n(4)\n....................................................................................................................................................................................................................................................................................\n.............................................................................................................................................................................................................................................",
-  "ms": "The only correct answer is C\nA is not correct because it is £115m divided by 1.8\nB is not correct because it is the value from the extract\nD is not correct because it is £115m doubled\n(1)",
+  "text": "The planned investment in the redevelopment of Dover Port will cost £115 million. The\nChief Executive said it will lead to many ‘new job opportunities for local people and a\ntransformed waterfront experience’ with new cafés, bars, and shops.\n\n(a) If the value of the multiplier is 1.8, which one of the following will be the total increase\nin GDP from the redevelopment, assuming other things are equal?\n(1)\nA £64 million\nB £115 million\nC £207 million\nD £230 million\n(b) Using the example above, explain how the multiplier process leads to an increase\nin aggregate demand.\n(4)",
+  "ms": "(a)\nThe only correct answer is C\nA is not correct because it is £115m divided by 1.8\nB is not correct because it is the value from the extract\nD is not correct because it is £115m doubled\n(1)\n\n(b)\nKnowledge 2, Application 1, Analysis 1\nKnowledge/Understanding: Up to 2 marks for e.g.\n• Multiplier effect is where an initial change in\naggregate demand can have a greater final impact on\nequilibrium national income (1)\n• Injection of money from investment goes round the\ncircular flow multiple times/knock-on effects/further\neffects (1)\n• Understanding of a multiplier formula (1)\nApplication: Up to 1 mark for a relevant example e.g.\n• Construction workers will eat lunch in local cafes\n• Construction workers will stay in local hotels\n• New shops means more jobs for local people, they\nmay then spend their money in a local bar\n• £115m investment\n• Multiplier value of 1.8\n• Final increase in AD of £207m\nAnalysis: Up to 1 mark for e.g.\n• One person’s spending is another person’s income\n• Eventually all money is withdrawn/leaked out of the\ncircular flow of income\nA correct AD/AS diagram showing two shifts in AD out to the\nright can be awarded 2 marks (1 K, 1App) (4)\nPMTPMT",
   "erKey": "2a",
   "paper": 2,
   "series": "June 2020",
   "theme": 2,
   "themeConfident": true,
+  "year": 1,
   "id": "p2-june2020-q2"
  },
  {
@@ -2077,13 +2204,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "In 2018, the International Monetary Fund (IMF) lent Argentina $57 billion as part of a bailout\npackage to help prevent the country’s government defaulting on its debts. This financial\ncrisis also caused significant capital flight out of Argentina’s economy.\n(Source adapted from: https://www.ft.com/content/737b48bc‑c1c9‑11e8‑95b1‑d36dfef1b89a)\n(a) Explain the role of the IMF in providing financial assistance to countries such as Argentina.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.......................................................................................................................................................................................................",
-  "ms": "Knowledge 2, Application 1, Analysis 1\nKnowledge/Understanding: Up to 2 marks for e.g.\n• Enabling growth/prevent recession\n• Providing temporary loans/credit\n• Promoting economic stability\n• Promoting international monetary cooperation\n• Promoting exchange rate stability\nApplication: 1 mark for relevant example e.g.\n• $57bn lent to Argentina\n• Money helps to stabilise currency\n• Money enables Argentinian government to continue\nrepayments on its debt\n• Other relevant examples\nAnalysis: Up to 1 mark for e.g.\n• Countries such as Argentina relied on IMF as it would\nbe too risky for financial markets to lend to them\n• IMF will insist on reforms to economy as part of\nfinancial assistance (4)",
+  "text": "In 2018, the International Monetary Fund (IMF) lent Argentina $57 billion as part of a bailout\npackage to help prevent the country’s government defaulting on its debts. This financial\ncrisis also caused significant capital flight out of Argentina’s economy.\n\n(a) Explain the role of the IMF in providing financial assistance to countries such as Argentina.\n(4)\n\n(b) Which one of the following is most likely to happen to Argentina’s currency value as a\nresult of capital flight, assuming it is operating with a floating exchange rate system?\n(1)\nA Appreciation\nB Depreciation\nC Devaluation\nD Revaluation",
+  "ms": "(a)\nKnowledge 2, Application 1, Analysis 1\nKnowledge/Understanding: Up to 2 marks for e.g.\n• Enabling growth/prevent recession\n• Providing temporary loans/credit\n• Promoting economic stability\n• Promoting international monetary cooperation\n• Promoting exchange rate stability\nApplication: 1 mark for relevant example e.g.\n• $57bn lent to Argentina\n• Money helps to stabilise currency\n• Money enables Argentinian government to continue\nrepayments on its debt\n• Other relevant examples\nAnalysis: Up to 1 mark for e.g.\n• Countries such as Argentina relied on IMF as it would\nbe too risky for financial markets to lend to them\n• IMF will insist on reforms to economy as part of\nfinancial assistance (4)\n\n(b)\nThe only correct answer is B\nA is not correct because that refers to an increase in the value of the\ncurrency\nC is not correct because that refers to direct intervention in the\ncurrency markets\nD is not correct because that refers to an increase in the value of the\ncurrency (1)\nPMTPMT",
   "erKey": "3a",
   "paper": 2,
   "series": "June 2020",
-  "theme": 2,
-  "themeConfident": false,
+  "theme": 4,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2020-q3"
  },
  {
@@ -2091,13 +2219,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "943 (a) Calculate the percentage change in the number of UK unemployed persons\nbetween April and July 2018. You are advised to show your working.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n...........................................................................................................................................................................................................................",
-  "ms": "Application 2\n910 – 894 X 100 (1) = 1.79% (1)\n894\nAccept answers between 1.78% and 1.8%\nAward 2 marks for correct answer e.g. 1.79 (2)",
+  "text": "943\n\n(a) Calculate the percentage change in the number of UK unemployed persons\nbetween April and July 2018. You are advised to show your working.\n(2)\n\nPMTPMT\n7\n(b) Explain one likely reason for the increase in the number of people unemployed in\nthe UK over the time period shown.\n(2)\n\n(c) Which one of the following types of unemployment is most likely to be caused by\na technological change in an industry?\n(1)\nA Cyclical\nB Real wage\nC Seasonal\nD Structural",
+  "ms": "(a)\nApplication 2\n910 – 894 X 100 (1) = 1.79% (1)\n894\nAccept answers between 1.78% and 1.8%\nAward 2 marks for correct answer e.g. 1.79 (2)\n\n(b)\nKnowledge 1, Analysis 1\nKnowledge 1 mark for one relevant reason e.g.\n• Uncertainty over the process of leaving the EU (1)\n• Closure of high street shops (1)\n• Falling incomes (1)\n• Increased automation (1)\n• Slower economic growth (1)\n• Business expectations (1)\nAnalysis 1 mark for linked development e.g.\n• Uncertainty discourages firms from\nexpanding/investing into their businesses (1)\n• High street shops employ large numbers of people in\nthe UK and with sales moving online jobs tend to be\nlost permanently (1)\n• Lower incomes lead to lower consumption so less\ndemand for labour (1) (2)\n\n(c)\nThe only correct answer is D\nA is not correct because this is not related to a change in technology\nB is not correct because this is real wage inflexibility\nC is not correct because this is not related to a change in technology\n(1)\nPMTPMT",
   "erKey": "4a",
   "paper": 2,
   "series": "June 2020",
-  "theme": null,
+  "theme": 2,
   "themeConfident": false,
+  "year": 1,
   "id": "p2-june2020-q4"
  },
  {
@@ -2105,13 +2234,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The Hong Kong‑Zhuhai‑Macau Bridge is the world’s longest sea bridge. It reduces\nthe journey time from Hong Kong to Zhuhai from 4 hours to just 30 minutes. It cost\nthe equivalent of $18.8 billion and was government funded.\n(Source adapted from: www.theguardian.com)\n(a) Draw an aggregate demand and aggregate supply diagram to show the likely\nimpact of this new bridge on the price level and real output in the region.\n(4)\n(b) Which one of the following would be most likely to solve a negative output gap\nproblem in a domestic economy?\nAn increase in\n(1)\nA government funding to the World Bank\nB government spending on foreign aid\nC government spending on public transport\nD income tax",
-  "ms": "Knowledge 2, Application 2\nKnowledge/understanding:\nCorrect labels on axes (1) and lines (1)\nApplication:\nCorrect shift of line(s) (1) showing change in price level\nand/or real output (1)\nFor example:\nN.B.\nOther AS curves are acceptable\nCandidates can illustrate an increase in AD, AS, or both (4)",
+  "text": "The Hong Kong‑Zhuhai‑Macau Bridge is the world’s longest sea bridge. It reduces\nthe journey time from Hong Kong to Zhuhai from 4 hours to just 30 minutes. It cost\nthe equivalent of $18.8 billion and was government funded.\n\n(a) Draw an aggregate demand and aggregate supply diagram to show the likely\nimpact of this new bridge on the price level and real output in the region.\n(4)\n(b) Which one of the following would be most likely to solve a negative output gap\nproblem in a domestic economy?\nAn increase in\n(1)\nA government funding to the World Bank\nB government spending on foreign aid\nC government spending on public transport\nD income tax",
+  "ms": "(a)\nKnowledge 2, Application 2\nKnowledge/understanding:\nCorrect labels on axes (1) and lines (1)\nApplication:\nCorrect shift of line(s) (1) showing change in price level\nand/or real output (1)\nFor example:\nN.B.\nOther AS curves are acceptable\nCandidates can illustrate an increase in AD, AS, or both (4)\n\n(b)\nThe only correct answer is C\nA is not correct because this would not solve the negative output gap\nB is not correct because this would not solve the negative output gap\nD is not correct because this would not solve the negative output gap (1)\nPMTPMT",
   "erKey": "5a",
   "paper": 2,
   "series": "June 2020",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2020-q5"
  },
  {
@@ -2124,8 +2254,9 @@ const ECO_QUESTIONS = [
   "erKey": "6a",
   "paper": 2,
   "series": "June 2020",
-  "theme": 2,
+  "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-june2020-q6a"
  },
  {
@@ -2138,8 +2269,9 @@ const ECO_QUESTIONS = [
   "erKey": "6b",
   "paper": 2,
   "series": "June 2020",
-  "theme": 2,
-  "themeConfident": false,
+  "theme": 4,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2020-q6b"
  },
  {
@@ -2153,7 +2285,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2020",
   "theme": 4,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2020-q6c"
  },
  {
@@ -2168,6 +2301,7 @@ const ECO_QUESTIONS = [
   "series": "June 2020",
   "theme": 4,
   "themeConfident": false,
+  "year": 2,
   "id": "p2-june2020-q6d"
  },
  {
@@ -2181,7 +2315,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2020",
   "theme": 4,
-  "themeConfident": false,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2020-q6e"
  },
  {
@@ -2189,13 +2324,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "In 2018, the United States Government cut the corporation tax rate (tax on company profits)\nfrom 35% to 21%. Income tax rates for US citizens were also reduced: for example, the top\nrate of income tax was cut from 39.6% to 37%.\n(Source adapted from: https://www.nytimes.com/)\nEvaluate the likely impact of cutting tax rates as a policy to increase economic growth.",
-  "ms": "Knowledge 4, Application 4, Analysis 8, Evaluation 9\nArguments that cutting taxes will positively impact the\neconomy:\n• Firms will have more profit to reinvest into their\ncompanies, therefore increasing investment,\naggregate demand, and therefore output\n• Consumers have higher disposable income so\nconsumption will increase\n• Greater injections into the circular flow of income\n• Less withdrawals form the circular flow of income\n• Relevant AD/AS diagram illustrating an increase in AD\n• Increase in size of multiplier\n• Less incentive for tax evasion/avoidance\nArguments that cutting taxes will negatively impact the\neconomy:\n• Firms may not reinvest money, many other factors\naffect investment decisions- e.g. confidence\n• Consumers may save any extra disposable income,\nthus withdrawing it from the circular flow of income\n• Likely to result in higher government debt leading to\nincreased crowding out\n• Government will have less money to spend on\ninfrastructure/education etc. that may negatively\naffect economic growth\nOne side of the argument should count as KAA and the other\nas EV. (25)\nPMTPMT Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad elements of the\nquestion.\nA narrow response or superficial, two stage chains of reasoning\nonly.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to the\nbroad elements of the question with evidence integrated into the\nanswer.\nAnalysis is clear and coherent, although it may lack balance. Chains\nof reasoning are developed but the answer may lack balance.\nLevel 4 13–16 Demonstrates precise knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nappropriate examples. Analysis is relevant and focused with\nevidence fully and reliably integrated.\nEconomic ideas are carefully selected and applied appropriately to\neconomic issues and problems. The answer demonstrates logical\nand coherent chains of reasoning.\nPMTPMT Evaluation\nLevel Mark",
+  "text": "In 2018, the United States Government cut the corporation tax rate (tax on company profits)\nfrom 35% to 21%. Income tax rates for US citizens were also reduced: for example, the top\nrate of income tax was cut from 39.6% to 37%.\n\nEvaluate the likely impact of cutting tax rates as a policy to increase economic growth.",
+  "ms": "Knowledge 4, Application 4, Analysis 8, Evaluation 9\nArguments that cutting taxes will positively impact the\neconomy:\n• Firms will have more profit to reinvest into their\ncompanies, therefore increasing investment,\naggregate demand, and therefore output\n• Consumers have higher disposable income so\nconsumption will increase\n• Greater injections into the circular flow of income\n• Less withdrawals form the circular flow of income\n• Relevant AD/AS diagram illustrating an increase in AD\n• Increase in size of multiplier\n• Less incentive for tax evasion/avoidance\nArguments that cutting taxes will negatively impact the\neconomy:\n• Firms may not reinvest money, many other factors\naffect investment decisions- e.g. confidence\n• Consumers may save any extra disposable income,\nthus withdrawing it from the circular flow of income\n• Likely to result in higher government debt leading to\nincreased crowding out\n• Government will have less money to spend on\ninfrastructure/education etc. that may negatively\naffect economic growth\nOne side of the argument should count as KAA and the other\nas EV. (25)\nPMTPMT Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 5–8 Displays elements of knowledg",
   "erKey": "7",
   "paper": 2,
   "series": "June 2020",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2020-q7"
  },
  {
@@ -2204,12 +2340,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "In terms of income distribution and wealth distribution Brazil is one of the most\nunequal countries in the world. Its income Gini coefficient is 0.449 and it is ranked\nnumber 2 in the world for its wealth inequality.\nEvaluate possible economic causes of income and wealth inequalities within a\ncountry such as Brazil.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nLikely causes include:\n• High levels of corruption leading to government\ninefficiency/failure to act in best interests of general\npopulation\n• Lack of redistributive fiscal policy\n• High indirect taxes which tend to be regressive\n• Inequality in access to or quality of\neducation/healthcare for different people in a country\n• Rural/urban divide with people in urban areas having\na much greater variety of job opportunities and higher\nwages than in rural areas\n• Weak trade unions reduce power of workers to insist\non higher wages\n• High levels of inheritance that is not significantly taxed\nbeing passed on to future generations\n• Ownership of financial assets concentrated amongst\nthe wealthy, with a lack of public share ownership\nEvaluative comments may include e.g.:\n• Significance/magnitude of specific causes\n• Causes may be solved over time as the economy\ngrows and income levels rise\n• Significance of competing causes could be discussed\n• Consider whether there is a link between the two\ntypes of inequality\nN.B. For a level 4 response, candidates must make\nreference to causes of both income and wealth\ninequality (25)\nPMTPMT Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad elements of the\nquestion.\nA narrow response or superficial, two stage chains of reasoning\nonly.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to the\nbroad elements of the question with evidence integrated into the\nanswer.\nAnalysis is clear and coherent, although it may lack balance. Chains\nof reasoning are developed but the answer may lack balance.\nLevel 4 13–16 Demonstrates precise knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nappropriate examples. Analysis is relevant and focused with\nevidence fully and reliably integrated.\nEconomic ideas are carefully selected and applied appropriately to\neconomic issues and problems. The ans",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nLikely causes include:\n• High levels of corruption leading to government\ninefficiency/failure to act in best interests of general\npopulation\n• Lack of redistributive fiscal policy\n• High indirect taxes which tend to be regressive\n• Inequality in access to or quality of\neducation/healthcare for different people in a country\n• Rural/urban divide with people in urban areas having\na much greater variety of job opportunities and higher\nwages than in rural areas\n• Weak trade unions reduce power of workers to insist\non higher wages\n• High levels of inheritance that is not significantly taxed\nbeing passed on to future generations\n• Ownership of financial assets concentrated amongst\nthe wealthy, with a lack of public share ownership\nEvaluative comments may include e.g.:\n• Significance/magnitude of specific causes\n• Causes may be solved over time as the economy\ngrows and income levels rise\n• Significance of competing causes could be discussed\n• Consider whether there is a link between the two\ntypes of inequality\nN.B. For a level 4 response, candidates must make\nreference to causes of both income and wealth\ninequality (25)\nPMTPMT Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reason",
   "erKey": "8",
   "paper": 2,
   "series": "June 2020",
-  "theme": null,
-  "themeConfident": false,
+  "theme": 4,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2020-q8"
  },
  {
@@ -2217,13 +2354,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "After the Global Financial Crisis of 2008, the US President introduced expansionary\nfiscal policies of $800 billion. The International Monetary Fund estimated that the\nmultiplier at the time was approximately 1.5.\n(Source adapted from: https://www.economist.com/the-economist-explains/2016/09/07/\nwhat-is-the-keynesian-multiplier)\n(a) Which one of the following is a withdrawal from the circular flow of income?\n(1)\nA Exports\nB Government spending\nC Investment\nD Taxation\n(b) Calculate the total final increase in US aggregate demand as a result of the\nPresident’s ‘expansionary fiscal policies’, assuming no other changes.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n..................",
-  "ms": "The only correct answer is D\nA is not correct because exports is an injection into the circular flow\nof income\nB is not correct because government spending is an injection into the\ncircular flow of income\nC is not correct because investment is an injection into the circular\nflow of income\n(1)",
+  "text": "After the Global Financial Crisis of 2008, the US President introduced expansionary\nfiscal policies of $800 billion. The International Monetary Fund estimated that the\nmultiplier at the time was approximately 1.5.\n\n(a) Which one of the following is a withdrawal from the circular flow of income?\n(1)\nA Exports\nB Government spending\nC Investment\nD Taxation\n(b) Calculate the total final increase in US aggregate demand as a result of the\nPresident’s ‘expansionary fiscal policies’, assuming no other changes.\n(2)\n\n3\n(c) Explain the impact of annual fiscal deficits on the US national debt.\n(2)",
+  "ms": "(a)\nThe only correct answer is D\nA is not correct because exports is an injection into the circular flow\nof income\nB is not correct because government spending is an injection into the\ncircular flow of income\nC is not correct because investment is an injection into the circular\nflow of income\n(1)\n\n(b)\nApplication 2\n1.5 X 800 billion (1)\n= 1 200 billion / $1 200 billion\nAward two marks for correct answer\nAward 1 mark if candidate has put $1 200\n(2)\n\n(c)\nKnowledge 1, Analysis 1\nKnowledge/understanding (1):\n• Identify increase in national debt\n• Definition of national debt\nAnalysis:\n1 mark for linked development:\ne.g.\n• Fiscal deficit means spending is greater than taxation\n• The government will need to borrow more money to\nfund this spending\n(2)\nNB Analysis must be linked to national debt",
   "erKey": "1a",
   "paper": 2,
   "series": "June 2021",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2021-q1"
  },
  {
@@ -2231,13 +2369,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "(a) Which one of the following diagrams illustrates the impact of an increase in net\nexports along a Keynesian long-run aggregate supply curve?\n(1)\nPrice\nlevel\nReal output\nAS\nAD\nAD\n1\nY Y 1\nP\n1\nP\nA\nPrice\nlevel\nReal output\nAS\nAD\n1\nAD\nY\nP\nP\n1\nB\nPrice\nlevel\nReal output\nAS\nAD\n1\nAD\nY 1 Y\nP\nP 1\nC\nPrice\nlevel\nReal output\nAS\nAD\nAD\n1\nY\nP\n1\nP\nD\nA\nB\nC\nD 5\n(b) Using the classical long-run aggregate supply curve, explain what will happen in\nthe long run to real output if aggregate demand increases.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n........................................................................................................................................................",
-  "ms": "The only correct answer is A\nB is not correct because this is a Classical LRAS curve\nC is not correct because this shows AD decreasing\nD is not correct because this is a Classical LRAS curve\n(1)",
+  "text": "(a) Which one of the following diagrams illustrates the impact of an increase in net\nexports along a Keynesian long-run aggregate supply curve?\n(1)\nPrice\nlevel\nReal output\nAS\nAD\nAD\n1\nY Y\n1\nP\n1\nP\nA\nPrice\nlevel\nReal output\nAS\nAD\n1\nAD\nY\nP\nP\n1\nB\nPrice\nlevel\nReal output\nAS\nAD\n1\nAD\nY\n1 Y\nP\nP\n1\nC\nPrice\nlevel\nReal output\nAS\nAD\nAD\n1\nY\nP\n1\nP\nD\nA\nB\nC\nD\n\n5\n(b) Using the classical long-run aggregate supply curve, explain what will happen in\nthe long run to real output if aggregate demand increases.\n(2)\n\n(c) Explain the likely impact on aggregate demand of a fall in average house prices.\n(2)",
+  "ms": "(a)\nThe only correct answer is A\nB is not correct because this is a Classical LRAS curve\nC is not correct because this shows AD decreasing\nD is not correct because this is a Classical LRAS curve\n(1)\n\n(b)\nKnowledge 1, Analysis 1\nKnowledge/understanding (1):\nThere would be no change in real output (1)\nAnalysis (1):\nE.g. since classical economists believe the economy will be at\nfull employment in the long run\nDiagram to illustrate this:\n(2)\n\n(c)\nKnowledge 1, Analysis 1\nKnowledge/understanding (1):\nIdentification of likely impact:\n• Aggregate demand will fall/decrease\nAnalysis:\n1 mark for linked development, e.g.\n• Negative wealth effect\n• Reduction in consumer confidence and consumption (2)",
   "erKey": "2a",
   "paper": 2,
   "series": "June 2021",
   "theme": 2,
   "themeConfident": true,
+  "year": 1,
   "id": "p2-june2021-q2"
  },
  {
@@ -2245,13 +2384,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "British pound to US dollar exchange rate (value of one pound in dollars), June 2017 to\nJune 2019.\n1\nst Jan 2018 1 st Jan 2019\n1.40\n1.35\n1.30\n1.25\n1.20\nValue of one\npound in\ndollars\n(Source adapted from: https://www.xe.com/currencycharts/?from=GBP&to=USD&view=2Y)\n(a) Which one of the following has been the overall change in the British pound to\nUS dollar exchange rate from 1st January 2018 to 1st January 2019?\n(1)\nA Appreciation\nB Depreciation\nC Devaluation\nD Revaluation 7\n(b) Explain the likely impact of the change in the exchange rate of the pound shown\nin the graph from 1st January 2018 to 1st January 2019 on the UK current account\nof the balance of payments.\n(4)\n....................................................................................................................................................................................................................................................................................\n.........................................................................................................................................................................................................................................................",
-  "ms": "The only correct answer is B\nA is not correct because the pound has fallen in value\nC is not correct because the pound-dollar is a floating exchange rate\nsystem\nD is not correct because the pound-dollar is a floating exchange rate\nsystem\n(1)",
+  "text": "British pound to US dollar exchange rate (value of one pound in dollars), June 2017 to\nJune 2019.\n1\nst Jan 2018 1\nst Jan 2019\n1.40\n1.35\n1.30\n1.25\n1.20\nValue of one\npound in\ndollars\n\n(a) Which one of the following has been the overall change in the British pound to\nUS dollar exchange rate from 1st January 2018 to 1st January 2019?\n(1)\nA Appreciation\nB Depreciation\nC Devaluation\nD Revaluation\n\n7\n(b) Explain the likely impact of the change in the exchange rate of the pound shown\nin the graph from 1st January 2018 to 1st January 2019 on the UK current account\nof the balance of payments.\n(4)",
+  "ms": "(a)\nThe only correct answer is B\nA is not correct because the pound has fallen in value\nC is not correct because the pound-dollar is a floating exchange rate\nsystem\nD is not correct because the pound-dollar is a floating exchange rate\nsystem\n(1)\n\n(b)\nKnowledge 2, Application 1, Analysis 1\nKnowledge 2 marks e.g.\n• UK current account would improve/reduction in deficit\n(1)\n• Increase in exports (1)\n• Decrease in imports (1)\nApplication 1 mark e.g.\n• Accurate reference to data between 1st January 2018\nto 1st January 2019\nAnalysis 1 mark for linked development e.g.\n• UK exports become more competitive\n• UK exports appear cheaper to US consumers\nOwn answer rule\nAllow alternative responses referring to Marshall-Lerner\nCondition and/or J-Curve\n(4)",
   "erKey": "3a",
   "paper": 2,
   "series": "June 2021",
-  "theme": null,
+  "theme": 4,
   "themeConfident": false,
+  "year": 2,
   "id": "p2-june2021-q3"
  },
  {
@@ -2259,13 +2399,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "A number of business groups have signed an open letter to the UK Government\nasking it to commit to delivering the full High Speed 2 rail link. This will connect\nLondon to the northern cities of Manchester and Leeds at a cost of £56 billion and\nreduce journey times by as much as 50%.\n(Source adapted from: https://www.theguardian.com/uk-news/2019/jun/22/business-heads-\nurge-next-pm-to-commit-to-finishing-hs2)\n(a) Explain one likely impact of this project on aggregate supply in the UK.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n..........................................................................................................................................................",
-  "ms": "Knowledge 2, Application 1, Analysis 1\nKnowledge 2 marks e.g.\n• Aggregate supply will increase (1)\n• Improvement in UK’s capital (1)\n• Increase in productivity/efficiency of UK economy (1)\n• Correct diagram illustrating an increase in AS (2), e.g.:\nApplication 1 mark, e.g.\n• Reduce journey times by as much as 50%\n• £56bn spending\nAnalysis 1 mark for linked development e.g.\n• Faster journey times means people can get to work\nquicker, increasing their productivity\n• Moving freight more quickly will increase efficiency for\nfirms\n(4)",
+  "text": "A number of business groups have signed an open letter to the UK Government\nasking it to commit to delivering the full High Speed 2 rail link. This will connect\nLondon to the northern cities of Manchester and Leeds at a cost of £56 billion and\nreduce journey times by as much as 50%.\n\n(a) Explain one likely impact of this project on aggregate supply in the UK.\n(4)\n\n(b) Government spending on the High Speed 2 rail link is an example of which of the\nfollowing?\n(1)\nA Automatic stabilisers\nB Capital expenditure\nC Current expenditure\nD Transfer payments",
+  "ms": "(a)\nKnowledge 2, Application 1, Analysis 1\nKnowledge 2 marks e.g.\n• Aggregate supply will increase (1)\n• Improvement in UK’s capital (1)\n• Increase in productivity/efficiency of UK economy (1)\n• Correct diagram illustrating an increase in AS (2), e.g.:\nApplication 1 mark, e.g.\n• Reduce journey times by as much as 50%\n• £56bn spending\nAnalysis 1 mark for linked development e.g.\n• Faster journey times means people can get to work\nquicker, increasing their productivity\n• Moving freight more quickly will increase efficiency for\nfirms\n(4)\n\n(b)\nThe only correct answer is B\nA is not correct because it is a decision by the government to spend\nthis money\nC is not correct because this is capital, not current, expenditure\nD is not correct because this is not an example of transfer payment\n(1)",
   "erKey": "4a",
   "paper": 2,
   "series": "June 2021",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2021-q4"
  },
  {
@@ -2273,13 +2414,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "and 2016 11\n(b) Calculate the percentage change in Germany’s nominal GDP from 2016 to 2017.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.................................................................................................................................................................................................................................................................................",
-  "ms": "The only correct answer is C\nA is not correct because we do not have any information on inflation\nB is not correct because Germany’s GDP is larger than France’s in\nevery year shown\nD is not correct because the GDP of both countries grew between\n2015 and 2016 (1)",
+  "text": "and 2016\n\n11\n(b) Calculate the percentage change in Germany’s nominal GDP from 2016 to 2017.\n(2)\n\n(c) Explain one reason why Purchasing Power Parities are used.\n(2)",
+  "ms": "(b)\nApplication 2\n1 mark for correct appropriate calculation, e.g.\n% change = change/original X 100\n= 0.19/3.50 X 100 (1)\nAnswer = 5.4% or 5.4\nAward 2 marks for correct answer\nAllow range 5-5.43 (2)\n\n(a)\nThe only correct answer is C\nA is not correct because we do not have any information on inflation\nB is not correct because Germany’s GDP is larger than France’s in\nevery year shown\nD is not correct because the GDP of both countries grew between\n2015 and 2016 (1)\n\n(c)\nKnowledge 1, Analysis 1\nKnowledge/understanding (1):\nIdentification of one reason, e.g.\n• To improve accuracy when comparing data between\ncountries\nAnalysis:\n1 mark for linked development, e.g.\n• PPP compares cost of living/buying power between\ndifferent countries\n• PPP is calculated by comparing the price of a basket of\ncomparable goods and services in different countries\n(2)",
   "erKey": "5a",
   "paper": 2,
   "series": "June 2021",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2021-q5"
  },
  {
@@ -2293,7 +2435,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2021",
   "theme": 4,
-  "themeConfident": false,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2021-q6a"
  },
  {
@@ -2307,7 +2450,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2021",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2021-q6b"
  },
  {
@@ -2320,8 +2464,9 @@ const ECO_QUESTIONS = [
   "erKey": "6c",
   "paper": 2,
   "series": "June 2021",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2021-q6c"
  },
  {
@@ -2330,12 +2475,13 @@ const ECO_QUESTIONS = [
   "marks": 12,
   "section": "B",
   "text": "Discuss the likely impact on Rwandan consumers and clothing manufacturers of\nthe increase in the tariff on imports of second-hand clothes. Use an appropriate\ndiagram to support your answer.",
-  "ms": "Knowledge 2, Application 2, Analysis 4\nLikely impacts might include e.g.:\n• Increase in price of imported textiles\n• Lower standard of living\n• Loss of consumer surplus- e.g. higher prices of\nclothing for consumers\n• Increased producer surplus\n• Rwandan firms (e.g. factory in Kigali from extract\nA) able to sell at higher prices, therefore increased\nprofits\n• tariff revenue can be used to subsidise clothing\nretailers/ provide consumers with healthcare and\neducation\n• Risk of retaliation from other countries such as\nUSA\nNB To access Level 3 there must be an accurate diagram,\nfor example:\n(8) Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad elements of the\nquestion.\nA narrow response; chains of reasoning are developed but the\nanswer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied appropriately to\neconomic issues and problems. The answer demonstrates logical\nand coherent chains of reasoning.",
+  "ms": "Knowledge 2, Application 2, Analysis 4\nLikely impacts might include e.g.:\n• Increase in price of imported textiles\n• Lower standard of living\n• Loss of consumer surplus- e.g. higher prices of\nclothing for consumers\n• Increased producer surplus\n• Rwandan firms (e.g. factory in Kigali from extract\nA) able to sell at higher prices, therefore increased\nprofits\n• tariff revenue can be used to subsidise clothing\nretailers/ provide consumers with healthcare and\neducation\n• Risk of retaliation from other countries such as\nUSA\nNB To access Level 3 there must be an accurate diagram,\nfor example:\n(8)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding of\nterms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links\nbetween causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad elements of the\nquestion.\nA narrow response; chains of reasoning are developed but the\nanswer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied appropriately to\neconomic issues and problems. The answer demonstrates logical\nand coherent chains of reasoning.",
   "erKey": "6d",
   "paper": 2,
   "series": "June 2021",
-  "theme": 2,
+  "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-june2021-q6d"
  },
  {
@@ -2350,6 +2496,7 @@ const ECO_QUESTIONS = [
   "series": "June 2021",
   "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-june2021-q6e"
  },
  {
@@ -2357,13 +2504,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "The European Central Bank introduced a new round of quantitative easing (QE) in\nMarch 2020, purchasing up to €750 billion of assets. The objective of this QE was\nto reduce the serious risks to the effectiveness of monetary policy resulting from\na significant recession. The European Central Bank’s target for inflation remains at\n‘below but close to 2%’.\n(Source adapted from: https://www.ecb.europa.eu/press/pr/date/2020/html/ecb.\npr200318_1~3949d6f266.en.html)\nEvaluate the effectiveness of quantitative easing during ‘a significant recession’.",
-  "ms": "Knowledge 4, Application 4, Analysis 8, Evaluation 9\nArguments that QE has been effective:\n• QE provided financial institutions with additional funding to\nallow them to increase lending to businesses, thus\nincreasing investment in the economy and therefore\neconomic growth\n• QE provided financial institutions with additional funding to\nallow them to increase lending to consumers, thus\nincreasing consumption in the economy and therefore\neconomic growth\n• Without QE the Eurozone economy may have gone into\ndeflation, thus significantly prolonging the recession due to\nfurther reduced consumer demand in anticipation of\nfurther falls in price\n• QE was necessary as an additional monetary policy tool for\nthe central bank after they had already cut interest rates as\nlow as possible and the economy had not responded\n• Commercial interest rates did not drop as much as the ECB\nbase rate due to confidence concerns from banks, so this\nacted as another way to reduce interest rates\nArguments that QE has not been effective:\n• Many financial institutions used QE funding to improve\ntheir own financial stability, increase their liquid assets-\nrather than increasing lending to businesses/consumers\n• Lack of consumer/business confidence meant there was a\nlack of demand for loans\n• Consumers and firms were increasing savings rather than\nborrowing due to concerns about stability of the Eurozone\neconomy\n• Effect was limited by contractionary fiscal policy in many\nEurozone countries\n• Significant spare capacity in European economies during\nrecession which QE is unable to make up for\n• If recession proves short-lived too much QE could be\ninflationary\n• Different European countries experiencing different\neconomic situation so a ‘one size fits all’ QE approach may\nbe too much for some countries & not enough for others\n(25)\nCandidates can use either side of this argument as KAA and the\nother side as evaluation Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding of terms,\nconcepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links between\ncauses and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad elements of the question.\nA narrow response or superficial, two stage chains of reasoning only.\nLevel 3 9–12 Demo",
+  "text": "The European Central Bank introduced a new round of quantitative easing (QE) in\nMarch 2020, purchasing up to €750 billion of assets. The objective of this QE was\nto reduce the serious risks to the effectiveness of monetary policy resulting from\na significant recession. The European Central Bank’s target for inflation remains at\n‘below but close to 2%’.\n\nEvaluate the effectiveness of quantitative easing during ‘a significant recession’.",
+  "ms": "Knowledge 4, Application 4, Analysis 8, Evaluation 9\nArguments that QE has been effective:\n• QE provided financial institutions with additional funding to\nallow them to increase lending to businesses, thus\nincreasing investment in the economy and therefore\neconomic growth\n• QE provided financial institutions with additional funding to\nallow them to increase lending to consumers, thus\nincreasing consumption in the economy and therefore\neconomic growth\n• Without QE the Eurozone economy may have gone into\ndeflation, thus significantly prolonging the recession due to\nfurther reduced consumer demand in anticipation of\nfurther falls in price\n• QE was necessary as an additional monetary policy tool for\nthe central bank after they had already cut interest rates as\nlow as possible and the economy had not responded\n• Commercial interest rates did not drop as much as the ECB\nbase rate due to confidence concerns from banks, so this\nacted as another way to reduce interest rates\nArguments that QE has not been effective:\n• Many financial institutions used QE funding to improve\ntheir own financial stability, increase their liquid assets-\nrather than increasing lending to businesses/consumers\n• Lack of consumer/business confidence meant there was a\nlack of demand for loans\n• Consumers and firms were increasing savings rather than\nborrowing due to concerns about stability of the Eurozone\neconomy\n• Effect was limited by contractionary fiscal policy in many\nEurozone countries\n• Significant spare",
   "erKey": "7",
   "paper": 2,
   "series": "June 2021",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2021-q7"
  },
  {
@@ -2371,13 +2519,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "It has been estimated that if climate change led to the world’s temperature rising\n2.5 °C compared to the temperature in 2010, then global GDP per capita would be\n15% lower by 2100. If temperatures rise by 4 °C compared to the temperature in 2010,\nthen by 2100 global GDP per capita would decline by more than 30%.\n(Source adapted from: https://www.nature.com/articles/s41586-018-0071-9)\nEvaluate the potential trade-offs between environmental protection and other\nmacroeconomic objectives.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nThere may be a trade-off between environmental\nprotection and other macroeconomic objectives, e.g.:\n• Higher economic growth: this leads to more energy\nusage, much of this energy is still powered by non-\nrenewable sources such as gas (especially in the UK)\nor coal (e.g. Germany)\n• Inflation: measures to protect the environment (e.g.\npackaging modifications, recycling costs) may increase\ncosts for firms, pushing up prices & causing inflation\n• Income inequality: Replacing non-renewable energy\nrequires huge capital expenditure which may increase\nenergy costs for poorer people, especially in\ndeveloping countries\n• Unemployment: Employees in polluting industries\nmay lose their jobs if firms are forced to close due to\ngovernment policies to reduce pollution\nThe trade-offs may not occur:\n• Increased economic growth means governments have\nmore money to invest in environmentally-friendly\nsolutions such as better public transport\n• Firms may take this opportunity to increase their\nefficiency, e.g. new more environmentally friendly\nmachinery may also be more efficient. Firms can\nmake money from recycling products/using recycled\nproducts in production may be cheaper\n• In the long term renewable energy will be cheaper for\nconsumers and isn’t subject to fluctuating world oil &\ngas prices\n• Many new jobs have been created in sectors such as\nrenewable energy, research into carbon capture, and\nrecycling\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding of terms,\nconcepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or links between\ncauses and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of economic\nprinciples, concepts and theories.\nApplies economic ideas and relates them to economic problems in\ncontext, although does not focus on the broad elements of the question.\nA narrow response or superficial, two stage chains of reasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the concepts,\nprinciples and models.\nAbility to apply economic concepts and relate them directly to the broad\nelements of the question with evidence integrated into the answer.\nAnalysis is clear and coherent, although it may lack balance. Chains of\nreasoning are developed but the answer may lack balance.\nLevel 4 13–16 Demonstrates precise knowledge and understanding of the concepts,\nprinciple",
+  "text": "It has been estimated that if climate change led to the world’s temperature rising\n2.5 °C compared to the temperature in 2010, then global GDP per capita would be\n15% lower by 2100. If temperatures rise by 4 °C compared to the temperature in 2010,\nthen by 2100 global GDP per capita would decline by more than 30%.\n\nEvaluate the potential trade-offs between environmental protection and other\nmacroeconomic objectives.",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nThere may be a trade-off between environmental\nprotection and other macroeconomic objectives, e.g.:\n• Higher economic growth: this leads to more energy\nusage, much of this energy is still powered by non-\nrenewable sources such as gas (especially in the UK)\nor coal (e.g. Germany)\n• Inflation: measures to protect the environment (e.g.\npackaging modifications, recycling costs) may increase\ncosts for firms, pushing up prices & causing inflation\n• Income inequality: Replacing non-renewable energy\nrequires huge capital expenditure which may increase\nenergy costs for poorer people, especially in\ndeveloping countries\n• Unemployment: Employees in polluting industries\nmay lose their jobs if firms are forced to close due to\ngovernment policies to reduce pollution\nThe trade-offs may not occur:\n• Increased economic growth means governments have\nmore money to invest in environmentally-friendly\nsolutions such as better public transport\n• Firms may take this opportunity to increase their\nefficiency, e.g. new more environmentally friendly\nmachinery may also be more efficient. Firms can\nmake money from recycling products/using recycled\nproducts in production may be cheaper\n• In the long term renewable energy will be cheaper for\nconsumers and isn’t subject to fluctuating world oil &\ngas prices\n• Many new jobs have been created in sectors such as\nrenewable energy, research into carbon capture, and\nrecycling\n(25)\nKnowledge, application and anal",
   "erKey": "8",
   "paper": 2,
   "series": "June 2021",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2021-q8"
  },
  {
@@ -2385,13 +2534,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "According to the Bank of England, the UK’s marginal propensity to consume is\nestimated to be 0.64. (a) Using the information above, calculate the total reduction in the UK’s GDP from a\nfall in government spending of £20 million.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n........................................................................................................................................",
-  "ms": "Application 3, Analysis 1\nMultiplier formula= 1 / (1 – MPC) (1)\n= 1 / (1 –0.64)\nOR\n= 1 /0.36 (1)\nValue of the multiplier = 2.7 recurring OR 2.8 (1)\n2.7 recurring X £20m (1) = £55.6m\nAward full marks for correct answer\nAward up to 3 marks if no correct answer\nNB Allow range (-)£55m to (-)£56m\nNB 3 marks if million missing\n(4)",
+  "text": "According to the Bank of England, the UK’s marginal propensity to consume is\nestimated to be 0.64.\n\n(a) Using the information above, calculate the total reduction in the UK’s GDP from a\nfall in government spending of £20 million.\n(4)\n\n3\n(b) Which one of the following is an injection into the circular flow of income?\n(1)\nA Imports\nB Investment\nC Savings\nD Taxation",
+  "ms": "(a)\nApplication 3, Analysis 1\nMultiplier formula= 1 / (1 – MPC) (1)\n= 1 / (1 –0.64)\nOR\n= 1 /0.36 (1)\nValue of the multiplier = 2.7 recurring OR 2.8 (1)\n2.7 recurring X £20m (1) = £55.6m\nAward full marks for correct answer\nAward up to 3 marks if no correct answer\nNB Allow range (-)£55m to (-)£56m\nNB 3 marks if million missing\n(4)\n\n(b)\nThe only correct answer is B\nA is not correct because imports are a withdrawal from the\ncircular flow\nC is not correct because savings are a withdrawal from the\ncircular flow\nD is not correct because taxation is a withdrawal from the\ncircular flow\n(1)",
   "erKey": "1a",
   "paper": 2,
   "series": "June 2022",
   "theme": 2,
   "themeConfident": true,
+  "year": 1,
   "id": "p2-june2022-q1"
  },
  {
@@ -2399,13 +2549,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "0\n% (a) With reference to the chart, which one of the following is true?\nAverage UK house prices:\n(1)\nA fell in August 2020\nB fell in November 2018\nC rose the fastest in May 2021\nD stayed constant in 2018 5\n(b) With reference to the chart on the previous page, explain the likely impact of an\nincrease in average house prices on UK consumption.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................",
-  "ms": "The only correct answer is C\nA is not correct because house prices rose in August 2020\nB is not correct because house prices rose in November\n2018\nD is not correct because house prices rose throughout this\ntime\n(1)",
+  "text": "0\n%\n\n(a) With reference to the chart, which one of the following is true?\nAverage UK house prices:\n(1)\nA fell in August 2020\nB fell in November 2018\nC rose the fastest in May 2021\nD stayed constant in 2018\n\n5\n(b) With reference to the chart on the previous page, explain the likely impact of an\nincrease in average house prices on UK consumption.\n(4)",
+  "ms": "(a)\nThe only correct answer is C\nA is not correct because house prices rose in August 2020\nB is not correct because house prices rose in November\n2018\nD is not correct because house prices rose throughout this\ntime\n(1)\n\n(b)\nKnowledge 2, Application 1, Analysis 1\nKnowledge/understanding (2):\n• Reference to wealth effect/houseowners are\nwealthier (1)\n• Increase in UK consumption (1)\n• Mortgage equity withdrawal (1)\nApplication (1):\nA correct reference to the figure\nE.g. in November 2018 house prices increased by\napproximately 2% a year\nAnalysis (1):\nLinked development 1 mark for e.g.\n• Increased consumer confidence\n• Consumers are less likely to save\nAlternative approach based on justified economic\nrationale:\nAllow answers based on people unable to buy and home\nimprovements/saving instead\nE.g. Reduced consumption (K1) as consumers save\nmore (K1) in order to be able to afford a deposit for a\nhouse (An1)\n(4)",
   "erKey": "2a",
   "paper": 2,
   "series": "June 2022",
-  "theme": null,
+  "theme": 2,
   "themeConfident": false,
+  "year": 1,
   "id": "p2-june2022-q2"
  },
  {
@@ -2413,13 +2564,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "0.2\n0.1\n0.0\n% (a) With reference to the chart above, explain the likely impact of a reduction in the\nbase interest rate on UK investment. (4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n...................................................................................................................................................................................................................................",
-  "ms": "Knowledge 2, Application 1, Analysis 1\nKnowledge/understanding (2):\n• Investment will increase (1)\n• Lower interest rates reduce cost of borrowing (1)\nApplication (1):\nA relevant reference to the data, e.g.\n• In 2020 interest rates fell from 0.75% to 0.1%\n(1)\n• In 2020 interest rates fell by 0.65 percentage\npoints (1)\nAnalysis (1):\nLinked development 1 mark for e.g.\n• Firms are more incentivised to borrow money (1)\n• Firms feel more confident to invest\n• Investments financed by borrowing are now more\nprofitable/less risky (1)\n• Costs of production fall for firms (1)\n• Fall in return on savings stimulating\nconsumption/sales (1)\n(4)",
+  "text": "0.2\n0.1\n0.0\n%\n\n(a) With reference to the chart above, explain the likely impact of a reduction in the\nbase interest rate on UK investment.\n(4)\n\n7\n(b) Which one of the following would be most likely to result from lower base\ninterest rates?\nA fall in:\n(1)\nA the average price of houses\nB the external value of the pound\nC the level of employment\nD the rate of economic growth",
+  "ms": "(a)\nKnowledge 2, Application 1, Analysis 1\nKnowledge/understanding (2):\n• Investment will increase (1)\n• Lower interest rates reduce cost of borrowing (1)\nApplication (1):\nA relevant reference to the data, e.g.\n• In 2020 interest rates fell from 0.75% to 0.1%\n(1)\n• In 2020 interest rates fell by 0.65 percentage\npoints (1)\nAnalysis (1):\nLinked development 1 mark for e.g.\n• Firms are more incentivised to borrow money (1)\n• Firms feel more confident to invest\n• Investments financed by borrowing are now more\nprofitable/less risky (1)\n• Costs of production fall for firms (1)\n• Fall in return on savings stimulating\nconsumption/sales (1)\n(4)\n\n(b)\nThe only correct answer is B\nA is not correct because average house prices would be\nlikely to rise\nC is not correct because the level of employment would be\nlikely to rise\nD is not correct because the rate of economic growth would\nbe likely to rise\n(1)",
   "erKey": "3a",
   "paper": 2,
   "series": "June 2022",
-  "theme": null,
+  "theme": 4,
   "themeConfident": false,
+  "year": 2,
   "id": "p2-june2022-q3"
  },
  {
@@ -2427,13 +2579,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "The trade cycle\nTime\nReal GDP Positive\noutput gap Trend GDP\nActual GDP\nZ\n(a) At point Z on the diagram, which one of the following is likely to occur?\nAn increase in:\n(1)\nA absolute poverty\nB budget deficit\nC cyclical unemployment\nD inflation\n(b) With reference to the graph, explain the difference between automatic stabilisers\nand discretionary fiscal policy. (4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n...",
-  "ms": "The only correct answer is D\nA is not correct because absolute poverty would be likely to\nfall\nB is not correct because the budget deficit would be likely to\nfall\nC is not correct because cyclical unemployment would fall\n(1)",
+  "text": "The trade cycle\nTime\nReal GDP\nPositive\noutput gap\nTrend GDP\nActual GDP\nZ\n(a) At point Z on the diagram, which one of the following is likely to occur?\nAn increase in:\n(1)\nA absolute poverty\nB budget deficit\nC cyclical unemployment\nD inflation\n(b) With reference to the graph, explain the difference between automatic stabilisers\nand discretionary fiscal policy.\n(4)\n\n9",
+  "ms": "(b)\nKnowledge 3, Application 1\nKnowledge/understanding 3 marks e.g.\n• Automatic stabilisers means government\nspending/taxation vary without direct government\ndecision-making (1) over the course of the economic\ncycle (1)/built into the means-tested welfare support\n(1)/progressive tax bands (1)\n• Discretionary fiscal policy – deliberate/direct\nalteration of government expenditure/taxation (1)\ndesigned to achieve its economic objectives\n(1)/determined in budget (1)\nApplication 1 mark for reference to graph, e.g.\n• In a positive output gap you would expect less\ngovernment spending/more tax revenues as part\nof automatic stabilisers (1)\n• In a negative output gap you would expect more\ngovernment spending/less tax revenues as part\nof automatic stabilisers (1)\n• At point Z you would expect taxation to increase\nrelative to government spending (1)\n• Discretionary fiscal policy could occur at any point\non the trade cycle (1)\n(4)\n\n(a)\nThe only correct answer is D\nA is not correct because absolute poverty would be likely to\nfall\nB is not correct because the budget deficit would be likely to\nfall\nC is not correct because cyclical unemployment would fall\n(1)",
   "erKey": "4a",
   "paper": 2,
   "series": "June 2022",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2022-q4"
  },
  {
@@ -2441,13 +2594,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "In May 2020, the UK government introduced a loan scheme to help small businesses\nsurvive the downturn in the economy. Small businesses could borrow up to £50 000\nat an interest rate of 2.5% for up to 6 years from a bank. The government guaranteed\n100% of the loans, to enable banks to issue them quickly, and only minimal checks\nwere made on borrowers. (a) With reference to the information above, explain one role of financial markets.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.............................................................................................................................................................................................................",
-  "ms": "Knowledge 2, Application 1, Analysis 1\nKnowledge/understanding of one role (2):\nE.g.\n• To lend to businesses and individuals (1) to help\nthem consume/invest (1)\n• To facilitate the exchange of goods and services\n(1) increasing consumption/investment (1)\n• To facilitate saving (1) so consumers can build up\nmoney to purchase expensive items (1)\n• To provide forward markets (1) so firms can\nreduce the risk of fluctuating prices (1)\n• To provide a market for equities (1) so firms can\nseek investment from shareholders (1)\nApplication (1):\nA relevant reference to the data, e.g.\n• Many small businesses required a loan to help\nthem survive the downturn in the economy (1)\n• Interest rate of 2.5% for up to 6 years (1)\n• Up to £50,000 could be borrowed for up to 6\nyears (1)\nAnalysis (1):\nLinked development 1 mark for e.g.\n• Businesses will already have accounts, loans, etc.\nwith banks so the banks were in a position to\nquickly issue these loans to their customers (1)\n• Loans provided finance for firms suffering a drop\nin demand (1)\n• Loans allow firms to grow/expand more quickly\n(1)\n• Helps to boost AD/increase economic growth (1)\n• Firms can invest in innovation (1)\n• Increase in productivity (1)\n• Impact on housing market (1)\n• Importance of saving to help development (1)\n• Bonds to finance government spending (1)\n(4)",
+  "text": "In May 2020, the UK government introduced a loan scheme to help small businesses\nsurvive the downturn in the economy. Small businesses could borrow up to £50 000\nat an interest rate of 2.5% for up to 6 years from a bank. The government guaranteed\n100% of the loans, to enable banks to issue them quickly, and only minimal checks\nwere made on borrowers.\n\n(a) With reference to the information above, explain one role of financial markets.\n(4)\n\n11\n(b) Which one of the following would be a risk if ‘only minimal checks were made on\nborrowers’ in this loan scheme?\n(1)\nA Asymmetric information\nB Crowding out\nC Market rigging\nD Speculation",
+  "ms": "(a)\nKnowledge 2, Application 1, Analysis 1\nKnowledge/understanding of one role (2):\nE.g.\n• To lend to businesses and individuals (1) to help\nthem consume/invest (1)\n• To facilitate the exchange of goods and services\n(1) increasing consumption/investment (1)\n• To facilitate saving (1) so consumers can build up\nmoney to purchase expensive items (1)\n• To provide forward markets (1) so firms can\nreduce the risk of fluctuating prices (1)\n• To provide a market for equities (1) so firms can\nseek investment from shareholders (1)\nApplication (1):\nA relevant reference to the data, e.g.\n• Many small businesses required a loan to help\nthem survive the downturn in the economy (1)\n• Interest rate of 2.5% for up to 6 years (1)\n• Up to £50,000 could be borrowed for up to 6\nyears (1)\nAnalysis (1):\nLinked development 1 mark for e.g.\n• Businesses will already have accounts, loans, etc.\nwith banks so the banks were in a position to\nquickly issue these loans to their customers (1)\n• Loans provided finance for firms suffering a drop\nin demand (1)\n• Loans allow firms to grow/expand more quickly\n(1)\n• Helps to boost AD/increase economic growth (1)\n• Firms can invest in innovation (1)\n• Increase in productivity (1)\n• Impact on housing market (1)\n• Importance of saving to help development (1)\n• Bonds to finance government spending (1)\n(4)\n\n(b)\nThe only correct answer is A\nB is not correct because this would not lead to crowding out\nC is not correct because there is no suggestion of market\nrigging taking place\nD is not correct because there is no suggestion of\nspeculation here (1)",
   "erKey": "5a",
   "paper": 2,
   "series": "June 2022",
   "theme": 4,
   "themeConfident": false,
+  "year": 2,
   "id": "p2-june2022-q5"
  },
  {
@@ -2461,7 +2615,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2022",
   "theme": 4,
-  "themeConfident": false,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2022-q6a"
  },
  {
@@ -2470,12 +2625,13 @@ const ECO_QUESTIONS = [
   "marks": 8,
   "section": "B",
   "text": "With reference to Figure 1 and Extract A, examine two likely causes of\nincome inequality within the UK.",
-  "ms": "Knowledge 2, Application 2, Analysis 2,\nEvaluation 2\nKnowledge/Understanding:\nRelevant reasons identified (1+1), e.g.\n• Level/quality of education\n• Level/quality of healthcare\n• Level of infrastructure spending\n• Unequal access to job opportunities across the\nUK\n• Progressive nature of taxation\n• Degree of employment protection\n• Strength of trade unions\n• Differing wage rates\n• Globalisation\nAnalysis:\nLinked development of each factor (1+1), e.g. in the\nUK:\n• Less education means the workforce may be less\nskilled & therefore receive lower average pay (1)\n• Relative lack of healthcare means people spend\nmore time absent from work with illnesses and\ntherefore reduces productivity (1)\n• Relative lack of infrastructure makes it harder for\npeople to get to work/will discourage firms from\ninvesting in the region (1)\n• Jobs in London/South-East may be more skilled\nand therefore higher paying when compared to\njobs in the North-East (1)\nApplication:\n2 marks (1+1 or 2), e.g.\n• Gross disposable household income was £19 000-\n£21 000 in London (1)\n• Gross disposable household income was £13 000 -\n£13 999 in North East (1)\n• UK’s Gini coefficient is 0.34\nEvaluation: 2 marks for two evaluative comments OR 2\nmarks for identification and linked development of one\ncomment\nEvaluative comments (1+1 or 2), e.g.\n• Infrastructure investment in the North of\nEngland is increasing so this may change in\nthe future\n• Education levels across the UK are improving\n• Higher education may not lead to higher\n(8) incomes- depends on degree/qualifications\n• Relative significance of different reasons\n• It is hard to be definite about specific reasons\nas it is a combination of factors that causes\ninequality",
+  "ms": "Knowledge 2, Application 2, Analysis 2,\nEvaluation 2\nKnowledge/Understanding:\nRelevant reasons identified (1+1), e.g.\n• Level/quality of education\n• Level/quality of healthcare\n• Level of infrastructure spending\n• Unequal access to job opportunities across the\nUK\n• Progressive nature of taxation\n• Degree of employment protection\n• Strength of trade unions\n• Differing wage rates\n• Globalisation\nAnalysis:\nLinked development of each factor (1+1), e.g. in the\nUK:\n• Less education means the workforce may be less\nskilled & therefore receive lower average pay (1)\n• Relative lack of healthcare means people spend\nmore time absent from work with illnesses and\ntherefore reduces productivity (1)\n• Relative lack of infrastructure makes it harder for\npeople to get to work/will discourage firms from\ninvesting in the region (1)\n• Jobs in London/South-East may be more skilled\nand therefore higher paying when compared to\njobs in the North-East (1)\nApplication:\n2 marks (1+1 or 2), e.g.\n• Gross disposable household income was £19 000-\n£21 000 in London (1)\n• Gross disposable household income was £13 000 -\n£13 999 in North East (1)\n• UK’s Gini coefficient is 0.34\nEvaluation: 2 marks for two evaluative comments OR 2\nmarks for identification and linked development of one\ncomment\nEvaluative comments (1+1 or 2), e.g.\n• Infrastructure investment in the North of\nEngland is increasing so this may change in\nthe future\n• Education levels across the UK are improving\n• Higher education may not lead to higher\n(8)\nincomes- depends on degree/qualifications\n• Relative significance of different reasons\n• It is hard to be definite about specific reasons\nas it is a combination of factors that causes\ninequality",
   "erKey": "6b",
   "paper": 2,
   "series": "June 2022",
-  "theme": 4,
-  "themeConfident": true,
+  "theme": 2,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2022-q6b"
  },
  {
@@ -2488,8 +2644,9 @@ const ECO_QUESTIONS = [
   "erKey": "6c",
   "paper": 2,
   "series": "June 2022",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2022-q6c"
  },
  {
@@ -2498,12 +2655,13 @@ const ECO_QUESTIONS = [
   "marks": 12,
   "section": "B",
   "text": "With reference to Extract C and your own knowledge, discuss methods the\nUK government could use to increase tax revenue.",
-  "ms": "Knowledge 2, Application 2, Analysis 4\nMethods might include e.g.:\nEither from Extract C:\n• Increasing tax on houses: Housing is a large part of\nthe UK economy and many people may feel this is\nin need of an update to reflect changing house\nprices since 1991. This could also provide a good\nopportunity to increase overall revenue from the tax\n• A one-off wealth tax: This would raise a very large\namount of money, £260 billion, and would focus on\nthose with the most wealth. Only one-off so\nshouldn’t have any long-term impacts\n• Increasing corporation tax: The UK has a very low\nrate of corporation tax, so it would make sense to\nraise it without risking too many firms leaving the\nUK whilst still raising extra revenue yearly going\nforward- e.g. £17.2 billion in 2025-26\nOr other possible methods e.g.:\n• Cutting corporation tax to incentivise firms to\nincrease investments in UK/attract FDI leads to\nincrease in tax revenue for the government.\nPerhaps with reference to Laffer curve.\n• Cutting income tax to incentivise workers to work\nharder/less incentive to avoid tax leads to increase\nin tax revenue for the government. Perhaps with\nreference to Laffer curve.\n(8)\nNB:\nTo achieve level 3 at least one reference\nmust be made to Extract C somewhere in\nthe whole answer\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but the answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
+  "ms": "Knowledge 2, Application 2, Analysis 4\nMethods might include e.g.:\nEither from Extract C:\n• Increasing tax on houses: Housing is a large part of\nthe UK economy and many people may feel this is\nin need of an update to reflect changing house\nprices since 1991. This could also provide a good\nopportunity to increase overall revenue from the tax\n• A one-off wealth tax: This would raise a very large\namount of money, £260 billion, and would focus on\nthose with the most wealth. Only one-off so\nshouldn’t have any long-term impacts\n• Increasing corporation tax: The UK has a very low\nrate of corporation tax, so it would make sense to\nraise it without risking too many firms leaving the\nUK whilst still raising extra revenue yearly going\nforward- e.g. £17.2 billion in 2025-26\nOr other possible methods e.g.:\n• Cutting corporation tax to incentivise firms to\nincrease investments in UK/attract FDI leads to\nincrease in tax revenue for the government.\nPerhaps with reference to Laffer curve.\n• Cutting income tax to incentivise workers to work\nharder/less incentive to avoid tax leads to increase\nin tax revenue for the government. Perhaps with\nreference to Laffer curve.\n(8)\nNB:\nTo achieve level 3 at least one reference\nmust be made to Extract C somewhere in\nthe whole answer\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
   "erKey": "6d",
   "paper": 2,
   "series": "June 2022",
-  "theme": null,
-  "themeConfident": false,
+  "theme": 4,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2022-q6d"
  },
  {
@@ -2512,12 +2670,13 @@ const ECO_QUESTIONS = [
   "marks": 15,
   "section": "B",
   "text": "With reference to Extract B, discuss the benefits of an increase in infrastructure\nspending on the UK economy. Use an aggregate demand and aggregate supply\ndiagram to support your answer.",
-  "ms": "Knowledge 3, Application 3, Analysis 3\n• People can access jobs further away from where\nthey live, reducing unemployment\n• Improved ability to transport goods around the\ncountry and/or abroad quicker/cheaper\n• Greater injections into the circular flow leading to\na multiplier effect\n• Helping to reduce inequality across the country\nby focusing spending on poorer areas of the\ncountry, e.g., new train station in Wales, leading\nto new businesses, jobs, etc.\n• Diagram showing an increase in AD and/or AS,\ne.g.:\nNB A correct AD/AS diagram is needed for KAA\nlevel 3\nReference to Extract B is needed for KAA level 3\n(9) Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
+  "ms": "Knowledge 3, Application 3, Analysis 3\n• People can access jobs further away from where\nthey live, reducing unemployment\n• Improved ability to transport goods around the\ncountry and/or abroad quicker/cheaper\n• Greater injections into the circular flow leading to\na multiplier effect\n• Helping to reduce inequality across the country\nby focusing spending on poorer areas of the\ncountry, e.g., new train station in Wales, leading\nto new businesses, jobs, etc.\n• Diagram showing an increase in AD and/or AS,\ne.g.:\nNB A correct AD/AS diagram is needed for KAA\nlevel 3\nReference to Extract B is needed for KAA level 3\n(9)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
   "erKey": "6e",
   "paper": 2,
   "series": "June 2022",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2022-q6e"
  },
  {
@@ -2525,13 +2684,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "Both China and the United States have been gradually increasing the tariffs imposed\non each other’s exports as their trade dispute continues. The IMF estimated that the\ntrade dispute between China and the United States would reduce global GDP growth\nby 0.8 percentage points by the end of 2020. Evaluate the likely impact of an increase in protectionism on the global economy.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nLikely impact includes:\n• Higher prices for consumers, especially on\ngoods/services that can’t be produced\ndomestically, e.g. bananas in the UK, increasing\ninflation globally\n• Higher prices for consumers due to domestic\nfirms facing less competition from abroad\n• Less choice for consumers as imports become too\nexpensive\n• Fewer firms may decide to export due to\nincreased cost/bureaucracy to abide by, reducing\nglobal competition and therefore lower global\nGDP, higher global inflation\n• Reduction in comparative advantage globally\nleading to less productivity and less output\n• Deadweight welfare loss\nEvaluation might include e.g.:\n• Depends on levels of tariffs that countries\nintroduce\n• May only be short-term trade wars and countries\nsuch as US and China could agree new terms\n• WTO can enforce global trade rules to ensure\ncountries don’t distort international trade\n• Comparative advantage can encourage over-\ndependence for a country (perhaps primary\nproduct dependency)\n• Protection of domestic industries helps to protect\ndomestic employment and income, helping to\nreduce global inequality\n• Protection of infant industries to allow them time\nto grow and expand in order to benefit from\neconomies of scale to compete internationally\n• Protection of an economy from a foreign country\ndumping products on the country- loss of jobs,\noutput, etc.\nNB for KAA Level 4 candidates must refer to the\nglobal economy\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements of the question with evidence integrated\ninto the answer.\nAnalysis is clear and coherent, although it may lack balance.\nChains of reasoning are developed but the answer may lack\nbalance.\nLevel 4 13–16 Demonstrates precise knowledge and understanding of the\nconcepts, ",
+  "text": "Both China and the United States have been gradually increasing the tariffs imposed\non each other’s exports as their trade dispute continues. The IMF estimated that the\ntrade dispute between China and the United States would reduce global GDP growth\nby 0.8 percentage points by the end of 2020.\n\nEvaluate the likely impact of an increase in protectionism on the global economy.",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nLikely impact includes:\n• Higher prices for consumers, especially on\ngoods/services that can’t be produced\ndomestically, e.g. bananas in the UK, increasing\ninflation globally\n• Higher prices for consumers due to domestic\nfirms facing less competition from abroad\n• Less choice for consumers as imports become too\nexpensive\n• Fewer firms may decide to export due to\nincreased cost/bureaucracy to abide by, reducing\nglobal competition and therefore lower global\nGDP, higher global inflation\n• Reduction in comparative advantage globally\nleading to less productivity and less output\n• Deadweight welfare loss\nEvaluation might include e.g.:\n• Depends on levels of tariffs that countries\nintroduce\n• May only be short-term trade wars and countries\nsuch as US and China could agree new terms\n• WTO can enforce global trade rules to ensure\ncountries don’t distort international trade\n• Comparative advantage can encourage over-\ndependence for a country (perhaps primary\nproduct dependency)\n• Protection of domestic industries helps to protect\ndomestic employment and income, helping to\nreduce global inequality\n• Protection of infant industries to allow them time\nto grow and expand in order to benefit from\neconomies of scale to compete internationally\n• Protection of an economy from a foreign country\ndumping products on the country- loss of jobs,\noutput, etc.\nNB for KAA Level 4 candidates must refer to the\nglobal economy\n(25)\nKnowledge, application",
   "erKey": "7",
   "paper": 2,
   "series": "June 2022",
   "theme": 4,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2022-q7"
  },
  {
@@ -2539,13 +2699,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "With global economic growth slowing and inequality rising, the case against\nglobalisation is strengthening. But there are also many benefits to globalisation.\nGlobal trade and international trade agreements allow countries to focus on their\nstrengths and share expertise, as well as reducing risk through diversification. Evaluate the likely impact of globalisation on the global economy.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nLikely impact includes:\n• Increased global trade\n• Increased global output with reference to\ncomparative advantage\n• Increased incomes in developing countries due to\ngrowth of export industries/investment from\nMNCs\n• Increased global competition between firms\nleading to lower prices for consumers globally\n• Increased supply globally leading to less global\ninflationary pressures\n• Growth of multinational corporations\n• Increased migration reducing unemployment\nglobally as people move to where jobs are\navailable/where their skills are in need\n• Diagrammatic analysis e.g., using PPF\nEvaluation might include e.g.:\n• Growth of protectionism may restrict global trade\nand/or limit comparative advantage\n• Problems with over-reliance on imports\nencouraging more firms/countries to look at\ndomestic production\n• Increased production in countries with lower\nlabour costs may help to reduce global inequality\n• Greater global integration of supply chains\nincreases chances of delays in transport/delivery\naround the world\n• Increased inequality as some industries close\ndown due to competition from abroad\n• Structural unemployment in some countries if\nindustries more abroad\n• Increased exploitation by MNCs of workers in\ncountries with weak regulations\n• Increased pollution from increase in transport of\ngoods around the world\nNB for KAA Level 4 candidates must refer to the\nglobal economy\n(25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements of the question with evidence integrated\ninto the answer.\nAnalysis is clear and coherent, although it may lack balance.\nChains of reasoning are developed but the answer may lack\nbalance.\nLevel 4 13–16 Demonstrates precise knowledge and understanding of the\nconcepts, principles and models.\nAbilit",
+  "text": "With global economic growth slowing and inequality rising, the case against\nglobalisation is strengthening. But there are also many benefits to globalisation.\nGlobal trade and international trade agreements allow countries to focus on their\nstrengths and share expertise, as well as reducing risk through diversification.\n\nEvaluate the likely impact of globalisation on the global economy.",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nLikely impact includes:\n• Increased global trade\n• Increased global output with reference to\ncomparative advantage\n• Increased incomes in developing countries due to\ngrowth of export industries/investment from\nMNCs\n• Increased global competition between firms\nleading to lower prices for consumers globally\n• Increased supply globally leading to less global\ninflationary pressures\n• Growth of multinational corporations\n• Increased migration reducing unemployment\nglobally as people move to where jobs are\navailable/where their skills are in need\n• Diagrammatic analysis e.g., using PPF\nEvaluation might include e.g.:\n• Growth of protectionism may restrict global trade\nand/or limit comparative advantage\n• Problems with over-reliance on imports\nencouraging more firms/countries to look at\ndomestic production\n• Increased production in countries with lower\nlabour costs may help to reduce global inequality\n• Greater global integration of supply chains\nincreases chances of delays in transport/delivery\naround the world\n• Increased inequality as some industries close\ndown due to competition from abroad\n• Structural unemployment in some countries if\nindustries more abroad\n• Increased exploitation by MNCs of workers in\ncountries with weak regulations\n• Increased pollution from increase in transport of\ngoods around the world\nNB for KAA Level 4 candidates must refer to the\nglobal economy\n(25)\nKnowledge, application and analysis\nLevel Mark Desc",
   "erKey": "8",
   "paper": 2,
   "series": "June 2022",
-  "theme": 4,
-  "themeConfident": true,
+  "theme": 2,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2022-q8"
  },
  {
@@ -2553,13 +2714,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "In September 2022 the Bank of England increased the base interest rate from\n1.75% to 2.25%. (a) Draw an aggregate demand and aggregate supply diagram to illustrate the likely\nimpact of an increase in the UK base interest rate on the average price level and\nreal output.\n(4)\n(b) Which one of the following is the most likely impact of an increase in the base\ninterest rate?\n(1)\nA decrease in the:\nA level of demand pull inflation\nB marginal propensity to save\nC rate of cyclical unemployment\nD value of the pound against the dollar",
-  "ms": "Knowledge 2, Application 2\nKnowledge/understanding:\nCorrect labels on axes and curves (1) and shift of curve(s)\n(1)\nApplication:\nCorrect change in price level (1) and fall in real output (1)\nFor example:\nN.B. Other AS curves are acceptable\nN.B. Decrease in AS also acceptable\n(4)",
+  "text": "In September 2022 the Bank of England increased the base interest rate from\n1.75% to 2.25%.\n\n(a) Draw an aggregate demand and aggregate supply diagram to illustrate the likely\nimpact of an increase in the UK base interest rate on the average price level and\nreal output.\n(4)\n(b) Which one of the following is the most likely impact of an increase in the base\ninterest rate?\n(1)\nA decrease in the:\nA level of demand pull inflation\nB marginal propensity to save\nC rate of cyclical unemployment\nD value of the pound against the dollar",
+  "ms": "(a)\nKnowledge 2, Application 2\nKnowledge/understanding:\nCorrect labels on axes and curves (1) and shift of curve(s)\n(1)\nApplication:\nCorrect change in price level (1) and fall in real output (1)\nFor example:\nN.B. Other AS curves are acceptable\nN.B. Decrease in AS also acceptable\n(4)\n\n(b)\nThe only correct answer is A\nB is not correct because higher interest rates would lead to\nan increase in marginal propensity to save\nC is not correct because unemployment would be likely to\nincrease as AD falls\nD is not correct because the pound would be likely to\nincrease in value as a higher interest rate attracts more\nflows of money to the UK (1)",
   "erKey": "1a",
   "paper": 2,
   "series": "June 2023",
   "theme": 2,
   "themeConfident": true,
+  "year": 1,
   "id": "p2-june2023-q1"
  },
  {
@@ -2567,13 +2729,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "and lowest in December 2020\nD will continue to rise but at a slower rate 5\n•••••••• (b) With reference to the chart on the previous page, explain one likely reason for the\nchange in the UK’s rate of unemployment.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n........................................................................................................................................................",
-  "ms": "The only correct answer is B\nA is not correct because this is a decrease in 1.4 percentage\npoints, not percentage\nC is not correct because the rate of unemployment was\nlowest in March 2022 and highest in December 2020\nD is not correct because the chart only shows historical data (1)",
+  "text": "and lowest in December 2020\nD will continue to rise but at a slower rate\n\n5\n••••••••\n\n(b) With reference to the chart on the previous page, explain one likely reason for the\nchange in the UK’s rate of unemployment.\n(4)",
+  "ms": "(a)\nThe only correct answer is B\nA is not correct because this is a decrease in 1.4 percentage\npoints, not percentage\nC is not correct because the rate of unemployment was\nlowest in March 2022 and highest in December 2020\nD is not correct because the chart only shows historical data (1)\n\n(b)\nKnowledge 2, Application 1, Analysis 1\nKnowledge/understanding (2) e.g.\n• Increase in AD (1) leading to an increase in\neconomic growth/production of goods & services\n(1)\n• Increase in consumption (1) increasing demand\nfor goods and services in the UK (1)\n• Increase in government spending (1) creating\nmore demand in the UK (1)\n• Depreciation of the pound (1) increasing demand\nfor UK exports (1)\n• Improved transport (1) so workers are more able\nto access jobs further away (1)\nApplication (1) e.g.\nA correct reference to the figure e.g.\n• Unemployment fell from 5.2% in December 2020\nto 3.8% in June 2022 (1)\n• Unemployment was at a low of approximately\n3.7% in March 2022 (1)\n• The trend in unemployment during the time\nperiod shown is downwards (1)\nAnalysis (1) e.g.\nLinked development 1 mark for e.g.\n• Firms will need to hire more staff to meet higher\ndemand (1)\n• Derived demand for labour (1)\n• Firms that previously struggled to recruit staff are\nnow available to fill those job vacancies (1)\n• Fall in the output gap (1) (4)",
   "erKey": "2a",
   "paper": 2,
   "series": "June 2023",
   "theme": 2,
   "themeConfident": false,
+  "year": 1,
   "id": "p2-june2023-q2"
  },
  {
@@ -2581,13 +2744,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "2022* 3.5%\n*2022 figures are forecast (a) Calculate the value of the total forecast GDP in 2022.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n............................................................................................................................................................................................................................................................................",
-  "ms": "Application 2\n2 198 473m X 1.035 (1)\n= 2 275 420m\nAnswer= 2 275 420m\nNB Award full marks for correct answer\nAllow range 2 275 419m to 2 280 000m (2)\nAllow 2.28 trillion (2)\nIf answer given without million units, then\nmaximum 1 mark\nNB Million units is not allowed if answer is written in the\ntable\n(2)",
+  "text": "2022* 3.5%\n*2022 figures are forecast\n\n(a) Calculate the value of the total forecast GDP in 2022.\n(2)\n\n(b) Explain one likely cost of UK real GDP falling by 9.9% in 2020.\n(2)\n\n7\n••••••••\n\n(c) Which one of the following is most likely to lead to an increase in potential\neconomic growth?\n(1)\nAn increase in:\nA consumption\nB costs of raw materials and energy\nC income tax\nD technological advances",
+  "ms": "(a)\nApplication 2\n2 198 473m X 1.035 (1)\n= 2 275 420m\nAnswer= 2 275 420m\nNB Award full marks for correct answer\nAllow range 2 275 419m to 2 280 000m (2)\nAllow 2.28 trillion (2)\nIf answer given without million units, then\nmaximum 1 mark\nNB Million units is not allowed if answer is written in the\ntable\n(2)\n\n(b)\nKnowledge 1, Analysis 1\nKnowledge:\nIdentification of one likely cost for 1 mark, e.g.\n• Increase in unemployment (1)\n• Reduction in government tax revenue (1)\n• Reduction in investment from firms (1)\n• Fall in living standards (1)\nAnalysis:\nLinked development 1 mark for e.g.\n• As there is less demand so firms will look to reduce\ntheir costs (1)\n• From consumers working less/firms making less\nprofits (1)\n• Due to a drop in demand for goods and services\n(1)\n• Diagram e.g. showing fall in AD (1)\n(2)\n\n(c)\nThe only correct answer is D\nA is not correct because this would cause AD to increase,\nleading to an increase in actual growth\nB is not correct because this would cause SRAS to fall\nC is not correct because this would lead to a reduction in\neconomic growth (1)",
   "erKey": "3a",
   "paper": 2,
   "series": "June 2023",
   "theme": 2,
-  "themeConfident": false,
+  "themeConfident": true,
+  "year": 1,
   "id": "p2-june2023-q3"
  },
  {
@@ -2595,13 +2759,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "2016 2018 2020\n87.0\n86.5\n86.0\n85.5\n85.0\n84.5\n84.0\n83.5\n83.0\n0\n% (a) Which one of the following is an example of consumption?\n(1)\nA Construction of a new cycle lane\nB Expansion of Heathrow Airport\nC New school buildings\nD Purchase of new clothes 9\n•••••••• (b) With reference to the chart on the previous page, explain the likely effect of a\nfall in the marginal propensity to consume on the level of real GDP. Refer to the\nmultiplier in your answer.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n................................................................................................................................................................................................",
-  "ms": "The only correct answer is D\nA is not correct because this is an example of government\nspending\nB is not correct because this is an example of investment\nC is not correct because this is an example of government\nspending (1)",
+  "text": "2016 2018 2020\n87.0\n86.5\n86.0\n85.5\n85.0\n84.5\n84.0\n83.5\n83.0\n0\n%\n\n(a) Which one of the following is an example of consumption?\n(1)\nA Construction of a new cycle lane\nB Expansion of Heathrow Airport\nC New school buildings\nD Purchase of new clothes\n\n9\n••••••••\n\n(b) With reference to the chart on the previous page, explain the likely effect of a\nfall in the marginal propensity to consume on the level of real GDP. Refer to the\nmultiplier in your answer.\n(4)",
+  "ms": "(a)\nThe only correct answer is D\nA is not correct because this is an example of government\nspending\nB is not correct because this is an example of investment\nC is not correct because this is an example of government\nspending (1)\n\n(b)\nApplication 3, Analysis 1\nApplication:\nIdentification of relevant application for 3 marks e.g.\n• Level of real GDP is likely to fall (could show on a\ndiagram) (1)\nAND\n• UK consumption, as a percentage of GDP, has fallen\nfrom 86.5% in 2009 (1) to 83% in 2017 (1)\n• Diagram/formula/explanation showing multiplier (1)\nAnalysis:\nLinked development 1 mark for e.g.\n• Development of multiplier formula/explanation\ne.g. second round effects (1)\n• Reduction in the value of the multiplier (1)\n• An increase in withdrawals from the circular flow\nof income (1)\n• Other factors may change e.g. savings,\ngovernment spending (1) (4)",
   "erKey": "4a",
   "paper": 2,
   "series": "June 2023",
   "theme": 2,
-  "themeConfident": false,
+  "themeConfident": true,
+  "year": 1,
   "id": "p2-june2023-q4"
  },
  {
@@ -2609,13 +2774,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "In 2021, the US total GDP was $23 trillion and national debt was $28.4 trillion. (a) Calculate the US national debt in 2021 as a percentage of GDP.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.........................................................................................................................................................................................................................",
-  "ms": "Application 2\n28.4 • 23 (1) = 1.23\n1.23 X 100 = 123% (1)\nAnswer= 123\nN.B. Award full marks for correct answer\nAllow range 123 to 123.5 (2)",
+  "text": "In 2021, the US total GDP was $23 trillion and national debt was $28.4 trillion.\n\n(a) Calculate the US national debt in 2021 as a percentage of GDP.\n(2)\n\n(b) Explain the relationship between a fiscal deficit and the national debt.\n(2)\n\n(c) Which one of the following is the most likely consequence of an increase in the\nUS national debt?\n(1)\nAn increase in:\nA crowding out\nB inequality\nC poverty\nD unemployment",
+  "ms": "(a)\nApplication 2\n28.4 • 23 (1) = 1.23\n1.23 X 100 = 123% (1)\nAnswer= 123\nN.B. Award full marks for correct answer\nAllow range 123 to 123.5 (2)\n\n(b)\nKnowledge 2\nKnowledge/understanding (2):\n1 mark for e.g.:\n• There is a positive relationship (1)\n• Fiscal deficit is where government spending is\ngreater than tax revenue (1)\n• National debt is the total accumulated debt of the\ngovernment (1)\n1 mark for explanation e.g.:\n• A fiscal deficit means that a country’s national\ndebt will be increasing (1)\n• A fiscal deficit will be adding to the total value of\na country’s national debt (1)\n• Higher debt means increased government\nspending on interest payments (1) (2)\n\n(c)\nThe only correct answer is A\nB is not correct because inequality would be more likely to\nfall as government spending may be higher\nC is not correct because poverty would be more likely to fall\nas government spending may be higher\nD is not correct because unemployment would be likely to\nbe lower due to more injections from government spending\ncompared to withdrawals (1)",
   "erKey": "5a",
   "paper": 2,
   "series": "June 2023",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2023-q5"
  },
  {
@@ -2624,12 +2790,13 @@ const ECO_QUESTIONS = [
   "marks": 5,
   "section": "B",
   "text": "With reference to Extract A, explain what is meant by a ‘regional trade agreement’\n(Extract A, line 7).",
-  "ms": "Knowledge 2, Application 2, Analysis 1\nKnowledge/Analysis: Up to 3 marks for, e.g.\n• Countries agree to reduce trade restrictions\nbetween members; countries aiming to\npromote/increase trade between each other (1)\n• Trade liberalisation between countries (1)\n• Will lead to reducing tariffs between member\ncountries (1)\n• Reduced subsidies (1)\n• Reduced quotas (1)\n• Will lead to reduced non-tariff barriers (1)\n• Will lead to trade creation e.g. diagram (1)\nApplication (2): Up to 2 marks for reference to Extract\nA and/or own knowledge, for e.g.\n• African Continental Free Trade Area (AfCFTA) (1)\n• Agreed by 41 of Africa’s 55 countries (1)\n• Could boost intra-Africa trade by 15% to 25% (1)\n• A diagram e.g. showing a fall in tariffs (1) (5)",
+  "ms": "Knowledge 2, Application 2, Analysis 1\nKnowledge/Analysis: Up to 3 marks for, e.g.\n• Countries agree to reduce trade restrictions\nbetween members; countries aiming to\npromote/increase trade between each other (1)\n• Trade liberalisation between countries (1)\n• Will lead to reducing tariffs between member\ncountries (1)\n• Reduced subsidies (1)\n• Reduced quotas (1)\n• Will lead to reduced non-tariff barriers (1)\n• Will lead to trade creation e.g. diagram (1)\nApplication (2): Up to 2 marks for reference to Extract\nA and/or own knowledge, for e.g.\n• African Continental Free Trade Area (AfCFTA) (1)\n• Agreed by 41 of Africa’s 55 countries (1)\n• Could boost intra-Africa trade by 15% to 25% (1)\n• A diagram e.g. showing a fall in tariffs (1)\n(5)",
   "erKey": "6a",
   "paper": 2,
   "series": "June 2023",
   "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-june2023-q6a"
  },
  {
@@ -2642,8 +2809,9 @@ const ECO_QUESTIONS = [
   "erKey": "6b",
   "paper": 2,
   "series": "June 2023",
-  "theme": null,
+  "theme": 4,
   "themeConfident": false,
+  "year": 2,
   "id": "p2-june2023-q6b"
  },
  {
@@ -2652,12 +2820,13 @@ const ECO_QUESTIONS = [
   "marks": 12,
   "section": "B",
   "text": "Discuss the impact of improved transport links between African countries on\neconomic growth rates.",
-  "ms": "Knowledge 2, Application 2, Analysis 4\nLikely impacts include:\n• There are currently very low levels of intra-Africa\ntrade (18% in 2020) and so there is large scope\nto develop economies by increasing trade, leading\nto an increase in economic growth\n• If firms can move their goods more quickly across\nborders they will be more able and willing to export,\nboosting economic growth\n• Cost of imports from other countries falls, reducing\ninflation rates/consumers can benefit from cheaper\ngoods & services\n• An increase in trade will lead to an increase in\ndemand for workers, boosting employment and\ntherefore economic growth\n• Increase in LRAS of economy as infrastructure\nimproves\n• Increase in productivity e.g. due to improved\ngeographical mobility of labour or larger markets\nlowering unit costs\n• Increased foreign direct investment (8)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated. Economic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
+  "ms": "Knowledge 2, Application 2, Analysis 4\nLikely impacts include:\n• There are currently very low levels of intra-Africa\ntrade (18% in 2020) and so there is large scope\nto develop economies by increasing trade, leading\nto an increase in economic growth\n• If firms can move their goods more quickly across\nborders they will be more able and willing to export,\nboosting economic growth\n• Cost of imports from other countries falls, reducing\ninflation rates/consumers can benefit from cheaper\ngoods & services\n• An increase in trade will lead to an increase in\ndemand for workers, boosting employment and\ntherefore economic growth\n• Increase in LRAS of economy as infrastructure\nimproves\n• Increase in productivity e.g. due to improved\ngeographical mobility of labour or larger markets\nlowering unit costs\n• Increased foreign direct investment\n(8)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
   "erKey": "6c",
   "paper": 2,
   "series": "June 2023",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2023-q6c"
  },
  {
@@ -2666,12 +2835,13 @@ const ECO_QUESTIONS = [
   "marks": 10,
   "section": "B",
   "text": "Assess two likely benefits of debt relief to Angola. Refer to Extract B in\nyour answer.",
-  "ms": "Knowledge 2, Application 2, Analysis 2,\nPotential benefits include:\n• Reducing the amount of debt interest repayments\nthat Angola has to make\n• Less need for Angola to raise taxes to pay off debts\n• Opportunity cost explanation e.g. the Angolan\ngovernment will have more money to spend on\nimproving public services\n• Reduce savings gap: Harrod-Domar model\n• Reduce foreign currency gap\n• Reducing absolute poverty in Angola if less money\nhas to be spent repaying back the debt\n• Can use the available funds for investment in\ninfrastructure; essential for industrialisation/\nincrease the mobility of labour\n• Conditionalities/guidance attached to the debt\nrelief might improve governance\n• Helps increase the level of human capital through\nresources provided for education, healthcare that\nwould increase productivity and FDI inflows\n• Increased business confidence might lead to\nincreased investment\nNB: for Level 3 candidates must refer to Extract B\nin their answer\nNB: for a Level 3 answer there must be two\nbenefits (6)\nLevel Mark\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no link between causes and\nconsequences.\nLevel 2 3–4 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or the answer may lack balance.\nLevel 3 5–6 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are applied appropriately to the broad elements of the question.",
+  "ms": "Knowledge 2, Application 2, Analysis 2,\nPotential benefits include:\n• Reducing the amount of debt interest repayments\nthat Angola has to make\n• Less need for Angola to raise taxes to pay off debts\n• Opportunity cost explanation e.g. the Angolan\ngovernment will have more money to spend on\nimproving public services\n• Reduce savings gap: Harrod-Domar model\n• Reduce foreign currency gap\n• Reducing absolute poverty in Angola if less money\nhas to be spent repaying back the debt\n• Can use the available funds for investment in\ninfrastructure; essential for industrialisation/\nincrease the mobility of labour\n• Conditionalities/guidance attached to the debt\nrelief might improve governance\n• Helps increase the level of human capital through\nresources provided for education, healthcare that\nwould increase productivity and FDI inflows\n• Increased business confidence might lead to\nincreased investment\nNB: for Level 3 candidates must refer to Extract B\nin their answer\nNB: for a Level 3 answer there must be two\nbenefits\n(6)\nLevel Mark\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no link between causes and\nconsequences.\nLevel 2 3–4 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or the answer may lack balance.\nLevel 3 5–6 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are applied appropriately to the broad\nelements of the question.",
   "erKey": "6d",
   "paper": 2,
   "series": "June 2023",
   "theme": 4,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2023-q6d"
  },
  {
@@ -2680,12 +2850,13 @@ const ECO_QUESTIONS = [
   "marks": 15,
   "section": "B",
   "text": "Discuss market-orientated strategies the Angolan government could use to\nimprove development.",
-  "ms": "Knowledge 3, Application 3, Analysis 3\nExplanation of market-based policies the Angolan\ngovernment could use to improve development, e.g.\n• Privatisation of state-owned firms to encourage\ninnovation and competition in the economy\n• Tax cuts e.g. business taxes to encourage FDI\n• Selling shares in the state oil company to provide\nfunds for investment and growth\n• Policies to increase competition between firms,\nsuch as restrictions on mergers, to boost\ncompetitiveness\n• Reforming the labour market, e.g. reducing cost/\npaperwork of immigration, increasing the size/\nproductivity of labour market\n• Policies that will make it easier for foreign direct\ninvestment into Angola\n• Deregulation of financial sector to encourage\nmore FDI\n• Microfinance schemes\n• Trade liberalisation\n• Removing government subsidies to increase\ncompetition\n• Removal of exchange rate controls/move to a\nfloating exchange rate\n• Development of tourism market e.g.\nderegulation, removal of visas\nNB For a Level 3 answer candidates must refer to\ndevelopment and market-orientated strategies\n(9)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic problems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
+  "ms": "Knowledge 3, Application 3, Analysis 3\nExplanation of market-based policies the Angolan\ngovernment could use to improve development, e.g.\n• Privatisation of state-owned firms to encourage\ninnovation and competition in the economy\n• Tax cuts e.g. business taxes to encourage FDI\n• Selling shares in the state oil company to provide\nfunds for investment and growth\n• Policies to increase competition between firms,\nsuch as restrictions on mergers, to boost\ncompetitiveness\n• Reforming the labour market, e.g. reducing cost/\npaperwork of immigration, increasing the size/\nproductivity of labour market\n• Policies that will make it easier for foreign direct\ninvestment into Angola\n• Deregulation of financial sector to encourage\nmore FDI\n• Microfinance schemes\n• Trade liberalisation\n• Removing government subsidies to increase\ncompetition\n• Removal of exchange rate controls/move to a\nfloating exchange rate\n• Development of tourism market e.g.\nderegulation, removal of visas\nNB For a Level 3 answer candidates must refer to\ndevelopment and market-orientated strategies\n(9)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
   "erKey": "6e",
   "paper": 2,
   "series": "June 2023",
   "theme": 4,
   "themeConfident": false,
+  "year": 2,
   "id": "p2-june2023-q6e"
  },
  {
@@ -2693,13 +2864,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "In 2022 the value of UK exports fell by 14% compared with 2020. In contrast, the\nglobal average increase in exports was 8.2% over the same time period. The UK’s\ncompetitiveness also fell, dropping five places from 18th in 2021 to 23rd in 2022 in\nthe world competitiveness rankings.\n(Sources: adapted from https://www.ft.com/content/021c629d-5853-4111-9600-\nab5f0eb65a35 and https://www.imd.org/centers/world-competitiveness-center/rankings/\nworld-competitiveness)\nEvaluate macroeconomic policies that could be used to increase international\ncompetitiveness in the UK’s export markets.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nPolicies that could be used to increase international\ncompetitiveness include:\n• Reducing business taxes to encourage an increase\nin investment in improving productivity\n• Lowering income taxes or other taxes to encourage\nentrepreneurs from abroad to move to the UK\n• Increased government spending on education to\ncreate a more skilled and therefore more productive\nworkforce\n• Increased infrastructure spending to improve the\ngeographical mobility of workforce\n• Increased immigration to fill shortages in the labour\nmarket holding back firms from investing in expansion\n• Reduction in non-tariff barriers to trade to make it\neasier and cheaper for UK firms to export their goods\nand services\n• Subsidies to domestic producers to reduce their costs\nof production, enabling them to charge lower prices\nand increase their competitiveness\n• Allowing the currency to depreciate e.g. through lower\ninterest rates\n• Trade agreements leading to removal of protectionist\nbarriers against exports such as tariffs or non-tariff\nbarriers\n• Reduce unit labour costs e.g. freeze in minimum\nwage\n• Increased deregulation of businesses\n• Improving ease of doing business e.g. simplify tax\nregulations\nEvaluation of these policies could include:\n• Reduction in business taxes would leave the\ngovernment with less money to spend on other\nthings such as education or infrastructure that\nmay be necessary to improve competitiveness\n• Less tax revenue will also increase fiscal deficit/\nnational debt which may reduce confidence in the\nUK economy\n• Spending on education/infrastructure has a very\nlong time lag- students need to work through the\neducation system/construction projects take a\nlong time from initial idea through to planning\nand opening, can be decades\n• Immigrants may not wish to work in the UK,\ndepending on other factors such as wages, quality of public services, etc.\n• Reduction in non-tariff barriers requires making\ntrade agreements with foreign countries/trading\nblocs such as the EU which can be very time-\nconsuming\n• Deregulation may lead to unintended\nconsequences e.g. monopoly power of firms\n• Increased inequality from tax changes (25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge ",
+  "text": "In 2022 the value of UK exports fell by 14% compared with 2020. In contrast, the\nglobal average increase in exports was 8.2% over the same time period. The UK’s\ncompetitiveness also fell, dropping five places from 18th in 2021 to 23rd in 2022 in\nthe world competitiveness rankings.\n\nEvaluate macroeconomic policies that could be used to increase international\ncompetitiveness in the UK’s export markets.",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nPolicies that could be used to increase international\ncompetitiveness include:\n• Reducing business taxes to encourage an increase\nin investment in improving productivity\n• Lowering income taxes or other taxes to encourage\nentrepreneurs from abroad to move to the UK\n• Increased government spending on education to\ncreate a more skilled and therefore more productive\nworkforce\n• Increased infrastructure spending to improve the\ngeographical mobility of workforce\n• Increased immigration to fill shortages in the labour\nmarket holding back firms from investing in expansion\n• Reduction in non-tariff barriers to trade to make it\neasier and cheaper for UK firms to export their goods\nand services\n• Subsidies to domestic producers to reduce their costs\nof production, enabling them to charge lower prices\nand increase their competitiveness\n• Allowing the currency to depreciate e.g. through lower\ninterest rates\n• Trade agreements leading to removal of protectionist\nbarriers against exports such as tariffs or non-tariff\nbarriers\n• Reduce unit labour costs e.g. freeze in minimum\nwage\n• Increased deregulation of businesses\n• Improving ease of doing business e.g. simplify tax\nregulations\nEvaluation of these policies could include:\n• Reduction in business taxes would leave the\ngovernment with less money to spend on other\nthings such as education or infrastructure that\nmay be necessary to improve competitiveness\n• Less tax revenue will also incr",
   "erKey": "7",
   "paper": 2,
   "series": "June 2023",
-  "theme": 4,
+  "theme": 2,
   "themeConfident": false,
+  "year": 1,
   "id": "p2-june2023-q7"
  },
  {
@@ -2707,13 +2879,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "UK inflation, as measured by the CPI, rose to 10.1% in the 12 months to July 2022,\ncompared to 2.0% in the 12 months to July 2021. Evaluate macroeconomic policies, apart from monetary policy, the UK government\ncould use to reduce inflation.",
+  "text": "UK inflation, as measured by the CPI, rose to 10.1% in the 12 months to July 2022,\ncompared to 2.0% in the 12 months to July 2021.\n\nEvaluate macroeconomic policies, apart from monetary policy, the UK government\ncould use to reduce inflation.",
   "ms": "",
   "erKey": "8",
   "paper": 2,
   "series": "June 2023",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2023-q8"
  },
  {
@@ -2721,13 +2894,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Q1 Q2 Q3\n% (a) With reference to the chart above, which one of the following is correct?\n(1)\nUK household savings as a percentage of household disposable income:\nA fell in 2015\nB fell throughout the time period shown\nC were the highest in Q1 2017\nD were the highest in Q2 2020 3\n•••••••• (b) In Q4 of 2015 average household disposable income was £26 300.\nCalculate the total amount of money saved by the average household in Q4\nof 2015.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.............................................................................................................................................................................................................",
-  "ms": "The only correct answer is D\nA is not correct because household savings rose in 2015\nB is not correct because household savings fluctuated\nduring the time period shown\nC is not correct because household savings were the lowest\nin 2017\n(1)",
+  "text": "Q1 Q2 Q3\n%\n\n(a) With reference to the chart above, which one of the following is correct?\n(1)\nUK household savings as a percentage of household disposable income:\nA fell in 2015\nB fell throughout the time period shown\nC were the highest in Q1 2017\nD were the highest in Q2 2020\n\n3\n••••••••\n\n(b) In Q4 of 2015 average household disposable income was £26 300.\nCalculate the total amount of money saved by the average household in Q4\nof 2015.\n(2)\n\n(c) Explain one likely reason for the change in total household savings from Q1 2020\nto Q2 2020.\n(2)",
+  "ms": "(a)\nThe only correct answer is D\nA is not correct because household savings rose in 2015\nB is not correct because household savings fluctuated\nduring the time period shown\nC is not correct because household savings were the lowest\nin 2017\n(1)\n\n(b)\nApplication 2\nUK household savings in quarter 4 of 2015 is 10% (1)\n10% of £26 300 = £2 630 (1)\nNB Award 2 marks for 2 630 (2)\n\n(c)\nKnowledge 1, Analysis 1\nKnowledge/understanding (1): e.g.\n• Reduction in consumer confidence\n• Consumers reluctant to spend\n• Fall in incomes / recession\n• Global health crisis\nAnalysis (1):\nLinked development 1 mark for e.g.\n• Due to global health crisis consumers are\nunwilling/ unable to spend\n• Consumers are concerned about losing their job and\nso unwilling/unable to spend\n• Rise in unemployment\nNB You may award a rise in interest rates (2)",
   "erKey": "1a",
   "paper": 2,
   "series": "June 2024",
   "theme": 2,
   "themeConfident": false,
+  "year": 1,
   "id": "p2-june2024-q1"
  },
  {
@@ -2735,13 +2909,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "% (a) Which one of the following is the percentage point fall in investment between\nApril 2020 and July 2020?\n(1)\nA 0.1\nB 0.6\nC 2.1\nD 8.9 5\n•••••••• (b) With reference to the data, explain one likely effect of the fall in investment\nin 2020.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n...........................................................................................................................",
-  "ms": "The only correct answer is C\nA is not correct because this is if you part-calculate\npercentage change\nB is not correct because this is the figure for July to October\n2020\nD is not correct because this is if you calculate percentage\nchange between the two values\n(1)",
+  "text": "%\n\n(a) Which one of the following is the percentage point fall in investment between\nApril 2020 and July 2020?\n(1)\nA 0.1\nB 0.6\nC 2.1\nD 8.9\n\n5\n••••••••\n\n(b) With reference to the data, explain one likely effect of the fall in investment\nin 2020.\n(4)",
+  "ms": "(a)\nThe only correct answer is C\nA is not correct because this is if you part-calculate\npercentage change\nB is not correct because this is the figure for July to October\n2020\nD is not correct because this is if you calculate percentage\nchange between the two values\n(1)\n\n(b)\nKnowledge 2, Application 1, Analysis 1\nKnowledge/understanding and analysis (3):\n• Reduction in economic growth (1) due to lower\ninjections into the circular flow of income (1)\nor GDP rises more slowly (1)\n• Investment is a component of AD\n• Reduction in real/potential output (1) leading to\nhigher unemployment (1)\n• Reduction in productivity (1) leading to lower\npotential output (1)\n• Reduction in quality of factors of production (1)\nleading to reduced productive potential (1)\n• Decrease in AD (1)\n• Reduced multiplier effects (1)\n• Accurate diagram showing reduction in AD (1) or LRAS\n(1)\n• Change in the price level (1)\nApplication (1):\nA correct reference to the figure, e.g.\n• Investment fell to a low of 20.8% of GDP (in October)\n2020 (1) or any other figure for 2020 in diagram\n• Investment fell from 24.2% (in January 2020) to\n20.8% (or 3.4% points) of GDP (on October 2020) (1)\n• Diagram showing changes in prices/real output linked\nto fall in investment, unless awarded as analysis\nabove (1)\n(4)",
   "erKey": "2a",
   "paper": 2,
   "series": "June 2024",
-  "theme": 4,
+  "theme": 2,
   "themeConfident": false,
+  "year": 1,
   "id": "p2-june2024-q2"
  },
  {
@@ -2749,13 +2924,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "A group of banks, including Barclays and JP Morgan, have been fined more than\n€1 billion by the EU’s competition authorities for rigging the foreign exchange market\nafter the Global Financial Crisis of 2008. The EU found that traders at the banks had\nused online chat rooms to share information about customers’ orders, prices and\nother trading activities in order to manipulate the currency markets. (a) With reference to the information above, explain what is meant by\n‘market rigging’.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.........................................................................................................................................................",
-  "ms": "Knowledge 2, Application 1, Analysis 1\nKnowledge/understanding and analysis (3):\n• Market rigging is a form of market failure in\nfinancial markets (1)\n• It involves unfairly or illegally fixing/\nmanipulating the price up or down/interest\nrate/exchange rate/bid (1)\n• Banks/traders work together/collude as a cartel (1)\n• Insider trading (1)\n• Asymmetric information (1)\n• Symptom of oligopoly (1)\n• The banks will have made additional profits from\nmarket rigging (1)\n• Consumers will have lost out from rates not\nbeing where they would be in a competitive\nmarket (1)\nApplication (1):\nA relevant reference to the data or other relevant data e.g.\n• Fined more than €1 billion (1)\n• Share information about customers’ orders, prices and\nother trading activities (1)\n• To manipulate currency markets (1)\n• Online chatrooms (1)\n• Libor or other relevant examples (1) (4)",
+  "text": "A group of banks, including Barclays and JP Morgan, have been fined more than\n€1 billion by the EU’s competition authorities for rigging the foreign exchange market\nafter the Global Financial Crisis of 2008. The EU found that traders at the banks had\nused online chat rooms to share information about customers’ orders, prices and\nother trading activities in order to manipulate the currency markets.\n\n(a) With reference to the information above, explain what is meant by\n‘market rigging’.\n(4)\n\n7\n••••••••\n\n(b) Which one of the following is a role of financial markets?\nTo:\n(1)\nA discourage saving\nB promote moral hazard\nC provide forward markets\nD restrict free trade",
+  "ms": "(a)\nKnowledge 2, Application 1, Analysis 1\nKnowledge/understanding and analysis (3):\n• Market rigging is a form of market failure in\nfinancial markets (1)\n• It involves unfairly or illegally fixing/\nmanipulating the price up or down/interest\nrate/exchange rate/bid (1)\n• Banks/traders work together/collude as a cartel (1)\n• Insider trading (1)\n• Asymmetric information (1)\n• Symptom of oligopoly (1)\n• The banks will have made additional profits from\nmarket rigging (1)\n• Consumers will have lost out from rates not\nbeing where they would be in a competitive\nmarket (1)\nApplication (1):\nA relevant reference to the data or other relevant data e.g.\n• Fined more than €1 billion (1)\n• Share information about customers’ orders, prices and\nother trading activities (1)\n• To manipulate currency markets (1)\n• Online chatrooms (1)\n• Libor or other relevant examples (1)\n(4)\n\n(b)\nThe only correct answer is C\nA is not correct because this is not a role of financial\nmarkets\nB is not correct because this is not a role of financial\nmarkets\nD is not correct because this is not a role of financial\nmarkets\n(1)",
   "erKey": "3a",
   "paper": 2,
   "series": "June 2024",
   "theme": 4,
-  "themeConfident": false,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2024-q3"
  },
  {
@@ -2763,13 +2939,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Real GDP\nTime\nTrend GDP growth\nActual GDP growth\nA B\nC\nD\n(a) Which one point on the trade cycle diagram above illustrates a boom?\n(1)\nA\nB\nC\nD 9\n•••••••• (b) In July 2020 a survey estimated that the marginal propensity to consume in the\nUK was 0.1. Calculate the total increase in aggregate demand from an increase in government\nspending of £60 million.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n............",
-  "ms": "The only correct answer is C\nA is not correct because this is trend GDP growth\nB is not correct because this is a recession\nD is not correct because this is trend GDP growth (1)",
+  "text": "Real GDP\nTime\nTrend GDP growth\nActual GDP growth\nA B\nC\nD\n(a) Which one point on the trade cycle diagram above illustrates a boom?\n(1)\nA\nB\nC\nD\n\n9\n••••••••\n\n(b) In July 2020 a survey estimated that the marginal propensity to consume in the\nUK was 0.1.\n\nCalculate the total increase in aggregate demand from an increase in government\nspending of £60 million.\n(4)",
+  "ms": "(a)\nThe only correct answer is C\nA is not correct because this is trend GDP growth\nB is not correct because this is a recession\nD is not correct because this is trend GDP growth\n(1)\n\n(b)\nKnowledge 2, Application 2\nMultiplier formula= 1 / (1 – mpc)\nOR multiplier = 1/mpw OR 1/(mps+mpt+mpm) (1)\n= 1 / (1 – 0.1) (1) OR\n= 1 /0.9 (1)\nValue of the multiplier = 1.11 (1)\n1.11 recurring X £60m (1) = 66.6m\nAward full marks for correct answer 66.6m\nNB Allow in the range 66m - 67m\nNB Max 3 marks if incorrect units or missing units,\ne.g. 3 marks for £66.6\nNB 3 marks for the correct value of multiplier\n(4)\nQuestio\nn\nNumber\nAnswer Mark\n5(a) Knowledge 2, Application 1, Analysis 1\nKnowledge/Analysis up to 3 marks for e.g.:\n• Increase in the price of steel (1)\n• Reduced imports of steel from the UK (1)\n• Protects domestic steel industries (1)\n• Reduced current account deficit of the US (1)\n• Higher domestic supply of steel/ growth of market (1)\n• Lower domestic demand for steel (1) But higher domestic\ndemand for US steel (1)\n• Higher domestic employment (1)\n• Higher USA growth (1)\n• Retaliation by the UK if linked to impact on the US\n• US steel firms gain extra producer surplus from the\ntariff as they can now sell at a higher price (1)\n• US consumers lose out due to the higher prices/\nlower consumer surplus (1)\n• Deadweight loss in the market (1)\n• Government gain additional tariff revenue (1)\n• Higher revenues/ profits for US steel producers (1)\nApplication (1):\n• 25% tariff on steel imports (1)\n• steel imports from the UK (1)\n• can be shown on a diagram e.g. an increase in price,\nincrease in domestic production, increase in government\nrevenue (1)\nNB: Marks can be awarded for t",
   "erKey": "4a",
   "paper": 2,
   "series": "June 2024",
   "theme": 2,
   "themeConfident": true,
+  "year": 1,
   "id": "p2-june2024-q4"
  },
  {
@@ -2777,13 +2954,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "In March 2018 the US imposed a tariff of 25% on steel imports from the UK. (a) Explain the likely impact of this tariff on the steel market in the US.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n......................................................................................................................................................................................................................",
-  "ms": "2, Application 1, Analysis 1\nKnowledge/Analysis up to 3 marks for e.g.:\n• Increase in the price of steel (1)\n• Reduced imports of steel from the UK (1)\n• Protects domestic steel industries (1)\n• Reduced current account deficit of the US (1)\n• Higher domestic supply of steel/ growth of market (1)\n• Lower domestic demand for steel (1) But higher domestic\ndemand for US steel (1)\n• Higher domestic employment (1)\n• Higher USA growth (1)\n• Retaliation by the UK if linked to impact on the US\n• US steel firms gain extra producer surplus from the\ntariff as they can now sell at a higher price (1)\n• US consumers lose out due to the higher prices/\nlower consumer surplus (1)\n• Deadweight loss in the market (1)\n• Government gain additional tariff revenue (1)\n• Higher revenues/ profits for US steel producers (1)\nApplication (1):\n• 25% tariff on steel imports (1)\n• steel imports from the UK (1)\n• can be shown on a diagram e.g. an increase in price,\nincrease in domestic production, increase in government\nrevenue (1)\nNB: Marks can be awarded for these points illustrated on a\ndiagram, e.g.:\n(4)",
+  "text": "In March 2018 the US imposed a tariff of 25% on steel imports from the UK.\n\n(a) Explain the likely impact of this tariff on the steel market in the US.\n(4)\n\n11\n••••••••\n\n(b) Which one of the following is likely to give the US a comparative advantage in\nsteel production?\nAn increase in:\n(1)\nA corporation tax in the US\nB economic growth in the US\nC the productivity of US steel workers\nD the wages of US steel workers",
+  "ms": "(b)\nThe only correct answer is C\nA is not correct because higher corporation tax would\nincrease costs and therefore reduce comparative advantage\nB is not correct because higher economic growth would\nlikely increase inflation, therefore reducing comparative\nadvantage\nD is not correct because higher wages would increase costs\nand therefore reduce comparative advantage\n(1)",
   "erKey": "5a",
   "paper": 2,
   "series": "June 2024",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2024-q5"
  },
  {
@@ -2797,7 +2975,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2024",
   "theme": 4,
-  "themeConfident": false,
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2024-q6a"
  },
  {
@@ -2806,12 +2985,13 @@ const ECO_QUESTIONS = [
   "marks": 8,
   "section": "B",
   "text": "With reference to Figure 4 and Extract A, examine the likely impact of the ‘freeze\nin income tax thresholds’ (Extract A line 1) on aggregate demand.",
-  "ms": "Knowledge 2, Application 2, Analysis 2,\nEvaluation 2\nKnowledge/Understanding:\nLikely impact identified (1+1), e.g.\n• Disposable (real) income might fall / rising more slowly\n(1)\n• Reduction / slowdown in consumption (1)\n• Reduction / slowdown in investment (1)\n• Impact on tax revenue (1)\n• Impact on government spending (1)\n• Reduction / slowing in economic growth (1)\n• People pushed into higher income tax brackets (Fiscal\ndrag) (1)\n• Change in confidence can affect consumption/investment\n(1)\nAnalysis:\nLinked development (1+1), e.g. in the UK:\n• Higher tax means consumers will have less money\nto spend (1)\n• Lower demand from consumers reduces firms\nincentive to invest (1)\n• Less demand means firms will need to reduce staff\ncosts, increasing unemployment (1)\n• Linked AD/AS analysis / diagram (1)\n• Fiscal drag explained or equivalent(1)\n• Reference to lower incentive to work (1)\n• Explain impact on tax revenue, e.g. Laffer Curve (1)\nApplication:\n2 marks (1+1) for reference to the data (from either or both\nFig 4 or Extract A), e.g.\n• Additional-rate income tax threshold decreased from\n£150 000 to £125 140 (1)\n• Someone earning £150 000 will pay an extra £1 200\nincome tax per year with the changes / ‘end up paying\nmore tax on their income’ (1)\n• Apart from additional rate, other thresholds are all\nstaying the same (1)\n• ‘Around 250,000 taxpayers will be pushed into this\nhigher tax band’ (1)\n• Thresholds fail to rise in line with salaries (line 3 Ext\nA) (1) Evaluation: 2 marks for two evaluative comments OR 2\nmarks for identification and linked development of one\ncomment (1+1 or 2+0), e.g.\n• If government spends extra tax revenue (1) then\nthat could create more employment (1)\n• Stealth tax? (1)\n• Depends on changes in other taxes/government\nspending that may offset higher income tax (1)\n• Inflation is expected to fall in 2023 so wages may\nrise more slowly in the future (1), limiting impact of\nfreeze in tax bands (1)\n• Impact on economic growth depends on where the\nAD lies on Keynesian LRAS/level of spare capacity\n(1)\n• Depends on changes in other components of AD (1)\n• Time lags: Short run v long run considerations (1)\n• Consumers may not reduce consumption if they choose\nto save less instead (1)\n• Top income households disposable income does fall (1)\n• Depends on value of multiplier (1)\n• Impact on tax revenue may not be as expected (1) e.g.\nLaffer Curve (1) / possible tax avoidance (1) (8)",
+  "ms": "Knowledge 2, Application 2, Analysis 2,\nEvaluation 2\nKnowledge/Understanding:\nLikely impact identified (1+1), e.g.\n• Disposable (real) income might fall / rising more slowly\n(1)\n• Reduction / slowdown in consumption (1)\n• Reduction / slowdown in investment (1)\n• Impact on tax revenue (1)\n• Impact on government spending (1)\n• Reduction / slowing in economic growth (1)\n• People pushed into higher income tax brackets (Fiscal\ndrag) (1)\n• Change in confidence can affect consumption/investment\n(1)\nAnalysis:\nLinked development (1+1), e.g. in the UK:\n• Higher tax means consumers will have less money\nto spend (1)\n• Lower demand from consumers reduces firms\nincentive to invest (1)\n• Less demand means firms will need to reduce staff\ncosts, increasing unemployment (1)\n• Linked AD/AS analysis / diagram (1)\n• Fiscal drag explained or equivalent(1)\n• Reference to lower incentive to work (1)\n• Explain impact on tax revenue, e.g. Laffer Curve (1)\nApplication:\n2 marks (1+1) for reference to the data (from either or both\nFig 4 or Extract A), e.g.\n• Additional-rate income tax threshold decreased from\n£150 000 to £125 140 (1)\n• Someone earning £150 000 will pay an extra £1 200\nincome tax per year with the changes / ‘end up paying\nmore tax on their income’ (1)\n• Apart from additional rate, other thresholds are all\nstaying the same (1)\n• ‘Around 250,000 taxpayers will be pushed into this\nhigher tax band’ (1)\n• Thresholds fail to rise in line with salaries (line 3 Ext\nA) (1)\nEvaluation: 2 marks for two evaluative comments OR 2\nmarks for identification and linked development of one\ncomment (1+1 or 2+0), e.g.\n• If government spends extra tax revenue (1) then\nthat could create more employment (1)\n• Stealth tax? (1)\n• Depends on changes in other taxes/government\nspending that may offset higher income tax (1)\n• Inflation is expected to fall in 2023 so wages may\nrise more slowly in the future (1), limiting impact of\nfreeze in tax bands (1)\n• Impact on economic growth depends on where the\nAD lies on Keynesian LRAS/level of spare capacity\n(1)\n• Depends on changes in other components of AD (1)\n• Time lags: Short run v long run considerations (1)\n• Consumers may not reduce consumption if they choose\nto save less instead (1)\n• Top income households disposable income does fall (1)\n• Depends on value of multiplier (1)\n• Impact on tax revenue may not be as expected (1) e.g.\nLaffer Curve (1) / possible tax avoidance (1)\n(8)",
   "erKey": "6b",
   "paper": 2,
   "series": "June 2024",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2024-q6b"
  },
  {
@@ -2820,12 +3000,13 @@ const ECO_QUESTIONS = [
   "marks": 10,
   "section": "B",
   "text": "Assess whether a fiscal deficit and national debt should be a cause for concern for\nthe UK government.",
-  "ms": "Knowledge 2, Application 2, Analysis 2\nFiscal deficit is a cause for concern:\n• Government will have to borrow more money to\nfinance the fiscal deficit\n• Will increase the size of the national debt\n• Reduce government’s ability to spend in the future\n• Can be inflationary\n• Risk of being unable to borrow in future / lose trust /\ncredit default\nNational debt is a cause for concern:\n• Result in crowding out – resource and/or financial\n• Opportunity cost of interest payments on the debt\n• Reliance on willingness of borrowers to keep lending\nto the government (reference to credit rating)\n• May reduce business confidence in the UK economy\n• May result in the depreciation of the currency,\nmaking imports relatively more expensive\n• Could lead to future tax rises and spending\ncuts\n• Could result in a default on the debt, and\nneed for IMF assistance\n• Intergenerational conflict\nNB For Level 3, candidates need to make\nreference to both fiscal deficit AND national\ndebt\nNB For Level 3, must refer to the UK\ngovernment e.g. use of Figs 1 or 2 or 3 or own\nknowledge\nNB Some causes for concern can be applied to\nboth e.g. intergenerational inequity\nNB KAA and EV can be flipped (6) Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no link between causes and\nconsequences.\nLevel 2 3–4 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or the answer may lack balance.\nLevel 3 5–6 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are applied appropriately to the broad\nelements of the question.",
+  "ms": "Knowledge 2, Application 2, Analysis 2\nFiscal deficit is a cause for concern:\n• Government will have to borrow more money to\nfinance the fiscal deficit\n• Will increase the size of the national debt\n• Reduce government’s ability to spend in the future\n• Can be inflationary\n• Risk of being unable to borrow in future / lose trust /\ncredit default\nNational debt is a cause for concern:\n• Result in crowding out – resource and/or financial\n• Opportunity cost of interest payments on the debt\n• Reliance on willingness of borrowers to keep lending\nto the government (reference to credit rating)\n• May reduce business confidence in the UK economy\n• May result in the depreciation of the currency,\nmaking imports relatively more expensive\n• Could lead to future tax rises and spending\ncuts\n• Could result in a default on the debt, and\nneed for IMF assistance\n• Intergenerational conflict\nNB For Level 3, candidates need to make\nreference to both fiscal deficit AND national\ndebt\nNB For Level 3, must refer to the UK\ngovernment e.g. use of Figs 1 or 2 or 3 or own\nknowledge\nNB Some causes for concern can be applied to\nboth e.g. intergenerational inequity\nNB KAA and EV can be flipped (6)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no link between causes and\nconsequences.\nLevel 2 3–4 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or the answer may lack balance.\nLevel 3 5–6 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are applied appropriately to the broad\nelements of the question.",
   "erKey": "6c",
   "paper": 2,
   "series": "June 2024",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2024-q6c"
  },
  {
@@ -2834,12 +3015,13 @@ const ECO_QUESTIONS = [
   "marks": 12,
   "section": "B",
   "text": "With reference to Extract B, discuss the use of quantitative easing in\npreventing deflation.",
-  "ms": "Knowledge 2, Application 2, Analysis 4\n• Deflation means the average price level is falling,\nand is harmful to an economy because of lack of\nconfidence, growth, investment and real debts\nincrease/other equality issues (definition could be\nimplied in answer)\n• Bank of England purchasing £200bn government\nbonds, will increase the availability of credit /\nliquidity: more lending to / borrowing by firms and\nconsumers/ bond yield analysis\n• Quantitative easing (QE) may lead to increased\nconsumption (via borrowing), increased AD, and\nincrease in price level. This may be illustrated with\nAD shift right\n• QE may lower commercial / high street interest\nrates, reducing the reward for saving therefore\nincreasing consumption, increasing AD\n• QE may lower interest rates, reducing the cost of\nborrowing therefore increasing investment (an\ninjection), increasing AD\n• QE can result in a depreciation of the exchange\nrate (e.g. via lower interest rates/hot money\noutflows) leading to imports becoming relatively\nmore expensive and hence cost-push inflation or\nboost (X-M)\n• QE can cause positive wealth effects through asset\nprice inflation\n• QE can lower cost of government borrowing and\nmay enable government spending\nNB To access Level 3 must refer to preventing\ndeflation or causing inflation\n(8) Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
+  "ms": "Knowledge 2, Application 2, Analysis 4\n• Deflation means the average price level is falling,\nand is harmful to an economy because of lack of\nconfidence, growth, investment and real debts\nincrease/other equality issues (definition could be\nimplied in answer)\n• Bank of England purchasing £200bn government\nbonds, will increase the availability of credit /\nliquidity: more lending to / borrowing by firms and\nconsumers/ bond yield analysis\n• Quantitative easing (QE) may lead to increased\nconsumption (via borrowing), increased AD, and\nincrease in price level. This may be illustrated with\nAD shift right\n• QE may lower commercial / high street interest\nrates, reducing the reward for saving therefore\nincreasing consumption, increasing AD\n• QE may lower interest rates, reducing the cost of\nborrowing therefore increasing investment (an\ninjection), increasing AD\n• QE can result in a depreciation of the exchange\nrate (e.g. via lower interest rates/hot money\noutflows) leading to imports becoming relatively\nmore expensive and hence cost-push inflation or\nboost (X-M)\n• QE can cause positive wealth effects through asset\nprice inflation\n• QE can lower cost of government borrowing and\nmay enable government spending\nNB To access Level 3 must refer to preventing\ndeflation or causing inflation\n(8)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
   "erKey": "6d",
   "paper": 2,
   "series": "June 2024",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2024-q6d"
  },
  {
@@ -2848,12 +3030,13 @@ const ECO_QUESTIONS = [
   "marks": 15,
   "section": "B",
   "text": "Discuss supply-side policies the UK government could introduce to stimulate\neconomic growth.",
-  "ms": "Knowledge 3, Application 3, Analysis 3\nExplanation of how supply-side policies could\nstimulate economic growth, e.g.\n• Increased spending on infrastructure, e.g.\ncarbon capture technology, increases the\npotential output of the economy\n• Increased spending on\neducation/training/healthcare to increase\nproductivity of workforce\n• Policies to increase competition between firms,\nsuch as privatisation/deregulation, to boost UK\ncompetitiveness\n• Reducing taxation, e.g. income tax/corporation tax\n• Reforming the labour market, e.g. reducing the\ncost/ paperwork of immigration, increasing\nsize/productivity of the labour market, measures to\nreduce trade union power\n• Government subsidies for strategic industries e.g.\nelectric cars\n• Protectionism\n• Impact on AD can be credited as a dual/short-run\neffect of supply-side policies on growth\nNB For Level 3, more than one policy required (9) Level Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
+  "ms": "Knowledge 3, Application 3, Analysis 3\nExplanation of how supply-side policies could\nstimulate economic growth, e.g.\n• Increased spending on infrastructure, e.g.\ncarbon capture technology, increases the\npotential output of the economy\n• Increased spending on\neducation/training/healthcare to increase\nproductivity of workforce\n• Policies to increase competition between firms,\nsuch as privatisation/deregulation, to boost UK\ncompetitiveness\n• Reducing taxation, e.g. income tax/corporation tax\n• Reforming the labour market, e.g. reducing the\ncost/ paperwork of immigration, increasing\nsize/productivity of the labour market, measures to\nreduce trade union power\n• Government subsidies for strategic industries e.g.\nelectric cars\n• Protectionism\n• Impact on AD can be credited as a dual/short-run\neffect of supply-side policies on growth\nNB For Level 3, more than one policy required (9)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.",
   "erKey": "6e",
   "paper": 2,
   "series": "June 2024",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2024-q6e"
  },
  {
@@ -2861,13 +3044,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "In 2021 Brazil’s current account deficit on the balance of payments was US$46.12\nbillion. The Central Bank of Brazil intervened to sell its own currency, the real, on\nSeptember 23rd 2022. This was the first time it has intervened in foreign currency\nmarkets since December 2021.\n(Source adapted from: https://www.statista.com/statistics and https://www.centralbanking.\ncom/central-banks/reserves/foreign-exchange/7953193/brazil-makes-first-fx-intervention-\nof-the-year)\nEvaluate macroeconomic policies that could be used to reduce a current account\ndeficit. Refer to a country of your choice in your answer.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nPolicies that could be used to reduce a current account\ndeficit include:\n• Reducing external value of the currency e.g. through\ngovernment intervention in currency markets or\nexpansionary monetary policy by reducing interest rates or\nselling own currency such as the real\n• Increase in interest rates to reduce consumer\nspending on imports (could be evaluation of above)\n• Supply-side policies to improve the international\ncompetitiveness of the economy, market based and\ninterventionist policies supply side policies e.g. on\neducation and training, infrastructure, healthcare, tax\nbreaks for R&D etc.\n• Increase income tax rates to reduce disposable incomes\nand hence marginal propensity to import\n• Protectionism: expenditure switching or reducing, the use\nof tariffs, quotas, subsidies to domestic producers and\nother non-tariff barriers\n• Measures to decrease inflation rate below that of\ncompetitors e.g. increasing interest rates\n• Diversification/industrialisation/deindustrialisation to\nproduce exports with more value-added\n• Joining trade bloc\nEvaluation of these policies could include:\n• Limitations of the individual policies discussed e.g. in some\ncountries such as the UK it would be unlikely that the Bank of\nEngland would manipulate the exchange rate or interest rate\nto reduce the deficit on current account\n• Magnitude of government spending/tax cuts/trade\nbarriers/reduction in exchange rate\n• Time lags associated with individual policies\n• Conflicts with other macroeconomic objectives\n• Effectiveness of policies depends on the price elasticity\nof demand of a country’s imports and exports, which\nmight be developed using Marshall-Lerner / J-curve /\nlong run implications\n• Interventionist supply-side policies could increase budget\ndeficit/national debt, causing crowding out\n• Increase in income tax could reduce consumption; fall in\neconomic growth/increase in unemployment\n• A tighter monetary policy will cause the currency to\nappreciate, reducing price competitiveness of exports\n• Protectionist policies distort comparative advantage,\nreducing specialisation/trade; can result in retaliation\n• Governments of countries with a floating exchange rate\ncannot lower the external value of the currency\n• Is there a need to address a current account deficit, e.g. in\nsome countries it might not be a sign of weakness/might\nbe counterbalanced by other components of the balance of\npayments e.g. net primary incomes\nNB For Level 4 the answer must refer to at least one\ncountry\n(25) Knowledge, application and analysis\nLevel M",
+  "text": "In 2021 Brazil’s current account deficit on the balance of payments was US$46.12\nbillion. The Central Bank of Brazil intervened to sell its own currency, the real, on\nSeptember 23rd 2022. This was the first time it has intervened in foreign currency\nmarkets since December 2021.\n\nEvaluate macroeconomic policies that could be used to reduce a current account\ndeficit. Refer to a country of your choice in your answer.",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nPolicies that could be used to reduce a current account\ndeficit include:\n• Reducing external value of the currency e.g. through\ngovernment intervention in currency markets or\nexpansionary monetary policy by reducing interest rates or\nselling own currency such as the real\n• Increase in interest rates to reduce consumer\nspending on imports (could be evaluation of above)\n• Supply-side policies to improve the international\ncompetitiveness of the economy, market based and\ninterventionist policies supply side policies e.g. on\neducation and training, infrastructure, healthcare, tax\nbreaks for R&D etc.\n• Increase income tax rates to reduce disposable incomes\nand hence marginal propensity to import\n• Protectionism: expenditure switching or reducing, the use\nof tariffs, quotas, subsidies to domestic producers and\nother non-tariff barriers\n• Measures to decrease inflation rate below that of\ncompetitors e.g. increasing interest rates\n• Diversification/industrialisation/deindustrialisation to\nproduce exports with more value-added\n• Joining trade bloc\nEvaluation of these policies could include:\n• Limitations of the individual policies discussed e.g. in some\ncountries such as the UK it would be unlikely that the Bank of\nEngland would manipulate the exchange rate or interest rate\nto reduce the deficit on current account\n• Magnitude of government spending/tax cuts/trade\nbarriers/reduction in exchange rate\n• Time lags associated with individ",
   "erKey": "7",
   "paper": 2,
   "series": "June 2024",
   "theme": 2,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2024-q7"
  },
  {
@@ -2875,13 +3059,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 25,
   "section": "C",
-  "text": "In 2020, exports as a share of world GDP were 12% higher than in 2000, almost twice\nas high as 50 years ago.\n(Source adapted from: https://www.dhl.com/content/dam/dhl/global/dhl-spotlight/\ndocuments/pdf/2021-gci-update-report.pdf )\nEvaluate the possible factors contributing to globalisation.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Reduced cost of transport: technical efficiencies\nthrough containerisation; increase in fuel efficiency;\nbetter transport infrastructure\n• Trade liberalisation: reduction in trade barriers\nlinked to the work of WTO; application of law of\ncomparative advantage and link to specialisation\n• Increased number and size of trading blocs: may\napply to trade creation\n• Reduced costs of communication: e.g. internet,\nmobile technology and technological advances\nhave made it easy to communicate; introduction\nof new electronic payment systems\n• Political change: opening up of previously closed\neconomies to the world market, e.g. breakdown\nof the Soviet system and opening up of China\n• Increased significance of TNCs / use of FDI: have\nentered new markets and invested significantly in\nexpanding abroad to increase profits through\noffshoring and outsourcing to benefit from lower\nlabour costs\n• Increased interconnectedness of global supply\nchains as firms produce different parts of their\nfinished products in different countries\nEvaluative comments may include e.g.:\n• Deglobalisation as a more recent trend, for example\nrecent increases in US tariffs on Chinese cars\n• Significance/magnitude of factors discussed\n• Combination of factors will be more significant\n• Different factors important for different countries\n• Reduced cost of transport: countries that have poor\ninfrastructure/landlocked will not benefit\n• Reduced cost of communications: many people in\ndeveloping countries excluded from benefits from\ninternet or mobile technology due to being poor\n• Countries leaving trading blocs e.g. UK and the EU\n• Political change: trade wars between countries e.g.\nChina and USA have reduced global trade\n• Increased significance of TNCs: delays/uncertainty\nin global shipping are encouraging some firms to\nreshore production or simplify their supply chains\n• Increased automation reduces importance of labour\ncosts in firms decision regarding where to locate its\nproduction facilities\n• Trade diversion\n• Limited scope for further tariff removal (25) Knowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and re",
+  "text": "In 2020, exports as a share of world GDP were 12% higher than in 2000, almost twice\nas high as 50 years ago.\n\nEvaluate the possible factors contributing to globalisation.",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\n• Reduced cost of transport: technical efficiencies\nthrough containerisation; increase in fuel efficiency;\nbetter transport infrastructure\n• Trade liberalisation: reduction in trade barriers\nlinked to the work of WTO; application of law of\ncomparative advantage and link to specialisation\n• Increased number and size of trading blocs: may\napply to trade creation\n• Reduced costs of communication: e.g. internet,\nmobile technology and technological advances\nhave made it easy to communicate; introduction\nof new electronic payment systems\n• Political change: opening up of previously closed\neconomies to the world market, e.g. breakdown\nof the Soviet system and opening up of China\n• Increased significance of TNCs / use of FDI: have\nentered new markets and invested significantly in\nexpanding abroad to increase profits through\noffshoring and outsourcing to benefit from lower\nlabour costs\n• Increased interconnectedness of global supply\nchains as firms produce different parts of their\nfinished products in different countries\nEvaluative comments may include e.g.:\n• Deglobalisation as a more recent trend, for example\nrecent increases in US tariffs on Chinese cars\n• Significance/magnitude of factors discussed\n• Combination of factors will be more significant\n• Different factors important for different countries\n• Reduced cost of transport: countries that have poor\ninfrastructure/landlocked will not benefit\n• Reduced cost of communications:",
   "erKey": "8",
   "paper": 2,
   "series": "June 2024",
   "theme": 4,
-  "themeConfident": true,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-june2024-q8"
  },
  {
@@ -2889,13 +3074,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#%\n3\n!\"#$#%&'()%#! (a) Which one of the following can be inferred from the chart?\n(1)\nA The North East had the lowest number of unemployed people according to\nboth measures of unemployment\nB According to the Claimant Count measure, there were more than twice as\nmany people unemployed in London as in the South East\nC London had the highest number of unemployed people according to both\nmeasures of unemployment\nD According to the ILO measure of unemployment, there were more than twice\nas many people unemployed in the North West as in the East Midlands\n! ! Answer\n(b) With reference to the chart, explain why the ILO measure of unemployment is\ndifferent to the Claimant Count for all regions.\n(4)\n....................................................................................................................................................................................................................................................................................\n........................................................................................................................................",
-  "ms": "C\n(1)",
+  "text": "6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#%\n3\n!\"#$#%&'()%#!\n(a) Which one of the following can be inferred from the chart?\n(1)\nA The North East had the lowest number of unemployed people according to\nboth measures of unemployment\nB According to the Claimant Count measure, there were more than twice as\nmany people unemployed in London as in the South East\nC London had the highest number of unemployed people according to both\nmeasures of unemployment\nD According to the ILO measure of unemployment, there were more than twice\nas many people unemployed in the North West as in the East Midlands\n! ! Answer\n(b) With reference to the chart, explain why the ILO measure of unemployment is\ndifferent to the Claimant Count for all regions.\n(4)",
+  "ms": "(a)\nC\n(1)\n\n(b)\nKnowledge 3, Application 1\nKnowledge/understanding: 1 mark each for how ILO\nand Claimant Count are measured:\n• the ILO measure of unemployment uses the Labour\nForce Survey/defines someone as unemployed if\nthey are without a job, want a job, and have\nactively sought work in the last four weeks (1)\n• the Claimant Count is the total number of people\nclaiming Jobseekers’ Allowance/unemployment\nbenefit (1).\nPossible answers might include:\n• these are measured in different ways\n• some unemployed people are not eligible to claim\nJSA\n• some unemployed people do not wish to claim JSA,\nor are unaware of their right to claim\n• LFS may be subject to sampling bias.\nApplication: 1 mark for reference to the chart,\ne.g.\n• ILO measure is higher than the Claimant Count in\nall regions.\n(4)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n!#",
   "erKey": "1a",
   "paper": 2,
   "series": "Specimen",
   "theme": 2,
   "themeConfident": false,
+  "year": 1,
   "id": "p2-specimen-q1"
  },
  {
@@ -2903,13 +3089,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Aug-12Sep-12Oct-12Nov-12Dec-12Jan-13Feb-13\nAnnual\npercentage\nchange (a) With reference to the chart above, which one of the following statements is\ncorrect?\n(1)\nA In the year to December 2012, the US trade balance improved\nB In the year to September 2012, the US trade balance worsened\nC In the year to November 2011, the US trade balance improved\nD In the year to August 2012, the US trade balance worsened\nAnswer !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#'\n5\n!\"#$#%&'()%#! (b) Explain the likely effect of an increase in US income tax rates on the US trade\nbalance.\n(4)\n....................................................................................................................................................................................................................................................................................\n............................................................................................................................................................................................................................................................",
-  "ms": "A\n(1)",
+  "text": "Aug-12Sep-12Oct-12Nov-12Dec-12Jan-13Feb-13\nAnnual\npercentage\nchange\n\n(a) With reference to the chart above, which one of the following statements is\ncorrect?\n(1)\nA In the year to December 2012, the US trade balance improved\nB In the year to September 2012, the US trade balance worsened\nC In the year to November 2011, the US trade balance improved\nD In the year to August 2012, the US trade balance worsened\nAnswer\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#'\n5\n!\"#$#%&'()%#!\n(b) Explain the likely effect of an increase in US income tax rates on the US trade\nbalance.\n(4)",
+  "ms": "(a)\nA\n(1)\n\n(b)\nKnowledge 1, Application 3\nKnowledge/understanding: 1 mark for identifying:\n• trade balance is the value of exports minus the\nvalue of imports (1).\nApplication: 3 marks for a linked explanation:\n• with a rise in income tax, disposable incomes in the\nUS would fall (1)\n• demand for imports is income elastic/imports are\nnormal goods/demand for imports would fall (1)\n• the trade balance would improve/trade deficit would\ndecrease (1).\n(4)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n!$",
   "erKey": "2a",
   "paper": 2,
   "series": "Specimen",
-  "theme": null,
-  "themeConfident": false,
+  "theme": 2,
+  "themeConfident": true,
+  "year": 1,
   "id": "p2-specimen-q2"
  },
  {
@@ -2917,13 +3104,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "(a) Explain one role of financial markets.\n(2)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n(b) Explain one reason why the UK central ban",
-  "ms": "Knowledge 2\nKnowledge/understanding: 1 mark for identifying a\nrole; 1 mark for linked development, e.g.\n• to mobilise savings (1) for lending to businesses\nand individuals to invest or consume (1)\n• to facilitate the exchange of goods and services (1)\nby providing a flat currency (1)\n• to provide forward markets in currencies and\ncommodities (1) to reduce risk (1)\n• to provide a market for equities (1) to facilitate\nraising of finances by businesses (1).\n(2)",
+  "text": "(a) Explain one role of financial markets.\n(2)\n\n(b) Explain one reason why the UK central bank used quantitative easing following\nthe Global Financial Crisis of 2008.\n(2)\n\n(c) Which one of the following would be the most likely cause of market failure in\nthe financial sector?\n(1)\nA Banks charge higher interest rates on higher risk loans\nB Banks do not create any external costs or benefits in their operations\nC Banks know that the government will bear the risk of customers defaulting on\nloans\nD Banks and their customers have symmetric information\nAnswer",
+  "ms": "(a)\nKnowledge 2\nKnowledge/understanding: 1 mark for identifying a\nrole; 1 mark for linked development, e.g.\n• to mobilise savings (1) for lending to businesses\nand individuals to invest or consume (1)\n• to facilitate the exchange of goods and services (1)\nby providing a flat currency (1)\n• to provide forward markets in currencies and\ncommodities (1) to reduce risk (1)\n• to provide a market for equities (1) to facilitate\nraising of finances by businesses (1).\n(2)\n\n(b)\nKnowledge 2\nKnowledge/understanding: 1 mark for identifying\none reason; 1 mark for linked development, e.g.\n• to stimulate growth (1) by increasing money supply\n(1)\n• to increase bank liquidity (1) so they would be more\nwilling to lend (1)\n• interest rates were already very low (1) so limited\nscope for further reductions (1)\n• prevent deflation (1) by increase in money supply\n(1)\n(2)\n\n(c)\nC\n(1)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n!%",
   "erKey": "3a",
   "paper": 2,
   "series": "Specimen",
   "theme": 4,
   "themeConfident": false,
+  "year": 2,
   "id": "p2-specimen-q3"
  },
  {
@@ -2931,13 +3119,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "is:\n(1)\nA 40%\nB 60%\nC 110%\nD 130%\nAnswer !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#)\n9\n!\"#$#%&'()%#! (b) An economy is a net exporter of crude oil. Draw an AD/AS diagram to show the\neffect of an increase in global crude oil price on the equilibrium level of real\nnational output of this economy.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................................................................................................................................................................................................................................................................................\n.......................................................................................................................................................................................................................................................",
-  "ms": "D\n(1)",
+  "text": "is:\n(1)\nA 40%\nB 60%\nC 110%\nD 130%\nAnswer\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#)\n9\n!\"#$#%&'()%#!\n(b) An economy is a net exporter of crude oil. Draw an AD/AS diagram to show the\neffect of an increase in global crude oil price on the equilibrium level of real\nnational output of this economy.\n(4)",
+  "ms": "(a)\nD\n(1)\n\n(b)\nKnowledge 2, Application 2\nAD/AS diagram showing:\n• initial AD/AS curves and axes correctly labelled (1)\n• initial equilibrium correctly labelled (1)\n• increase (rightwards/outwards shift) in AD (1)\n• new equilibrium correctly labelled showing an\nincrease in the equilibrium level of real national\noutput and the equilibrium average price level (1).\n(4)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n!!",
   "erKey": "4a",
   "paper": 2,
   "series": "Specimen",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-specimen-q4"
  },
  {
@@ -2945,13 +3134,14 @@ const ECO_QUESTIONS = [
   "part": "",
   "marks": 5,
   "section": "A",
-  "text": "Colombia and Zambia each produce copper and emeralds. The production possibility\nfrontiers below show the two countries’ productive capacities for these goods.\nCopper\n(million tonnes)\nEmeralds (kg)\nPPF Zambia\nPPF Colombia\n500\n500\n100\n1 000\n(a) With reference to the diagram above, which one of the following statements is\ncorrect?\n(1)\nA Colombia has an absolute advantage in the production of copper\nB Zambia has an absolute advantage in the production of copper\nC Zambia has an absolute advantage in the production of emeralds\nD Neither Colombia nor Zambia has an absolute advantage in the production of\nemeralds\nAnswer !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#\"\n11\n!\"#$#%&'())%#! (b) Using appropriate calculations, explain which country has a comparative\nadvantage in the production of emeralds.\n(4)\n....................................................................................................................................................................................................................................................................................\n....................",
-  "ms": "B\n(1)",
+  "text": "Colombia and Zambia each produce copper and emeralds. The production possibility\nfrontiers below show the two countries’ productive capacities for these goods.\nCopper\n(million tonnes)\nEmeralds (kg)\nPPF Zambia\nPPF Colombia\n500\n500\n100\n1 000\n(a) With reference to the diagram above, which one of the following statements is\ncorrect?\n(1)\nA Colombia has an absolute advantage in the production of copper\nB Zambia has an absolute advantage in the production of copper\nC Zambia has an absolute advantage in the production of emeralds\nD Neither Colombia nor Zambia has an absolute advantage in the production of\nemeralds\nAnswer\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#\"\n11\n!\"#$#%&'())%#!\n(b) Using appropriate calculations, explain which country has a comparative\nadvantage in the production of emeralds.\n(4)",
+  "ms": "(a)\nB\n(1)\n\n(b)\nApplication 3, Analysis 1\nApplication: 2 marks for:\n• the calculation for opportunity cost for Columbia (1)\n• the calculation for opportunity cost for Zambia (1)\nand 1 mark for:\n• in Colombia the opportunity cost of producing 1kg\nof emeralds is 0.1 million tonnes of copper (1)\n• in Zambia the opportunity cost of producing 1kg of\nemeralds is 1 million tonnes of copper (1)\n• Colombia has a comparative advantage in the\nproduction of emeralds (1).\nAnalysis\n1 mark for inferences from calculations carried out, e.g.\n• Columbia can produce emeralds relatively more\nefficiently/at a lower opportunity cost than Zambia\n(1).\n(4)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n!&",
   "erKey": "5a",
   "paper": 2,
   "series": "Specimen",
   "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-specimen-q5"
  },
  {
@@ -2960,12 +3150,13 @@ const ECO_QUESTIONS = [
   "marks": 5,
   "section": "B",
   "text": "With reference to Figure 1, calculate the ratio of Burundi’s GDP per capita to\nKenya’s GDP per capita in 2012.",
-  "ms": "Knowledge 1, Application 2, Analysis 2\nKnowledge/understanding: 1 mark for:\n• GDP per capita = GDP ÷ population/GDP per person\n(1).\nApplication: 2 marks for:\n• GDP per capita for Burundi = 2.47 bn/16.14 mn =\n$153 (1)\n• GDP per capita for Kenya = 37.23 bn/62.78 mn =\n$593 (1)\nAnalysis: 2 marks for:\n• Ratio of Burundi's GDP per capita: Kenya's GDP per\ncapita = 153:593 (1)\n= 1:3.9 (1)\n[Accept 1:3.8 to 1:4]\n(5) !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n!'",
+  "ms": "Knowledge 1, Application 2, Analysis 2\nKnowledge/understanding: 1 mark for:\n• GDP per capita = GDP ÷ population/GDP per person\n(1).\nApplication: 2 marks for:\n• GDP per capita for Burundi = 2.47 bn/16.14 mn =\n$153 (1)\n• GDP per capita for Kenya = 37.23 bn/62.78 mn =\n$593 (1)\nAnalysis: 2 marks for:\n• Ratio of Burundi's GDP per capita: Kenya's GDP per\ncapita = 153:593 (1)\n= 1:3.9 (1)\n[Accept 1:3.8 to 1:4]\n(5)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n!'",
   "erKey": "6a",
   "paper": 2,
   "series": "Specimen",
   "theme": 2,
   "themeConfident": false,
+  "year": 1,
   "id": "p2-specimen-q6a"
  },
  {
@@ -2974,12 +3165,13 @@ const ECO_QUESTIONS = [
   "marks": 8,
   "section": "B",
   "text": "With reference to Extract A and Extract B, examine two factors that constrain\neconomic growth in Burundi.",
-  "ms": "Knowledge 2, Application 2, Analysis 2,\nEvaluation 2\nKnowledge/understanding: 2 marks for identification of\ntwo factors (1+1)\nAnalysis: 2 marks for linked explanation of how these\nfactors constrain growth (1+1), e.g.\n• land-locked (1) therefore high transport costs so\nlimited opportunities for international trade (1)\n• low tax revenue (1) meaning government has\ninsufficient funds for investment in education (1)\n• primary product dependency (1) price volatility\nleading to uncertain levels of income/investment (1)\n• civil war (1) destruction of infrastructure which\ndiscourages investment (1).\nApplication: 2 marks for reference to the data (1+1), e.g.\n• coffee and tea make up almost 70% of Burundi’s\nexport earnings\n• high level of tax exemptions – 3% of GDP.\nEvaluation: 2 marks for two evaluative comments, e.g.\n• civil war as a temporary factor (1)\n• government might get money through aid (1)\nOR\n2 marks for identification and linked development, e.g.\n• growth of emerging economies (1) has led to\nincrease in primary product prices (1)\n• FDI by China (1) has led to improved infrastructure\n(1).\n(8) !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&(",
+  "ms": "Knowledge 2, Application 2, Analysis 2,\nEvaluation 2\nKnowledge/understanding: 2 marks for identification of\ntwo factors (1+1)\nAnalysis: 2 marks for linked explanation of how these\nfactors constrain growth (1+1), e.g.\n• land-locked (1) therefore high transport costs so\nlimited opportunities for international trade (1)\n• low tax revenue (1) meaning government has\ninsufficient funds for investment in education (1)\n• primary product dependency (1) price volatility\nleading to uncertain levels of income/investment (1)\n• civil war (1) destruction of infrastructure which\ndiscourages investment (1).\nApplication: 2 marks for reference to the data (1+1), e.g.\n• coffee and tea make up almost 70% of Burundi’s\nexport earnings\n• high level of tax exemptions – 3% of GDP.\nEvaluation: 2 marks for two evaluative comments, e.g.\n• civil war as a temporary factor (1)\n• government might get money through aid (1)\nOR\n2 marks for identification and linked development, e.g.\n• growth of emerging economies (1) has led to\nincrease in primary product prices (1)\n• FDI by China (1) has led to improved infrastructure\n(1).\n(8)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&(",
   "erKey": "6b",
   "paper": 2,
   "series": "Specimen",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-specimen-q6b"
  },
  {
@@ -2988,12 +3180,13 @@ const ECO_QUESTIONS = [
   "marks": 12,
   "section": "B",
   "text": "With reference to Figure 1, discuss the use of GDP data as a means of comparing\nliving standards among the five EAC member countries.",
-  "ms": "Knowledge 2, Application 2, Analysis 4\nGDP is the best way to compare living standards:\n• it is an internationally comparable measure\n• it is a fairly simple measure, meaning a low\nopportunity cost to the governments of these\ndeveloping countries\n• it requires less data than some more sophisticated\nmeasures, reducing the chance of data inaccuracy\n• there is GDP data for all five countries, whereas\nthere is no IHDI data for Burundi\n• can be refined into per capita / PPP measures to\nmake more representative\n• the rank orders of the five countries are the same\nusing GDP as using GDP per capita and HDI\n(8)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning. !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&)",
+  "ms": "Knowledge 2, Application 2, Analysis 4\nGDP is the best way to compare living standards:\n• it is an internationally comparable measure\n• it is a fairly simple measure, meaning a low\nopportunity cost to the governments of these\ndeveloping countries\n• it requires less data than some more sophisticated\nmeasures, reducing the chance of data inaccuracy\n• there is GDP data for all five countries, whereas\nthere is no IHDI data for Burundi\n• can be refined into per capita / PPP measures to\nmake more representative\n• the rank orders of the five countries are the same\nusing GDP as using GDP per capita and HDI\n(8)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 3–5 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 6–8 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&)",
   "erKey": "6c",
   "paper": 2,
   "series": "Specimen",
-  "theme": 2,
+  "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-specimen-q6c"
  },
  {
@@ -3002,12 +3195,13 @@ const ECO_QUESTIONS = [
   "marks": 10,
   "section": "B",
   "text": "Assess the benefits Kenya has gained from its membership of the EAC since 2000.",
-  "ms": "Knowledge 2, Application 2, Analysis 2\nPossible benefits include:\n• increased regional trade has led to faster economic\ngrowth\n• firms can take advantage of increased economies of\nscale\n• trade creation\n• free movement of labour may fill labour shortages\nin individual countries\n• increased investment, either domestic or foreign\n• negotiating together may give the countries more\npower at, e.g., WTO talks.\n(6)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no links between causes and\nconsequences.\nLevel 2 3–4 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or the answer may lack balance.\nLevel 3 5–6 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are applied appropriately to the broad\nelements of the question. !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&\"",
+  "ms": "Knowledge 2, Application 2, Analysis 2\nPossible benefits include:\n• increased regional trade has led to faster economic\ngrowth\n• firms can take advantage of increased economies of\nscale\n• trade creation\n• free movement of labour may fill labour shortages\nin individual countries\n• increased investment, either domestic or foreign\n• negotiating together may give the countries more\npower at, e.g., WTO talks.\n(6)\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–2 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no links between causes and\nconsequences.\nLevel 2 3–4 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or the answer may lack balance.\nLevel 3 5–6 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are applied appropriately to the broad\nelements of the question.\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&\"",
   "erKey": "6d",
   "paper": 2,
   "series": "Specimen",
   "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-specimen-q6d"
  },
  {
@@ -3016,12 +3210,13 @@ const ECO_QUESTIONS = [
   "marks": 15,
   "section": "B",
   "text": "Discuss the likely costs and benefits of monetary union to the five members of\nthe EAC.",
-  "ms": "Knowledge 3, Application 3, Analysis 3\nCandidates may analyse the costs in their answer, and\nthe benefits as evaluation (or vice versa), or may\nanalyse the costs and benefits in their answer, and\nconsider the significance of their arguments as\nevaluation.\nPossible costs include:\n• loss of control over monetary policy (given current\ndifferences in economic development, perhaps\nunlikely that one common policy would be optimal\nfor all)\n• loss of control over exchange rate policy\n• resulting inability to respond differently to\nasymmetric shocks\n• changeover costs/menu costs\n• consumer confusion\n• may be inflationary if all producers round up their\nnew prices/loss of consumer surplus.\nPossible benefits include:\n• reduction in transaction costs\n• elimination of exchange rate risk (leading to more\ntrade and investment)\n• reduction in region-wide price differentials / may\nreduce inflation/increase consumer surplus\n• a larger and more diverse economic area may be\nless vulnerable to exogenous shocks and\nspeculative currency attacks.\n(9) !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&$\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning. !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&%",
+  "ms": "Knowledge 3, Application 3, Analysis 3\nCandidates may analyse the costs in their answer, and\nthe benefits as evaluation (or vice versa), or may\nanalyse the costs and benefits in their answer, and\nconsider the significance of their arguments as\nevaluation.\nPossible costs include:\n• loss of control over monetary policy (given current\ndifferences in economic development, perhaps\nunlikely that one common policy would be optimal\nfor all)\n• loss of control over exchange rate policy\n• resulting inability to respond differently to\nasymmetric shocks\n• changeover costs/menu costs\n• consumer confusion\n• may be inflationary if all producers round up their\nnew prices/loss of consumer surplus.\nPossible benefits include:\n• reduction in transaction costs\n• elimination of exchange rate risk (leading to more\ntrade and investment)\n• reduction in region-wide price differentials / may\nreduce inflation/increase consumer surplus\n• a larger and more diverse economic area may be\nless vulnerable to exogenous shocks and\nspeculative currency attacks.\n(9)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&$\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–3 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 4–6 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response; chains of reasoning are developed but\nthe answer may lack balance.\nLevel 3 7–9 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nrelevant and focused examples which are fully integrated.\nEconomic ideas are carefully selected and applied\nappropriately to economic issues and problems. The answer\ndemonstrates logical and coherent chains of reasoning.\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&%",
   "erKey": "6e",
   "paper": 2,
   "series": "Specimen",
-  "theme": 2,
+  "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-specimen-q6e"
  },
  {
@@ -3030,12 +3225,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "In 2012, it was estimated that Japan’s national debt was equal to 214.3% of its GDP,\nand Greece’s national debt was equal to 161.3% of its GDP.\nEvaluate the likely impact of measures which a government could take to reduce\nthe economy’s national debt. Refer to a developed economy of your choice in your\nanswer.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nUnderstanding of public sector debt.\nPossible policies may include:\n∞ running budget surpluses (austerity measures),\nthrough either/both:\no reducing government spending\no increasing taxation\n∞ policies to generate economic growth, leading to a\nreduction in government spending, and an increase in\ntax revenue:\no fiscal stimulus\no exchange rate devaluation\n∞ policies to cut down on tax avoidance/evasion\npolicies to increase efficiency/reduce waste in the\npublic sector\n∞ privatisation/outsourcing/public-private partnerships\nto reduce government spending\n∞ changing the legal structure of the debt (e.g. the\nsuggested minting of a $1 trillion coin by the US\nTreasury)\nPossible evaluation points include:\n∞ austerity measures may reduce economic growth,\nleading to lower tax revenues and higher\ngovernment spending, worsening the debt in the\nfuture\n∞ effectiveness of austerity policies depends on the\nbalance between spending cuts/tax rises/which taxes\nare raised/where government spending is cut\n∞ policies to generate economic growth/cut tax\navoidance/evasion are likely to be costly and raise\ndebt in the short run.\nNB For a Level 4 response, candidates must refer\nto a developed country in their answer. (25) !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&&\nKnowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements of the question with evidence integrated\ninto the answer.\nAnalysis is clear and coherent, although it may lack balance.\nChains of reasoning are developed but the answer may lack\nbalance.\nLevel 4 13–16 Demonstrates precise knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding i",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nUnderstanding of public sector debt.\nPossible policies may include:\n∞ running budget surpluses (austerity measures),\nthrough either/both:\no reducing government spending\no increasing taxation\n∞ policies to generate economic growth, leading to a\nreduction in government spending, and an increase in\ntax revenue:\no fiscal stimulus\no exchange rate devaluation\n∞ policies to cut down on tax avoidance/evasion\npolicies to increase efficiency/reduce waste in the\npublic sector\n∞ privatisation/outsourcing/public-private partnerships\nto reduce government spending\n∞ changing the legal structure of the debt (e.g. the\nsuggested minting of a $1 trillion coin by the US\nTreasury)\nPossible evaluation points include:\n∞ austerity measures may reduce economic growth,\nleading to lower tax revenues and higher\ngovernment spending, worsening the debt in the\nfuture\n∞ effectiveness of austerity policies depends on the\nbalance between spending cuts/tax rises/which taxes\nare raised/where government spending is cut\n∞ policies to generate economic growth/cut tax\navoidance/evasion are likely to be costly and raise\ndebt in the short run.\nNB For a Level 4 response, candidates must refer\nto a developed country in their answer. (25)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n&&\nKnowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate respon",
   "erKey": "7",
   "paper": 2,
   "series": "Specimen",
-  "theme": 2,
-  "themeConfident": true,
+  "theme": 4,
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-specimen-q7"
  },
  {
@@ -3044,12 +3240,13 @@ const ECO_QUESTIONS = [
   "marks": 25,
   "section": "C",
   "text": "Over the past 25 years, income inequality has been increasing in many developed\ncountries. For example, from 2007 to 2011 Spain’s Gini coefficient rose by\n6.0 percentage points, and Ireland’s by 6.6 percentage points.\nEvaluate the factors which may have caused this increase in income inequality. Refer\nto a developed economy of your choice in your answer.",
-  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nUnderstanding of income inequality.\nLikely causes include:\n∞ increased globalisation/trade liberalisation/off-\nshoring\n∞ automation of manufacturing/changing technology\n∞ development of the emerging economies, e.g.\nChina/India\n∞ financial crisis of 2008/2009\n∞ increased incomes of those already at the top of the\nincome distribution (ownership of assets/wealth\ndistribution/ economic growth)\n∞ de-regulation\n∞ increased returns to education/entrepreneurial risk\ntaking.\nPossible evaluation points include:\n∞ different reasons have been the most important in\ndifferent countries, or at different times\n∞ it depends on what the economy specialises in, e.g.\nthose that specialised in manufacturing have been\nmore affected by the development of emerging\neconomies, those that specialise in tourism have\nbeen more affected by the financial crisis\n∞ financial crisis is only a relevant factor for a limited\nperiod of time\n∞ prioritisation of factors.\nNB For a Level 4 response, candidates must refer\nto a developed country in their answer, and\nexplain why income equality has increased, not\nsimply why there is income inequality. (25) !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n'(\nKnowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms, concepts, theories and models.\nUse of generic or irrelevant information or examples.\nDescriptive approach which has no chains of reasoning or\nlinks between causes and consequences.\nLevel 2 5–8 Displays elements of knowledge and understanding of\neconomic principles, concepts and theories.\nApplies economic ideas and relates them to economic\nproblems in context, although does not focus on the broad\nelements of the question.\nA narrow response or superficial, two stage chains of\nreasoning only.\nLevel 3 9–12 Demonstrates accurate knowledge and understanding of the\nconcepts, principles and models.\nAbility to apply economic concepts and relate them directly to\nthe broad elements of the question with evidence integrated\ninto the answer.\nAnalysis is clear and coherent, although it may lack balance.\nChains of reasoning are developed but the answer may lack\nbalance.\nLevel 4 13–16 Demonstrates precise knowledge and understanding of the\nconcepts, principles and models.\nAbility to link knowledge and understanding in context using\nappropriate examples.\nAnalysis is relevant and focused with evidence",
+  "ms": "Knowledge 4, Application 4, Analysis 8,\nEvaluation 9\nUnderstanding of income inequality.\nLikely causes include:\n∞ increased globalisation/trade liberalisation/off-\nshoring\n∞ automation of manufacturing/changing technology\n∞ development of the emerging economies, e.g.\nChina/India\n∞ financial crisis of 2008/2009\n∞ increased incomes of those already at the top of the\nincome distribution (ownership of assets/wealth\ndistribution/ economic growth)\n∞ de-regulation\n∞ increased returns to education/entrepreneurial risk\ntaking.\nPossible evaluation points include:\n∞ different reasons have been the most important in\ndifferent countries, or at different times\n∞ it depends on what the economy specialises in, e.g.\nthose that specialised in manufacturing have been\nmore affected by the development of emerging\neconomies, those that specialise in tourism have\nbeen more affected by the financial crisis\n∞ financial crisis is only a relevant factor for a limited\nperiod of time\n∞ prioritisation of factors.\nNB For a Level 4 response, candidates must refer\nto a developed country in their answer, and\nexplain why income equality has increased, not\nsimply why there is income inequality. (25)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n'(\nKnowledge, application and analysis\nLevel Mark Descriptor\n0 A completely inaccurate response.\nLevel 1 1–4 Displays isolated or imprecise knowledge and understanding\nof terms,",
   "erKey": "8",
   "paper": 2,
   "series": "Specimen",
   "theme": 4,
   "themeConfident": true,
+  "year": 2,
   "id": "p2-specimen-q8"
  }
 ];
@@ -3120,7 +3317,6 @@ const ECO_QUESTIONS_BY_TARIFF = {
   "p2-june2018-q2",
   "p2-june2018-q3",
   "p2-june2018-q4",
-  "p2-june2018-q5",
   "p2-june2018-q6a",
   "p2-june2019-q1",
   "p2-june2019-q2",

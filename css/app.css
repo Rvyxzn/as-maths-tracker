@@ -1523,21 +1523,70 @@ Pen flyout, hover-expanding tool picker: draw/erase, colour wheel, size
 .qpack-main small{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .qpack-tags{flex:0 0 auto;display:flex;gap:6px;align-items:center}
 .qpack-body{padding:0 14px 14px;border-top:1px solid var(--border)}
+
+/* the question, on its own, with nothing else to read */
 .qpack-q{
-  margin-top:13px;padding:13px 14px;border-radius:10px;background:var(--surface-2);
-  border-left:3px solid var(--accent);font-size:13.5px;line-height:1.6;
+  margin-top:13px;padding:14px 15px;border-radius:10px;background:var(--surface-2);
+  border-left:3px solid var(--accent);font-size:13.5px;line-height:1.75;
 }
-.qpack-ms{
-  padding:12px 14px;border-radius:10px;background:var(--surface-2);
-  border:1px solid var(--border);font-size:12.5px;line-height:1.65;color:var(--text);
-  max-height:420px;overflow-y:auto;
+
+/* YEAR 1 / YEAR 2 — one wide control, split evenly across the card */
+.yearbar{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;width:100%;
+  border:1px solid var(--border-strong);border-radius:999px;overflow:hidden;
 }
-/* the timer chip once you are past the allowance */
+.yearseg{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  padding:11px 8px;background:none;border:0;cursor:pointer;
+  color:var(--muted);font:inherit;font-size:12px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;transition:.15s;
+}
+.yearseg+.yearseg{border-left:1px solid var(--border-strong)}
+.yearseg small{
+  font-size:11px;font-weight:600;letter-spacing:0;opacity:.7;
+  padding:1px 7px;border-radius:999px;background:var(--surface-2);
+}
+.yearseg:hover{color:var(--text);background:var(--surface-2)}
+.yearseg.on{background:var(--accent);color:#fff}
+.yearseg.on small{background:rgba(255,255,255,.22);opacity:1}
+
+/* mark scheme, set out the way Edexcel sets it out */
+.ms2{
+  padding:14px 15px;border-radius:10px;background:var(--surface-2);
+  border:1px solid var(--border);font-size:13px;line-height:1.7;color:var(--text);
+}
+.ms2 p{margin:0 0 9px}
+.ms2 p:last-child{margin-bottom:0}
+.ms2-part{
+  margin:14px 0 9px;font-weight:700;font-size:11.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);
+}
+.ms2-part:first-child{margin-top:0}
+.ms2-marks{
+  display:inline-block;margin:0 0 10px;padding:5px 11px;border-radius:999px;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:12px;
+}
+.ms2-level{
+  margin:10px 0 6px;padding:7px 11px;border-radius:8px;background:var(--surface);
+  border-left:3px solid var(--border-strong);font-weight:600;font-size:12.5px;
+}
+.ms2-range{
+  display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;
+  background:var(--accent-soft);color:var(--accent);font-size:11.5px;font-weight:700;
+}
+.btn.is-empty{opacity:.45}
+.ms2-list{margin:0 0 10px;padding-left:20px}
+.ms2-list li{margin-bottom:6px}
+.ms2-total{
+  margin-top:10px;padding-top:9px;border-top:1px solid var(--border);
+  font-weight:700;font-size:12.5px;text-align:right;color:var(--muted);
+}
 .timer-chip.over{background:var(--red-soft,rgba(239,68,68,.16));border-color:var(--red);color:var(--red)}
 @media(max-width:640px){
   .qpack-head{flex-wrap:wrap}
   .qpack-tags{width:100%;padding-left:50px}
   .qpack-main small{white-space:normal}
+}
 }
 
 /* examiner report, folded under a mark scheme */
