@@ -15,6 +15,7 @@ const App = (function () {
     { id: "calendar", label: "Calendar", icon: "▦" },
     { id: "examq", label: "Exam Questions", icon: "✎" },
     { id: "papers", label: "Past Papers", icon: "▤" },
+    { id: "packs", label: "Question Packs", icon: "≣", subjects: ["economics"] },
     { id: "assessments", label: "School Tests", icon: "✎" },
     { id: "flashcards", label: "Flashcards", icon: "◈" },
     { id: "weaknesses", label: "Weaknesses", icon: "⚠" },
@@ -25,7 +26,7 @@ const App = (function () {
   const TITLES = {
     dashboard: "Dashboard", today: "Today’s Plan", topics: "My Topics", topic: "Topic", chapter: "Chapter", paperview: "Paper",
     calendar: "Calendar", examq: "Exam Questions", papers: "Past Papers", weaknesses: "Weaknesses",
-    assessments: "School Tests", flashcards: "Formula Flashcards",
+    assessments: "School Tests", flashcards: "Formula Flashcards", packs: "Question Packs",
     progress: "Progress", settings: "Settings", session: "Revision Session", onboarding: "Getting Started"
   };
 
@@ -109,6 +110,7 @@ function setSidebar(open) {
       case "examq": ExamQView.render(buf); break;
       case "papers": PapersView.render(buf); break;
       case "assessments": AssessmentsView.render(buf); break;
+      case "packs": PacksView.render(buf); break;
       case "flashcards": FlashcardsView.render(buf); break;
       case "weaknesses": WeaknessesView.render(buf); break;
       case "progress": ProgressView.render(buf); break;
@@ -135,7 +137,12 @@ function setSidebar(open) {
                      papers: st.papers.length || "",
                      assessments: (st.schoolAssessments || []).length || "" };
 
-    document.getElementById("nav").innerHTML = NAV.map(function (n) {
+    /* Some sections only exist for one subject: question packs are built on
+       the Economics past papers and mean nothing under Maths. */
+    const subjectNow = typeof Subjects !== "undefined" ? Subjects.currentId() : null;
+    document.getElementById("nav").innerHTML = NAV.filter(function (n) {
+      return !n.subjects || n.subjects.indexOf(subjectNow) >= 0;
+    }).map(function (n) {
       const active = current === n.id || ((current === "topic" || current === "chapter") && n.id === "topics") || (current === "session" && n.id === "today");
       return '<button class="nav-item' + (active ? " active" : "") + '" data-action="go" data-view="' + n.id + '">' +
         '<span class="nav-ico">' + n.icon + '</span><span>' + n.label + '</span>' +
@@ -420,6 +427,7 @@ function setSidebar(open) {
     if (CalendarView.handle(action, el)) return;
     if (PapersView.handle(action, el)) return;
     if (AssessmentsView.handle(action, el)) return;
+    if (typeof PacksView !== "undefined" && PacksView.handle(action, el)) return;
     if (action === "anki-export") { ankiExport(el.dataset.id); return; }
     if (action === "switch-subject") { subjectMenu(); return; }
     if (action === "sync-now") {
@@ -2012,7 +2020,30 @@ function setSidebar(open) {
     const clock = (h ? h + ":" + String(m).padStart(2, "0") : String(m)) + ":" + String(sec).padStart(2, "0");
     const el = chip.querySelector(".timer-clock");
     if (el) el.textContent = clock;
+
+    /* Past the allowance, say so once and keep the chip red. In the exam the
+       clock is the binding constraint, so knowing you have overrun a 25
+       marker by six minutes matters more than the raw elapsed time. */
+    if (t.targetMins) {
+      const over = total > t.targetMins * 60;
+      chip.classList.toggle("over", over);
+      if (over && !t.overNotified) {
+        Store.mutate(function (st) { st.timer.overNotified = true; });
+        const by = Math.round(total / 60 - t.targetMins);
+        UI.toast("Over time on " + t.label + " — " + t.targetMins + " min was the allowance" +
+                 (by > 0 ? ", you are " + by + " min past" : ""), "bad", 6000);
+      }
+    }
     if (t.running) refreshTimeBars();
+  }
+
+  /* Time a single exam question at the real Edexcel rate. */
+  function startQuestionTimer(q) {
+    const mins = Math.round(q.marks * ECO_MINUTES_PER_MARK);
+    const label = q.marks + "-mark · " + q.series + " Q" + q.q + (q.part ? "(" + q.part + ")" : "");
+    Store.mutate(function () { Store.timerStart(label, "session", q.id, null, mins); });
+    UI.toast("Timing a " + q.marks + " marker — " + mins + " minutes at 1.2 min per mark", "ok", 5000);
+    render();
   }
 
   function refreshTimeBars() {
@@ -2226,7 +2257,8 @@ function setSidebar(open) {
            whatNowModal: whatNowModal, retakeModal: retakeModal,
            timerStartModal: timerStartModal, refreshTimeBars: refreshTimeBars,
            flashcardExportModal: flashcardExportModal, flashcardImportModal: flashcardImportModal,
-           flashcardAddModal: flashcardAddModal };
+           flashcardAddModal: flashcardAddModal,
+           startQuestionTimer: startQuestionTimer };
 })();
 
 document.addEventListener("DOMContentLoaded", App.boot);

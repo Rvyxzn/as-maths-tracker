@@ -118,7 +118,10 @@ function setsForChapter(chapterKey) {
 function allExamSets() {
   const byChapter = {};
   ALL_CHAPTER_IDS.forEach(function (cid) {
-    CHAPTER_INDEX[cid].sets.forEach(function (s) {
+    /* Only Maths chapters carry exam-question PDFs. The index is rebuilt per
+       subject, so under Economics or Geography there is no `sets` at all and
+       this page has nothing to group. */
+    (CHAPTER_INDEX[cid].sets || []).forEach(function (s) {
       if (!byChapter[s.key]) byChapter[s.key] = { set: s, chapters: [] };
       byChapter[s.key].chapters.push(cid);
     });

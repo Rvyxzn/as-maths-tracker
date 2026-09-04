@@ -1505,6 +1505,41 @@ Pen flyout, hover-expanding tool picker: draw/erase, colour wheel, size
 .weighted-note .tiny{margin-top:4px}
 .warn-text{color:var(--amber)}
 
+/* ---------- question packs ---------- */
+.qpack{border:1px solid var(--border);border-radius:12px;background:var(--surface);overflow:hidden}
+.qpack.open{border-color:var(--accent)}
+.qpack-head{
+  display:flex;align-items:center;gap:12px;width:100%;padding:12px 13px;
+  background:none;border:0;cursor:pointer;color:var(--text);font:inherit;text-align:left;
+}
+.qpack-head:hover{background:var(--surface-2)}
+.qpack-marks{
+  flex:0 0 auto;min-width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+  border-radius:10px;background:var(--accent-soft);color:var(--accent);
+  font-family:var(--font-display);font-weight:700;font-size:15px;
+}
+.qpack-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.qpack-main b{font-size:13px}
+.qpack-main small{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qpack-tags{flex:0 0 auto;display:flex;gap:6px;align-items:center}
+.qpack-body{padding:0 14px 14px;border-top:1px solid var(--border)}
+.qpack-q{
+  margin-top:13px;padding:13px 14px;border-radius:10px;background:var(--surface-2);
+  border-left:3px solid var(--accent);font-size:13.5px;line-height:1.6;
+}
+.qpack-ms{
+  padding:12px 14px;border-radius:10px;background:var(--surface-2);
+  border:1px solid var(--border);font-size:12.5px;line-height:1.65;color:var(--text);
+  max-height:420px;overflow-y:auto;
+}
+/* the timer chip once you are past the allowance */
+.timer-chip.over{background:var(--red-soft,rgba(239,68,68,.16));border-color:var(--red);color:var(--red)}
+@media(max-width:640px){
+  .qpack-head{flex-wrap:wrap}
+  .qpack-tags{width:100%;padding-left:50px}
+  .qpack-main small{white-space:normal}
+}
+
 /* examiner report, folded under a mark scheme */
 .exrep{margin-top:10px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface-2)}
 .exrep-head{

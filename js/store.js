@@ -451,9 +451,13 @@ const Store = (function () {
     },
 
     /* ---------- live timer ---------- */
-    timerStart: function (label, kind, refId, taskId) {
+    /* targetMins is the time the work is supposed to take — for an exam
+       question, its marks at the real 1.2 minutes per mark. The timer says
+       when you pass it, which is the whole point of timing an essay. */
+    timerStart: function (label, kind, refId, taskId, targetMins) {
       state.timer = { label: label, kind: kind || "task", refId: refId || null,
-                      taskId: taskId || null,
+                      taskId: taskId || null, targetMins: targetMins || null,
+                      overNotified: false,
                       startedAt: Date.now(), accumulated: 0, running: true };
     },
     timerPause: function () {
