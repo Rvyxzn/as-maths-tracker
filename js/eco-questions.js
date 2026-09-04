@@ -151,7 +151,8 @@ const ECO_QUESTIONS = [
   "topicName": "Oligopoly",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2017-q6a"
+  "id": "p1-june2017-q6a",
+  "caseKey": "p1-june2017"
  },
  {
   "q": "6",
@@ -173,7 +174,8 @@ const ECO_QUESTIONS = [
   "topicName": "Monopsony",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2017-q6b"
+  "id": "p1-june2017-q6b",
+  "caseKey": "p1-june2017"
  },
  {
   "q": "6",
@@ -195,7 +197,8 @@ const ECO_QUESTIONS = [
   "topicName": "Monopsony",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2017-q6c"
+  "id": "p1-june2017-q6c",
+  "caseKey": "p1-june2017"
  },
  {
   "q": "6",
@@ -217,7 +220,8 @@ const ECO_QUESTIONS = [
   "topicName": "Information gaps",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2017-q6d"
+  "id": "p1-june2017-q6d",
+  "caseKey": "p1-june2017"
  },
  {
   "q": "6",
@@ -239,7 +243,8 @@ const ECO_QUESTIONS = [
   "topicName": "Economies and diseconomies of scale",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2017-q6e"
+  "id": "p1-june2017-q6e",
+  "caseKey": "p1-june2017"
  },
  {
   "q": "7",
@@ -401,7 +406,8 @@ const ECO_QUESTIONS = [
   "topicName": "Alternative views of consumer behaviour",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2018-q6a"
+  "id": "p1-june2018-q6a",
+  "caseKey": "p1-june2018"
  },
  {
   "q": "6",
@@ -423,7 +429,8 @@ const ECO_QUESTIONS = [
   "topicName": "The economic problem",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2018-q6b"
+  "id": "p1-june2018-q6b",
+  "caseKey": "p1-june2018"
  },
  {
   "q": "6",
@@ -445,7 +452,8 @@ const ECO_QUESTIONS = [
   "topicName": "Consumer and producer surplus",
   "themeConfident": false,
   "year": 1,
-  "id": "p1-june2018-q6c"
+  "id": "p1-june2018-q6c",
+  "caseKey": "p1-june2018"
  },
  {
   "q": "6",
@@ -467,7 +475,8 @@ const ECO_QUESTIONS = [
   "topicName": "Price, income and cross elasticities of demand",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2018-q6d"
+  "id": "p1-june2018-q6d",
+  "caseKey": "p1-june2018"
  },
  {
   "q": "6",
@@ -489,7 +498,8 @@ const ECO_QUESTIONS = [
   "topicName": "Supply of labour",
   "themeConfident": false,
   "year": 2,
-  "id": "p1-june2018-q6e"
+  "id": "p1-june2018-q6e",
+  "caseKey": "p1-june2018"
  },
  {
   "q": "7",
@@ -651,7 +661,8 @@ const ECO_QUESTIONS = [
   "topicName": "Positive and normative economic statements",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2019-q6a"
+  "id": "p1-june2019-q6a",
+  "caseKey": "p1-june2019"
  },
  {
   "q": "6",
@@ -673,7 +684,8 @@ const ECO_QUESTIONS = [
   "topicName": "Economies and diseconomies of scale",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2019-q6b"
+  "id": "p1-june2019-q6b",
+  "caseKey": "p1-june2019"
  },
  {
   "q": "6",
@@ -695,7 +707,8 @@ const ECO_QUESTIONS = [
   "topicName": "Information gaps",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2019-q6c"
+  "id": "p1-june2019-q6c",
+  "caseKey": "p1-june2019"
  },
  {
   "q": "6",
@@ -717,7 +730,8 @@ const ECO_QUESTIONS = [
   "topicName": "Monopolistic competition",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2019-q6d"
+  "id": "p1-june2019-q6d",
+  "caseKey": "p1-june2019"
  },
  {
   "q": "6",
@@ -739,7 +753,8 @@ const ECO_QUESTIONS = [
   "topicName": "Government intervention",
   "themeConfident": false,
   "year": 2,
-  "id": "p1-june2019-q6e"
+  "id": "p1-june2019-q6e",
+  "caseKey": "p1-june2019"
  },
  {
   "q": "7",
@@ -901,7 +916,8 @@ const ECO_QUESTIONS = [
   "topicName": "Consumer and producer surplus",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2020-q6a"
+  "id": "p1-june2020-q6a",
+  "caseKey": "p1-june2020"
  },
  {
   "q": "6",
@@ -923,7 +939,8 @@ const ECO_QUESTIONS = [
   "topicName": "Demand",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2020-q6b"
+  "id": "p1-june2020-q6b",
+  "caseKey": "p1-june2020"
  },
  {
   "q": "6",
@@ -945,7 +962,8 @@ const ECO_QUESTIONS = [
   "topicName": "Government intervention",
   "themeConfident": false,
   "year": 2,
-  "id": "p1-june2020-q6c"
+  "id": "p1-june2020-q6c",
+  "caseKey": "p1-june2020"
  },
  {
   "q": "6",
@@ -967,7 +985,8 @@ const ECO_QUESTIONS = [
   "topicName": "Monopoly",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2020-q6d"
+  "id": "p1-june2020-q6d",
+  "caseKey": "p1-june2020"
  },
  {
   "q": "6",
@@ -989,7 +1008,8 @@ const ECO_QUESTIONS = [
   "topicName": "Price, income and cross elasticities of demand",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2020-q6e"
+  "id": "p1-june2020-q6e",
+  "caseKey": "p1-june2020"
  },
  {
   "q": "7",
@@ -1151,7 +1171,8 @@ const ECO_QUESTIONS = [
   "topicName": "Costs",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2021-q6a"
+  "id": "p1-june2021-q6a",
+  "caseKey": "p1-june2021"
  },
  {
   "q": "6",
@@ -1173,7 +1194,8 @@ const ECO_QUESTIONS = [
   "topicName": "Externalities",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2021-q6b"
+  "id": "p1-june2021-q6b",
+  "caseKey": "p1-june2021"
  },
  {
   "q": "6",
@@ -1195,7 +1217,8 @@ const ECO_QUESTIONS = [
   "topicName": "Business objectives",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2021-q6c"
+  "id": "p1-june2021-q6c",
+  "caseKey": "p1-june2021"
  },
  {
   "q": "6",
@@ -1217,7 +1240,8 @@ const ECO_QUESTIONS = [
   "topicName": "Economies and diseconomies of scale",
   "themeConfident": false,
   "year": 2,
-  "id": "p1-june2021-q6d"
+  "id": "p1-june2021-q6d",
+  "caseKey": "p1-june2021"
  },
  {
   "q": "6",
@@ -1239,7 +1263,8 @@ const ECO_QUESTIONS = [
   "topicName": "Consumer and producer surplus",
   "themeConfident": false,
   "year": 1,
-  "id": "p1-june2021-q6e"
+  "id": "p1-june2021-q6e",
+  "caseKey": "p1-june2021"
  },
  {
   "q": "7",
@@ -1401,7 +1426,8 @@ const ECO_QUESTIONS = [
   "topicName": "Oligopoly",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2022-q6a"
+  "id": "p1-june2022-q6a",
+  "caseKey": "p1-june2022"
  },
  {
   "q": "6",
@@ -1423,7 +1449,8 @@ const ECO_QUESTIONS = [
   "topicName": "Price, income and cross elasticities of demand",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2022-q6b"
+  "id": "p1-june2022-q6b",
+  "caseKey": "p1-june2022"
  },
  {
   "q": "6",
@@ -1445,7 +1472,8 @@ const ECO_QUESTIONS = [
   "topicName": "Business objectives",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2022-q6c"
+  "id": "p1-june2022-q6c",
+  "caseKey": "p1-june2022"
  },
  {
   "q": "6",
@@ -1467,7 +1495,8 @@ const ECO_QUESTIONS = [
   "topicName": "Revenue",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2022-q6d"
+  "id": "p1-june2022-q6d",
+  "caseKey": "p1-june2022"
  },
  {
   "q": "6",
@@ -1489,7 +1518,8 @@ const ECO_QUESTIONS = [
   "topicName": "Contestability",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2022-q6e"
+  "id": "p1-june2022-q6e",
+  "caseKey": "p1-june2022"
  },
  {
   "q": "7",
@@ -1651,7 +1681,8 @@ const ECO_QUESTIONS = [
   "topicName": "Oligopoly",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2023-q6a"
+  "id": "p1-june2023-q6a",
+  "caseKey": "p1-june2023"
  },
  {
   "q": "6",
@@ -1673,7 +1704,8 @@ const ECO_QUESTIONS = [
   "topicName": "Alternative views of consumer behaviour",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2023-q6b"
+  "id": "p1-june2023-q6b",
+  "caseKey": "p1-june2023"
  },
  {
   "q": "6",
@@ -1695,7 +1727,8 @@ const ECO_QUESTIONS = [
   "topicName": "Price, income and cross elasticities of demand",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2023-q6c"
+  "id": "p1-june2023-q6c",
+  "caseKey": "p1-june2023"
  },
  {
   "q": "6",
@@ -1717,7 +1750,8 @@ const ECO_QUESTIONS = [
   "topicName": "Externalities",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2023-q6d"
+  "id": "p1-june2023-q6d",
+  "caseKey": "p1-june2023"
  },
  {
   "q": "6",
@@ -1739,7 +1773,8 @@ const ECO_QUESTIONS = [
   "topicName": "Price, income and cross elasticities of demand",
   "themeConfident": false,
   "year": 1,
-  "id": "p1-june2023-q6e"
+  "id": "p1-june2023-q6e",
+  "caseKey": "p1-june2023"
  },
  {
   "q": "7",
@@ -1901,7 +1936,8 @@ const ECO_QUESTIONS = [
   "topicName": "Price mechanism",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-june2024-q6a"
+  "id": "p1-june2024-q6a",
+  "caseKey": "p1-june2024"
  },
  {
   "q": "6",
@@ -1923,7 +1959,8 @@ const ECO_QUESTIONS = [
   "topicName": "Supply of labour",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2024-q6b"
+  "id": "p1-june2024-q6b",
+  "caseKey": "p1-june2024"
  },
  {
   "q": "6",
@@ -1945,7 +1982,8 @@ const ECO_QUESTIONS = [
   "topicName": "Economies and diseconomies of scale",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2024-q6c"
+  "id": "p1-june2024-q6c",
+  "caseKey": "p1-june2024"
  },
  {
   "q": "6",
@@ -1967,7 +2005,8 @@ const ECO_QUESTIONS = [
   "topicName": "Government intervention",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2024-q6d"
+  "id": "p1-june2024-q6d",
+  "caseKey": "p1-june2024"
  },
  {
   "q": "6",
@@ -1989,7 +2028,8 @@ const ECO_QUESTIONS = [
   "topicName": "Government intervention",
   "themeConfident": true,
   "year": 2,
-  "id": "p1-june2024-q6e"
+  "id": "p1-june2024-q6e",
+  "caseKey": "p1-june2024"
  },
  {
   "q": "7",
@@ -2030,26 +2070,6 @@ const ECO_QUESTIONS = [
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2024-q8"
- },
- {
-  "q": "1",
-  "part": "",
-  "marks": 5,
-  "section": "A",
-  "text": "6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#\n3\n!\"#$#%$&'(%(!\n(c) Given the price elasticity of demand for Derby County Football Club’s tickets,\nexplain the likely impact on their revenue of an increase in ticket prices.\n(2)",
-  "ms": "(a)\nApplication 2\nApplication: 1 mark for applying the formula and 1\nmark for correct answer\n∞ Calculate the PED 5/11 (1) = 0.4545 (1)\nNB if the answer given is 0.4545 award 2 marks.\n(2)\n\n(b)\nD\n(1)\n\n(c)\nKnowledge 1, Analysis 1\nKnowledge/understanding: 1 mark for identifying\nthe impact of the change in price and quantity\nAnalysis: 1 mark for linking this to overall impact on\ntotal revenue, e.g.\n∞ relatively inelastic demand so additional revenue\nearned from additional price will be greater than\nlost revenue due to lost quantity (1) so as price\nrises total revenue rises (1)\n∞ may be illustrated diagrammatically – showing\ntotal revenue rising as price rises (1) with\ninelastic demand. (1)\n(2)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#$",
-  "erKey": "1a",
-  "pageFrom": 3,
-  "pageTo": 3,
-  "pdf": "Exam questions PDFs/A-Level Economics/Micro Economics (Theme 1 & 3)/Year 1 - Theme 1/Questions/Specimen QP.pdf",
-  "paper": 1,
-  "series": "Specimen",
-  "theme": 3,
-  "topicCode": "3.3.1",
-  "topicName": "Revenue",
-  "themeConfident": false,
-  "year": 2,
-  "id": "p1-specimen-q1"
  },
  {
   "q": "2",
@@ -2151,7 +2171,8 @@ const ECO_QUESTIONS = [
   "topicName": "Supply",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-specimen-q6a"
+  "id": "p1-specimen-q6a",
+  "caseKey": "p1-specimen"
  },
  {
   "q": "6",
@@ -2173,7 +2194,8 @@ const ECO_QUESTIONS = [
   "topicName": "Rational decision making",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-specimen-q6b"
+  "id": "p1-specimen-q6b",
+  "caseKey": "p1-specimen"
  },
  {
   "q": "6",
@@ -2195,7 +2217,8 @@ const ECO_QUESTIONS = [
   "topicName": "The economic problem",
   "themeConfident": false,
   "year": 1,
-  "id": "p1-specimen-q6c"
+  "id": "p1-specimen-q6c",
+  "caseKey": "p1-specimen"
  },
  {
   "q": "6",
@@ -2217,7 +2240,8 @@ const ECO_QUESTIONS = [
   "topicName": "Price, income and cross elasticities of demand",
   "themeConfident": true,
   "year": 1,
-  "id": "p1-specimen-q6d"
+  "id": "p1-specimen-q6d",
+  "caseKey": "p1-specimen"
  },
  {
   "q": "6",
@@ -2239,7 +2263,8 @@ const ECO_QUESTIONS = [
   "topicName": "Consumer and producer surplus",
   "themeConfident": false,
   "year": 1,
-  "id": "p1-specimen-q6e"
+  "id": "p1-specimen-q6e",
+  "caseKey": "p1-specimen"
  },
  {
   "q": "7",
@@ -2401,7 +2426,8 @@ const ECO_QUESTIONS = [
   "topicName": "Exchange rates",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2017-q6a"
+  "id": "p2-june2017-q6a",
+  "caseKey": "p2-june2017"
  },
  {
   "q": "6",
@@ -2423,7 +2449,8 @@ const ECO_QUESTIONS = [
   "topicName": "Inflation",
   "themeConfident": false,
   "year": 1,
-  "id": "p2-june2017-q6b"
+  "id": "p2-june2017-q6b",
+  "caseKey": "p2-june2017"
  },
  {
   "q": "6",
@@ -2445,7 +2472,8 @@ const ECO_QUESTIONS = [
   "topicName": "Balance of payments",
   "themeConfident": false,
   "year": 1,
-  "id": "p2-june2017-q6c"
+  "id": "p2-june2017-q6c",
+  "caseKey": "p2-june2017"
  },
  {
   "q": "6",
@@ -2467,7 +2495,8 @@ const ECO_QUESTIONS = [
   "topicName": "Role of central banks",
   "themeConfident": false,
   "year": 2,
-  "id": "p2-june2017-q6d"
+  "id": "p2-june2017-q6d",
+  "caseKey": "p2-june2017"
  },
  {
   "q": "6",
@@ -2489,7 +2518,8 @@ const ECO_QUESTIONS = [
   "topicName": "Supply-side policies",
   "themeConfident": true,
   "year": 1,
-  "id": "p2-june2017-q6e"
+  "id": "p2-june2017-q6e",
+  "caseKey": "p2-june2017"
  },
  {
   "q": "7",
@@ -2631,7 +2661,8 @@ const ECO_QUESTIONS = [
   "topicName": "Absolute and relative poverty",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2018-q6a"
+  "id": "p2-june2018-q6a",
+  "caseKey": "p2-june2018"
  },
  {
   "q": "6",
@@ -2653,7 +2684,8 @@ const ECO_QUESTIONS = [
   "topicName": "Absolute and relative poverty",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2018-q6b"
+  "id": "p2-june2018-q6b",
+  "caseKey": "p2-june2018"
  },
  {
   "q": "6",
@@ -2675,7 +2707,8 @@ const ECO_QUESTIONS = [
   "topicName": "Globalisation",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2018-q6c"
+  "id": "p2-june2018-q6c",
+  "caseKey": "p2-june2018"
  },
  {
   "q": "6",
@@ -2697,7 +2730,8 @@ const ECO_QUESTIONS = [
   "topicName": "Inequality",
   "themeConfident": false,
   "year": 2,
-  "id": "p2-june2018-q6d"
+  "id": "p2-june2018-q6d",
+  "caseKey": "p2-june2018"
  },
  {
   "q": "6",
@@ -2719,7 +2753,8 @@ const ECO_QUESTIONS = [
   "topicName": "Role of financial markets",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2018-q6e"
+  "id": "p2-june2018-q6e",
+  "caseKey": "p2-june2018"
  },
  {
   "q": "7",
@@ -2881,7 +2916,8 @@ const ECO_QUESTIONS = [
   "topicName": "Role of financial markets",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2019-q6a"
+  "id": "p2-june2019-q6a",
+  "caseKey": "p2-june2019"
  },
  {
   "q": "6",
@@ -2903,7 +2939,8 @@ const ECO_QUESTIONS = [
   "topicName": "Exchange rates",
   "themeConfident": false,
   "year": 2,
-  "id": "p2-june2019-q6b"
+  "id": "p2-june2019-q6b",
+  "caseKey": "p2-june2019"
  },
  {
   "q": "6",
@@ -2925,7 +2962,8 @@ const ECO_QUESTIONS = [
   "topicName": "Economic growth",
   "themeConfident": true,
   "year": 1,
-  "id": "p2-june2019-q6c"
+  "id": "p2-june2019-q6c",
+  "caseKey": "p2-june2019"
  },
  {
   "q": "6",
@@ -2947,7 +2985,8 @@ const ECO_QUESTIONS = [
   "topicName": "Role of central banks",
   "themeConfident": false,
   "year": 2,
-  "id": "p2-june2019-q6d"
+  "id": "p2-june2019-q6d",
+  "caseKey": "p2-june2019"
  },
  {
   "q": "6",
@@ -2969,7 +3008,8 @@ const ECO_QUESTIONS = [
   "topicName": "Role of central banks",
   "themeConfident": false,
   "year": 2,
-  "id": "p2-june2019-q6e"
+  "id": "p2-june2019-q6e",
+  "caseKey": "p2-june2019"
  },
  {
   "q": "7",
@@ -3131,7 +3171,8 @@ const ECO_QUESTIONS = [
   "topicName": "Strategies influencing growth and development",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2020-q6a"
+  "id": "p2-june2020-q6a",
+  "caseKey": "p2-june2020"
  },
  {
   "q": "6",
@@ -3153,7 +3194,8 @@ const ECO_QUESTIONS = [
   "topicName": "Strategies influencing growth and development",
   "themeConfident": false,
   "year": 2,
-  "id": "p2-june2020-q6b"
+  "id": "p2-june2020-q6b",
+  "caseKey": "p2-june2020"
  },
  {
   "q": "6",
@@ -3175,7 +3217,8 @@ const ECO_QUESTIONS = [
   "topicName": "Public expenditure",
   "themeConfident": false,
   "year": 2,
-  "id": "p2-june2020-q6c"
+  "id": "p2-june2020-q6c",
+  "caseKey": "p2-june2020"
  },
  {
   "q": "6",
@@ -3197,7 +3240,8 @@ const ECO_QUESTIONS = [
   "topicName": "Trading blocs and the WTO",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2020-q6d"
+  "id": "p2-june2020-q6d",
+  "caseKey": "p2-june2020"
  },
  {
   "q": "6",
@@ -3219,7 +3263,8 @@ const ECO_QUESTIONS = [
   "topicName": "Trading blocs and the WTO",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2020-q6e"
+  "id": "p2-june2020-q6e",
+  "caseKey": "p2-june2020"
  },
  {
   "q": "7",
@@ -3381,7 +3426,8 @@ const ECO_QUESTIONS = [
   "topicName": "Equilibrium levels of real national output",
   "themeConfident": false,
   "year": 1,
-  "id": "p2-june2021-q6a"
+  "id": "p2-june2021-q6a",
+  "caseKey": "p2-june2021"
  },
  {
   "q": "6",
@@ -3403,7 +3449,8 @@ const ECO_QUESTIONS = [
   "topicName": "The impact of economic growth",
   "themeConfident": false,
   "year": 1,
-  "id": "p2-june2021-q6b"
+  "id": "p2-june2021-q6b",
+  "caseKey": "p2-june2021"
  },
  {
   "q": "6",
@@ -3425,7 +3472,8 @@ const ECO_QUESTIONS = [
   "topicName": "Supply-side policies",
   "themeConfident": true,
   "year": 1,
-  "id": "p2-june2021-q6c"
+  "id": "p2-june2021-q6c",
+  "caseKey": "p2-june2021"
  },
  {
   "q": "6",
@@ -3447,7 +3495,8 @@ const ECO_QUESTIONS = [
   "topicName": "Restrictions on free trade",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2021-q6d"
+  "id": "p2-june2021-q6d",
+  "caseKey": "p2-june2021"
  },
  {
   "q": "6",
@@ -3469,7 +3518,8 @@ const ECO_QUESTIONS = [
   "topicName": "Injections and withdrawals",
   "themeConfident": false,
   "year": 1,
-  "id": "p2-june2021-q6e"
+  "id": "p2-june2021-q6e",
+  "caseKey": "p2-june2021"
  },
  {
   "q": "7",
@@ -3631,7 +3681,8 @@ const ECO_QUESTIONS = [
   "topicName": "Inequality",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2022-q6a"
+  "id": "p2-june2022-q6a",
+  "caseKey": "p2-june2022"
  },
  {
   "q": "6",
@@ -3653,7 +3704,8 @@ const ECO_QUESTIONS = [
   "topicName": "Inequality",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2022-q6b"
+  "id": "p2-june2022-q6b",
+  "caseKey": "p2-june2022"
  },
  {
   "q": "6",
@@ -3675,7 +3727,8 @@ const ECO_QUESTIONS = [
   "topicName": "Economic growth",
   "themeConfident": true,
   "year": 1,
-  "id": "p2-june2022-q6c"
+  "id": "p2-june2022-q6c",
+  "caseKey": "p2-june2022"
  },
  {
   "q": "6",
@@ -3697,7 +3750,8 @@ const ECO_QUESTIONS = [
   "topicName": "Taxation",
   "themeConfident": false,
   "year": 2,
-  "id": "p2-june2022-q6d"
+  "id": "p2-june2022-q6d",
+  "caseKey": "p2-june2022"
  },
  {
   "q": "6",
@@ -3719,7 +3773,8 @@ const ECO_QUESTIONS = [
   "topicName": "Supply-side policies",
   "themeConfident": true,
   "year": 1,
-  "id": "p2-june2022-q6e"
+  "id": "p2-june2022-q6e",
+  "caseKey": "p2-june2022"
  },
  {
   "q": "7",
@@ -3881,7 +3936,8 @@ const ECO_QUESTIONS = [
   "topicName": "Trading blocs and the WTO",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2023-q6a"
+  "id": "p2-june2023-q6a",
+  "caseKey": "p2-june2023"
  },
  {
   "q": "6",
@@ -3903,7 +3959,8 @@ const ECO_QUESTIONS = [
   "topicName": "Investment (I)",
   "themeConfident": false,
   "year": 1,
-  "id": "p2-june2023-q6b"
+  "id": "p2-june2023-q6b",
+  "caseKey": "p2-june2023"
  },
  {
   "q": "6",
@@ -3925,7 +3982,8 @@ const ECO_QUESTIONS = [
   "topicName": "The impact of economic growth",
   "themeConfident": true,
   "year": 1,
-  "id": "p2-june2023-q6c"
+  "id": "p2-june2023-q6c",
+  "caseKey": "p2-june2023"
  },
  {
   "q": "6",
@@ -3947,7 +4005,8 @@ const ECO_QUESTIONS = [
   "topicName": "Strategies influencing growth and development",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2023-q6d"
+  "id": "p2-june2023-q6d",
+  "caseKey": "p2-june2023"
  },
  {
   "q": "6",
@@ -3969,7 +4028,8 @@ const ECO_QUESTIONS = [
   "topicName": "Strategies influencing growth and development",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2023-q6e"
+  "id": "p2-june2023-q6e",
+  "caseKey": "p2-june2023"
  },
  {
   "q": "7",
@@ -4131,7 +4191,8 @@ const ECO_QUESTIONS = [
   "topicName": "Taxation",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-june2024-q6a"
+  "id": "p2-june2024-q6a",
+  "caseKey": "p2-june2024"
  },
  {
   "q": "6",
@@ -4153,7 +4214,8 @@ const ECO_QUESTIONS = [
   "topicName": "The characteristics of aggregate demand",
   "themeConfident": true,
   "year": 1,
-  "id": "p2-june2024-q6b"
+  "id": "p2-june2024-q6b",
+  "caseKey": "p2-june2024"
  },
  {
   "q": "6",
@@ -4175,7 +4237,8 @@ const ECO_QUESTIONS = [
   "topicName": "Public sector finances",
   "themeConfident": false,
   "year": 2,
-  "id": "p2-june2024-q6c"
+  "id": "p2-june2024-q6c",
+  "caseKey": "p2-june2024"
  },
  {
   "q": "6",
@@ -4197,7 +4260,8 @@ const ECO_QUESTIONS = [
   "topicName": "Demand-side policies",
   "themeConfident": true,
   "year": 1,
-  "id": "p2-june2024-q6d"
+  "id": "p2-june2024-q6d",
+  "caseKey": "p2-june2024"
  },
  {
   "q": "6",
@@ -4219,7 +4283,8 @@ const ECO_QUESTIONS = [
   "topicName": "Supply-side policies",
   "themeConfident": true,
   "year": 1,
-  "id": "p2-june2024-q6e"
+  "id": "p2-june2024-q6e",
+  "caseKey": "p2-june2024"
  },
  {
   "q": "7",
@@ -4322,26 +4387,6 @@ const ECO_QUESTIONS = [
   "id": "p2-specimen-q3"
  },
  {
-  "q": "4",
-  "part": "",
-  "marks": 5,
-  "section": "A",
-  "text": "is:\n(1)\nA 40%\nB 60%\nC 110%\nD 130%\nAnswer\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n#)\n9\n!\"#$#%&'()%#!\n(b) An economy is a net exporter of crude oil. Draw an AD/AS diagram to show the\neffect of an increase in global crude oil price on the equilibrium level of real\nnational output of this economy.\n(4)",
-  "ms": "(a)\nD\n(1)\n\n(b)\nKnowledge 2, Application 2\nAD/AS diagram showing:\n• initial AD/AS curves and axes correctly labelled (1)\n• initial equilibrium correctly labelled (1)\n• increase (rightwards/outwards shift) in AD (1)\n• new equilibrium correctly labelled showing an\nincrease in the equilibrium level of real national\noutput and the equilibrium average price level (1).\n(4)\n!\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1\n6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A\n!!",
-  "erKey": "4a",
-  "pageFrom": 8,
-  "pageTo": 9,
-  "pdf": "Exam questions PDFs/A-Level Economics/Macro Economics (Theme 2 & 4)/Year 1 (Theme 2)/Questions/Specimen QP.pdf",
-  "paper": 2,
-  "series": "Specimen",
-  "theme": 2,
-  "topicCode": "2.4.3",
-  "topicName": "Equilibrium levels of real national output",
-  "themeConfident": true,
-  "year": 1,
-  "id": "p2-specimen-q4"
- },
- {
   "q": "5",
   "part": "",
   "marks": 5,
@@ -4381,7 +4426,8 @@ const ECO_QUESTIONS = [
   "topicName": "Economic growth",
   "themeConfident": true,
   "year": 1,
-  "id": "p2-specimen-q6a"
+  "id": "p2-specimen-q6a",
+  "caseKey": "p2-specimen"
  },
  {
   "q": "6",
@@ -4403,7 +4449,8 @@ const ECO_QUESTIONS = [
   "topicName": "Factors influencing growth and development",
   "themeConfident": false,
   "year": 2,
-  "id": "p2-specimen-q6b"
+  "id": "p2-specimen-q6b",
+  "caseKey": "p2-specimen"
  },
  {
   "q": "6",
@@ -4425,7 +4472,8 @@ const ECO_QUESTIONS = [
   "topicName": "Macroeconomic policies in a global context",
   "themeConfident": false,
   "year": 2,
-  "id": "p2-specimen-q6c"
+  "id": "p2-specimen-q6c",
+  "caseKey": "p2-specimen"
  },
  {
   "q": "6",
@@ -4447,7 +4495,8 @@ const ECO_QUESTIONS = [
   "topicName": "Restrictions on free trade",
   "themeConfident": false,
   "year": 2,
-  "id": "p2-specimen-q6d"
+  "id": "p2-specimen-q6d",
+  "caseKey": "p2-specimen"
  },
  {
   "q": "6",
@@ -4469,7 +4518,8 @@ const ECO_QUESTIONS = [
   "topicName": "Macroeconomic policies in a global context",
   "themeConfident": true,
   "year": 2,
-  "id": "p2-specimen-q6e"
+  "id": "p2-specimen-q6e",
+  "caseKey": "p2-specimen"
  },
  {
   "q": "7",
@@ -4512,6 +4562,596 @@ const ECO_QUESTIONS = [
   "id": "p2-specimen-q8"
  }
 ];
+
+const ECO_CASE_STUDIES = {
+ "p1-june2017": {
+  "title": "Supermarket price war, food waste and possible mergers",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "Market shares by total revenue in the UK supermarket sector, 2010 and 2015",
+    "data": [
+     [
+      "Tesco",
+      "30.8%"
+     ],
+     [
+      "Asda",
+      "17.6%"
+     ],
+     [
+      "Sainbury’s",
+      "16.1%"
+     ],
+     [
+      "Morrisons",
+      "11.6%"
+     ],
+     [
+      "Co-op",
+      "7.1%"
+     ],
+     [
+      "Waitrose",
+      "4.1%"
+     ],
+     [
+      "Aldi",
+      "2.8%"
+     ],
+     [
+      "Lidl",
+      "2.2%"
+     ],
+     [
+      "Others",
+      "7.7%"
+     ],
+     [
+      "Tesco",
+      "28.6%"
+     ],
+     [
+      "Asda",
+      "16.5%"
+     ],
+     [
+      "Sainbury’s",
+      "16.5%"
+     ],
+     [
+      "Morrisons",
+      "10.9%"
+     ],
+     [
+      "Co-op",
+      "6.2%"
+     ],
+     [
+      "Waitrose",
+      "5.1%"
+     ],
+     [
+      "Aldi",
+      "5.5%"
+     ],
+     [
+      "Lidl",
+      "4.0%"
+     ],
+     [
+      "Others",
+      "6.7%"
+     ]
+    ]
+   },
+   {
+    "label": "Figure 2",
+    "caption": "Proportion of food suppliers reporting that the following supermarkets fail to meet the Groceries Code of Conduct, 2015.",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "Supermarket price war puts pressure on their food suppliers",
+    "body": "The number of food suppliers (to supermarkets) struggling to remain in business has increased by more than 50% over the past year as supermarkets engage in an intense price war. It has never been tougher for the UK’s food suppliers according to a study by accountants Begbies Traynor. It blames aggressive price-cutting by the supermarkets and delays in payments to food suppliers as the main causes of the difficulties. Further problems include food suppliers being forced to pay excessive amounts for packaging specified by supermarkets and funding in-store promotions. Almost 90% of struggling food suppliers are small and medium-sized businesses. The price war has contributed to food prices paid by consumers falling by 1.7% over the past two years. The market shares of the big four supermarkets – Tesco, Asda, Sainsbury’s and Morrisons – are under pressure as shopping habits change. Many consumers are switching from one main weekly shop to shopping more frequently at local discount stores such as Aldi and Lidl or purchasing goods online from other grocery retailers. The big four supermarkets have responded by putting more pressure on their suppliers despite an investigation by the Groceries Code Adjudicator (GCA). The GCA has the power to fine supermarkets up to 1% of their annual sales revenue if they break the Groceries Code of Conduct. A YouGov study found considerable differences between the supermarkets in meeting the Code with Aldi performing well but Tesco badly. Despite the Groceries Code, many food suppliers are reluctant to complain for fear of losing contracts with the supermarkets."
+   },
+   {
+    "label": "Extract B",
+    "head": "Food waste in the supply chain",
+    "body": "A report from the British Retail Consortium reveals that supermarkets are directly responsible for around 0.2 million tonnes of food waste every year. This is due to the expiry of use-by-dates and poor handling of stock. However, 4.1 million tonnes of food waste occurs annually in the food supply chain before it even reaches the supermarkets, indicating the existence of information gaps. The supermarkets are cooperating with food suppliers and farmers to try to reduce this waste. This involves improving forecasts for supply and demand of food and increasing the reliability of transportation and storage. Consumers, the final stage of the supply chain, waste a further 7 million tonnes of food each year. This suggests irrational behaviour. Supermarkets are also working with consumers to reduce the waste by providing advice on how to store and use leftover food. The development of packaging designs to keep food fresher for longer is one of the innovations under way to reduce waste."
+   },
+   {
+    "label": "Extract C",
+    "head": "Proposed merger activity in the supermarket sector",
+    "body": "Analysts at Société Générale, an investment bank, have recommended a merger between Sainsbury’s and Morrisons. They claim it would lead to increased economies of scale and market power for the combined business. Such a merger between the third and fourth largest supermarkets in Britain would have been unrealistic a few years ago due to concerns of its impact in reducing competition. However, the chances of getting permission from the Competition and Markets Authority have increased following the growth of Aldi and Lidl. Giant mergers have been approved in other sectors such as Lloyds-HBOS (banking) and British Telecom-EE (telecommunications). The suggested merger would have its challenges. There is considerable overlap between the locations of the stores and the enlarged company would require the rationalisation and co-ordination of hundreds of thousands of employees. A new expensive IT system is likely to be required and the underlying difficult market trends would remain in the food retailing industry. to merge?’"
+   }
+  ]
+ },
+ "p1-june2018": {
+  "title": "The UK energy market",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "UK retail electricity and gas real price indices, 2004–2015",
+    "data": []
+   },
+   {
+    "label": "Figure 2",
+    "caption": "UK retail electricity and gas supply: market share by company, 2016",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "Competition and Markets Authority (CMA) report into the UK energy market",
+    "body": "An investigation into the UK energy market by the CMA concluded that customers have been paying £1.4 billion a year more than they would in a fully competitive market. It found that 70% of domestic customers of the six largest energy firms were on an expensive standard rate. These customers could each save over £300 a year by switching to a cheaper deal but appear reluctant to do so. However, the CMA investigation found no evidence of anti-competitive practices by firms. There has even been an increase in new entrant energy suppliers over recent years and their combined market share has reached 12% in both gas and electricity supply. To protect consumers, the CMA has introduced various measures to open up and increase competition in the UK energy market. These include: • the creation of a database designed to help consumers switch energy suppliers – rival suppliers can directly contact these customers • the conversion of all homes to smart energy meters making it easier for customers to measure energy consumption and switch supplier • new rules to protect the four million vulnerable customers using prepaid meters – this includes a temporary price cap until smart meters have been installed."
+   },
+   {
+    "label": "Extract B",
+    "head": "Proposals to regulate profits in the UK energy market",
+    "body": "Currently energy retail companies make an average profit of 7% of total revenue. The Chairman of the Competition and Markets Authority (CMA) suggested that these profits are as much as five times higher than they should be, given the companies’ limited role in marketing, metering and billing customers. He recommended a profit cap of 1.25% of total revenue. However, Scottish Power criticised proposals for regulating profits saying that it would reduce investment in the energy industry and undermine long-term energy provision. The firm claimed that such a low rate of return is below the profit margin made by supermarkets. All six large energy firms are vertically integrated – producing as well as distributing gas and electricity. This can provide efficiency benefits but also harm competition."
+   },
+   {
+    "label": "Extract C",
+    "head": "Skills shortages in the UK energy sector",
+    "body": "The energy sector is facing a skills shortage of engineers and technicians. Some 29% of employers in the gas and electricity industries report unfilled job vacancies compared with an average of 18% across all industries. A lack of information and advice on career prospects for young people is partly to blame - many graduates have a negative image of the work involved. There is also a lack of students taking science, technology, engineering and maths-based subjects at school and university. Less than one-fifth of the energy sector’s workforce are women. The energy sector is characterised by an ageing workforce - data from the UK Labour Force Survey reveal that around two-thirds of workers are aged over 50. These cannot easily be replaced as a long time period is required for training and developing workers’ skills in a highly regulated industry. Urgent action is required by businesses and the government to reduce labour immobility to benefit the energy sector. This action could include policies to increase investment in training programmes, recruit skilled workers from overseas, change the industry image and deal with its ageing workforce. sector’, by the UK Commission for Employment and Skills, March 2015"
+   }
+  ]
+ },
+ "p1-june2019": {
+  "title": "Energy and telecommunication markets in the UK",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "Average annual household bill from the Big Six UK energy suppliers, 2017",
+    "data": []
+   },
+   {
+    "label": "Figure 2",
+    "caption": "The monthly rental cost of a telephone landline",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "Energy price cap to fix ‘broken’ market in UK",
+    "body": "The Prime Minister recently said that the regulator Ofgem (Office of Gas and Electricity Markets) should limit electricity and gas suppliers’ most expensive tariffs. Under the planned new legislation, the energy bills of 11 million households will be capped for as long as five years. The government claimed this cap could save households up to £100 a year. This legislation would force Ofgem to change the licence conditions for energy suppliers so that they are required to cap electricity and gas prices. The measure will apply to anyone on a standard variable tariff, the expensive plans that customers are moved to when cheaper, fixed-price deals end. Ofgem will need to consult energy companies on how the cap is calculated, the government said. The Prime Minister repeated her claim that she had to act because the ‘market is broken’, a charge the big energy companies reject. “I have been clear that our broken energy market has to change – it has to offer fairer prices for millions of loyal customers who have been paying hundreds of pounds too much,” she said. However, Michael Lewis, chief executive of E.ON said “the government must guard against any unintended consequences that undermine customer service and push up prices as a whole. A price cap will not be good for customers. It will reduce competition and innovation”. Smaller suppliers such as First Utility said the Big Six had only themselves to blame for the cap, because they had kept millions of people on standard variable tariffs."
+   },
+   {
+    "label": "Extract B",
+    "head": "BT profit rises",
+    "body": "BT Group, which includes BT Openreach and BT Retail, reported a rise in profit as revenue increased following the integration of the consumer mobile business, EE. BT finalised the takeover of EE in August 2016, and the integration has resulted in BT controlling 35% of the mobile consumer market. The profit of the UK-based telecommunication group in its second quarter 2017 rose to £566 million. BT Group chief executive Gavin Patterson said: “We will operate a multi-brand strategy with UK customers being able to choose a mix of BT, EE or Plusnet services, depending on which suits them best. The acquisition enables us to offer great value bundles of services and customers are set to be the winners as we compete for their business”. and"
+   },
+   {
+    "label": "Extract C",
+    "head": "BT to slash landline charges for 1 million customers",
+    "body": "Rental charges for landline-only customers – households with a telephone-only contract but no BT broadband – will fall from £18.99 to £11.99 per month after the regulator attacked existing deals as ‘poor value for money’. This rental reduction will save a million landline-only customers £84 a year. The regulator Ofcom (Office of Communications) said it stepped in because these bills for landline-only customers – nearly two-thirds of whom are over 65 – have “soared” in recent years. This is despite BT and other landline providers benefiting from significant cuts in the wholesale line rental cost of providing the service by BT Openreach. Many landline-only customers are elderly, and have been with BT for decades. Ofcom has focused on BT because it accounts for two-thirds of the UK’s 1.5m landline-only customers. A spokesperson for Ofcom said “This position [of dominance] has allowed BT to increase prices without much risk of losing customers, and other providers have followed BT’s pricing lead. We expect BT’s price cut to mean other providers will follow suit”. Ofcom said that over three-quarters of BT’s landline-only customers have never switched provider, which has left them a prime target for price rises. The regulator said that all major landline providers have increased their line rental charges by between 23% and 47% in recent years, while their own costs for providing the service have fallen about 27%. Ofcom said it is also looking at measures to help people shop around for better deals with more confidence."
+   }
+  ]
+ },
+ "p1-june2020": {
+  "title": "The UK Rail Industry",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "UK government subsidy to Northern, a train operating company in",
+    "data": []
+   },
+   {
+    "label": "Figure 2",
+    "caption": "Rail passenger kilometres travelled per year in the UK, billions",
+    "data": []
+   },
+   {
+    "label": "Figure 3",
+    "caption": "Price of a single off-peak train journey, Edinburgh to Leeds Saturday 22nd",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "The case for nationalisation",
+    "body": "Privatisation has not made the rail industry cheaper to operate, despite the promise from one government source that it would see private companies bringing: “more competition, greater efficiency and a wider choice of services”. One reason, suggest the critics, is fragmentation. Instead of pushing British Rail into the private sector as a single supplier the government chose to break it into three components of track, train operators and rolling stock i.e. the trains and carriages. This has encouraged each part of the rail industry to prioritise its own profits rather than collaborating to improve the system. Privatisation, meanwhile, never really worked. The rail network of 2 500 stations and 32 000 km of tracks was renationalised in 2001. This has encouraged the government’s transport secretary, a supporter of private sector involvement, to argue that the state Network Rail monopoly should be removed so that companies can bid to build new rail lines to upgrade the railway. The privately-owned train operators are now the subject of fierce criticism, due to overcrowding and cancelled services. Private companies are supposed to compete to win a bid to be the train operator for a region for a short number of years. However in recent years the number of private companies bidding or renewing their contract as rail operators has fallen. In May 2018 the government rescued the East Coast line by renationalising it. The line had been run by the private rail operator Virgin Rail, which was suffering lower passenger numbers and revenue than forecast. Some argue that there is a simple solution: reunite track and train in the only feasible manner, nationalisation."
+   },
+   {
+    "label": "Extract B",
+    "head": "Southern Rail boss paid £495 000",
+    "body": "The Chief Executive of Southern Rail, the private-sector train operator that has become associated with delays, losses, cancellations and strikes, was paid £495 000 last year. This increased calls for nationalisation and a maximum wage for executives at companies with government contracts. In contrast the average base pay for a train driver in the UK is £47 705, although they can earn up to £63 000. Nearly a third of Southern Rail trains were late in 2016 as it tried to deal with a labour dispute that involved extensive strike action. The rail trade unions are opposed to planned changes to the role of train guards, which they claim will put passenger safety at risk. 6 (a) Refer to Figure 1. Explain the likely effect of the change in subsidy levels between 2017 and 2018 on rail fares. Include a supply and demand diagram in your answer. (5)"
+   }
+  ]
+ },
+ "p1-june2021": {
+  "title": "The travel and tourism industry",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "Package holiday market share of the six largest providers, booked by UK residents,",
+    "data": []
+   },
+   {
+    "label": "Figure 2",
+    "caption": "Jet2 package holiday prices to Sorrento 2 Adults for 7 Nights from Monday 25 May 2020",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "Marginal productivity of cabin crew",
+    "body": "Cabin crew are responsible for loading passengers and providing in-flight meals. United Airlines is planning to reduce the number of its cabin crew members onboard international flights. The airline currently operates its planes with one more cabin crew member than its competitors. The marginal productivity of this additional crew member may be low. By reducing the number of its cabin crew members United Airlines will be able to operate more efficiently and compete more effectively."
+   },
+   {
+    "label": "Extract B",
+    "head": "Thomas Cook’s environmental impact",
+    "body": "Thomas Cook Group plc’s operations included its airline and 560 high street travel agents providing flights, hotels and package holidays. The environmental impact of the travel industry is significant. It accounts for 8% of all global carbon emissions. Thomas Cook recognised the risks presented by climate change and actively engaged in reducing their airline emissions. Its plans included using more efficient aircraft and using lower-carbon fuel. In 2018, Thomas Cook was included in the top 10 of the world’s most fuel-efficient airlines."
+   },
+   {
+    "label": "Extract C",
+    "head": "Why did Thomas Cook shut down?",
+    "body": "Thomas Cook Group plc ceased trading on 23 September 2019. The collapse of Thomas Cook left 600 000 travellers stranded overseas and approximately 21 000 worldwide employees were left without a job. Thomas Cook’s management said that the failure of rescue talks between banks, shareholders and the UK Government meant it had no choice but to shut down the business. But in truth the tour operator’s problems go back much further. A disastrous merger in 2007, increased debts, the internet revolution in holiday booking and Brexit uncertainty all contributed to the failure of the business. In 2007 it merged with MyTravel. Thomas Cook directors had an objective of rapid company growth over short-term profitability. The merger was supposed to create a European giant, promising £75 million-a-year cost savings and a springboard to challenge emerging internet rivals. In reality, Thomas Cook was merging with a company that had only made a profit once in the previous six years, and the deal left the Group with huge debts. In May 2019, the firm reported a £1.5 billion loss. The role of the management in Thomas Cook’s collapse is being investigated by the UK Government. Thomas Cook executives’ salaries and bonuses have been questioned. Directors received salaries totalling £20 million in the five years before its collapse. The Chief Executive Officer (CEO) earned a £500 000 cash bonus in 2017 and about £8.5 million in his five years with the company. It seems that around £4 million of this was in the form of shares. The share price reached £1.46 in 2018, but each share is now worthless. The CEO said that the directors had worked “exhaustively” to rescue Thomas Cook and create a long-term turnaround strategy. “It is a matter of profound regret to me and the rest of the board that we were not successful.” The UK prime minister admitted that the government refused to grant £150 million as a subsidy to help rescue Thomas Cook in the short run. The UK prime minister stated: “Clearly, that is a lot of taxpayers’ money and sets up, as people will appreciate, a moral hazard in the case of future such commercial difficulties that companies face. I have questions about whether it’s right that the directors, or whoever, the board, should pay themselves large sums when businesses can go down the tubes like that. One is driven to reflect on whether the directors of these companies are properly incentivised to sort such matters out”."
+   }
+  ]
+ },
+ "p1-june2022": {
+  "title": "UK branded coffee shop chains market",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "Branded coffee shops by number of shops in the UK in 2021",
+    "data": []
+   },
+   {
+    "label": "Figure 2",
+    "caption": "International coffee price (Arabica bean), US dollars per kilogram",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "Tough market conditions for coffee shops – but coffee quality is king",
+    "body": "UK coffee shop chains have experienced slow growth opportunities and rising costs. In 2019 the UK market leader, Costa Coffee, opened over 60% fewer stores than in 2018, while Starbucks opened just three new stores overall in 2019. By 2020, many costs were rising: staff shortages meant rising wages for baristas (trained coffeemakers), a 6.2% National Minimum Wage increase for over 25-year-olds and rising rents. In a challenging UK economy, consumers placed coffee quality ahead of convenient location when choosing a coffee shop. This demonstrates the need for coffee shops to match rising expectations in the UK’s increasingly crowded coffee shop market in order to stay competitive. Independent coffee shops (total 25 892 shops in 2020) remain a threat to the branded coffee shops as they pursue a unique luxury experience for customers. This will often focus on the atmosphere and customer service, luxury food and drink ranges and being a part of the local community. Independent coffee shops run on average profit as low as 2% of revenue, and many go out of business as new chains arrive in a locality. In January 2020, Coca-Cola finalised its £3.9 billion takeover of market leader, Costa Coffee. The Coca-Cola company’s stated aims are to maximise long-term returns to shareholders while being mindful of overall responsibilities such as supporting sustainable communities. Major brands, such as Costa, continue to lead coffee shop expansion in 2020 as competition intensifies."
+   },
+   {
+    "label": "Extract B",
+    "head": "Greggs aiming for ‘coffee shop experience’",
+    "body": "Greggs is looking to increase its branded coffee shop market share after the British bakery chain achieved record profits and overtook Starbucks in the amount of coffee it served in the UK. Although Greggs will continue to focus on the food-to-go market, it will be investing in better coffee machines and providing WiFi. It wants one in three new outlets to have more seating. The company believes that it has the ability to take market share in two ways, by expanding its coffee range and at the same time enhancing the coffee shop experience. Greggs is modelling its plan on rival chain Pret A Manger, which has changed from focusing on food-to-go sales to mainly eating in. Greggs has transformed itself from an unremarkable seller of bread and pastries into one of the UK’s most popular food-on-the-go chains, in part thanks to its embrace of vegan, gluten-free and healthy options as well as clever marketing that have changed its image."
+   }
+  ]
+ },
+ "p1-june2023": {
+  "title": "The UK online streaming services market",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "Market share of UK online streaming services Q2 2021  Q3 2021  Q4 2021  Q1 2022  Q2 2022 Amazon Prime Video  37.9%  41.1%  45.0%  27.1%  25.9% Disney+  16.0%  17.7%  19.3%  14.1%  21.5%",
+    "data": []
+   },
+   {
+    "label": "Figure 2",
+    "caption": "UK online streaming services – monthly fees Streaming service provider  September 2022",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "How Netflix makes use of behavioural science",
+    "body": "In the last few years, companies have been trying to find ways to attract the attention of customers. Various streaming platforms such as Netflix, Amazon, and YouTube use ‘nudges’ to influence consumer behaviour. The ‘next-up’ feature on Netflix or ‘auto-play’ on YouTube has been subject to research that relates it to binge-watching. Binge-watching is the practice of viewing for a prolonged period, multiple episodes of a TV show or several films in rapid succession. Similarly, the policy of offering a one-month free subscription under the label of ‘free trial’ requires credit card information to turn the forgetful subscriber into a potential paying one. Following this strategy, Netflix has expanded to 190 countries in just seven years and according to the Wall Street Journal, the company generated total revenue of over $5.2 billion in 2019, which was an increase from 2018 of around $4 billion. However, 2022 data shows that consumers, increasingly worried about the rising cost of living, are turning their back on Netflix. With a reported cancellation of over 200 000 subscriptions in the first quarter and another two million forecast to leave by the end of the year. Subscribers are rethinking their commitment to the streaming services that grew their numbers sharply during the home-based months of the global health crisis. Netflix subscribers have also quoted a decline in value for money and satisfaction with the quality of the shows as key motives for cancellation. Disney now see higher satisfaction rankings than Netflix across the quality of shows, amount of original content, number of new-release films, variety of classic films and amount of kids’ content. Forecast cancellation rates for Disney+ fell to an all-time low of 3.2%."
+   },
+   {
+    "label": "Extract B",
+    "head": "The economics of price discrimination",
+    "body": "Throughout 2022, Netflix, a 100-billion-dollar company, increased prices in the US, Canada, the UK and Ireland (most of which saw similar price increases in 2021, too). In sharp contrast, Netflix recently announced it was reducing its prices in India (standard/2-user 499 rupees a month, equivalent to £5.42) in a bid to compete with Disney+ and Prime. UK students currently enrolled in a college or university who have a valid student email address can join Prime Student through the Amazon website. This gives them nearly 50% off a standard Prime membership and many other exclusive benefits. ••••••••"
+   },
+   {
+    "label": "Extract C",
+    "head": "Educational Website and TV Programmes",
+    "body": "BBC Bitesize is a learning platform created by the BBC in 1998. The online study resource allows parents to teach their children from home, using ready-made lesson plans and study guides with questions for all ages. The revision sessions are free to watch and they are available for children aged five up to their late teens. The guides are written by teachers and subject experts, so they are reliable and follow the National Curriculum. Last year Bitesize attracted around two million weekly unique browsers with a peak week of 3.3 million in the GCSE exam period. Oak National Academy is a freely available learning resource website created for pupils aged four to sixteen. Launched in 2020, as a response to the global health crisis, the website includes lesson slides, video lessons, worksheets, and quizzes conforming to the national curriculum in England. Ministers have set aside £43 million to fund the Oak National Academy over the next three years. ••••••••"
+   }
+  ]
+ },
+ "p1-june2024": {
+  "title": "The electronics industry",
+  "figures": [],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "Rising prices of electronics devices",
+    "body": "Computer chips act as the “brain” in all electronic devices. Makers of electronic devices face significant increases in the price of computer chips as they try to source enough components, including games consoles, computers and smartphones. The price of some computer chips has jumped from $0.20 each to more than $1. The prices of electronic devices have risen for a range of reasons, including higher material costs and the growing popularity of home entertainment."
+   },
+   {
+    "label": "Extract B",
+    "head": "Labour shortages in the electronics industry",
+    "body": "Every year, highly skilled and experienced employees in the electronics industry retire. The current tight labour market has made an already difficult problem of hiring suitable engineering and computing graduates worse, especially since the nature of the industry is becoming increasingly technical. As production becomes more automated, electronics jobs are more likely to require problem solving and analysis than just assembling skills. However, artificial intelligence and other new technologies can help fill some of the skills gap. In addition, by giving hazardous, repetitive, grimy work to robots, human beings can focus on more creative, analytic tasks. ••••••••"
+   },
+   {
+    "label": "Extract C",
+    "head": "Serious concerns over merger",
+    "body": "The Competition and Markets Authority (CMA) has said the takeover of the Cambridge- based computer chip designer Arm by its US rival Nvidia raises serious competition concerns. It has launched an in-depth investigation into the £29.5 billion deal. The CMA said the merger could reduce choice for firms reliant on computer chips, pushing up prices of products including cars, games consoles and mobile phones. In addition, severe global shortages of computer chips has disrupted the manufacture of a range of electronic goods pushing up costs for firms. Despite this, large electronics firms benefit from economies of scale and are able to finance high-risk innovation and global advertising."
+   },
+   {
+    "label": "Extract D",
+    "head": "The growing problem of electronic waste",
+    "body": "Electronic waste is the fastest growing element of the world’s household waste problem. The problem in the UK is particularly bad. The country produces 24.9 kg a person a year – nearly 10 kg more than the EU average. In 2018, 1.2 million tonnes of electrical devices were sold in the UK, and 500 000 tonnes made it to recycling centres. Some appliances are more likely to be recycled than others. The recycling rate for big appliances, such as fridges and cookers, is about 80%. Of small appliances, barely one in five makes it to the recycling centre. As items such as toasters, hairdryers and headphones fit into household bins, they are not often taken to a recycling centre. This causes many problems, such as hazardous substances contaminating soil, water pollution and other external costs. Policy makers have a long list of options to combat this problem including stricter regulation, environmental education, taxation and financial incentives. In some countries, for example, household rubbish is weighed and recycling initiatives are subsidised. ••••••••"
+   }
+  ]
+ },
+ "p1-specimen": {
+  "title": "",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "Cineworld (London) cinema ticket prices after 5pm",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "West End ticket prices reach all time high",
+    "body": "The price of West End theatre tickets in London has reached an all-time high. In the past year alone, up to January 2013, the average top-price ticket has risen by almost £10 and now stands at £81.05. In January 2013, London theatres announced record numbers of people wanting to buy tickets for shows. Costs of running the theatres have also risen because there are restoration costs to pay and energy costs have increased. This rise in costs is despite some of the theatres in the West End receiving subsidies."
+   },
+   {
+    "label": "Extract B",
+    "head": "Cineworld merger with Cinema City International (CCI)",
+    "body": "The UK’s biggest cinema chain by market share is to enter seven overseas markets through a £900m merger. Cineworld announced that it has agreed to merge with CCI which owns 100 multiplex cinemas in seven countries Bulgaria, Czech Republic, Hungary, Israel, Poland, Romania and Slovakia. The deal is expected to be promoted as a merger of equals although Cineworld is larger than its new partner. The planned merger with CCI follows a fall of 1% in the revenue earned by cinemas in the UK and Ireland in 2013 to £1.17bn. In 2013, Cineworld was ordered by competition regulators to sell three cinemas following its takeover of the Picturehouse chain. This underlined the difficulty of finding new growth opportunities in the company’s home market, which was one factor prompting a search for international expansion opportunities. Cineworld’s UK-based rivals have also grown overseas, with Odeon UCI having a presence in seven countries, while Canadian-owned Vue Entertainment has cinemas in Portugal, Taiwan, Germany and Denmark. The combined group is to be run by CCI’s chief executive, although other senior management will be drawn from the ranks of both companies and the board will have more Cineworld board members. !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1 6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A &# !\"#$#%$&'()%)!"
+   },
+   {
+    "label": "Extract C",
+    "head": "Cineworld investigation by Competition Commission (competition regulator)",
+    "body": "Cineworld had to sell cinemas in three towns after the Competition Commission (CC) concluded that its acquisition of the Picturehouse chain would lead to higher prices for customers in Aberdeen, Bury St Edmunds and Cambridge. While Cineworld operates mainly in large out-of-town-centre cinemas, Picturehouse’s cinemas tend to be smaller and located in city centres. The CC has concluded that the acquisition could lead to a substantial lessening of competition in the cinema market in Aberdeen, Bury St Edmunds and Cambridge − where Cineworld and Picturehouse face limited competition. Adult (19−59 yrs) £9.60 Child (2−14 yrs) £6.80 Student (15−18 yrs) £7.30 Senior (60+ yrs) £7.30 Family of 4 £29.80"
+   }
+  ]
+ },
+ "p2-june2017": {
+  "title": "The Eurozone economy",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "Exchange rate of the euro (€) to the British pound (£)",
+    "data": []
+   },
+   {
+    "label": "Figure 2",
+    "caption": "Eurozone inflation rate as measured by the Consumer Prices Index (CPI)",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "European Central Bank disappoints markets with weaker than expected stimulus",
+    "body": "Mario Draghi, president of the European Central Bank (ECB), surprised financial markets in November 2015 with a less ambitious package of monetary stimulus than many had anticipated. The ECB cut its base interest rate by 0.1% to minus 0.3% in order to encourage private banks to lend funds to companies and households rather than deposit them at the central bank. The central bank agreed to extend its €60 billion (£45 billion) monthly bond-buying quantitative easing (QE) programme for a further six months. The ECB’s €1.1 trillion QE scheme had originally been due to end in September 2016. “We are doing more because it works,” Mr Draghi said. Yet the ECB did not increase the size of its monthly asset purchases and also disappointed those expecting that it would cut interest rates more aggressively. The euro rose almost 3% against the dollar to $1.08 after the announcement. Italian and Spanish bond yields both jumped by 0.27% to 1.62% and 1.72% respectively. The ECB’s economists reduced their inflation forecasts for the next two years. They now predict consumer prices in the Eurozone rising by just 1% in 2016 and 1.6% in 2017 – still below the central bank’s ceiling of 2%. In November 2015, the inflation rate was just 0.1% and core inflation, excluding volatile items such as fuel and food, dropped to 0.9%. Mr Draghi stressed again that monetary policy alone could not restore the Eurozone to economic health. He called for looser fiscal policy among member states to support aggregate demand and more rapid implementation of supply-side reforms. “In order to reap the full benefits from our monetary policy measures, other policy areas must contribute decisively,” he said."
+   }
+  ]
+ },
+ "p2-june2018": {
+  "title": "Globalisation and Inequality",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "Proportion of population in absolute poverty (US$1.90-a-day 2011 PPP) 1990  1992  1994  1996  1998  2000  2002  2004  2006  2008  2010  2012",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "Lessons from globalisation",
+    "body": "The past 25 years have seen a freeing up of trade. Capital has been free to move around the world. Formerly closed economies in Asia have been opened up and tariffs cut. In emerging economies, a billion people have been taken out of absolute poverty, but relative poverty remains a problem. In many advanced economies globalisation has come to mean, according to the Governor of the Bank of England, “low wages, insecure employment, stateless corporations and striking inequalities”. His solution to these problems is threefold: an acceptance by economists that not everybody has gained from trade and technology; a better mix of monetary policy, fiscal policy and structural reform to boost growth; and more inclusive growth. In essence, this is the same conclusion that was reached in the past when there was a fear that market forces had to be moderated to prevent capitalism from destroying itself. The good news is that this moderation of capitalism included real policy changes: an extension of the right to vote, the growth of trade unions, the creation of welfare states, a move to more progressive tax policies, nationalisation of key sectors of the economy, and more activist demand management. The bad news is that this process took about 100 years and was not completed until the end of the Second World War. What’s more, protectionism seems to be on the increase as countries seek to protect themselves from inequalities caused by rapid globalisation."
+   },
+   {
+    "label": "Extract B",
+    "head": "Tackling inequality",
+    "body": "Despite decades of substantial progress in boosting prosperity and reducing absolute poverty, the world continues to suffer from substantial inequalities. For example, the poorest children are four times less likely than the richest children to be enrolled in primary education across developing countries. Among the estimated 780 million illiterate adults worldwide, nearly two-thirds are women. Poor people face higher risks of malnutrition and death in childhood and lower chances of receiving key healthcare. Such inequalities result in high financial costs, limit economic growth, and generate social and political burdens and barriers. These consequences highlight the importance of directing attention to the problem of inequality. There are other reasons to tackle inequality. Most economies are struggling to recover from the global financial crisis that started in 2008 and the subsequent slowdown in global growth. The goal of eliminating absolute poverty by 2030 might not be achieved without accelerated economic growth or reductions in inequalities within countries, especially in those with large numbers of poor. Generally speaking, poverty can be reduced through higher average growth, a narrowing in inequality, or a combination of the two. Achieving the same poverty reduction during a slowdown in growth therefore requires a more equal income distribution. Some level of inequality is desirable to maintain an appropriate incentive structure in the economy or simply because inequality also reflects different levels of talent and effort among individuals. However, the substantial inequality observed in the world today offers great scope for reducing the gap between rich and poor. Policies to redistribute income from higher-income and wealthy households to those on lower incomes can be achieved without compromising growth, if done effectively. A trade-off between efficiency and fairness is not inevitable."
+   }
+  ]
+ },
+ "p2-june2019": {
+  "title": "The UK economy since the financial crisis",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "Pound sterling to US$ exchange rate, 2016-17",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "UK companies use forward currency market",
+    "body": "The Norfolk-based picture frames maker Nielsen Bainbridge recently made forward contracts in the foreign exchange market to reduce the impact of currency fluctuations. The pound’s post-Brexit referendum depreciation has been a test of nerve for Nielsen Bainbridge and many other importers. At present the company’s suppliers are located in Europe or China. “Currency therefore has a big impact on our business and the margins we can obtain,” says Ms Burdett, the Finance Director. Forward contracts enable institutions, businesses and individuals to lock in an exchange rate over a certain period of time regardless of how the rate moves during that time. Ms Burdett buys currency as soon as Nielsen Bainbridge confirms a large order as a way to fix costs. One third of UK business managers are considering shifting from EU to UK suppliers."
+   },
+   {
+    "label": "Extract B",
+    "head": "Bank of England seeking to prevent future bank bailouts",
+    "body": "The Bank of England has ordered big lenders in the UK to find £116 billion of funding to ensure that taxpayers will never again have to bail out the banking sector. The Bank intends to publish details of how each of the big lenders would cope in the event they find themselves in a situation similar to Royal Bank of Scotland and Lloyds Banking Group, which needed £65 billion of taxpayer bailouts during the 2008 Global Financial Crisis. This had a significant negative impact on the UK government’s national debt and, many would argue, increased the need for contractionary fiscal policy. Having said that, the UK government sold all its shares in Lloyds Banking Group in 2017 and, according to the Chancellor of the Exchequer, “recovered every penny of its investment in Lloyds”. Sir Jon Cunliffe, the deputy governor at the Bank responsible for financial stability, said regulators needed to let banks fail in a similar way that traditional companies collapse. This has not been possible in the past because of the risk that savers lose their money and because a system did not exist to allow banks to be put into insolvency. “Just like when other businesses fail, losses arising from bank failure would be imposed on shareholders and investors. This protects the public from loss and incentivises banks to operate more prudently,” said Cunliffe. bailouts’, by Jill Treanor, 02 October 2017, Copyright The Guardian News and Media Ltd"
+   },
+   {
+    "label": "Extract C",
+    "head": "Bank of England tells lenders to increase capital reserves",
+    "body": "The Bank of England has told lenders they will need to build a special reserve worth £11.4 billion by the end of 2018 as it tries to make banks more resilient to the risk posed by mounting consumer debt. This reserve of assets that can be readily turned into cash is a way of forcing banks to set aside capital reserves in good times in order to keep lending to the wider economy at a steady level, even during an economic downturn. In 2017 the Bank of England told UK banks it would raise the reserve ratio, relative to all assets, from zero to 0.5% and also forecast a further increase to 1% by the end of 2017. The move is not intended to directly reduce consumer demand for credit, which in 2017 grew by 10.3% on an annual basis, but it may well lead to banks becoming less willing to lend to consumers. Since the Bank of England has recently become increasingly concerned about consumer borrowing, including rising car loans and credit card debt, this may be no bad thing as far as the Bank of England is concerned, even if it does have a negative impact on the wider economy. Analysts are concerned about the impact on consumer confidence of rising inflation, partly caused by a falling pound. With falling real incomes consumers could become more vulnerable to falling behind with their credit card and personal loan repayments. Despite these concerns the UK economy recently recorded the lowest rate of unemployment since 1975."
+   }
+  ]
+ },
+ "p2-june2020": {
+  "title": "Trade and Development Issues in Africa",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "The Fairtrade scheme in the cocoa industry. How the additional revenue is spent by",
+    "data": []
+   },
+   {
+    "label": "Figure 2",
+    "caption": "Ivory Coast exports – relative share of main products (%), 2016",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "Cheap cocoa is costing farmers dear",
+    "body": "The median annual income of cocoa farmers in the west African country, Ivory Coast, is just US$2 600. Research suggests that an annual income of US$6 133 is needed for this country’s farmers to have a decent, living income. This situation is even worse for farmers who are not part of a Fairtrade scheme. World cocoa prices fell by more than a third in 2017. Cocoa farmers have to accept all the risk from price volatility, putting a significant strain on their fragile incomes. On the other hand, cocoa processors and chocolate manufacturers are able to adapt or even make high profit and consumers continue to enjoy their chocolate. This is still happening despite considerable investment in agriculture to build a sustainable cocoa sector. The focus has been on raising productivity and diversifying crops. The average cocoa farm in the Ivory Coast produces only around half of the output that could be achieved with training and resources such as fertilisers, equipment and replanting. If farmers diversify into other crops, livestock or non‑farm activities, they lower the risk they face of fluctuating world cocoa prices. Even tripling farm output would not provide the average cocoa farmer with a living income. Diversification alone will not always make farms more profitable. If we want farmers to earn a living income, we must also be willing to pay farmers more."
+   },
+   {
+    "label": "Extract B",
+    "head": "Sub‑Saharan Africa is becoming more integrated",
+    "body": "After two years of negotiations, representatives of a large number of African countries signed the African Continental Free Trade Agreement (AfCFTA) in Kigali on March 21, 2018. This created a trading bloc of 1.2 billion people with a combined gross domestic product of more than US$2 trillion. The agreement committed countries to removing tariffs on 90% of goods and to liberalise services. This can be seen as a sign of rapid and steady regional integration. Sub‑Saharan Africa in particular is much more integrated today than in the past. The level of integration in sub‑Saharan Africa is now similar to that in the world’s other developing and emerging market economies. However, the two largest African economies, Nigeria and South Africa, refused to sign the agreement. Nigeria’s manufacturers and trade unions are concerned about the potential negative impacts of becoming more open to imports from other African countries with lower labour costs. Greater interdependence can expose small economies to their partners’ recessions. After nearly 20 years of strong economic activity, sub‑Saharan Africa experienced the downside of integration in 2015. The collapse in commodity prices and the slowdown in economic activity in Nigeria and South Africa contributed to sub‑Saharan African growth slowing sharply. Since 2017 growth has begun to recover. The recovery is mixed, though, and it is unclear to what extent the slow recovery of the larger economies is still affecting the rest of sub‑Saharan Africa."
+   }
+  ]
+ },
+ "p2-june2021": {
+  "title": "Trade and aid in Rwanda",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "Aid funding received by Rwanda (per capita, US dollars), 2008 to 2018 2008  2009  2010  2011  2012  2013  2014  2015  2016  2017  2018",
+    "data": []
+   },
+   {
+    "label": "Figure 2",
+    "caption": "Population of Rwanda (millions), 2008 to 2018 2008  2009  2010  2011  2012  2013  2014  2015  2016  2017  2018",
+    "data": []
+   },
+   {
+    "label": "Figure 3",
+    "caption": "Rwanda real GDP annual percentage growth rate, 2008 to 2018 2008  2009  2010  2011  2012  2013  2014  2015  2016  2017  2018",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "Rwandan tariffs on imports of used clothing",
+    "body": "In a market in Kigali, Rwanda’s capital, an auction is under way. Sellers offer crumpled T-shirts and faded jeans; traders argue over the best picks. Everything is second-hand. A Tommy Hilfiger shirt sells for 5 000 Rwandan francs ($5.82); a plain one for a tenth of that. Afterwards, a trader sorts through the purchases he will resell in his home village. The logos hint at their previous lives: Kent State University, a rotary club in Pennsylvania, Number One Dad. These auctions were once twice as busy, but in 2016 Rwanda’s government increased import tariffs on a kilo of used clothes from $0.20 to $2.50. Now many traders struggle to make a profit. The traders are not the only ones who are unhappy. Exporters in the US claim the tariffs are costing jobs there. In March, the US President warned that he would suspend Rwanda’s tariff-free access to US markets for its clothing exports after 60 days if it did not remove the tariff. Globally, about $4 billion of used clothes crossed borders in 2016. The share from China and South Korea is growing, but 70% still come from Europe and North America. Many go to Asia and eastern Europe, but Africa remains the largest market. The trade enables poor people to afford clothes and creates retail jobs. However, governments worry that the trade undercuts their own clothing manufacturers. Second-hand imports of clothing now dominate African markets. Researchers at the Overseas Development Institute, a British think-tank, estimate that Tanzania imports 540 million used items of clothing and 180 million new ones each year, while producing fewer than 20 million itself. African manufacturing is weak for many reasons, from ineffective privatisations to collapsing infrastructure. But second-hand clothing imports are a major factor: it is estimated that they accounted for half of the fall in employment in the African clothing industry between 1981 and 2000. For example, a clothing factory in Kigali is operating at only 40% of capacity and employs 600 workers, down from 1 100 in the 1990s. It is hard to compete, says Ritesh Patel, its manager, when a used imported T-shirt sells for the price of a bottle of water. Instead, the company specialises in uniforms for police, soldiers and security guards, which cannot be bought second-hand. The threatened suspension of tariff-free access to the US market would hurt Rwanda, but not very much. Last year Rwanda sold just $1.5 million of clothing to the US. Nor, with about 12 million people, is Rwanda a big market for US exports."
+   },
+   {
+    "label": "Extract B",
+    "head": "Development in Rwanda",
+    "body": "Rwanda’s strong economic growth has been accompanied by substantial improvements in living standards, with a two-thirds drop in child mortality and near-universal primary school enrolment. A strong focus on policies to encourage industrialisation and poverty reduction initiatives have contributed to significant improvements in access to services and human development indicators. Absolute poverty declined from 59% to 39% of the population between 2001 and 2014 but was almost stagnant between 2014 and 2017. The official inequality measure, the Gini index, declined from 0.52 in 2006 to 0.43 in 2017. 6 (a) Using the data in Figures 1 and 2, calculate the change in the level of total aid funding to Rwanda between 2011 and 2012. (5)"
+   }
+  ]
+ },
+ "p2-june2022": {
+  "title": "UK Government spending and inequality",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "UK regional gross disposable household income per capita, 2018",
+    "data": []
+   },
+   {
+    "label": "Figure 2",
+    "caption": "UK subjective happiness by income, April 2021 Answer to the question: ‘On a scale of 1–10, how happy did you feel after yesterday?'",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "Regional inequality in the UK",
+    "body": "Geographically, the UK is highly unequal in incomes. According to research from the University of Sheffield, the estimate of the Gini coefficient is 0.34. There are a number of different reasons for this. First, labour in poor places tend to develop too few skills, with a lack of education holding people back. In Rotherham in the north of England, for example, 21% of disadvantaged 18-year-olds from state schools and colleges go on to higher education compared to 41% in London. Secondly, there is a lack of infrastructure spending in northern cities compared to London. In 2017–18, 28% of public expenditure on transport – and 46% of capital expenditure on railways – was spent in London. The argument for this is that London gets a lot of public money because a lot of people take public transport. This has angered many people in the North. These problems cannot be solved quickly. They compound each other. Just as people are rarely poor for one reason, regions do not fall behind only because they have poor transport, poor schools or poor policy making, but for all those reasons and more. Ideally, the UK would develop a bold plan for regional development that could be followed by future governments, as Germany did for its eastern part. Tera Allas of McKinsey, a consultancy firm, argues that improving education is crucial, even if the returns are not immediately obvious. It is easier to improve schools than to persuade businesses to move to a poorer part of the country."
+   },
+   {
+    "label": "Extract B",
+    "head": "Public sector spending on infrastructure",
+    "body": "Economic differences across the UK are large and have grown. The government is looking at reducing this inequality partly through spending on transport infrastructure. Public sector capital spending is due to rise from just over 2% of GDP to 3%. That amounts to around £20 billion of additional spending per year on new capital projects. The government is looking to take advantage of current low interest rates to finance the expansion without worsening its fiscal position. The government is determined to focus this spending on the north of England, Wales and the Midlands. Planned schemes include a new Trafford Park tram line in Manchester and reopening train lines and stations closed back in the 1960s, including stations in Haxby in Yorkshire and Blyth in Northumberland. Progress has already been made in Wales with the reopening of Bow Street station near Aberystwyth. This project has taken 11 years to become a reality and cost £8m. It is estimated that it will generate a boost to the economy of £24m through boosting local trade, creating new jobs in the local area, and easing pressure on congested roads heading into Aberystwyth."
+   },
+   {
+    "label": "Extract C",
+    "head": "Options for UK tax rises in the future",
+    "body": "There are a number of options for raising additional tax revenue in the future. These include: • increasing council tax on houses: this annual charge paid to local government is currently based on estimated house prices in 1991 and so is very out of date. This would negatively affect areas where house prices have risen the most since 1991 • a one-off wealth tax: a 5% tax on property and pension wealth of more than £500 000 would raise £260 billion to help pay for the global health crisis in five years, according to proposals from the Wealth Commission • increasing corporation tax: at the 2021 Budget the Chancellor announced that the top rate of UK corporation tax would be increased to 25% by 2023. This will remain the lowest rate in the G7 group of the world's largest advanced countries, but will raise £17.2 billion in 2025–26. 6 (a) Using a Lorenz curve diagram, explain how income inequality is measured using the Gini coefficient. Refer to Extract A in your answer. (5)"
+   }
+  ]
+ },
+ "p2-june2023": {
+  "title": "Trade and development in Africa",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "Intra- and extra-regional exports as a percentage of total exports, 2020",
+    "data": []
+   }
+  ],
+  "extracts": []
+ },
+ "p2-june2024": {
+  "title": "The UK Economy",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "UK national debt, percentage of GDP, 2001–2021 2001–022002–032003–042004–052005–062006–072007–082008–092009–102010–112011–122012–132013–142014–152015–162016–172017–182018–192019–202020–21",
+    "data": []
+   },
+   {
+    "label": "Figure 2",
+    "caption": "UK fiscal deficit, percentage of GDP, 2001–2021",
+    "data": []
+   },
+   {
+    "label": "Figure 3",
+    "caption": "Interest rate on a 10-year UK government bond, July 2022 to March 2023 Jul 22  Aug 22  Sep 22  Oct 22  Nov 22  Dec 22  Jan 23  Feb 23  Mar 23",
+    "data": []
+   },
+   {
+    "label": "Figure 4",
+    "caption": "Income tax rates for 2023–24, compared to 2022–23",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "Freeze in income tax thresholds from 2023 onwards",
+    "body": "The freeze on the personal allowance, and the basic and higher-rate income tax bands in England, Wales and Northern Ireland will be extended to April 2028. While this freeze may not look like a tax rise on the face of it, having thresholds that fail to rise in line with salaries, people will still end up paying more tax on their income – particularly if they end up in a higher tax band as a result. The biggest change announced in the Autumn Statement 2022 was the reduction of the additional-rate income tax threshold, dropping from £150 000 to £125 140 from 6 April 2023. It is estimated around 250 000 taxpayers will be pushed into the additional rate tax band, paying 45% tax on any income above the new limit. The Chancellor said lowering the additional rate threshold means that a person earning £150 000 will pay an extra £1 200 income tax per year. ••••••••"
+   },
+   {
+    "label": "Extract B",
+    "head": "UK Monetary Policy Decisions",
+    "body": "At a special meeting on 19th March 2020, the monetary policy committee of the Bank of England announced further measures to help support the UK economy during the global health crisis. It voted to reduce the base rate of interest to 0.1% and restart the quantitative easing programme by buying £200 billion of UK government bonds and corporate bonds. This followed a number of announcements by the UK government to try and limit the damage of the deep recession the country was facing and reduce the chances of deflation occurring in the UK. Government borrowing grew massively during 2020 and 2021 to fund support for businesses and workers. However, since then the monetary policy committee has rapidly increased the base rate of interest – which reached 4% in February 2023. The UK government’s long-term borrowing costs are higher today than they were before former prime minister Liz Truss’s £45 billion proposed tax cuts caused the interest rate on 30-year government bonds to briefly rise above 5%, which almost caused a financial crisis. The Bank’s use of quantitative easing (QE) has also come in for criticism, with former governor of the Bank of England Mervyn King saying that the decision to keep pumping money into the economy during the global health crisis was a mistake that fuelled inflation. He said: ‘central banks decided it was a good time to print a lot of money. That was a mistake [as] we had too much money chasing too few goods’. Experts have argued this pushed inflation higher in the UK by stimulating aggregate demand. However, critics say QE does not cause inflation as most of the extra money is contained in the financial system and does not affect consumption and investment. Higher interest rates on the national debt may limit the ability of the UK government to increase spending on supply-side policies needed to boost economic growth, such as a £20 billion plan to transform carbon capture in the UK, which would create jobs and support a move to cleaner electricity generation and technology. ••••••••"
+   }
+  ]
+ },
+ "p2-specimen": {
+  "title": "",
+  "figures": [
+   {
+    "label": "Figure 1",
+    "caption": "Economic indicators for the five EAC member countries, 2012",
+    "data": []
+   },
+   {
+    "label": "Figure 2",
+    "caption": "Value of EAC exports 1985–2008 (US$ billions)",
+    "data": []
+   }
+  ],
+  "extracts": [
+   {
+    "label": "Extract A",
+    "head": "Burundi’s economic growth",
+    "body": "Burundi has maintained a stable macroeconomic environment and over recent years improved its performance in health, education and gender equality. However, in spite of this recent progress, Burundi’s economic growth has been modest compared to neighbouring countries in the EAC. Burundi is a small, land-locked country and is one of the most aid-dependent countries in the world. The country is vulnerable to external shocks, such as volatile food and energy prices, declining aid flows, and the adverse impact of climate change. These factors are made worse by the high proportion of current expenditure in the government budget, and a high level of tax exemptions – counting for as much as 3% of GDP. Coffee and tea make up almost 70% of Burundi’s total export earnings. This lack of export diversity makes it difficult to widen the tax revenue base and finance public investments. !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1 6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A (% !\"#$#%&'()*%#! (billion dollars) 2.0 1.6 1.2 0.8 0.4 Euro area United States China 1985 2005 Developing Asia Rest of Africa Within EAC 1995 2008"
+   },
+   {
+    "label": "Extract B",
+    "head": "Trade in East Africa",
+    "body": "The EAC was established as a free trade area in 2000 by Kenya, Tanzania and Uganda, with Burundi and Rwanda joining in 2007. Its objectives are the promotion of free trade and the free movement of capital and labour among its members. In 2013, an agreement was signed outlining plans for launching a monetary union by 2024. Between 2000 and 2011, lower tariffs within the EAC boosted regional trade, offering the five member countries a route to faster growth. During 2000–10, intra-regional exports increased from US$700 million to US$2 billion. Rwanda’s exports have grown the most during this period, from US$1.6 million to US$156 million, but are still a fraction of those of Kenya, the region’s largest economy. Kenya’s exports to the other EAC members were about US$1.2 billion in 2010. In contrast, export growth in Burundi – the poorest member – has remained constant and imports have declined, mainly because of civil war and inferior infrastructure, such as airports, roads, and docks. !\"#$%&'()*\"+,\"-(.\"/\"-(0(1*/#',\"*(23)(4'(),&'&54,%(1 6#57-\"(1%%\"%%5\"'8(9#8\"$4#-%(:(;%%<\"(=(:(6\"78\"5>\"$(?@=A(B(!\"#$%&'()*<,#84&'(.4548\"*(?@=A (& !\"#$#%&'()#%#!"
+   },
+   {
+    "label": "Extract C",
+    "head": "The costs and benefits of monetary union",
+    "body": "There are major costs and benefits of a monetary union between EAC members. One of the issues is the different degrees of economic openness of their economies. The level of economic openness is measured by trade as a percentage of GDP. Kenya is the most open economy in the region (60.6%), followed by Tanzania (49.5%), Uganda (41.3%), Rwanda (35.4%) and Burundi (28.8%). However, economic openness has been increasing in all countries except Burundi where the situation deteriorated between 2006 and 2010.These differences in the degree of trade openness indicate that EAC countries may face asymmetric shocks, a situation which does not support the EAC monetary union in the current situation. However, if the observed trends continue, the increase in economic openness will contribute to building a solid foundation for the success of the EAC common currency, which would help to reduce the transaction costs for trade and investment between EAC members. However, according to the EAC Trade Report, gross intra-EAC trade was only 3.1% of their GDP in 2010. In the EU, by contrast, the value of intra trade was 26% of GDP in 1998 in the area that would adopt the euro; by 2007 this had increased to 33%. Thus trade integration in the EU was much deeper than in the EAC. The benefits, in the form of reduced transaction costs, derived from a common currency were small in the European Monetary Union, and will thus be even smaller in the EAC monetary union. : issues, challenges and prospects’, UNECA, 2012"
+   }
+  ]
+ }
+};
 
 const ECO_QUESTIONS_BY_TARIFF = {
  "5": [
@@ -4563,7 +5203,6 @@ const ECO_QUESTIONS_BY_TARIFF = {
   "p1-june2024-q4",
   "p1-june2024-q5",
   "p1-june2024-q6a",
-  "p1-specimen-q1",
   "p1-specimen-q2",
   "p1-specimen-q3",
   "p1-specimen-q4",
@@ -4619,7 +5258,6 @@ const ECO_QUESTIONS_BY_TARIFF = {
   "p2-specimen-q1",
   "p2-specimen-q2",
   "p2-specimen-q3",
-  "p2-specimen-q4",
   "p2-specimen-q5",
   "p2-specimen-q6a"
  ],

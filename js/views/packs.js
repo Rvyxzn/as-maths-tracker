@@ -3,16 +3,16 @@
 
    Browse every past-paper question by its mark tariff, because
    that is how the paper is built and how you revise for it.
-   "I need to drill 25 markers" is a real thing to want.
 
-   The question stands alone until you ask for the answer. A
-   mark scheme sitting open next to the question is not practice,
-   it is reading, so it stays behind Reveal answer.
+   Opening a question takes over the page: the list goes soft
+   behind it and the question is the only thing to read. A data
+   response's figures and extracts live in a panel that slides
+   out from the side, because you need them beside the question,
+   not scrolled away above it.
 
-   Question wording, tariffs and mark schemes are Pearson's,
-   straight out of the PDFs. Year 1 / Year 2 is worked out here
-   (Themes 1 and 2 are Year 1, Themes 3 and 4 are Year 2) and
-   marked with a question mark when the wording is ambiguous.
+   The question stays alone until you ask for the answer. A mark
+   scheme sitting open next to the question is reading, not
+   practice.
    ============================================================ */
 
 const PacksView = (function () {
@@ -37,13 +37,14 @@ const PacksView = (function () {
   };
 
   let tariff = 25;
-  let openId = null;
+  let focusId = null;          // the question that has taken over the page
   let revealed = {};
-  let showExtracts = {};
+  let caseOpen = false;
   let paperFilter = "all";
   let yearFilter = "all";
 
   function minutesFor(marks) { return Math.round(marks * ECO_MINUTES_PER_MARK); }
+  function byId(id) { return ECO_QUESTIONS.filter(function (q) { return q.id === id; })[0]; }
 
   function questions() {
     return ECO_QUESTIONS.filter(function (q) {
@@ -60,11 +61,7 @@ const PacksView = (function () {
     }).length;
   }
 
-  /* The assessment objectives a question's marks are split across. Edexcel
-     writes them as a run-on line ("Knowledge 2, Application 2, Analysis 4"),
-     which buries the thing that actually shapes your answer: how many marks
-     are for knowing it, applying it, analysing it and evaluating it. Each
-     gets its own badge and its own colour. */
+  /* ---------- assessment objectives ---------- */
   const AO = [
     { re: /knowledge/i,   key: "k",  label: "K",  title: "Knowledge — define it, state it" },
     { re: /application/i, key: "ap", label: "AP", title: "Application — use the data and the context" },
@@ -77,13 +74,9 @@ const PacksView = (function () {
     line.split(/[,;]/).forEach(function (bit) {
       const n = (bit.match(/(\d+)/) || [])[1];
       if (!n) return;
-      AO.forEach(function (ao) {
-        if (ao.re.test(bit)) found.push({ ao: ao, n: n });
-      });
+      AO.forEach(function (ao) { if (ao.re.test(bit)) found.push({ ao: ao, n: n }); });
     });
     if (!found.length) return '<div class="ms2-marks">' + UI.esc(line) + '</div>';
-    /* Always in the order the marks are earned, whatever order the mark
-       scheme happens to list them in. */
     found.sort(function (a, b) { return AO.indexOf(a.ao) - AO.indexOf(b.ao); });
     return '<div class="ms2-ao">' + found.map(function (f) {
       return '<span class="ao ao-' + f.ao.key + '" title="' + UI.esc(f.ao.title) + '">' +
@@ -91,19 +84,11 @@ const PacksView = (function () {
     }).join("") + '</div>';
   }
 
-  /* ---------- mark scheme, laid out rather than dumped ----------
-     Edexcel mark schemes have a shape: a marks line ("Knowledge 2,
-     Application 2, Analysis 4"), then indicative content as bullets, then
-     level descriptors. Rendered as one paragraph it is unreadable, which is
-     the complaint. Each kind of line is recognised and given its own form. */
+  /* ---------- mark scheme ---------- */
   function msSheet(text) {
     const raw = String(text || "").split("\n").map(function (l) { return l.trim(); })
                   .filter(function (l) { return l.length; });
 
-    /* The PDF wraps every line at the column width, so a single bullet or
-       level descriptor arrives as several lines. Merge them back before
-       deciding what anything is: a line that starts lower-case, or that
-       follows one which clearly has not finished, continues the line above. */
     const STARTS = /^(•|[A-D]\s|Level\s*\d|\(?[a-e]\)|Knowledge|KAA|Application|Analysis|Evaluation|Effects|NB\b|\(\d+\)|\d+\s+[A-Z])/;
     const lines = [];
     raw.forEach(function (l) {
@@ -117,16 +102,6 @@ const PacksView = (function () {
     const closeList = function () { if (inList) { html += "</ul>"; inList = false; } };
     const closeLevel = function () { if (inLevel) { html += "</div>"; inLevel = false; } };
 
-    /* Edexcel splits the indicative content in two: everything that earns
-       knowledge, application and analysis marks, then a separate list for
-       evaluation. Worth showing as two sections, because on a 25 marker the
-       second one is nine of the marks and the half people run out of time
-       for. Only marked up when the mark scheme actually has that split --
-       a 5 marker has no evaluation and does not need the heading. */
-    /* Mark schemes head that section several ways — a bare "Evaluation",
-       "Evaluation: 2 marks for two evaluative comments", "Evaluation might
-       include e.g.:". The one thing that is NOT a heading is "Evaluation 9",
-       which is the assessment-objective count and belongs in the badges. */
     const EVAL_HEAD = /^Evaluation\b(?!\s*\d+\s*$)/i;
     const hasEval = lines.some(function (l) { return EVAL_HEAD.test(l); });
     let started = false;
@@ -134,22 +109,18 @@ const PacksView = (function () {
     lines.forEach(function (line) {
       if (hasEval && EVAL_HEAD.test(line)) {
         closeLevel(); closeList();
-        /* Some of these headings carry the marking rule with them
-           ("Evaluation: 2 marks for two evaluative comments"); keep it. */
         const rest = line.replace(/^Evaluation\s*:?\s*/i, "").trim();
         html += '<div class="ms2-sec ms2-sec-ev"><b>EV</b>Evaluation</div>' +
                 (rest ? '<p class="ms2-note">' + UI.esc(rest) + '</p>' : "");
         started = true;
         return;
       }
-      /* A level descriptor runs to several sentences. They belong in the
-         level's own box, not loose underneath it. */
       if (inLevel && !/^(Level\s*\d|\d+\s+A completely|•|\(?[a-e]\)$|Knowledge|KAA|Application|Analysis|Evaluation)/i.test(line)) {
         html += " " + UI.esc(line);
         return;
       }
       closeLevel();
-      if (/^\([a-e]\)$/.test(line)) {                       // part marker
+      if (/^\([a-e]\)$/.test(line)) {
         closeList();
         html += '<div class="ms2-part">Part ' + UI.esc(line.replace(/[()]/g, "")) + '</div>';
         return;
@@ -161,13 +132,11 @@ const PacksView = (function () {
       }
       if (/^(Level\s*\d|\d+\s+A completely)/i.test(line)) {
         closeList();
-        /* "Level 1 1–2 Displays..." reads as one number followed by another.
-           Split the level from its mark range so both are legible. */
         const m = line.match(/^(Level\s*\d+|\d+)\s*([\d]+\s*[–—-]\s*[\d]+)?\s*(.*)$/i);
         html += '<div class="ms2-level"><b>' + UI.esc(m ? m[1] : line) + '</b>' +
                 (m && m[2] ? '<span class="ms2-range">' + UI.esc(m[2].replace(/\s+/g, "")) + '</span>' : "") +
                 (m && m[3] ? " " + UI.esc(m[3]) : "");
-        inLevel = true;                     // closed when the next block starts
+        inLevel = true;
         return;
       }
       if (/^[••]/.test(line)) {
@@ -179,7 +148,7 @@ const PacksView = (function () {
         html += "<li>" + UI.esc(line.replace(/^[••]\s*/, "")) + "</li>";
         return;
       }
-      if (/^\(?\d+\)?$/.test(line)) {                       // a bare mark total
+      if (/^\(?\d+\)?$/.test(line)) {
         closeList();
         html += '<div class="ms2-total">' + UI.esc(line.replace(/[()]/g, "")) + ' marks</div>';
         return;
@@ -187,49 +156,69 @@ const PacksView = (function () {
       closeList();
       html += "<p>" + UI.esc(line) + "</p>";
     });
-    closeLevel();
-    closeList();
+    closeLevel(); closeList();
     return '<div class="ms2">' + html + "</div>";
   }
 
-  /* The PDF gives one line per cell, so a table arrives as a column of
-     fragments and prose arrives broken mid-sentence. Reflow it: run the
-     fragments back together, and only start a new line where the paper
-     genuinely does — a new part, a multiple-choice option, or a tariff. */
+  /* ---------- question text ---------- */
   const BREAK = /^(\([a-e]\)|\(\d+\)$|[A-D]\s+[A-Z(]|[A-D]$|Extract\s|Figure\s|Table\s)/;
 
   function questionHtml(t) {
     const lines = String(t || "").split("\n")
-      .map(function (l) { return l.trim(); })
-      .filter(function (l) { return l.length; });
+      .map(function (l) { return l.trim(); }).filter(function (l) { return l.length; });
     const out = [];
     lines.forEach(function (l) {
       if (!out.length || BREAK.test(l)) { out.push(l); return; }
       const prev = out[out.length - 1];
-      /* keep a break after a finished sentence, otherwise glue it back */
       if (/[.?:;]$/.test(prev) && /^[A-Z(]/.test(l)) out.push(l);
       else out[out.length - 1] = prev + " " + l;
     });
-    return out.map(function (l) { return UI.esc(l); }).join("<br>");
+    return out.map(function (l) {
+      /* the multiple-choice options and the tariff read as their own things */
+      if (/^\(\d+\)$/.test(l)) return '<span class="q-tariff">' + UI.esc(l.replace(/[()]/g, "")) + ' marks</span>';
+      if (/^[A-D]\s/.test(l)) return '<span class="q-opt"><b>' + l.charAt(0) + '</b>' + UI.esc(l.slice(2)) + '</span>';
+      if (/^\([a-e]\)/.test(l)) return '<span class="q-part">' + UI.esc(l) + '</span>';
+      return '<span class="q-line">' + UI.esc(l) + '</span>';
+    }).join("");
   }
 
+  /* ---------- the case study ---------- */
+  function caseFor(q) {
+    return (q.caseKey && typeof ECO_CASE_STUDIES !== "undefined")
+      ? ECO_CASE_STUDIES[q.caseKey] : null;
+  }
+
+  function figureHtml(f) {
+    const rows = (f.data || []).map(function (d) {
+      return '<tr><td>' + UI.esc(d[0]) + '</td><td class="num">' + UI.esc(d[1]) + '</td></tr>';
+    }).join("");
+    return '<div class="cs-fig">' +
+      '<div class="cs-fig-head"><b>' + UI.esc(f.label) + '</b>' +
+        (f.caption ? '<span>' + UI.esc(f.caption) + '</span>' : "") + '</div>' +
+      (rows ? '<table class="cs-table"><tbody>' + rows + '</tbody></table>'
+            : '<div class="tiny faint">The figure in the paper is a chart; its values are not printed as text.</div>') +
+    '</div>';
+  }
+
+  function caseHtml(cs) {
+    return '<div class="cs-head">' + UI.icon("info") + '<span>Case Study</span></div>' +
+      (cs.title ? '<h4 class="cs-title">' + UI.esc(cs.title) + '</h4>' : "") +
+      cs.figures.map(figureHtml).join("") +
+      cs.extracts.map(function (e) {
+        return '<div class="cs-ext">' +
+          '<div class="cs-ext-label">' + UI.esc(e.label) + '</div>' +
+          (e.head ? '<div class="cs-ext-head">' + UI.esc(e.head) + '</div>' : "") +
+          '<p>' + UI.esc(e.body) + '</p>' +
+        '</div>';
+      }).join("");
+  }
+
+  /* ---------- list ---------- */
   function yearPill(q) {
     if (!q.year) return '<span class="pill">year unclear</span>';
     return '<span class="pill acc" title="' +
       (q.topicCode ? "Specification " + q.topicCode + " — " + q.topicName : "Theme " + q.theme) +
       '">Y' + q.year + ' · ' + UI.esc(q.topicCode || ("T" + q.theme)) + '</span>';
-  }
-
-  /* The specification subtopic the question examines, so you know what to go
-     and revise rather than only which year it came from. */
-  function topicLine(q) {
-    if (!q.topicCode) return "";
-    return '<div class="qpack-topic">' +
-      '<span class="qpack-topic-code">' + UI.esc(q.topicCode) + '</span>' +
-      '<span class="qpack-topic-name">' + UI.esc(q.topicName) + '</span>' +
-      '<span class="spacer"></span>' +
-      '<span class="tiny faint">Theme ' + q.theme + ' · Year ' + q.year + '</span>' +
-    '</div>';
   }
 
   function reportFor(q) {
@@ -245,9 +234,7 @@ const PacksView = (function () {
   }
 
   function row(q) {
-    const open = openId === q.id;
-    const er = reportFor(q);
-    return '<div class="qpack' + (open ? " open" : "") + '">' +
+    return '<div class="qpack">' +
       '<button class="qpack-head" data-action="pack-open" data-id="' + q.id + '">' +
         '<span class="qpack-marks">' + q.marks + '</span>' +
         '<span class="qpack-main">' +
@@ -255,78 +242,78 @@ const PacksView = (function () {
           '<small>' + UI.esc(preview(q.text)) + '</small>' +
         '</span>' +
         '<span class="qpack-tags">' + yearPill(q) +
-          (er ? '<span class="pill good">report</span>' : "") +
+          (caseFor(q) ? '<span class="pill">case study</span>' : "") +
+          (reportFor(q) ? '<span class="pill good">report</span>' : "") +
         '</span>' +
       '</button>' +
-      (open ? body(q, er) : "") +
     '</div>';
   }
 
-  function body(q, er) {
+  /* ---------- the focused question ---------- */
+  function focusHtml(q) {
+    const cs = caseFor(q);
+    const er = reportFor(q);
     const show = !!revealed[q.id];
-    /* The question as it is actually printed. Diagrams and tables do not
-       survive text extraction — a production possibility frontier arrives as
-       "X Y Z W V U 80 100 120 140 1700 50 100" and a sales table as a run of
-       company names and numbers — so the page itself is shown and the
-       extracted text is kept underneath only as a fallback. */
-    const pdfBlock = q.pdf && q.pageFrom
-      ? '<div class="qpdf" data-qpdf data-src="' + UI.esc(q.pdf) + '" ' +
-          'data-from="' + q.pageFrom + '" data-to="' + (q.pageTo || q.pageFrom) + '"></div>' +
-        '<div class="qpack-src tiny faint">' + UI.esc(q.series) + ' Paper ' + q.paper +
-          ', page' + (q.pageTo > q.pageFrom ? "s " + q.pageFrom + "–" + q.pageTo
-                                            : " " + q.pageFrom) + '</div>'
-      : '<div class="qpack-q">' + questionHtml(q.text) + '</div>';
+    const g = GUIDE[q.marks] || {};
 
-    /* A data response is unanswerable without its extracts, which are printed
-       on the pages before the questions. */
-    const stim = (q.stimFrom && q.stimTo)
-      ? (showExtracts[q.id]
-          ? '<div class="qpdf" data-qpdf data-src="' + UI.esc(q.pdf) + '" ' +
-              'data-from="' + q.stimFrom + '" data-to="' + q.stimTo + '"></div>' +
-            '<button class="btn btn-sm btn-block" style="margin-top:8px" ' +
-              'data-action="pack-extracts-off" data-id="' + q.id + '">Hide the extracts</button>'
-          : '<button class="btn btn-sm btn-block" style="margin-top:10px" ' +
-              'data-action="pack-extracts" data-id="' + q.id + '">' +
-              'Show Extracts and Figures (pages ' + q.stimFrom + '–' + q.stimTo + ')</button>')
-      : "";
+    /* The backdrop closes; the card does not. The card carries its own
+       do-nothing action so that a click inside it resolves to that rather
+       than bubbling up to the backdrop's close. Buttons inside still win,
+       because they are nearer to the click than the card is. */
+    return '<div class="qfocus" data-action="pack-close">' +
+      '<div class="qfocus-shell" data-action="pack-keep">' +
+        (cs ? '<aside class="qcase' + (caseOpen ? " open" : "") + '">' +
+                '<button class="qcase-tab" data-action="pack-case">' +
+                  '<span>CASE STUDY</span>' +
+                '</button>' +
+                '<div class="qcase-body">' + caseHtml(cs) + '</div>' +
+              '</aside>' : "") +
 
-    return '<div class="qpack-body">' +
-      topicLine(q) +
-      pdfBlock + stim +
-      '<div class="row wrap" style="gap:8px;margin:12px 0">' +
-        '<span class="pill">' + q.marks + ' marks</span>' +
-        '<span class="pill">' + minutesFor(q.marks) + ' min</span>' +
-        '<span class="pill">Section ' + q.section + '</span>' +
-        '<div class="spacer"></div>' +
-        '<button class="btn btn-sm" data-action="pack-time" data-id="' + q.id + '">Time me</button>' +
+        '<div class="qfocus-main">' +
+          '<div class="qfocus-bar">' +
+            '<span class="qfocus-marks">' + q.marks + '</span>' +
+            '<div class="qfocus-where">' +
+              '<b>' + UI.esc(q.series) + ' · Paper ' + q.paper + ' · Q' + q.q + (q.part ? "(" + q.part + ")" : "") + '</b>' +
+              '<small>' + (q.topicCode ? UI.esc(q.topicCode + " " + q.topicName) + ' · ' : "") +
+                'Theme ' + q.theme + ' · Year ' + q.year + '</small>' +
+            '</div>' +
+            '<div class="spacer"></div>' +
+            '<span class="pill">' + minutesFor(q.marks) + ' min</span>' +
+            '<button class="btn btn-sm" data-action="pack-time" data-id="' + q.id + '">Time me</button>' +
+            '<button class="icon-btn" data-action="pack-close" title="Close">✕</button>' +
+          '</div>' +
+
+          '<div class="qfocus-scroll">' +
+            '<div class="qtext">' + questionHtml(q.text) + '</div>' +
+            (g.split ? '<div class="qfocus-guide"><b>' + UI.esc(g.name) + '</b>' +
+                       '<span class="pill acc">' + UI.esc(g.split) + '</span>' +
+                       '<p>' + UI.esc(g.how) + '</p></div>' : "") +
+
+            (show
+              ? (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' + msSheet(q.ms)
+                      : '<div class="tiny faint">No mark scheme was found for this one.</div>') +
+                (er ? UI.examinerReport(er, { series: q.series, paper: q.paper,
+                                              question: q.q + (q.part ? "(" + q.part + ")" : "") }) : "") +
+                '<button class="btn btn-sm btn-block" style="margin-top:14px" data-action="pack-hide" data-id="' + q.id + '">Hide the answer</button>'
+              : '<button class="btn btn-primary btn-block" style="margin-top:18px" data-action="pack-reveal" data-id="' + q.id + '">' +
+                  'Reveal answer' + (er ? " and examiner report" : "") + '</button>' +
+                '<div class="tiny faint" style="text-align:center;margin-top:8px">Write your answer first — ' +
+                  minutesFor(q.marks) + ' minutes is what it is worth.</div>') +
+          '</div>' +
+        '</div>' +
       '</div>' +
-
-      (show
-        ? (q.ms
-            ? '<div class="section-label" style="margin:16px 0 8px">Mark scheme</div>' + msSheet(q.ms)
-            : '<div class="tiny faint">No mark scheme was found for this one in the PDF.</div>') +
-          (er ? UI.examinerReport(er, { series: q.series, paper: q.paper,
-                                        question: q.q + (q.part ? "(" + q.part + ")" : "") }) : "") +
-          '<button class="btn btn-sm btn-block" style="margin-top:12px" data-action="pack-hide" data-id="' + q.id + '">Hide the answer</button>'
-        : '<button class="btn btn-primary btn-block" data-action="pack-reveal" data-id="' + q.id + '">' +
-            'Reveal answer' + (er ? " and examiner report" : "") + '</button>' +
-          '<div class="tiny faint" style="text-align:center;margin-top:8px">Write your answer first — ' +
-            minutesFor(q.marks) + ' minutes is what it is worth.</div>') +
     '</div>';
   }
 
-  /* The Year 1 / Year 2 split, as one wide control across the card. */
+  /* ---------- year control ---------- */
   function yearBar() {
-    const y1 = countBy(function (q) { return q.year === 1; });
-    const y2 = countBy(function (q) { return q.year === 2; });
     const seg = function (val, label, n) {
       return '<button class="yearseg' + (yearFilter === val ? " on" : "") + '" ' +
-        'data-action="pack-year" data-val="' + val + '">' +
-        label + '<small>' + n + '</small></button>';
+        'data-action="pack-year" data-val="' + val + '">' + label + '<small>' + n + '</small></button>';
     };
     return '<div class="yearbar">' +
-      seg("1", "YEAR 1", y1) +
-      seg("2", "YEAR 2", y2) +
+      seg("1", "YEAR 1", countBy(function (q) { return q.year === 1; })) +
+      seg("2", "YEAR 2", countBy(function (q) { return q.year === 2; })) +
     '</div>' +
     (yearFilter !== "all"
       ? '<button class="btn btn-sm btn-block" style="margin-top:8px" data-action="pack-year" data-val="all">Show both years</button>'
@@ -341,6 +328,7 @@ const PacksView = (function () {
     }
     const g = GUIDE[tariff];
     const list = questions();
+    const focused = focusId ? byId(focusId) : null;
 
     root.innerHTML =
       '<div class="card">' +
@@ -350,8 +338,6 @@ const PacksView = (function () {
         '<div class="tiny muted">Every question, mark scheme and examiner report is Pearson’s own, from the ' +
           'Edexcel 9EC0 papers. Pick a tariff and drill it.</div>' +
         '<div class="row wrap" style="gap:7px;margin-top:14px">' +
-          /* Counts follow the paper and year you have picked, so the number
-             on the button is the number you would actually get. */
           TARIFFS.map(function (t) {
             const n = ECO_QUESTIONS.filter(function (q) {
               return q.marks === t &&
@@ -359,8 +345,8 @@ const PacksView = (function () {
                 (yearFilter === "all" || String(q.year) === yearFilter);
             }).length;
             return '<button class="btn btn-sm' + (t === tariff ? " btn-primary" : "") +
-              (n ? "" : " is-empty") + '" ' +
-              'data-action="pack-tariff" data-val="' + t + '">' + t + ' mark <span class="faint">(' + n + ')</span></button>';
+              (n ? "" : " is-empty") + '" data-action="pack-tariff" data-val="' + t + '">' +
+              t + ' mark <span class="faint">(' + n + ')</span></button>';
           }).join("") +
         '</div>' +
         '<div class="row wrap" style="gap:7px;margin-top:9px">' +
@@ -385,32 +371,26 @@ const PacksView = (function () {
 
       (list.length
         ? '<div class="stack">' + list.map(row).join("") + '</div>'
-        : UI.empty("✎", "Nothing matches", "Try another tariff, paper or year."));
+        : UI.empty("✎", "Nothing matches", "Try another tariff, paper or year.")) +
 
-    /* the canvases only exist once the markup is in the document */
-    setTimeout(mountPdfs, 0);
-  }
+      (focused ? focusHtml(focused) : "");
 
-  /* Called after every render: any open question paints its exam page. */
-  function mountPdfs() {
-    document.querySelectorAll("[data-qpdf]").forEach(function (host) {
-      if (typeof PdfViewer === "undefined" || !PdfViewer.renderPages) return;
-      PdfViewer.renderPages(host, host.dataset.src, +host.dataset.from, +host.dataset.to);
-    });
+    document.body.classList.toggle("has-focus", !!focused);
   }
 
   function handle(action, el) {
     switch (action) {
-      case "pack-tariff": tariff = +el.dataset.val; openId = null; App.render(); return true;
-      case "pack-paper":  paperFilter = el.dataset.val; openId = null; App.render(); return true;
-      case "pack-year":   yearFilter = el.dataset.val; openId = null; App.render(); return true;
-      case "pack-open":   openId = (openId === el.dataset.id ? null : el.dataset.id); App.render(); return true;
+      case "pack-tariff": tariff = +el.dataset.val; App.render(); return true;
+      case "pack-paper":  paperFilter = el.dataset.val; App.render(); return true;
+      case "pack-year":   yearFilter = el.dataset.val; App.render(); return true;
+      case "pack-open":   focusId = el.dataset.id; caseOpen = false; App.render(); return true;
+      case "pack-keep": return true;            // a click inside the card
+      case "pack-close": focusId = null; App.render(); return true;
+      case "pack-case":   caseOpen = !caseOpen; App.render(); return true;
       case "pack-reveal": revealed[el.dataset.id] = true; App.render(); return true;
-      case "pack-extracts":     showExtracts[el.dataset.id] = true;  App.render(); return true;
-      case "pack-extracts-off": delete showExtracts[el.dataset.id];  App.render(); return true;
       case "pack-hide":   delete revealed[el.dataset.id]; App.render(); return true;
       case "pack-time": {
-        const q = ECO_QUESTIONS.filter(function (x) { return x.id === el.dataset.id; })[0];
+        const q = byId(el.dataset.id);
         if (q) App.startQuestionTimer(q);
         return true;
       }
@@ -418,5 +398,5 @@ const PacksView = (function () {
     return false;
   }
 
-  return { render: render, handle: handle, minutesFor: minutesFor, mountPdfs: mountPdfs };
+  return { render: render, handle: handle, minutesFor: minutesFor };
 })();
