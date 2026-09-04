@@ -1587,7 +1587,28 @@ Pen flyout, hover-expanding tool picker: draw/erase, colour wheel, size
   background:var(--surface);border:1px solid var(--border-strong);border-right:0;
   max-height:88vh;
 }
-.qcase.open .qcase-body{width:min(46vw,430px);opacity:1;overflow-y:auto;padding:20px 22px}
+.qcase.open .qcase-body{width:min(46vw,430px);min-width:220px;opacity:1;overflow-y:auto;padding:20px 22px}
+/* the divider between the case study and the question */
+.qsplit{
+  flex:0 0 auto;width:16px;position:relative;cursor:col-resize;
+  display:flex;align-items:center;justify-content:center;
+  touch-action:none;user-select:none;
+}
+.qsplit::before{
+  content:"";position:absolute;top:14px;bottom:14px;width:1px;
+  background:var(--border-strong);
+}
+.qsplit-knob{
+  position:relative;z-index:1;
+  width:22px;height:46px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--surface);border:1px solid var(--border-strong);
+  color:var(--muted);font-size:15px;line-height:1;
+  box-shadow:var(--shadow);transition:.14s;
+}
+.qsplit:hover .qsplit-knob{border-color:var(--accent);color:var(--accent)}
+.qsplit.dragging .qsplit-knob{background:var(--accent);border-color:var(--accent);color:#fff}
+
 .cs-head{
   display:flex;align-items:center;gap:9px;margin-bottom:12px;
   font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);

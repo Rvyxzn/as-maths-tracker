@@ -40,6 +40,7 @@ const PacksView = (function () {
   let focusId = null;          // the question that has taken over the page
   let revealed = {};
   let caseOpen = false;
+  let caseWidth = null;        // px, once you have dragged the divider
   let paperFilter = "all";
   let yearFilter = "all";
 
@@ -266,8 +267,18 @@ const PacksView = (function () {
                 '<button class="qcase-tab" data-action="pack-case">' +
                   '<span>CASE STUDY</span>' +
                 '</button>' +
-                '<div class="qcase-body">' + caseHtml(cs) + '</div>' +
-              '</aside>' : "") +
+                '<div class="qcase-body"' +
+                  (caseOpen && caseWidth ? ' style="width:' + caseWidth + 'px"' : "") + '>' +
+                  caseHtml(cs) + '</div>' +
+              '</aside>' +
+              /* Drag the divider to give either side more room; a plain click
+                 on the knob folds the case study away. */
+              (caseOpen
+                ? '<div class="qsplit" data-action="pack-keep" data-split>' +
+                    '<span class="qsplit-knob" title="Drag to resize, click to close">‹</span>' +
+                  '</div>'
+                : "")
+            : "") +
 
         '<div class="qfocus-main">' +
           '<div class="qfocus-bar">' +
@@ -376,6 +387,63 @@ const PacksView = (function () {
       (focused ? focusHtml(focused) : "");
 
     document.body.classList.toggle("has-focus", !!focused);
+    /* the divider only exists once the markup is in the document */
+    setTimeout(mountSplit, 0);
+  }
+
+  /* The divider between the case study and the question.
+
+     Dragged, it hands width from one side to the other. Clicked without
+     moving, it folds the case study away — so the same knob does both, and
+     a click is told from a drag by whether the pointer actually travelled. */
+  const MIN_CASE = 220;
+  function mountSplit() {
+    const bar = document.querySelector("[data-split]");
+    if (!bar || bar.dataset.wired === "1") return;
+    bar.dataset.wired = "1";
+
+    const body = document.querySelector(".qcase-body");
+    const shell = document.querySelector(".qfocus-shell");
+    const knob = bar.querySelector(".qsplit-knob");
+    if (!body || !shell) return;
+
+    let dragging = false, startX = 0, startW = 0, moved = 0;
+
+    bar.addEventListener("pointerdown", function (e) {
+      dragging = true; moved = 0;
+      startX = e.clientX;
+      startW = body.getBoundingClientRect().width;
+      bar.classList.add("dragging");
+      try { bar.setPointerCapture(e.pointerId); } catch (err) {}
+      e.preventDefault();
+    });
+
+    bar.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      moved = Math.max(moved, Math.abs(dx));
+      /* Leave the question a workable column whatever happens. The tab and
+         the divider sit between them and take their own width, so they come
+         off the budget too. */
+      const chrome = 44 + 16;
+      const max = Math.max(MIN_CASE, shell.getBoundingClientRect().width - 400 - chrome);
+      const want = Math.round(Math.min(max, Math.max(MIN_CASE, startW + dx)));
+      /* Point the arrow the way you are actually pulling — and only when the
+         edge really moves, so it does not flip about once you hit a stop. */
+      if (knob && want !== caseWidth) knob.textContent = want > caseWidth ? "›" : "‹";
+      caseWidth = want;
+      body.style.width = caseWidth + "px";
+    });
+
+    const finish = function (e) {
+      if (!dragging) return;
+      dragging = false;
+      bar.classList.remove("dragging");
+      if (knob) knob.textContent = "‹";     // back to the resting direction
+      if (moved < 4) { caseOpen = false; App.render(); }
+    };
+    bar.addEventListener("pointerup", finish);
+    bar.addEventListener("pointercancel", finish);
   }
 
   function handle(action, el) {
@@ -383,7 +451,7 @@ const PacksView = (function () {
       case "pack-tariff": tariff = +el.dataset.val; App.render(); return true;
       case "pack-paper":  paperFilter = el.dataset.val; App.render(); return true;
       case "pack-year":   yearFilter = el.dataset.val; App.render(); return true;
-      case "pack-open":   focusId = el.dataset.id; caseOpen = false; App.render(); return true;
+      case "pack-open":   focusId = el.dataset.id; caseOpen = false; caseWidth = null; App.render(); return true;
       case "pack-keep": return true;            // a click inside the card
       case "pack-close": focusId = null; App.render(); return true;
       case "pack-case":   caseOpen = !caseOpen; App.render(); return true;
