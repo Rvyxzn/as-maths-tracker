@@ -1589,6 +1589,45 @@ Pen flyout, hover-expanding tool picker: draw/erase, colour wheel, size
 }
 .qcase.open .qcase-body{width:min(46vw,430px);min-width:220px;opacity:1;overflow-y:auto;padding:20px 22px}
 /* ---------- exam logger ---------- */
+.xhead{display:flex;align-items:baseline;gap:12px;margin:20px 0 12px}
+.xhead .section-label{flex:1;min-width:0}
+
+/* Year 1 / Year 2 across the full width of the dialog */
+.xyear{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.xyear-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  padding:15px 10px;border-radius:13px;cursor:pointer;font:inherit;transition:.14s;
+  border:1.5px solid var(--border-strong);background:var(--surface);color:var(--muted);
+}
+.xyear-btn b{font-size:14px;font-weight:800;letter-spacing:.13em}
+.xyear-btn small{font-size:11px;opacity:.8}
+.xyear-btn:hover{border-color:var(--accent);color:var(--text)}
+.xyear-btn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.xyear-btn.on small{opacity:.85}
+
+/* Pure / Stats / Mechanics under it */
+.xstrand{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:13px}
+.xstrand-btn{
+  display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:9px;
+  border:1px solid var(--border-strong);background:var(--surface);color:var(--text);
+  font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:.13s;
+}
+.xstrand-btn:hover{border-color:var(--accent)}
+.xstrand-btn.on{background:var(--surface-2);border-color:var(--accent);color:var(--accent)}
+.xdot{
+  min-width:19px;padding:1px 6px;border-radius:999px;font-size:11px;font-weight:700;
+  background:var(--accent);color:#fff;
+}
+.xpick-all{border-style:dashed;color:var(--muted)}
+.xpicked{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;
+  padding-top:12px;border-top:1px solid var(--border);min-height:26px}
+.xtag{
+  display:inline-flex;align-items:center;gap:7px;padding:4px 9px;border-radius:7px;
+  background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:600;cursor:pointer;
+}
+.xtag b{opacity:.65;font-weight:700}
+.xtag:hover b{opacity:1}
+
 .xpick-wrap{max-height:none}
 .xpick-group{margin-bottom:14px}
 .xpick-head{

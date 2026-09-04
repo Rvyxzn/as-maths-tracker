@@ -16,20 +16,29 @@ const ExamLogger = (function () {
 
   function todayISO() { return new Date().toISOString().slice(0, 10); }
 
-  /* Chapters grouped the way the subject is actually taught, so the picker
-     reads like the course rather than a flat list of ids. */
-  function groups() {
-    const out = [];
-    if (typeof CHAPTER_INDEX === "undefined") return out;
+  /* Chapters indexed by the two things that actually narrow them down.
+     What the top row means depends on the subject: Maths splits into a taught
+     Year 1 and Year 2, Geography into Physical and Human, and Economics into
+     neither, so it gets no top row at all. Below it sit that group's papers.
+     Showing all forty-five maths chapters at once meant two chapters numbered
+     1, two numbered 2, and so on down the list. */
+  function index() {
+    const tops = [], strands = {}, labels = {};
+    if (typeof CHAPTER_INDEX === "undefined") return { tops: tops, strands: strands, labels: labels };
+    const usesYears = Subjects.current().usesYears;
     Object.keys(CHAPTER_INDEX).forEach(function (cid) {
       const inf = CHAPTER_INDEX[cid];
       if (!inf || !inf.chapter) return;
-      const paper = (inf.paper && (inf.paper.name || inf.paper.short)) || "Course";
-      let g = out.filter(function (x) { return x.name === paper; })[0];
-      if (!g) { g = { name: paper, items: [] }; out.push(g); }
-      g.items.push({ id: cid, num: inf.chapter.num, name: inf.chapter.name });
+      const pap = inf.paper || {};
+      const top = pap.group ? pap.group : (usesYears ? "Year " + (inf.chapter.year || 1) : "All");
+      const st = pap.paper || pap.short || pap.name || "All";
+      if (tops.indexOf(top) < 0) tops.push(top);
+      if (!strands[top]) strands[top] = {};
+      if (!strands[top][st]) strands[top][st] = [];
+      labels[st] = pap.short || st;
+      strands[top][st].push({ id: cid, num: inf.chapter.num, name: inf.chapter.name });
     });
-    return out;
+    return { tops: tops, strands: strands, labels: labels };
   }
 
   function chip(it, on) {
@@ -43,7 +52,11 @@ const ExamLogger = (function () {
     const picked = {};
     (rec.chapterIds || []).forEach(function (id) { picked[id] = true; });
 
-    const gs = groups();
+    const ix = index();
+    const multiTop = ix.tops.length > 1;
+    let top = ix.tops[0] || "All";
+    let strand = null;              // null until the first render picks one
+
     const body =
       '<div class="form-grid">' +
         '<div class="field"><label class="label">What is it called?</label>' +
@@ -61,19 +74,16 @@ const ExamLogger = (function () {
             UI.esc(rec.total || "") + '"></div>' +
       '</div>' +
 
-      '<div class="section-label" style="margin:18px 0 4px">What does it cover?</div>' +
-      '<div class="tiny muted" style="margin-bottom:10px">Click the chapters being examined. ' +
-        'The planner uses these to decide what to put in front of you between now and the day.</div>' +
-      '<div class="xpick-wrap" id="xPick">' +
-        gs.map(function (g) {
-          return '<div class="xpick-group">' +
-            '<div class="xpick-head"><span>' + UI.esc(g.name) + '</span>' +
-              '<button type="button" class="btn btn-sm" data-xall="' + UI.esc(g.name) + '">Select all</button></div>' +
-            '<div class="xpick-row">' + g.items.map(function (it) { return chip(it, picked[it.id]); }).join("") + '</div>' +
-          '</div>';
-        }).join("") +
+      '<div class="xhead">' +
+        '<div class="section-label" style="margin:0">What does it cover?</div>' +
+        '<div class="tiny faint" id="xCount"></div>' +
       '</div>' +
-      '<div class="tiny faint" id="xCount" style="margin-top:10px"></div>';
+      (multiTop ? '<div class="xyear" id="xYear"></div>' : "") +
+      '<div class="xstrand" id="xStrand"></div>' +
+      '<div class="xpick-row" id="xChips"></div>' +
+      '<div class="xpicked" id="xPicked"></div>';
+
+
 
     UI.modal({
       title: existing ? "Edit this test" : "Log an exam",
@@ -82,35 +92,88 @@ const ExamLogger = (function () {
       footer: '<button class="btn" data-modal-close>Cancel</button>' +
               '<button class="btn btn-primary" id="xSave">Save the exam</button>',
       onMount: function (box) {
-        const count = box.querySelector("#xCount");
-        const tally = function () {
-          const n = Object.keys(picked).filter(function (k) { return picked[k]; }).length;
-          count.textContent = n ? n + " chapter" + (n === 1 ? "" : "s") + " selected"
-                                : "No chapters selected yet — the planner will not know what to revise.";
+        const $ = function (id) { return box.querySelector(id); };
+        const nPicked = function () {
+          return Object.keys(picked).filter(function (k) { return picked[k]; }).length;
         };
-        tally();
 
-        box.querySelectorAll("[data-xpick]").forEach(function (b) {
-          b.onclick = function () {
-            const id = b.dataset.xpick;
-            picked[id] = !picked[id];
-            b.classList.toggle("on", !!picked[id]);
-            tally();
+        /* Everything below the two rows redraws when either changes, so the
+           chips only ever show one year of one paper at a time. */
+        const unit = Subjects.current().unitPlural || "chapters";
+
+        function paint() {
+          const strandsForTop = ix.strands[top] || {};
+          const names = Object.keys(strandsForTop);
+          if (!strand || names.indexOf(strand) < 0) strand = names[0];
+
+          if (multiTop) {
+            $("#xYear").innerHTML = ix.tops.map(function (t) {
+              const inThis = ix.strands[t] || {};
+              const total = Object.keys(inThis).reduce(function (n, k) { return n + inThis[k].length; }, 0);
+              const chosen = Object.keys(inThis).reduce(function (n, k) {
+                return n + inThis[k].filter(function (it) { return picked[it.id]; }).length;
+              }, 0);
+              return '<button type="button" class="xyear-btn' + (t === top ? " on" : "") + '" data-xyear="' + UI.esc(t) + '">' +
+                '<b>' + UI.esc(t.toUpperCase()) + '</b><small>' +
+                (chosen ? chosen + ' of ' + total : total + ' ' + unit) + '</small></button>';
+            }).join("");
+          }
+
+          $("#xStrand").innerHTML = names.map(function (nm) {
+            const on = nm === strand;
+            const chosen = strandsForTop[nm].filter(function (it) { return picked[it.id]; }).length;
+            return '<button type="button" class="xstrand-btn' + (on ? " on" : "") + '" data-xstrand="' + UI.esc(nm) + '">' +
+              UI.esc(nm.length > 14 && names.length > 4 ? (ix.labels[nm] || nm) : nm) +
+              (chosen ? '<span class="xdot">' + chosen + '</span>' : "") + '</button>';
+          }).join("");
+
+          const items = strandsForTop[strand] || [];
+          const allOn = items.length && items.every(function (it) { return picked[it.id]; });
+          $("#xChips").innerHTML =
+            items.map(function (it) { return chip(it, picked[it.id]); }).join("") +
+            (items.length ? '<button type="button" class="xpick xpick-all" data-xall="1">' +
+                            (allOn ? "Clear these" : "Select all " + items.length) + '</button>' : "");
+
+          const n = nPicked();
+          $("#xCount").textContent = n ? n + " selected" : "none selected yet";
+          $("#xPicked").innerHTML = n
+            ? Object.keys(picked).filter(function (k) { return picked[k]; }).map(function (id) {
+                const inf = CHAPTER_INDEX[id];
+                return '<span class="xtag" data-xdrop="' + id + '">' +
+                  UI.esc(inf && inf.chapter ? inf.chapter.name : id) + ' <b>×</b></span>';
+              }).join("")
+            : '<span class="tiny faint">Pick the ' + unit + ' being examined — the planner uses them to decide what to put in front of you.</span>';
+
+          wire();
+        }
+
+        function wire() {
+          box.querySelectorAll("[data-xyear]").forEach(function (b2) {
+            b2.onclick = function () { top = b2.dataset.xyear; strand = null; paint(); };
+          });
+          box.querySelectorAll("[data-xstrand]").forEach(function (b2) {
+            b2.onclick = function () { strand = b2.dataset.xstrand; paint(); };
+          });
+          box.querySelectorAll("[data-xpick]").forEach(function (b2) {
+            b2.onclick = function () {
+              const id = b2.dataset.xpick;
+              picked[id] = !picked[id];
+              paint();
+            };
+          });
+          const all = box.querySelector("[data-xall]");
+          if (all) all.onclick = function () {
+            const items = (ix.strands[top] || {})[strand] || [];
+            const allOn = items.every(function (it) { return picked[it.id]; });
+            items.forEach(function (it) { picked[it.id] = !allOn; });
+            paint();
           };
-        });
-        box.querySelectorAll("[data-xall]").forEach(function (b) {
-          b.onclick = function () {
-            const row = b.closest(".xpick-group").querySelectorAll("[data-xpick]");
-            /* one button both ways: select all, or clear them if all are on */
-            const allOn = [].every.call(row, function (x) { return picked[x.dataset.xpick]; });
-            row.forEach(function (x) {
-              picked[x.dataset.xpick] = !allOn;
-              x.classList.toggle("on", !allOn);
-            });
-            b.textContent = allOn ? "Select all" : "Clear";
-            tally();
-          };
-        });
+          box.querySelectorAll("[data-xdrop]").forEach(function (b2) {
+            b2.onclick = function () { delete picked[b2.dataset.xdrop]; paint(); };
+          });
+        }
+
+        paint();
 
         box.querySelector("#xSave").onclick = function () {
           const title = box.querySelector("#xTitle").value.trim();
