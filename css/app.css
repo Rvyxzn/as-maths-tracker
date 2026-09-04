@@ -1588,6 +1588,32 @@ Pen flyout, hover-expanding tool picker: draw/erase, colour wheel, size
   max-height:88vh;
 }
 .qcase.open .qcase-body{width:min(46vw,430px);min-width:220px;opacity:1;overflow-y:auto;padding:20px 22px}
+/* ---------- drawn economics diagrams ---------- */
+.qdiag{
+  padding:14px 14px 10px;border-radius:11px;
+  background:var(--surface-2);border:1px solid var(--border);
+}
+.ed{display:block;width:100%;height:auto;max-width:440px;margin:0 auto}
+.ed-ax{stroke:var(--muted);stroke-width:1.4}
+.ed-d{stroke:#3b82f6;stroke-width:2.2;fill:none}       /* demand / benefit */
+.ed-s{stroke:#ef4444;stroke-width:2.2;fill:none}       /* supply / cost */
+.ed-mr{stroke:#3b82f6;stroke-width:1.8;fill:none;stroke-dasharray:5 3}
+.ed-ac{stroke:#a855f7;stroke-width:1.9;fill:none}
+.ed-ppf{stroke:#3b82f6;stroke-width:2.2;fill:none}
+.ed-old{stroke:var(--faint);stroke-dasharray:5 3}
+.ed-new{stroke-dasharray:0;opacity:.95}
+.ed-cap{stroke:#10b981;stroke-width:2;stroke-dasharray:6 4}
+.ed-gd{stroke:var(--border-strong);stroke-width:1.1;stroke-dasharray:3 3}
+.ed-gap{stroke:#f59e0b;stroke-width:2.4}
+.ed-arrow{stroke:var(--muted);stroke-width:1.6;marker-end:none}
+.ed-fill{fill:rgba(245,158,11,.22);stroke:none}
+.ed-pt{fill:var(--text);stroke:var(--surface);stroke-width:1.5}
+.ed-t{fill:var(--text);font-size:10.5px;font-weight:600}
+.ed-al{fill:var(--muted);font-size:10px}
+.ed-lbl{fill:var(--text);font-size:10.5px;font-weight:700}
+.ed-note{fill:var(--muted);font-size:9.5px}
+.qdiag-note{margin-top:8px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.5}
+
 /* the divider between the case study and the question */
 .qsplit{
   flex:0 0 auto;width:16px;position:relative;cursor:col-resize;

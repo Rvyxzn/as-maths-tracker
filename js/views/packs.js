@@ -214,6 +214,22 @@ const PacksView = (function () {
       }).join("");
   }
 
+  /* The diagram the answer is supposed to contain. Shown with the mark
+     scheme rather than with the question, because on these questions the
+     diagram is something you draw, not something you are given. Drawn from
+     the economics, so the curves are real lines and the labelled points are
+     solved for rather than placed by eye. */
+  function diagramBlock(q) {
+    if (typeof ECO_DIAGRAM === "undefined") return "";
+    const key = ECO_DIAGRAM.forQuestion(q);
+    if (!key) return "";
+    return '<div class="section-label" style="margin:18px 0 8px">The diagram</div>' +
+      '<div class="qdiag">' + ECO_DIAGRAM.render(key) +
+        '<div class="qdiag-note">Drawn from the economics, not copied from the paper. ' +
+        'Label the axes and both curves, and mark every point you refer to.</div>' +
+      '</div>';
+  }
+
   /* ---------- list ---------- */
   function yearPill(q) {
     if (!q.year) return '<span class="pill">year unclear</span>';
@@ -301,7 +317,8 @@ const PacksView = (function () {
                        '<p>' + UI.esc(g.how) + '</p></div>' : "") +
 
             (show
-              ? (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' + msSheet(q.ms)
+              ? diagramBlock(q) +
+                (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' + msSheet(q.ms)
                       : '<div class="tiny faint">No mark scheme was found for this one.</div>') +
                 (er ? UI.examinerReport(er, { series: q.series, paper: q.paper,
                                               question: q.q + (q.part ? "(" + q.part + ")" : "") }) : "") +
