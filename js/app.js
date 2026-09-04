@@ -822,6 +822,13 @@ function setSidebar(open) {
         return;
       }
 
+      case "log-exam": { ExamLogger.open(); return; }
+      case "edit-exam": {
+        const rec = (Store.get().schoolAssessments || [])
+          .filter(function (x) { return x.id === el.dataset.id; })[0];
+        if (rec) ExamLogger.open(rec);
+        return;
+      }
       case "ch-record": { recordChapter(el.dataset.id); return; }
 
       /* Take today's logged time back off one chapter. Confirmed, because

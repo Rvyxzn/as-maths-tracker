@@ -4,6 +4,42 @@ Dashboard, the "how prepared am I / what do I do now" view
 
 const DashboardView = (function () {
 
+  /* Logging a test is the one thing the planner cannot work out for itself,
+     so it gets a proper invitation rather than being buried in a menu. Once
+     something is logged and unsat, this becomes the countdown to it. */
+  function examLoggerCard() {
+    const next = (typeof ExamLogger !== "undefined") ? ExamLogger.nextUp() : null;
+    if (!next) {
+      return '<button class="add-exam" data-action="log-exam" style="margin-bottom:16px">' +
+        '<span class="add-exam-plus">+</span>' +
+        '<span class="add-exam-main"><b>Log an exam</b>' +
+        '<small>A class test, a mock, anything with a date. Say what it covers and ' +
+        'the planner works backwards from it.</small></span></button>';
+    }
+    /* whole days between today and the exam, counted on dates rather than
+       timestamps so a clock-change cannot make it off by one */
+    const ms = Date.parse(next.date + "T00:00:00") - Date.parse(Metrics.today() + "T00:00:00");
+    const days = Math.round(ms / 86400000);
+    const when = days === 0 ? "today" : days === 1 ? "tomorrow"
+               : days > 0 ? "in " + days + " days"
+               : days === -1 ? "yesterday" : Math.abs(days) + " days ago";
+    return '<div class="card" style="margin-bottom:16px">' +
+      '<div class="card-head"><div class="card-title">Next exam</div>' +
+        '<div class="right">' +
+          '<button class="btn btn-sm" data-action="log-exam">+ Log another</button>' +
+        '</div></div>' +
+      '<div class="row wrap" style="gap:10px">' +
+        '<b style="font-size:15px">' + UI.esc(next.title) + '</b>' +
+        '<span class="pill acc">' + UI.esc(when) + '</span>' +
+        (next.chapterIds && next.chapterIds.length
+          ? '<span class="pill">' + next.chapterIds.length + ' chapters</span>' : "") +
+        (next.minutes ? '<span class="pill">' + next.minutes + ' min</span>' : "") +
+        '<div class="spacer"></div>' +
+        '<button class="btn btn-sm" data-action="edit-exam" data-id="' + next.id + '">Edit</button>' +
+        '<button class="btn btn-sm btn-primary" data-action="go" data-view="assessments">Add my score</button>' +
+      '</div></div>';
+  }
+
   function render(root) {
     const c = Metrics.coverage();
     const ph = Metrics.phase();
@@ -18,6 +54,7 @@ const DashboardView = (function () {
 
     root.innerHTML =
       hero(d, ph, c, ps) +
+      examLoggerCard() +
       journeyCard() +
       alerts(feas, recurring, c) +
       '<div class="grid g-main" style="margin-top:18px">' +
