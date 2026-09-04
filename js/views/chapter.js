@@ -35,6 +35,7 @@ const ChapterView = (function () {
     root.innerHTML =
       '<button class="btn btn-sm btn-ghost" data-action="go" data-view="topics" style="margin-bottom:14px">← All chapters</button>' +
       header(cid, inf, t, eff, st) +
+      methodCard(cid, inf) +
       stepper(st) +
       '<div class="stack" style="gap:16px;margin-top:16px">' +
         stepVideo(cid, inf, st) +
@@ -97,6 +98,57 @@ const ChapterView = (function () {
   }
 
   /* ---------------- 1. playlist ---------------- */
+  /* The subject's own revision method, plus the notes and flashcard work that
+     comes before the numbered steps below. Only shown for subjects that
+     define one; Maths keeps its existing four-step flow untouched. */
+  function methodCard(cid, inf) {
+    const subj = Subjects.current();
+    const method = subj.method ? subj.method() : null;
+    if (!method) return "";
+
+    const notes = (inf.links || []).filter(function (l) { return l.kind === "notes"; });
+    const other = (inf.links || []).filter(function (l) { return l.kind === "questions"; });
+
+    return '<div class="card method-card" style="margin-bottom:16px">' +
+      '<div class="card-head"><div class="card-title">How to revise this topic</div>' +
+        '<div class="right"><button class="btn btn-sm" data-action="anki-export" data-id="' + cid + '">' +
+          '⬇ Flashcards for Anki</button></div></div>' +
+      '<div class="tiny muted" style="margin-bottom:12px">' + UI.esc(method.intro) + '</div>' +
+
+      '<ol class="method-steps">' +
+        method.steps.map(function (s) {
+          return '<li><b>' + UI.esc(s.title) + '</b><span>' + UI.esc(s.body) + '</span></li>';
+        }).join("") +
+      '</ol>' +
+
+      (notes.length
+        ? '<div class="section-label" style="margin:16px 0 8px">Notes for this topic</div>' +
+          '<div class="row wrap" style="gap:8px">' +
+            notes.map(function (l) {
+              return '<a class="btn btn-sm" href="' + UI.esc(l.url) + '" target="_blank" rel="noopener" ' +
+                'title="' + UI.esc(l.note || "") + '">' + UI.esc(l.label) + ' ↗</a>';
+            }).join("") +
+          '</div>' +
+          '<div class="tiny faint" style="margin-top:7px">Opens on Physics &amp; Maths Tutor. Their notes stay ' +
+            'on their site rather than being copied in here.</div>'
+        : "") +
+
+      (other.length
+        ? '<div class="row wrap" style="gap:8px;margin-top:12px">' +
+            other.map(function (l) {
+              return '<a class="btn btn-sm btn-ghost" href="' + UI.esc(l.url) + '" target="_blank" rel="noopener">' +
+                UI.esc(l.label) + ' ↗</a>';
+            }).join("") +
+          '</div>'
+        : "") +
+
+      '<div class="warnbox info tiny" style="margin-top:14px"><b>Flashcards are the part that does the work</b>' +
+        UI.esc(method.anki.note) + ' The button above downloads this topic’s specification points as a file ' +
+        'you can import straight into <a href="' + UI.esc(method.anki.url) + '" target="_blank" rel="noopener">Anki</a>, ' +
+        'as a starting deck. Rewrite them in your own words as you go, that is where the understanding comes from.</div>' +
+      '</div>';
+  }
+
   function stepVideo(cid, inf, st) {
     const t = Store.topic(cid);
     const total = Journey.totalVideos(cid);
@@ -128,6 +180,26 @@ const ChapterView = (function () {
       '</span>';
     }
 
+    /* Why there is no embedded player, in terms specific to the subject.
+       Maths has verified playlists; the others link out instead of guessing. */
+    function noPlaylistNote(info) {
+      const links = (info.links || []).filter(function (l) { return l.kind === "video"; });
+      if (!links.length) {
+        return '<div class="warnbox"><b>No playlist found for this chapter</b>' +
+          'There is no Zeeshan Zamurred playlist for this chapter on his channel, so nothing has been guessed. ' +
+          'Paste a playlist or video link below and it will be embedded here and remembered.</div>';
+      }
+      return '<div class="warnbox info"><b>Videos are linked, not embedded</b>' +
+        'No playlist id is hardcoded for this topic, because the ones that exist could not be checked against ' +
+        'the right creator. These links search the channel itself, so they cannot point somewhere wrong:' +
+        '<div class="row wrap" style="gap:8px;margin-top:10px">' +
+          links.map(function (l) {
+            return '<a class="btn btn-sm" href="' + UI.esc(l.url) + '" target="_blank" rel="noopener">' +
+              UI.esc(l.label) + ' ↗</a>';
+          }).join("") +
+        '</div></div>';
+    }
+
     return card(1, "Watch the entire playlist", st.steps.video.done,
       (embed
         ? '<div class="video-frame"><div class="ytp" id="chVideoFrame" data-cid="' + UI.esc(cid) + '"' +
@@ -139,9 +211,7 @@ const ChapterView = (function () {
           (custom ? "Your own link." : "Zeeshan Zamurred, " + UI.esc(inf.paper.short === "Pure" ? "Pure Maths Year 1" : inf.paper.short === "Stats" ? "Statistics Year 1" : "Mechanics Year 1") +
               ", Chapter " + UI.esc(inf.chapter.num) + ".") +
             ' Skip between episodes with the buttons above, or the playlist button inside the player.</div>'
-        : '<div class="warnbox"><b>No playlist found for this chapter</b>' +
-            'There is no Zeeshan Zamurred playlist for this chapter on his channel, so nothing has been guessed. ' +
-            'Paste a playlist or video link below and it will be embedded here and remembered.</div>') +
+        : noPlaylistNote(inf)) +
 
       '<div class="row wrap" style="gap:8px">' +
         '<input class="input" id="chVidUrl" placeholder="Paste a YouTube playlist or video link…" ' +

@@ -57,11 +57,13 @@ const Subjects = (function () {
       unitPlural: "topics",
       spec: function () { return ECO_SPEC; },
       examFocus: function () { return ECO_EXAM_FOCUS; },
-      chapterData: function () { return {}; },
-      /* No videos or question banks yet. The chapter view already copes with
-         a missing playlist and an empty bank, and says so rather than
-         pretending there is nothing to do. */
-      hasResources: false,
+      chapterData: function () { return ECO_CHAPTER_DATA; },
+      method: function () { return ECO_METHOD; },
+      /* PMT notes and EconPlusDal links per topic, but no embedded playlist
+         and no in-app question bank, so the chapter view still says where to
+         go rather than pretending the questions are here. */
+      hasResources: true,
+      hasQuestionBank: false,
       usesYears: false,
       papersLabel: "Themes",
       searchHint: "Search topics, e.g. elasticity, externalities, oligopoly…"

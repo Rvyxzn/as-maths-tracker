@@ -209,6 +209,60 @@ function setSidebar(open) {
     if (title) title.textContent = s.name;
   }
 
+  /* A starting Anki deck for one chapter, as a tab separated file: the format
+     Anki's own importer expects, with no add-on needed.
+
+     The cards are the specification's "what you need to be able to do" points,
+     which is a scaffold rather than a finished deck. The UI says so: rewriting
+     them in your own words is the part that does the learning, and a card you
+     did not write is a card you will not remember. */
+  function ankiExport(cid) {
+    const inf = Store.info(cid);
+    if (!inf) return;
+
+    const chapter = inf.chapter || inf.section;
+    const subject = Subjects.current();
+    const deck = subject.short + "::" + (chapter ? chapter.num + " " + chapter.name : inf.sub.name);
+
+    /* Anki splits on tabs, so any tab or newline inside a field would shift
+       every column after it. Collapse whitespace rather than quote it. */
+    const clean = function (s) { return String(s || "").replace(/\s+/g, " ").trim(); };
+
+    const rows = [];
+    const subs = chapter && chapter.subs ? chapter.subs : [inf.sub];
+    subs.forEach(function (sub) {
+      (sub.reqs || []).forEach(function (req) {
+        rows.push([
+          clean(sub.code ? sub.code + " " + sub.name : sub.name),   // front
+          clean(req),                                               // back
+          clean(deck + "::" + (sub.code || ""))                     // tags
+        ].join("\t"));
+      });
+    });
+
+    if (!rows.length) { UI.toast("Nothing to export for this chapter", "warn"); return; }
+
+    /* The header lines are Anki's own import directives, so the file opens
+       with the right column mapping and deck without any clicking about. */
+    const file =
+      "#separator:tab\n" +
+      "#html:false\n" +
+      "#notetype:Basic\n" +
+      "#deck:" + deck + "\n" +
+      "#columns:Front\tBack\tTags\n" +
+      rows.join("\n") + "\n";
+
+    const blob = new Blob([file], { type: "text/tab-separated-values;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = (subject.short + "-" + (chapter ? chapter.num : inf.sub.code || "topic") + "-anki.txt")
+      .replace(/[^\w.-]+/g, "-");
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+
+    UI.toast(rows.length + " cards downloaded. In Anki: File, then Import, and pick that file.", "ok", 6000);
+  }
+
   function subjectMenu() {
     const cur = Subjects.currentId();
     UI.modal({
@@ -366,6 +420,7 @@ function setSidebar(open) {
     if (CalendarView.handle(action, el)) return;
     if (PapersView.handle(action, el)) return;
     if (AssessmentsView.handle(action, el)) return;
+    if (action === "anki-export") { ankiExport(el.dataset.id); return; }
     if (action === "switch-subject") { subjectMenu(); return; }
     if (action === "sync-now") {
       UI.toast("Syncing…", "info", 1500);

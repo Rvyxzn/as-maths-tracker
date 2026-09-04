@@ -558,6 +558,9 @@ function attachChapterData(data) {
     const d = CHAPTER_DATA[inf.chapter.id];
     inf.playlist = d && d.playlist ? d.playlist : null;
     inf.bank = d && d.questions ? d.questions : [];
+    /* Notes, videos and question pages that live on someone else's site.
+       Empty for subjects whose resources are built in. */
+    inf.links = d && d.links ? d.links : [];
   });
 }
 

@@ -482,6 +482,47 @@ const ECO_SPEC = [
           "Explain interventionist strategies: development of human capital, protectionism, managed exchange rates, infrastructure development, promoting joint ventures, buffer stock schemes",
           "Explain other strategies: industrialisation and the Lewis model, development of tourism and primary industries, fairtrade schemes, aid, debt relief",
           "Evaluate the effectiveness of each strategy in context" ]}
+      ]},
+
+    { id: "eco4-4", num: "4.4", name: "The financial sector",
+      desc: "The role of financial markets, market failure in the financial sector, and how banks are regulated.",
+      subs: [
+        { id: "eco4-4-1", code: "4.4.1", name: "Role of financial markets", importance: 4, reqs: [
+          "Explain the roles: facilitating saving, lending to businesses and individuals, allowing exchange of goods and services",
+          "Explain the provision of forward markets and a market for equities",
+          "Distinguish the money market, capital market and foreign exchange market" ]},
+        { id: "eco4-4-2", code: "4.4.2", name: "Market failure in the financial sector", importance: 5, reqs: [
+          "Explain asymmetric information, externalities and moral hazard in financial markets",
+          "Explain speculation and market bubbles, and how they burst",
+          "Explain market rigging and its consequences",
+          "Apply these to the 2008 financial crisis" ]},
+        { id: "eco4-4-3", code: "4.4.3", name: "Role of central banks", importance: 4, reqs: [
+          "Explain the implementation of monetary policy",
+          "Explain the banker to the government role and the banker to the banks role, including lender of last resort",
+          "Explain the regulation of the banking industry" ]}
+      ]},
+
+    { id: "eco4-5", num: "4.5", name: "Role of the state in the macroeconomy",
+      desc: "Public expenditure, taxation, public sector finances and macroeconomic policies in a global context.",
+      subs: [
+        { id: "eco4-5-1", code: "4.5.1", name: "Public expenditure", importance: 4, reqs: [
+          "Distinguish capital expenditure, current expenditure and transfer payments",
+          "Explain the reasons for changing size and composition of public expenditure over time",
+          "Explain the significance of the size of public expenditure as a proportion of GDP, including productivity, growth, crowding out, equality and living standards" ]},
+        { id: "eco4-5-2", code: "4.5.2", name: "Taxation", importance: 5, reqs: [
+          "Distinguish progressive, proportional and regressive taxes",
+          "Explain the economic effects of changes in direct and indirect tax rates on incentives, income distribution, output, employment, price level and the trade balance",
+          "Draw and interpret the Laffer curve" ]},
+        { id: "eco4-5-3", code: "4.5.3", name: "Public sector finances", importance: 4, reqs: [
+          "Distinguish automatic stabilisers from discretionary fiscal policy",
+          "Distinguish a structural from a cyclical deficit",
+          "Explain the difference between a deficit and the national debt",
+          "Explain the factors influencing the size of fiscal deficits and national debt, and the significance of their size" ]},
+        { id: "eco4-5-4", code: "4.5.4", name: "Macroeconomic policies in a global context", importance: 5, reqs: [
+          "Explain the use of fiscal, monetary, supply-side, exchange rate and direct controls to respond to external shocks",
+          "Explain measures to reduce fiscal deficits, poverty and inequality",
+          "Explain policies to promote growth and development in developing economies",
+          "Explain the problems facing policymakers: inaccurate information, risks and uncertainties, inability to control external shocks" ]}
       ]}
   ]
 },
@@ -638,6 +679,17 @@ const ECO_EXAM_FOCUS = {
     summary: "Development strategies are an evaluation-heavy essay. The mark scheme rewards context, so name real countries and real policies.",
     core: ["HDI, its components and its limitations", "Economic barriers: primary product dependency, savings gap and Harrod-Domar, capital flight, debt", "Non-economic barriers: corruption, institutions, conflict", "Market-oriented against interventionist strategies", "Aid, debt relief, fairtrade, the Lewis model"],
     traps: ["Listing strategies with no judgement on which suits the country described", "Treating HDI as a complete measure of development"] },
+
+  "eco4-4": { weight: 4,
+    marks: "Typically 10 to 18 marks",
+    summary: "The financial sector is where Theme 4 gets its clearest real-world case study. Almost every question routes back to the 2008 crisis, so having that example ready is most of the work.",
+    core: ["Roles of financial markets and the three market types", "Asymmetric information, moral hazard and speculation", "How bubbles form and burst", "Central bank roles, including lender of last resort", "Regulation of banking"],
+    traps: ["Describing the crisis without naming the market failure behind it", "Confusing moral hazard with adverse selection", "Treating regulation as costless"] },
+  "eco4-5": { weight: 5,
+    marks: "Typically 15 to 25 marks, and a frequent Paper 2 essay",
+    summary: "The biggest topic in Theme 4 and heavily examined. Taxation and deficits carry both calculation and evaluation marks, and the policy-in-a-global-context material is what Paper 3 draws on.",
+    core: ["Capital, current and transfer expenditure", "Progressive, proportional and regressive taxes, and the Laffer curve", "Structural against cyclical deficits, and deficit against debt", "Automatic stabilisers", "Policy responses to external shocks and the limits on policymakers"],
+    traps: ["Confusing the deficit with the national debt", "Calling a tax regressive because the amount is smaller, rather than the proportion of income", "Asserting the Laffer curve peak is at a known rate"] },
 
   "eco5-1": { weight: 5,
     marks: "Applies to every mark on every paper",

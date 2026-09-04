@@ -1752,3 +1752,10 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .brand-mark svg,.subject-mark svg{display:block}
 
 .guest-block{margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+
+/* ---------- subject revision method ---------- */
+.method-card{border-color:var(--accent)}
+.method-steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:9px}
+.method-steps li{font-size:13px;line-height:1.5}
+.method-steps li b{display:block;font-size:13.5px;margin-bottom:1px}
+.method-steps li span{color:var(--muted)}
