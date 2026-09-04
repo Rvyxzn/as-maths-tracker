@@ -45,6 +45,13 @@ const Subjects = (function () {
          something. Subjects without that split hide both. */
       usesYears: true,
       papersLabel: "Papers",
+      /* What a past-paper task means in this subject. Without this the
+         planner set "AS Pure past-paper section" for every subject,
+         so Economics was told to sit a maths paper. */
+      papers: [
+        { key: "pure",  name: "AS Pure",                    paper: "Paper 1", full: 120, section: 50 },
+        { key: "stats", name: "AS Statistics & Mechanics",  paper: "Paper 2", full: 75,  section: 40 }
+      ],
       searchHint: "Search topics, e.g. binomial, suvat, hypothesis…"
     },
     economics: {
@@ -66,6 +73,10 @@ const Subjects = (function () {
       hasQuestionBank: false,
       usesYears: false,
       papersLabel: "Themes",
+      papers: [
+        { key: "p1", name: "Markets and business behaviour", paper: "Paper 1", full: 120, section: 45 },
+        { key: "p2", name: "The national and global economy", paper: "Paper 2", full: 120, section: 45 }
+      ],
       searchHint: "Search topics, e.g. elasticity, externalities, oligopoly…"
     },
     geography: {
@@ -92,6 +103,10 @@ const Subjects = (function () {
       hasResources: false,
       usesYears: false,
       papersLabel: "Topics",
+      papers: [
+        { key: "phys", name: "Physical Geography", paper: "Paper 1", full: 105, section: 45 },
+        { key: "hum",  name: "Human Geography",    paper: "Paper 2", full: 105, section: 45 }
+      ],
       searchHint: "Search topics, e.g. tectonic, longshore drift, superpowers…"
     }
   };

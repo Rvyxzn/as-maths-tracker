@@ -13,7 +13,10 @@ const App = (function () {
     { id: "today", label: "Today’s Plan", icon: "✓" },
     { id: "topics", label: "My Topics", icon: "☰" },
     { id: "calendar", label: "Calendar", icon: "▦" },
-    { id: "examq", label: "Exam Questions", icon: "✎" },
+    /* The exam-question PDFs are the maths ones. Economics has Question
+       Packs instead and Geography has neither, so this is not shown to
+       them rather than showing them somebody else's papers. */
+    { id: "examq", label: "Exam Questions", icon: "✎", subjects: ["maths"] },
     { id: "papers", label: "Past Papers", icon: "▤" },
     { id: "packs", label: "Question Packs", icon: "≣", subjects: ["economics"] },
     { id: "assessments", label: "School Tests", icon: "✎" },

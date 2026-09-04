@@ -139,16 +139,23 @@ const Scheduler = (function () {
     const wantFull = coveredPct >= 45 && (daysToExam <= 10 || coveredPct >= 80);
     let target, minutes, title, sub;
 
-    const rotate = idx % 2;
-    if (papersEnabled.pure && (!papersEnabled.stats || rotate === 0)) {
-      target = "Pure";
-      minutes = wantFull ? 120 + 35 : 50 + 15;
-      title = wantFull ? "Full timed AS Pure paper (Paper 1)" : "AS Pure past-paper section";
-    } else {
-      target = "Stats & Mechanics";
-      minutes = wantFull ? 75 + 30 : 40 + 15;
-      title = wantFull ? "Full timed AS Statistics & Mechanics paper (Paper 2)" : "AS Stats/Mechanics past-paper section";
-    }
+    /* Which papers exist depends on the subject. Hard-coding the maths ones
+       here told an Economics student to sit "AS Pure past-paper section". */
+    const subject = (typeof Subjects !== "undefined") ? Subjects.current() : null;
+    const papers = (subject && subject.papers) || [
+      { key: "pure",  name: "AS Pure",                   paper: "Paper 1", full: 120, section: 50 },
+      { key: "stats", name: "AS Statistics & Mechanics", paper: "Paper 2", full: 75,  section: 40 }
+    ];
+    /* honour the per-paper switches in Settings where they name a paper */
+    const on = papers.filter(function (p) {
+      return papersEnabled[p.key] === undefined ? true : !!papersEnabled[p.key];
+    });
+    const pick = (on.length ? on : papers)[idx % (on.length || papers.length)];
+
+    target = pick.name;
+    minutes = (wantFull ? pick.full + 35 : pick.section + 15);
+    title = wantFull ? "Full timed " + pick.name + " paper (" + pick.paper + ")"
+                     : pick.name + " past-paper section";
     sub = wantFull ? "Do it timed, mark it, then log every lost mark in the error log."
                    : "Timed section, then mark and log your errors.";
     return { kind: "paper", paperTarget: target, full: wantFull, minutes: minutes, title: title, note: sub };
