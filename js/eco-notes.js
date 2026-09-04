@@ -790,5 +790,766 @@ const ECO_NOTES = {
       "The long run Phillips curve is vertical, so the trade-off is temporary if expectations adjust.",
       "Which conflict dominates depends on the starting position: spare capacity means less of a trade-off."
     ]
+  },
+
+  /* ================= THEME 3 ================= */
+
+  "eco3-1-1": {
+    summary: "Firms vary in size, and staying small is often a choice rather than a failure.",
+    points: [
+      "Reasons firms stay small: a small or niche market, lack of access to finance, the owner's own objectives, and the diseconomies that come with size.",
+      "Public sector organisations are state owned and funded from taxation; private sector firms are privately owned.",
+      "Not-for-profit organisations pursue a social objective and reinvest any surplus rather than distributing it.",
+      "The principal-agent problem grows with size, which is itself a reason some owners stay small."
+    ],
+    evaluation: [
+      "Small firms can be more innovative and responsive, so size is not the same as efficiency.",
+      "Niche markets can be highly profitable precisely because large firms find them uneconomic to serve."
+    ]
+  },
+
+  "eco3-1-2": {
+    summary: "Firms grow organically or by integration, and each route has different risks.",
+    points: [
+      "Organic (internal) growth: reinvesting profit, expanding capacity. Slower but lower risk and keeps control.",
+      "Inorganic (external) growth: mergers and takeovers. Fast, but integration often fails and costs are high.",
+      "Horizontal integration: same industry, same stage. Raises market share and gives economies of scale.",
+      "Vertical integration: same industry, different stage. Backward towards suppliers secures inputs; forward towards retail secures distribution.",
+      "Conglomerate: unrelated industries. Diversifies risk but brings no synergies.",
+      "Constraints on growth: size of the market, access to finance, owner objectives, and regulation such as competition authorities blocking a merger."
+    ],
+    terms: [
+      { term: "Vertical integration", def: "Merging with a firm at a different stage of the same supply chain" }
+    ],
+    evaluation: [
+      "Most mergers fail to deliver the promised synergies, largely through culture clashes and integration costs.",
+      "Horizontal integration raises competition concerns and may be blocked."
+    ]
+  },
+
+  "eco3-1-3": {
+    summary: "Demergers split a firm up when the parts are worth more separately.",
+    points: [
+      "Reasons: no synergies materialised, the parts are valued higher separately, a wish to focus on core competencies, and regulatory pressure.",
+      "Impacts on businesses: sharper focus, but lost economies of scale.",
+      "Impacts on workers: uncertainty and possible redundancies from duplicated functions.",
+      "Impacts on consumers: potentially more competition and better service, or lost scale economies and higher prices."
+    ],
+    evaluation: [
+      "A demerger admits the original merger destroyed value, which is itself evidence about merger success rates."
+    ]
+  },
+
+  "eco3-2-1": {
+    summary: "Not every firm maximises profit. The objective chosen determines the output.",
+    points: [
+      "Profit maximisation: produce where MC = MR. This is the assumed default and the reference point for all the others.",
+      "Revenue maximisation: produce where MR = 0. Higher output and lower price than profit maximisation.",
+      "Sales maximisation: the largest output that still covers costs, where AC = AR, so normal profit only.",
+      "Satisficing: doing enough to keep stakeholders content rather than optimising, which arises when ownership is divorced from control.",
+      "Survival: the objective in a downturn or for a new entrant.",
+      "The principal-agent problem: managers (agents) may pursue growth, salary or prestige rather than owner (principal) profit."
+    ],
+    diagram: "One cost and revenue diagram with AR, MR, MC and AC. Mark the four output levels: MC = MR, MR = 0, AC = AR, and show that output rises and price falls as you move along them.",
+    evaluation: [
+      "Firms may accept lower short run profit to build market share and raise long run profit.",
+      "Which objective a firm holds is hard to observe from outside, which limits the predictive power of the models."
+    ]
+  },
+
+  "eco3-3-1": {
+    summary: "Revenue curves depend on whether the firm is a price taker or a price maker.",
+    points: [
+      "TR = P x Q. AR = TR / Q, and AR always equals price, so the AR curve IS the demand curve.",
+      "MR is the revenue from one more unit.",
+      "PRICE TAKER (perfect competition): the firm faces a horizontal demand curve, so AR = MR = price.",
+      "PRICE MAKER: downward sloping AR, and MR falls twice as steeply and hits zero at half the output where AR hits zero.",
+      "Link to elasticity: where demand is elastic MR is positive, so cutting price raises revenue. Where inelastic MR is negative. MR = 0 at unit elasticity, which is where revenue peaks."
+    ],
+    diagram: "Downward sloping AR with MR below it at twice the gradient, cutting the horizontal axis at half of AR's intercept. Mark the elastic region, unit elasticity at MR = 0, and the inelastic region.",
+    evaluation: [
+      "The MR curve being twice as steep is a very common diagram error and is worth checking every time."
+    ]
+  },
+
+  "eco3-3-2": {
+    summary: "Costs split into fixed and variable in the short run. In the long run everything varies.",
+    points: [
+      "Fixed costs do not change with output; variable costs do. TC = FC + VC.",
+      "SHORT RUN: at least one factor is fixed. LONG RUN: all factors are variable.",
+      "AC = TC / Q. MC is the cost of one more unit.",
+      "The law of diminishing marginal productivity: adding more of a variable factor to a fixed factor eventually reduces the extra output per unit added, which is what makes MC rise.",
+      "MC cuts AVC and AC at their MINIMUM points. This is arithmetic, not a coincidence: while MC is below the average it pulls it down.",
+      "Long run average cost is U-shaped: economies of scale, then constant returns, then diseconomies."
+    ],
+    diagram: "SRAC and SRMC with MC cutting AC at its minimum. Separately, an LRAC envelope showing economies, minimum efficient scale, and diseconomies.",
+    evaluation: [
+      "Diminishing returns is a SHORT RUN idea about a fixed factor. Diseconomies of scale is a LONG RUN idea about management. Confusing them is a standard error."
+    ]
+  },
+
+  "eco3-3-3": {
+    summary: "Bigger firms can have lower unit costs, until management complexity reverses it.",
+    points: [
+      "Internal economies, remember RTFMPS: Risk bearing, Technical, Financial, Managerial, Purchasing, Specialisation.",
+      "Technical: larger machinery and the specialisation of capital. Purchasing: bulk discounts. Financial: cheaper borrowing for large firms.",
+      "External economies: benefits from the industry growing, such as a skilled local labour pool or shared infrastructure.",
+      "Diseconomies of scale: control, coordination and communication problems, plus falling worker motivation in a large organisation.",
+      "Minimum efficient scale: the lowest output at which LRAC is minimised. Where the MES is large relative to the market, the market naturally holds few firms."
+    ],
+    diagram: "U-shaped LRAC. Label the falling section economies of scale, the trough as the minimum efficient scale, and the rising section diseconomies.",
+    evaluation: [
+      "A high MES is the natural-monopoly argument and links directly to 3.4.5.",
+      "Diseconomies can be managed by decentralising, so they are not inevitable."
+    ]
+  },
+
+  "eco3-3-4": {
+    summary: "Normal profit covers opportunity cost. Supernormal profit is anything above it.",
+    points: [
+      "NORMAL profit is the minimum needed to keep the firm in the industry. It is a cost, and is included in AC.",
+      "SUPERNORMAL profit is any profit above normal, earned where AR is above AC.",
+      "On a diagram, profit per unit is the vertical gap between AR and AC at the chosen output; total profit is that gap times quantity.",
+      "SHORT RUN shutdown: close if price falls below AVC, since you cannot even cover variable costs.",
+      "LONG RUN shutdown: close if price falls below AC, since fixed costs are now avoidable too."
+    ],
+    diagram: "AR, MR, MC and AC with output at MC = MR. Shade the rectangle between AR and AC over that quantity as supernormal profit. Repeat with AC above AR for a loss.",
+    evaluation: [
+      "Normal profit being zero economic profit but positive accounting profit is a distinction examiners test.",
+      "Supernormal profit funds investment and dynamic efficiency, which is the main defence of monopoly."
+    ]
+  },
+
+  "eco3-4-1": {
+    summary: "Four efficiencies, each with a precise condition you can point to on a diagram.",
+    points: [
+      "ALLOCATIVE efficiency: P = MC. Resources go where consumers value them most, and welfare is maximised.",
+      "PRODUCTIVE efficiency: producing at the minimum of AC, which is where MC cuts AC.",
+      "DYNAMIC efficiency: innovation and investment over time, lowering costs and improving products. Requires supernormal profit to fund it.",
+      "X-INEFFICIENCY: costs above the minimum possible, caused by lack of competitive pressure. Shown as operating above the AC curve."
+    ],
+    evaluation: [
+      "There is a genuine trade-off: perfect competition delivers allocative and productive efficiency but no supernormal profit, so no dynamic efficiency.",
+      "Monopoly is the reverse, which is why the verdict on monopoly depends on which efficiency you weight."
+    ]
+  },
+
+  "eco3-4-2": {
+    summary: "Many small firms, identical products, free entry. The theoretical benchmark.",
+    points: [
+      "Assumptions: many buyers and sellers, homogeneous products, perfect information, no barriers to entry or exit, firms are price takers.",
+      "SHORT RUN: supernormal profit is possible if price is above AC.",
+      "LONG RUN: supernormal profit attracts entry, industry supply rises, price falls until only normal profit remains.",
+      "In long run equilibrium: P = MC = MR = AR = AC at minimum, so both allocatively AND productively efficient.",
+      "No supernormal profit means no funds for R&D, so no dynamic efficiency."
+    ],
+    diagram: "Two diagrams side by side: the industry with S and D setting the price, and the firm with a horizontal AR = MR at that price. Show short run supernormal profit, then the long run with AR tangent to AC at its minimum.",
+    evaluation: [
+      "No real market meets all the assumptions, so it is a benchmark rather than a description.",
+      "Its efficiency comes at the cost of variety and innovation."
+    ]
+  },
+
+  "eco3-4-3": {
+    summary: "Many firms, differentiated products, low barriers. Real and common.",
+    points: [
+      "Assumptions: many firms, product differentiation, low barriers to entry, some price-setting power.",
+      "The differentiation gives a downward sloping but very elastic demand curve.",
+      "SHORT RUN: supernormal profit possible. LONG RUN: entry competes it away to normal profit.",
+      "In long run equilibrium AR is TANGENT to AC, but to the left of AC's minimum, so it is NEITHER allocatively nor productively efficient.",
+      "Examples: restaurants, hairdressers, plumbers."
+    ],
+    diagram: "Long run: downward sloping AR just tangent to a U-shaped AC, at an output left of AC's minimum. Mark the excess capacity between that output and the minimum.",
+    evaluation: [
+      "The inefficiency buys consumers variety and choice, which has real value not captured by the efficiency conditions.",
+      "Excess capacity is the cost of differentiation."
+    ]
+  },
+
+  "eco3-4-4": {
+    summary: "Few large interdependent firms. Interdependence is the defining feature.",
+    points: [
+      "Characteristics: few firms dominate, high barriers to entry, differentiated products, and interdependence, so each firm's best move depends on what rivals do.",
+      "Concentration ratio: the combined market share of the largest n firms. A 5-firm ratio above 60 per cent indicates oligopoly.",
+      "COLLUSIVE behaviour: firms act together to raise price towards the monopoly outcome. Overt collusion is a formal cartel and illegal; tacit collusion is unspoken price leadership.",
+      "Kinked demand curve: rivals match price cuts but not price rises, so demand is elastic above the current price and inelastic below. This creates a gap in the MR curve and explains price rigidity.",
+      "Game theory and the prisoner's dilemma: the dominant strategy for each firm produces a worse outcome for both than cooperating, which explains both price wars and the incentive to collude.",
+      "Non-price competition: advertising, branding, loyalty schemes, quality and service, used because price competition destroys profit for everyone."
+    ],
+    diagram: "Kinked demand curve with the kink at the current price, elastic above and inelastic below, and a vertical discontinuity in MR. Show that MC can move within the gap without changing price or output.",
+    evaluation: [
+      "Collusion raises prices and harms consumers, but cartels are unstable because each member gains from cheating.",
+      "The kinked demand model explains price stability but not how the price got there in the first place."
+    ]
+  },
+
+  "eco3-4-5": {
+    summary: "One dominant firm, high barriers, price maker. Efficiency depends on which efficiency.",
+    points: [
+      "Pure monopoly is one firm with 100 per cent share; legal monopoly is 25 per cent or more.",
+      "Barriers to entry: economies of scale, legal protection such as patents, brand loyalty, high sunk costs, control of key resources.",
+      "Profit maximises at MC = MR, giving a HIGHER price and LOWER output than perfect competition, so P is above MC and it is allocatively inefficient.",
+      "It also produces away from minimum AC, so it is productively inefficient, and lacks competitive pressure, so it risks X-inefficiency.",
+      "But supernormal profit funds R&D and investment, giving dynamic efficiency, and economies of scale can push price BELOW the competitive level.",
+      "THIRD DEGREE PRICE DISCRIMINATION: charging different groups different prices for the same good. Requires market power, the ability to separate groups by elasticity, and prevention of resale.",
+      "NATURAL MONOPOLY: where the MES is so large relative to demand that one firm is the efficient number, so competition would raise costs. Regulated rather than broken up."
+    ],
+    diagram: "Monopoly with AR, MR, MC, AC. Mark Pm and Qm at MC = MR, and the competitive P = MC point, shading the welfare loss triangle between them. For price discrimination, two sub-markets with different elasticities side by side.",
+    evaluation: [
+      "Price discrimination raises producer surplus and cuts consumer surplus, but can allow output that would otherwise be unprofitable, and can cross-subsidise low-income users.",
+      "The monopoly verdict turns on dynamic against static efficiency, and on whether scale economies outweigh the loss of competition."
+    ]
+  },
+
+  "eco3-4-6": {
+    summary: "Monopsony is a single dominant BUYER, most often an employer.",
+    points: [
+      "Characteristics: one dominant buyer, so the buyer sets the price it pays rather than accepting a market price.",
+      "Benefits to the firm: lower input or wage costs, so higher profit, and possibly lower prices passed to consumers.",
+      "Costs to suppliers and employees: lower prices received and lower wages, plus lower employment than in a competitive market.",
+      "Standard examples: large supermarkets buying from farmers, the NHS as an employer of nurses."
+    ],
+    diagram: "Labour market with the supply of labour as AC of labour and MC of labour ABOVE it. Employment set where MRP = MCL, but the wage read off the supply curve below, showing both lower wage and lower employment.",
+    evaluation: [
+      "Cost savings may be passed to consumers as lower prices, so the welfare effect is ambiguous.",
+      "A trade union facing a monopsonist can raise wages AND employment, which is the bilateral monopoly case."
+    ]
+  },
+
+  "eco3-4-7": {
+    summary: "What matters is not how many firms there are, but how easily new ones could enter.",
+    points: [
+      "A contestable market has low barriers to entry AND exit, so incumbents face the threat of hit-and-run competition.",
+      "SUNK COSTS are the key: costs that cannot be recovered on exit. Low sunk costs mean high contestability.",
+      "The threat alone disciplines behaviour: incumbents set price near normal profit to deter entry, even with high concentration.",
+      "So a monopoly in a contestable market may behave competitively."
+    ],
+    evaluation: [
+      "Contestability shifts competition policy from breaking up firms towards removing barriers to entry.",
+      "Perfect contestability is as unrealistic as perfect competition, but the direction of the argument holds."
+    ]
+  },
+
+  "eco3-5-1": {
+    summary: "Labour demand is derived from demand for the product it makes.",
+    points: [
+      "Derived demand: firms hire labour for what it produces, so demand for labour rises when demand for the product rises.",
+      "The demand curve for labour is the marginal revenue product: MRP = marginal physical product x marginal revenue.",
+      "Influences: wage rate, demand for the product, labour productivity, the price of capital as a substitute, and the number of firms.",
+      "Elasticity of demand for labour depends on: the substitutability of capital, labour cost as a proportion of total cost, the PED of the final product, and time."
+    ],
+    evaluation: [
+      "Where labour is a small share of total costs, demand for it is inelastic, so a minimum wage costs fewer jobs."
+    ]
+  },
+
+  "eco3-5-2": {
+    summary: "Labour supply to an occupation depends on far more than the wage.",
+    points: [
+      "Influences: the wage rate, the wages available in alternative jobs, the non-monetary characteristics of the work, barriers to entry such as qualifications, the size and demographics of the population, migration, and trade unions.",
+      "Elasticity of supply depends on the qualifications and training required, the time period, and the occupational and geographical mobility of labour.",
+      "Highly skilled occupations have inelastic supply, which is why their wages are high."
+    ],
+    evaluation: [
+      "The backward bending supply curve: above a certain wage the income effect can outweigh the substitution effect and hours fall."
+    ]
+  },
+
+  "eco3-5-3": {
+    summary: "Wages are set by labour demand and supply, then modified by unions, monopsony and law.",
+    points: [
+      "In a competitive labour market, the wage is where the demand for labour (MRP) meets the supply of labour.",
+      "Wage differentials arise from differences in MRP, skills, qualifications, non-monetary factors, and barriers to entry.",
+      "TRADE UNION: raising the wage above equilibrium creates excess supply of labour, so employment falls, UNLESS the employer is a monopsonist.",
+      "MONOPSONY: the employer sets a wage below the competitive level and hires fewer workers. Here a union or minimum wage can raise BOTH wage and employment.",
+      "NATIONAL MINIMUM WAGE: a price floor in the labour market. Above equilibrium it causes excess supply, but the size depends on elasticity, and in a monopsonised market it may raise employment.",
+      "Current issues: skills shortages, youth unemployment, the effect of migration on supply, and the gender pay gap."
+    ],
+    diagram: "Competitive labour market with DL and SL. Add a minimum wage line above equilibrium and mark the excess supply. Separately, a monopsony diagram showing a minimum wage raising both wage and employment.",
+    evaluation: [
+      "The employment effect of a minimum wage depends entirely on market structure and elasticity, which is why the empirical evidence is mixed.",
+      "Higher wages can raise productivity and cut turnover, partially offsetting the cost to firms."
+    ]
+  },
+
+  "eco3-5-4": {
+    summary: "Discrimination misallocates labour and costs the discriminating firm money.",
+    points: [
+      "Discrimination means treating equally productive workers differently because of a characteristic unrelated to productivity.",
+      "Effect on the discriminated group: lower demand for their labour, so lower wages and employment.",
+      "Effect on the favoured group: higher wages and employment than their MRP justifies.",
+      "Effect on the firm: it is not hiring the most productive workers, so its costs are higher than they need to be.",
+      "Effect on the economy: labour is misallocated, so output is below potential."
+    ],
+    diagram: "Two labour market diagrams: the discriminated group with demand shifted left, giving a lower wage and employment, and the favoured group with demand shifted right.",
+    evaluation: [
+      "Competitive pressure should erode discrimination over time, since discriminating firms have higher costs, but in practice it persists.",
+      "Legislation addresses direct discrimination more easily than the structural kind."
+    ]
+  },
+
+  "eco3-6-1": {
+    summary: "Competition policy exists to stop market power being used against consumers.",
+    points: [
+      "Competition policy: controlling mergers, monopolies, restrictive practices and cartels. In the UK this is the Competition and Markets Authority.",
+      "Price regulation of natural monopolies: RPI-X caps, forcing real price falls and an incentive to cut costs.",
+      "Quality regulation and performance targets where price competition is absent.",
+      "Promoting small business, deregulation to lower barriers to entry, and privatisation to introduce competition.",
+      "Protecting suppliers and employees: the Groceries Code Adjudicator, minimum wage, and employment law."
+    ],
+    evaluation: [
+      "Regulation requires information the regulator does not have, particularly about the firm's true costs.",
+      "Setting X too high risks underinvestment; too low and the firm keeps excess profit."
+    ]
+  },
+
+  "eco3-6-2": {
+    summary: "Intervention in markets has its own failure modes.",
+    points: [
+      "REGULATORY CAPTURE: the regulator comes to act in the industry's interest rather than the consumer's, through dependence on the firm for information and staff moving between the two.",
+      "Asymmetric information: the firm knows its costs, the regulator does not, so caps are set wrong.",
+      "Administrative and compliance costs, borne ultimately by consumers.",
+      "Unintended consequences: capping prices can reduce investment and quality."
+    ],
+    evaluation: [
+      "The case for intervention has to be that the market failure is larger than the government failure it risks.",
+      "This is the standard evaluation paragraph for any Theme 3 intervention question."
+    ]
+  },
+
+  /* ================= THEME 4 ================= */
+
+  "eco4-1-1": {
+    summary: "Globalisation is the increasing integration of economies through trade, capital, labour and information.",
+    points: [
+      "Characteristics: rising trade as a share of GDP, growth of TNCs, international financial flows, migration, and the spread of technology and culture.",
+      "Causes: containerisation and cheaper transport, ICT and the internet, trade liberalisation through the WTO, deregulation of financial markets, the growth of TNCs, and the collapse of communism opening new markets.",
+      "Winners: consumers get lower prices and more choice, TNCs get larger markets and cheaper inputs, and emerging economies gain employment and technology transfer.",
+      "Losers: workers in industries facing import competition, countries left switched off, and the environment."
+    ],
+    terms: [
+      { term: "Globalisation", def: "The increasing economic integration and interdependence of countries" }
+    ],
+    evaluation: [
+      "Globalisation has reduced inequality BETWEEN countries while often widening it WITHIN them, which explains the political backlash.",
+      "The environmental cost is external to the trade decisions that cause it, so it is a classic externality."
+    ]
+  },
+
+  "eco4-1-2": {
+    summary: "Countries gain from trade by specialising where their opportunity cost is lowest.",
+    points: [
+      "ABSOLUTE advantage: producing more of a good with the same resources.",
+      "COMPARATIVE advantage: producing at a lower OPPORTUNITY COST. This, not absolute advantage, is what drives gains from trade.",
+      "A country can have an absolute advantage in everything and still gain by specialising where its comparative advantage lies.",
+      "Method: build the output table, work out the opportunity cost of one good in terms of the other for each country, and the lower opportunity cost has the comparative advantage.",
+      "Gains: higher world output, lower prices, greater variety, economies of scale from larger markets.",
+      "Assumptions: no transport costs, perfect factor mobility within countries, constant returns to scale, no trade barriers, and only two countries and two goods."
+    ],
+    diagram: "Two-country, two-good output table. Below it, opportunity cost ratios for each country. Show the terms of trade lying between the two ratios so both gain.",
+    evaluation: [
+      "The assumptions are heroic: transport costs and immobile factors both erode the predicted gains.",
+      "Over-specialisation leaves a country exposed if world demand for its one export collapses.",
+      "The gains are real at national level but unevenly distributed within the country."
+    ]
+  },
+
+  "eco4-1-3": {
+    summary: "Terms of trade measure export prices relative to import prices.",
+    points: [
+      "Terms of trade = (index of export prices / index of import prices) x 100.",
+      "An IMPROVEMENT means export prices rise relative to import prices, so a given volume of exports buys more imports.",
+      "Influences: relative inflation rates, exchange rates, productivity, and world demand for the country's exports.",
+      "Primary product dependency means volatile terms of trade, because commodity prices swing."
+    ],
+    evaluation: [
+      "An improvement is not always good: if it came from a stronger currency, competitiveness has fallen and export volumes may drop.",
+      "The Prebisch-Singer hypothesis argues primary exporters face declining terms of trade over the long run, which links to Theme 4.3."
+    ]
+  },
+
+  "eco4-1-4": {
+    summary: "Trading blocs remove barriers between members, which creates trade and diverts it.",
+    points: [
+      "Free trade area: no internal tariffs, but each member keeps its own external tariff.",
+      "Customs union: no internal tariffs plus a COMMON external tariff.",
+      "Common market: a customs union plus free movement of labour and capital.",
+      "Monetary union: a common market plus a shared currency and monetary policy.",
+      "TRADE CREATION: consumption shifts from a high-cost domestic producer to a lower-cost member. Welfare improving.",
+      "TRADE DIVERSION: consumption shifts from a low-cost non-member to a higher-cost member, because of the tariff. Welfare reducing.",
+      "The WTO promotes liberalisation, sets rules and settles disputes."
+    ],
+    evaluation: [
+      "A bloc is welfare improving only if trade creation exceeds trade diversion, which is an empirical question.",
+      "Regional blocs may undermine multilateral liberalisation by making members defend their preferences."
+    ]
+  },
+
+  "eco4-1-5": {
+    summary: "Protectionism raises domestic price and output, and costs consumers more than producers gain.",
+    points: [
+      "TARIFF: a tax on imports. Domestic price rises, domestic output rises, imports fall, government gains revenue, consumers lose surplus, and there is a net welfare loss.",
+      "QUOTA: a physical limit on import volume. Same direction as a tariff, but the extra revenue goes to importers rather than government.",
+      "SUBSIDY to domestic producers: shifts domestic supply right, so domestic output rises and imports fall, at a cost to taxpayers.",
+      "Non-tariff barriers: standards, licensing, administrative delay, and quality regulations.",
+      "Arguments for: infant industry protection, preventing dumping, protecting employment, national security, correcting a deficit.",
+      "Arguments against: higher prices, misallocated resources, retaliation, and protected industries never becoming competitive."
+    ],
+    diagram: "Domestic S and D with the world price as a horizontal line. Add the tariff as a higher horizontal line. Mark the fall in imports, the government revenue rectangle, and the two welfare loss triangles either side.",
+    evaluation: [
+      "Producers and government gain, consumers lose more, so there is a net welfare loss. Distribution is the political point.",
+      "The infant industry argument requires the protection to be temporary, which politically it rarely is.",
+      "Retaliation can leave everyone worse off, which is the trade war case."
+    ]
+  },
+
+  "eco4-1-6": {
+    summary: "The balance of payments records all transactions with the rest of the world, and always balances.",
+    points: [
+      "CURRENT account: trade in goods, trade in services, primary income (investment income, wages), secondary income (transfers).",
+      "CAPITAL account: small, covering transfers of capital assets.",
+      "FINANCIAL account: FDI, portfolio investment, and reserves.",
+      "A current account deficit is offset by a financial account surplus: the country is selling assets or borrowing to fund it.",
+      "Causes of a deficit: weak competitiveness, a strong currency, high domestic demand sucking in imports, and structural decline in manufacturing.",
+      "Reducing a deficit: expenditure REDUCING policies (deflationary fiscal or monetary policy to cut demand for imports) and expenditure SWITCHING policies (depreciation or protectionism to switch demand to domestic goods), plus supply-side policy to raise competitiveness."
+    ],
+    evaluation: [
+      "Expenditure reducing works but at the cost of growth and employment, so it treats the symptom.",
+      "Supply-side policy is the only route that fixes the underlying cause, but it is slow.",
+      "A deficit financed by long-term FDI is far less risky than one financed by short-term hot money."
+    ]
+  },
+
+  "eco4-1-7": {
+    summary: "Exchange rates move with demand for the currency, and change competitiveness.",
+    points: [
+      "FLOATING: set by supply and demand for the currency. A rise is an APPRECIATION, a fall a DEPRECIATION.",
+      "FIXED: pegged by the central bank, which buys and sells reserves to hold it. A deliberate rise is a REVALUATION, a fall a DEVALUATION.",
+      "Managed float: mostly market determined with occasional intervention.",
+      "Influences on a floating rate: relative interest rates (hot money flows), relative inflation, the current account, speculation, FDI flows, and central bank intervention.",
+      "Effects of a depreciation, remember WIDEC: Weak currency, Imports Dear, Exports Cheap. Exports rise, imports fall, AD rises, growth rises, but imported inflation rises too.",
+      "MARSHALL-LERNER: a depreciation only improves the current account if the combined elasticities of demand for exports and imports exceed 1.",
+      "J-CURVE: in the short run elasticities are low, so the current account worsens first, then improves as volumes adjust."
+    ],
+    diagram: "Currency market with the exchange rate on the vertical axis and quantity of the currency on the horizontal, with D and S crossing. Show a rightward demand shift causing appreciation. Separately, a J-curve with the current account on the vertical axis and time on the horizontal.",
+    evaluation: [
+      "A depreciation raises the cost of imported inputs, so cost push inflation offsets some of the competitiveness gain.",
+      "It only works if firms have spare capacity to meet the extra export demand.",
+      "The J-curve means the policy looks like it has failed before it works, which matters politically."
+    ]
+  },
+
+  "eco4-1-8": {
+    summary: "Competitiveness is the ability to sell abroad, measured mainly by relative unit labour costs.",
+    points: [
+      "Relative unit labour costs: wage costs per unit of output compared with competitors. The main measure.",
+      "Relative export prices are the other standard measure.",
+      "Influences: productivity, wage costs, the exchange rate, regulation and taxation, infrastructure, and investment in skills and technology.",
+      "Non-price competitiveness: quality, design, reliability and branding, which matter more for advanced economies.",
+      "Consequences of being uncompetitive: a current account deficit, falling output and employment in traded sectors, and lower FDI."
+    ],
+    evaluation: [
+      "Raising productivity is the only route that improves competitiveness without cutting living standards.",
+      "Competing on low wages is a race to the bottom that a high-income country cannot win."
+    ]
+  },
+
+  "eco4-2-1": {
+    summary: "Absolute poverty is not having enough to live on. Relative poverty is having much less than others.",
+    points: [
+      "ABSOLUTE poverty: income below what is needed for basic needs. The World Bank line is a fixed real amount per day.",
+      "RELATIVE poverty: income below a proportion of the median in that society, in the UK usually 60 per cent.",
+      "Causes of changes in absolute poverty: economic growth, employment, education, conflict, and disease.",
+      "Causes of changes in relative poverty: the shape of the income distribution, wage inequality, tax and benefit policy, and unemployment."
+    ],
+    evaluation: [
+      "Absolute poverty can be eliminated; relative poverty cannot fall to zero while any dispersion of income exists.",
+      "Growth reduces absolute poverty but can raise relative poverty if the gains go to the top."
+    ]
+  },
+
+  "eco4-2-2": {
+    summary: "Wealth is a stock, income a flow, and wealth is far more unequally distributed.",
+    points: [
+      "Income is a flow received over time; wealth is a stock of assets held at a point in time.",
+      "LORENZ CURVE: cumulative percentage of population on the horizontal axis against cumulative percentage of income on the vertical. The 45 degree line is perfect equality; the further the curve bows away, the greater the inequality.",
+      "GINI COEFFICIENT: the area between the line of equality and the Lorenz curve, as a proportion of the whole triangle. 0 is perfect equality, 1 is perfect inequality.",
+      "Causes: wage differentials, ownership of capital, inheritance, education access, tax and benefit systems, and discrimination.",
+      "Between countries: differences in development, resources, institutions and trade position.",
+      "Capitalism concentrates returns on capital, and if the return on capital exceeds growth, wealth inequality widens over time."
+    ],
+    diagram: "Lorenz curve: cumulative population against cumulative income, with the 45 degree equality line and a bowed curve below it. Shade the area between them as the Gini numerator.",
+    evaluation: [
+      "Some inequality creates incentives to work, invest and take risks, so zero inequality is not the objective.",
+      "Excessive inequality reduces social mobility, damages growth, and concentrates political power.",
+      "The Gini is a single number and hides where in the distribution the inequality sits."
+    ]
+  },
+
+  "eco4-3-1": {
+    summary: "Development is broader than income, which is why HDI combines three dimensions.",
+    points: [
+      "HDI combines: life expectancy at birth (health), mean and expected years of schooling (education), and GNI per capita at PPP (income). Scored 0 to 1.",
+      "Advantages: broader than GDP, widely available, easy to compare and track.",
+      "Limitations: ignores inequality, environment, political freedom, gender equality and the informal economy; the weighting of the three components is arbitrary.",
+      "Other measures: the Inequality-adjusted HDI, the Multidimensional Poverty Index, the Gender Inequality Index, and non-economic indicators such as literacy, infant mortality and access to clean water."
+    ],
+    evaluation: [
+      "Two countries with the same HDI can have very different distributions, which is why the IHDI exists.",
+      "No single index captures development; using two or three together is the honest approach."
+    ]
+  },
+
+  "eco4-3-2": {
+    summary: "Development is held back by economic and non-economic barriers, often reinforcing each other.",
+    points: [
+      "PRIMARY PRODUCT DEPENDENCY: reliance on one or two commodities, exposing the economy to price volatility and declining terms of trade.",
+      "SAVINGS GAP and the HARROD-DOMAR model: growth requires investment, investment requires saving, and low incomes mean low saving, so the economy is trapped.",
+      "FOREIGN CURRENCY GAP: not enough export earnings to buy needed capital imports.",
+      "CAPITAL FLIGHT: savings leaving the country rather than funding domestic investment.",
+      "Demographics: a high dependency ratio means fewer workers supporting more people.",
+      "Debt: servicing costs divert revenue from health, education and infrastructure.",
+      "Poor infrastructure, weak education, and the absence of property rights, which stops assets being used as collateral.",
+      "NON-ECONOMIC: corruption, weak institutions, political instability, conflict, and disease."
+    ],
+    evaluation: [
+      "These barriers are interlocking, so single-policy solutions rarely work: this is the poverty trap.",
+      "Institutions are increasingly seen as the binding constraint: without them, aid and investment leak away."
+    ]
+  },
+
+  "eco4-3-3": {
+    summary: "Strategies split into market-oriented, interventionist, and other. None works alone.",
+    points: [
+      "MARKET-ORIENTED: trade liberalisation, promoting FDI, removing subsidies, floating the exchange rate, microfinance, and privatisation.",
+      "INTERVENTIONIST: developing human capital, protectionism for infant industries, managed exchange rates, infrastructure investment, promoting joint ventures, and buffer stock schemes.",
+      "OTHER: industrialisation and the LEWIS MODEL (moving surplus labour from low-productivity agriculture into manufacturing), developing tourism, developing primary industries, fair trade schemes, aid, and debt relief.",
+      "Aid types: bilateral, multilateral, tied and untied. Tied aid benefits the donor and is widely criticised."
+    ],
+    evaluation: [
+      "The right strategy depends on the binding constraint: infrastructure spending achieves little where corruption is the real barrier.",
+      "Market-oriented strategies risk widening inequality; interventionist ones risk government failure and corruption.",
+      "Aid can create dependency and prop up bad governments, but works well when targeted at health and education.",
+      "Name the country and the constraint: unspecific strategy lists do not reach the top band."
+    ]
+  },
+
+  "eco4-4-1": {
+    summary: "Financial markets channel savings into investment and let risk be priced and traded.",
+    points: [
+      "Roles: facilitating saving, lending to businesses and individuals, allowing the exchange of goods and services, providing forward markets, and providing a market for equities.",
+      "MONEY market: short-term borrowing and lending, under a year.",
+      "CAPITAL market: long-term finance through bonds and shares.",
+      "FOREIGN EXCHANGE market: trading currencies.",
+      "Forward markets let firms hedge against future price or currency movements, reducing risk."
+    ],
+    evaluation: [
+      "A functioning financial sector is necessary for growth: the savings gap in Theme 4.3 is partly a financial market failure."
+    ]
+  },
+
+  "eco4-4-2": {
+    summary: "The financial sector fails in all the standard ways, and the consequences are systemic.",
+    points: [
+      "ASYMMETRIC INFORMATION: borrowers know their own risk better than lenders, giving adverse selection.",
+      "MORAL HAZARD: being insured or bailed out changes behaviour, so banks take risks they would not otherwise take.",
+      "EXTERNALITIES: a bank failure imposes costs on the whole economy, not just its shareholders. This is the systemic risk that justifies bailouts.",
+      "SPECULATION AND BUBBLES: asset prices rise because people expect them to rise, detaching from fundamentals, until confidence breaks and they collapse.",
+      "MARKET RIGGING: collusion to manipulate prices or rates, as with LIBOR.",
+      "2008 applies all of these: subprime lending (asymmetric information), securitisation hiding risk, too big to fail (moral hazard), a housing bubble, and systemic externalities."
+    ],
+    evaluation: [
+      "Bailouts stop the immediate externality but confirm the moral hazard, making the next crisis more likely.",
+      "Regulation raises costs and can push risk into the unregulated shadow banking sector rather than removing it."
+    ]
+  },
+
+  "eco4-4-3": {
+    summary: "Central banks run monetary policy, bank for the government and banks, and regulate.",
+    points: [
+      "IMPLEMENTING MONETARY POLICY: setting the base rate and conducting quantitative easing to hit the inflation target.",
+      "BANKER TO THE GOVERNMENT: managing the government's accounts and its debt issuance.",
+      "BANKER TO THE BANKS and LENDER OF LAST RESORT: lending to solvent banks facing a liquidity crisis, to stop a run becoming a collapse.",
+      "REGULATION: setting capital and liquidity requirements, and stress testing, done in the UK by the Prudential Regulation Authority and the Financial Policy Committee."
+    ],
+    evaluation: [
+      "Lender of last resort is exactly the function that creates moral hazard, so the two roles pull against each other.",
+      "Independence gives credibility on inflation but leaves an unelected body making distributional decisions."
+    ]
+  },
+
+  "eco4-5-1": {
+    summary: "Public spending splits three ways, and its size relative to GDP is the political question.",
+    points: [
+      "CAPITAL expenditure: investment in long-lived assets such as roads, schools and hospitals.",
+      "CURRENT expenditure: day-to-day running costs, including public sector wages.",
+      "TRANSFER payments: benefits and pensions, where no good or service is received in return, so they are not part of G in AD.",
+      "Changing composition over time: ageing populations raise pension and health spending; debt interest rises with the debt.",
+      "Effects of the size of public spending: on productivity and growth, on crowding out, on equality, and on the level of taxation required."
+    ],
+    evaluation: [
+      "CROWDING OUT: government borrowing raises interest rates and displaces private investment. Contested, and weakest when there is spare capacity.",
+      "CROWDING IN: public investment in infrastructure can raise the return on private investment.",
+      "Capital spending raises LRAS; current spending mostly raises AD."
+    ]
+  },
+
+  "eco4-5-2": {
+    summary: "Taxes are progressive, proportional or regressive by the SHARE of income they take.",
+    points: [
+      "PROGRESSIVE: the proportion of income paid RISES with income. UK income tax.",
+      "PROPORTIONAL: the same proportion at all incomes. A flat tax.",
+      "REGRESSIVE: the proportion FALLS as income rises. VAT and most indirect taxes, because the poor spend a larger share of income.",
+      "Direct taxes are on income and wealth; indirect taxes are on spending.",
+      "Effects of changing tax rates: on incentives to work and invest, on income distribution, on output and employment through AD, on the price level, and on the trade balance through import demand.",
+      "LAFFER CURVE: tax revenue rises with the rate up to a point, then falls as disincentives, avoidance and evasion take over."
+    ],
+    diagram: "Laffer curve: tax rate on the horizontal axis, tax revenue on the vertical, an inverted U peaking at some rate T*. Mark that revenue is zero at both 0 and 100 per cent.",
+    evaluation: [
+      "A tax being regressive is about the PROPORTION of income, not the amount. This is the most common error in the topic.",
+      "Nobody knows where the Laffer peak is, so it is used to justify cuts without evidence.",
+      "The incentive effect of income tax cuts is empirically small, because the income and substitution effects pull in opposite directions."
+    ]
+  },
+
+  "eco4-5-3": {
+    summary: "The deficit is a yearly flow, the debt is the accumulated stock. They are not the same.",
+    points: [
+      "A fiscal DEFICIT is the annual excess of spending over revenue. The national DEBT is the total stock of borrowing outstanding.",
+      "A falling deficit still ADDS to the debt: only a surplus reduces it.",
+      "CYCLICAL deficit: the part caused by the economic cycle, which disappears in recovery.",
+      "STRUCTURAL deficit: the part that remains at full employment, which requires policy to remove.",
+      "AUTOMATIC STABILISERS: in a recession, tax revenue falls and benefit spending rises without any decision being taken, cushioning the fall in AD. DISCRETIONARY policy is a deliberate change.",
+      "Influences on size: the cycle, demographics, the level of interest rates, and political choices."
+    ],
+    evaluation: [
+      "The significance of debt depends on the interest rate relative to growth: if growth exceeds the interest rate, the debt to GDP ratio falls without a surplus.",
+      "Cutting a cyclical deficit in a recession worsens the recession and can raise the deficit, which is the austerity debate.",
+      "Debt owed domestically in your own currency is far less risky than foreign currency debt."
+    ]
+  },
+
+  "eco4-5-4": {
+    summary: "Policy in an open economy has to cope with shocks it did not cause and cannot control.",
+    points: [
+      "Responding to external shocks: fiscal and monetary policy to support demand, supply-side policy to rebuild competitiveness, exchange rate policy, and direct controls such as price or capital controls.",
+      "Measures to reduce fiscal deficits: raising taxes, cutting spending, and raising growth so revenue rises.",
+      "Measures to reduce poverty and inequality: progressive taxation, benefits, minimum wages, and investment in education and health.",
+      "Policies for developing economies: those in Theme 4.3, chosen against the binding constraint.",
+      "PROBLEMS FACING POLICYMAKERS: inaccurate information, risks and uncertainties, and the inability to control external shocks."
+    ],
+    evaluation: [
+      "Data are revised heavily after the event, so policy is set on figures that later turn out to be wrong.",
+      "In a globalised economy, capital flows and commodity prices are outside national control, which limits what any single government can achieve.",
+      "This subtopic is where Paper 3 synoptic questions usually land, so link it back to Themes 1 to 3."
+    ]
+  },
+
+  /* ================= EXAM SKILLS ================= */
+
+  "eco5-1-1": {
+    summary: "The command word tells you what the mark scheme is looking for. Answer the one that is there.",
+    points: [
+      "IDENTIFY / STATE (1 to 2 marks): name it. No explanation needed and none rewarded.",
+      "CALCULATE (2 to 4): show the working. Method marks are available even when the final answer is wrong.",
+      "EXPLAIN (4 to 5): one point developed with a chain of reasoning, usually with a diagram.",
+      "ANALYSE (6 to 10): develop chains of reasoning. Knowledge, application and analysis only, NO evaluation needed.",
+      "ASSESS / EVALUATE / DISCUSS / TO WHAT EXTENT (12, 15, 20, 25): analysis AND a supported judgement. Evaluation is roughly half the marks.",
+      "Rough split on an extended answer: KAA (knowledge, application, analysis) about 60 per cent, evaluation about 40 per cent."
+    ],
+    evaluation: [
+      "Writing evaluation on an ANALYSE question earns nothing and costs time.",
+      "Writing no evaluation on an ASSESS question caps you at roughly half marks, whatever the analysis is like."
+    ]
+  },
+
+  "eco5-1-2": {
+    summary: "A chain of analysis is a sequence where each step causes the next, and every link is stated.",
+    points: [
+      "The shape: point, then because, then which means, then therefore, then in context.",
+      "Each arrow in your head must become words on the page. The mark is for the link, not the endpoints.",
+      "Worked example: an indirect tax raises costs of production, so supply shifts left, so equilibrium price rises and quantity falls, so consumption of the demerit good falls, so the external cost falls towards the social optimum.",
+      "Depth beats breadth: two developed chains score better than six undeveloped assertions.",
+      "Use the diagram as part of the chain, and refer to it explicitly in the text."
+    ],
+    evaluation: [
+      "The single most common reason strong students underperform is listing points rather than developing two of them."
+    ]
+  },
+
+  "eco5-1-3": {
+    summary: "Evaluation is judgement with reasons, not a list of both sides.",
+    points: [
+      "MAGNITUDE: how big is the effect? A tax on an inelastic good barely changes quantity.",
+      "TIME FRAME: short run against long run. Supply-side policy does nothing this year.",
+      "ELASTICITY: almost every micro evaluation runs through elasticity.",
+      "ASSUMPTIONS: which assumption is the analysis resting on, and what if it fails? Ceteris paribus rarely holds.",
+      "COUNTERFACTUAL: what would have happened anyway, without the policy?",
+      "STAKEHOLDERS: who gains and who loses, and does that matter for the objective?",
+      "Finish with a judgement that says which consideration dominates and WHY, not merely that it depends."
+    ],
+    evaluation: [
+      "'It depends' with no statement of what it depends on scores nothing.",
+      "A judgement in the introduction, sustained through the answer, tends to score higher than one bolted on at the end."
+    ]
+  },
+
+  "eco5-1-4": {
+    summary: "The extract is there to be used. Quoting figures and applying theory to them is the application mark.",
+    points: [
+      "Quote specific figures from the extract, and manipulate them: calculate a percentage change rather than repeating the number.",
+      "Reference the extract explicitly, by line or by name, so the application is unmistakable.",
+      "Apply theory to THIS context, not in general: name the market, firm or country in the extract.",
+      "Do not simply describe what the extract says. Describing is not applying.",
+      "Bring in your own knowledge as well: the best answers combine extract evidence with wider examples."
+    ],
+    evaluation: [
+      "An answer that would read identically without the extract has thrown away the application marks."
+    ]
+  },
+
+  "eco5-1-5": {
+    summary: "A diagram earns marks only if it is accurate, labelled, and explained in the text.",
+    points: [
+      "Label BOTH axes with the correct variables, and every curve.",
+      "Show the original equilibrium, then the shift with an arrow, then the new equilibrium, labelled P1 Q1.",
+      "Shade and label any area the question depends on: welfare loss, tax revenue, surplus, profit.",
+      "Then EXPLAIN it in the text. An unexplained diagram earns almost nothing.",
+      "Draw them large enough to label clearly, and in pen."
+    ],
+    keyList: {
+      title: "Diagrams worth being able to draw without thinking",
+      items: [
+        "Supply and demand with a shift",
+        "Indirect tax and subsidy, with incidence",
+        "Negative production and positive consumption externality, with welfare loss",
+        "Maximum and minimum price",
+        "AD/AS, both classical and Keynesian LRAS",
+        "Cost and revenue curves for each market structure",
+        "Labour market, including monopsony and minimum wage",
+        "Tariff diagram with welfare areas",
+        "Lorenz curve, Laffer curve, J-curve, Phillips curve"
+      ]
+    },
+    evaluation: [
+      "A wrong diagram costs more than no diagram, because it contradicts the text."
+    ]
+  },
+
+  "eco5-2-1": {
+    summary: "Quantitative skills are a guaranteed share of the marks and the easiest to secure.",
+    points: [
+      "PERCENTAGE CHANGE = (new − old) / old x 100. Distinct from PERCENTAGE POINTS: a rise from 4 to 6 per cent is 2 percentage points but a 50 per cent increase.",
+      "INDEX NUMBERS: value / base value x 100. The base year is always 100.",
+      "REAL from NOMINAL: real value = nominal / price index x 100.",
+      "ELASTICITIES: %ΔQ / %ΔP, or the income or cross-price version. Report the sign and interpret it.",
+      "MULTIPLIER = 1 / (1 − MPC) or 1 / (MPS + MPT + MPM).",
+      "GINI COEFFICIENT from a Lorenz curve, and reading the curve correctly.",
+      "Always INTERPRET the figure you calculate: what does it mean in this context?"
+    ],
+    evaluation: [
+      "Correlation is not causation. If the extract shows two variables moving together, say what else could explain it.",
+      "A calculated figure with no interpretation earns the calculation mark and nothing more."
+    ]
   }
 };
