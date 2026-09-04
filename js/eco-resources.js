@@ -98,6 +98,41 @@ const ECO_CHAPTER_DATA = (function () {
   return out;
 })();
 
+/* Notes for one subtopic, or for a whole topic in Exam-Focus mode where the
+   subtopic notes are stacked in specification order. Returns [] when a
+   subtopic has not been written up yet, and the view says so rather than
+   rendering an empty panel. */
+function econNotesFor(id) {
+  if (typeof ECO_NOTES === "undefined") return [];
+
+  /* A chapter id: gather every subtopic under it. */
+  if (typeof isChapterId === "function" && isChapterId(id)) {
+    const inf = CHAPTER_INDEX[id];
+    if (!inf) return [];
+    return (inf.chapter.subs || []).map(function (sub) {
+      const n = ECO_NOTES[sub.id];
+      return n ? Object.assign({ id: sub.id, code: sub.code, name: sub.name }, n) : null;
+    }).filter(Boolean);
+  }
+
+  const n = ECO_NOTES[id];
+  if (!n) return [];
+  const inf = SPEC_INDEX[id];
+  return [Object.assign({ id: id, code: inf ? inf.sub.code : "", name: inf ? inf.sub.name : "" }, n)];
+}
+
+/* How much of a topic has been written up, so the UI can be honest about
+   partial coverage rather than looking complete. */
+function econNotesCoverage(chapterId) {
+  const inf = CHAPTER_INDEX[chapterId];
+  if (!inf || typeof ECO_NOTES === "undefined") return { have: 0, total: 0 };
+  const subs = inf.chapter.subs || [];
+  return {
+    have: subs.filter(function (s) { return !!ECO_NOTES[s.id]; }).length,
+    total: subs.length
+  };
+}
+
 function buildLinks(sec, r) {
   const links = [];
   if (r.notes) {

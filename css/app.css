@@ -1759,3 +1759,24 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .method-steps li{font-size:13px;line-height:1.5}
 .method-steps li b{display:block;font-size:13.5px;margin-bottom:1px}
 .method-steps li span{color:var(--muted)}
+
+/* ---------- written notes ---------- */
+.notes-card{border-color:var(--border)}
+.note-block{padding:14px 0;border-top:1px solid var(--border)}
+.note-block:first-of-type{border-top:0;padding-top:4px}
+.note-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.note-head b{font-size:14.5px}
+.note-summary{font-size:13px;color:var(--accent);font-weight:600;margin-bottom:10px;line-height:1.5}
+.note-block ul{margin:0;padding-left:19px;color:var(--muted);font-size:13px;line-height:1.65}
+.note-block ul li{margin-bottom:3px}
+.note-sub{margin-top:11px}
+.note-sub > b{display:block;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--faint);font-weight:700;margin-bottom:5px}
+.note-sub > b:empty{display:none}
+.note-terms{margin:0;font-size:13px;line-height:1.6}
+.note-terms dt{font-weight:700;color:var(--text)}
+.note-terms dd{margin:0 0 7px;padding-left:0;color:var(--muted)}
+.note-diagram div{font-size:13px;color:var(--muted);line-height:1.6;
+  border-left:2px solid var(--accent);padding-left:11px}
+.note-eval li{color:var(--muted)}
+.note-sub .note-eval{border-left:2px solid var(--amber);padding-left:16px;margin-left:2px}

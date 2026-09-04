@@ -36,6 +36,7 @@ const ChapterView = (function () {
       '<button class="btn btn-sm btn-ghost" data-action="go" data-view="topics" style="margin-bottom:14px">← All chapters</button>' +
       header(cid, inf, t, eff, st) +
       methodCard(cid, inf) +
+      notesCard(cid) +
       stepper(st) +
       '<div class="stack" style="gap:16px;margin-top:16px">' +
         stepVideo(cid, inf, st) +
@@ -146,6 +147,61 @@ const ChapterView = (function () {
         UI.esc(method.anki.note) + ' The button above downloads this topic’s specification points as a file ' +
         'you can import straight into <a href="' + UI.esc(method.anki.url) + '" target="_blank" rel="noopener">Anki</a>, ' +
         'as a starting deck. Rewrite them in your own words as you go, that is where the understanding comes from.</div>' +
+      '</div>';
+  }
+
+  /* The written notes for this topic, one block per subtopic in specification
+     order. Only subjects that supply notes get this card. */
+  function notesCard(cid) {
+    if (typeof econNotesFor !== "function" || Subjects.currentId() !== "economics") return "";
+    const notes = econNotesFor(cid);
+    if (!notes.length) return "";
+    const cov = econNotesCoverage(cid);
+
+    return '<div class="card notes-card" style="margin-bottom:16px">' +
+      '<div class="card-head"><div class="card-title">Notes</div>' +
+        '<div class="right"><span class="pill' + (cov.have === cov.total ? " good" : " warn") + '">' +
+          cov.have + ' of ' + cov.total + ' subtopics</span></div></div>' +
+
+      (cov.have < cov.total
+        ? '<div class="warnbox tiny" style="margin-bottom:12px"><b>Partly written up</b>' +
+            'The subtopics without notes yet are not shown. Use the PMT notes linked above for those.</div>'
+        : "") +
+
+      notes.map(noteBlock).join("") +
+
+      '<div class="tiny faint" style="margin-top:14px">Written for this tracker against the specification, ' +
+        'not copied from anyone. Longer worked notes are on PMT, linked above.</div>' +
+      '</div>';
+  }
+
+  function noteBlock(n) {
+    const list = function (title, items, cls) {
+      if (!items || !items.length) return "";
+      return '<div class="note-sub"><b>' + title + '</b><ul class="' + (cls || "") + '">' +
+        items.map(function (i) { return '<li>' + UI.math(i) + '</li>'; }).join("") + '</ul></div>';
+    };
+
+    return '<div class="note-block">' +
+      '<div class="note-head">' +
+        (n.code ? '<span class="code">' + UI.esc(n.code) + '</span>' : "") +
+        '<b>' + UI.esc(n.name) + '</b></div>' +
+      (n.summary ? '<div class="note-summary">' + UI.math(n.summary) + '</div>' : "") +
+      list("", n.points) +
+      (n.terms && n.terms.length
+        ? '<div class="note-sub"><b>Definitions</b><dl class="note-terms">' +
+            n.terms.map(function (t) {
+              return '<dt>' + UI.esc(t.term) + '</dt><dd>' + UI.math(t.def) + '</dd>';
+            }).join("") + '</dl></div>'
+        : "") +
+      (n.keyList
+        ? list(n.keyList.title, n.keyList.items)
+        : "") +
+      (n.diagram
+        ? '<div class="note-sub note-diagram"><b>Diagram to be able to draw</b>' +
+            '<div>' + UI.math(n.diagram) + '</div></div>'
+        : "") +
+      list("Evaluation", n.evaluation, "note-eval") +
       '</div>';
   }
 
