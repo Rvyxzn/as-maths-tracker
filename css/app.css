@@ -1557,6 +1557,23 @@ Pen flyout, hover-expanding tool picker: draw/erase, colour wheel, size
 }
 .ms2 p{margin:0 0 9px}
 .ms2 p:last-child{margin-bottom:0}
+/* the two halves of the indicative content */
+.ms2-sec{
+  display:flex;align-items:center;gap:9px;
+  margin:18px 0 10px;padding-bottom:7px;
+  border-bottom:1px solid var(--border);
+  font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+}
+.ms2-sec:first-child{margin-top:2px}
+.ms2-sec b{
+  padding:3px 9px;border-radius:999px;font-size:10.5px;font-weight:800;letter-spacing:.06em;
+}
+.ms2-sec-kaa{color:#a855f7}
+.ms2-sec-kaa b{background:rgba(168,85,247,.16);border:1px solid rgba(168,85,247,.35)}
+.ms2-sec-ev{color:#f59e0b}
+.ms2-sec-ev b{background:rgba(245,158,11,.16);border:1px solid rgba(245,158,11,.35)}
+
+.ms2-note{margin:0 0 10px;font-size:12.5px;color:var(--muted);font-style:italic}
 .ms2-part{
   margin:14px 0 9px;font-weight:700;font-size:11.5px;letter-spacing:.09em;
   text-transform:uppercase;color:var(--muted);

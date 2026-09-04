@@ -116,7 +116,31 @@ const PacksView = (function () {
     const closeList = function () { if (inList) { html += "</ul>"; inList = false; } };
     const closeLevel = function () { if (inLevel) { html += "</div>"; inLevel = false; } };
 
+    /* Edexcel splits the indicative content in two: everything that earns
+       knowledge, application and analysis marks, then a separate list for
+       evaluation. Worth showing as two sections, because on a 25 marker the
+       second one is nine of the marks and the half people run out of time
+       for. Only marked up when the mark scheme actually has that split --
+       a 5 marker has no evaluation and does not need the heading. */
+    /* Mark schemes head that section several ways — a bare "Evaluation",
+       "Evaluation: 2 marks for two evaluative comments", "Evaluation might
+       include e.g.:". The one thing that is NOT a heading is "Evaluation 9",
+       which is the assessment-objective count and belongs in the badges. */
+    const EVAL_HEAD = /^Evaluation\b(?!\s*\d+\s*$)/i;
+    const hasEval = lines.some(function (l) { return EVAL_HEAD.test(l); });
+    let started = false;
+
     lines.forEach(function (line) {
+      if (hasEval && EVAL_HEAD.test(line)) {
+        closeLevel(); closeList();
+        /* Some of these headings carry the marking rule with them
+           ("Evaluation: 2 marks for two evaluative comments"); keep it. */
+        const rest = line.replace(/^Evaluation\s*:?\s*/i, "").trim();
+        html += '<div class="ms2-sec ms2-sec-ev"><b>EV</b>Evaluation</div>' +
+                (rest ? '<p class="ms2-note">' + UI.esc(rest) + '</p>' : "");
+        started = true;
+        return;
+      }
       /* A level descriptor runs to several sentences. They belong in the
          level's own box, not loose underneath it. */
       if (inLevel && !/^(Level\s*\d|\d+\s+A completely|•|\(?[a-e]\)$|Knowledge|KAA|Application|Analysis|Evaluation)/i.test(line)) {
@@ -146,6 +170,10 @@ const PacksView = (function () {
         return;
       }
       if (/^[••]/.test(line)) {
+        if (hasEval && !started) {
+          html += '<div class="ms2-sec ms2-sec-kaa"><b>KAA</b>Knowledge, application and analysis</div>';
+          started = true;
+        }
         if (!inList) { html += '<ul class="ms2-list">'; inList = true; }
         html += "<li>" + UI.esc(line.replace(/^[••]\s*/, "")) + "</li>";
         return;
