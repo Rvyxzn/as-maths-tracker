@@ -9,11 +9,18 @@
      Section B  Q6      50 marks, parts worth 5/8/10/12/15
      Section C  Q7, Q8  25 marks each, answer one
 
-   THE ONE DERIVED FIELD is `theme`, and from it `year`
+   DERIVED FIELDS are `topicCode`, `topicName`, `theme` and
+   `year`. Pearson does not tag questions by topic, so each
+   question is matched against the 93 numbered subtopics of the
+   specification: phrases first, weighted by how rare each one is
+   across the subtopics, with the sentence carrying the command
+   word counted hardest because that is what is actually being
+   asked. The theme follows from the subtopic, and the year from
+   the theme
    (Themes 1 and 2 are Year 1, Themes 3 and 4 are Year 2).
-   Pearson does not tag questions by theme, so each one is
-   scored against the wording of the specification itself and
-   `themeConfident` records whether one theme clearly won.
+
+   Checked against a set of questions whose command sentence
+   names the topic outright: theme 15/15, subtopic 11/12.
 
    Timing: every 9EC0 paper is 100 marks in 120 minutes, so
    1.2 minutes per mark. The papers agree with themselves -
@@ -35,6 +42,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2017",
   "theme": 1,
+  "topicCode": "1.2.6",
+  "topicName": "Price determination",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2017-q1"
@@ -49,9 +58,11 @@ const ECO_QUESTIONS = [
   "erKey": "2a",
   "paper": 1,
   "series": "June 2017",
-  "theme": 1,
-  "themeConfident": false,
-  "year": 1,
+  "theme": 3,
+  "topicCode": "3.3.1",
+  "topicName": "Revenue",
+  "themeConfident": true,
+  "year": 2,
   "id": "p1-june2017-q2"
  },
  {
@@ -65,6 +76,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2017",
   "theme": 1,
+  "topicCode": "1.2.8",
+  "topicName": "Consumer and producer surplus",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2017-q3"
@@ -80,6 +93,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2017",
   "theme": 3,
+  "topicCode": "3.4.7",
+  "topicName": "Contestability",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2017-q4"
@@ -95,6 +110,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2017",
   "theme": 3,
+  "topicCode": "3.3.2",
+  "topicName": "Costs",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2017-q5"
@@ -110,7 +127,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2017",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.4.4",
+  "topicName": "Oligopoly",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-june2017-q6a"
  },
@@ -125,6 +144,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2017",
   "theme": 3,
+  "topicCode": "3.4.6",
+  "topicName": "Monopsony",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2017-q6b"
@@ -140,7 +161,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2017",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.4.6",
+  "topicName": "Monopsony",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-june2017-q6c"
  },
@@ -155,7 +178,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2017",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.3.4",
+  "topicName": "Information gaps",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2017-q6d"
  },
@@ -170,7 +195,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2017",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.6.1",
+  "topicName": "Government intervention",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-june2017-q6e"
  },
@@ -185,6 +212,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2017",
   "theme": 1,
+  "topicCode": "1.2.3",
+  "topicName": "Price, income and cross elasticities of demand",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2017-q7"
@@ -200,6 +229,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2017",
   "theme": 3,
+  "topicCode": "3.2.1",
+  "topicName": "Business objectives",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2017-q8"
@@ -215,6 +246,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2018",
   "theme": 1,
+  "topicCode": "1.1.4",
+  "topicName": "Production possibility frontiers",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2018-q1"
@@ -230,7 +263,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2018",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.2.3",
+  "topicName": "Price, income and cross elasticities of demand",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2018-q2"
  },
@@ -245,7 +280,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2018",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.2.3",
+  "topicName": "Price, income and cross elasticities of demand",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2018-q3"
  },
@@ -260,7 +297,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2018",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.3.4",
+  "topicName": "Normal profits, supernormal profits and losses",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-june2018-q4"
  },
@@ -274,9 +313,11 @@ const ECO_QUESTIONS = [
   "erKey": "5a",
   "paper": 1,
   "series": "June 2018",
-  "theme": 1,
+  "theme": 3,
+  "topicCode": "3.4.4",
+  "topicName": "Oligopoly",
   "themeConfident": false,
-  "year": 1,
+  "year": 2,
   "id": "p1-june2018-q5"
  },
  {
@@ -290,7 +331,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2018",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.2.10",
+  "topicName": "Alternative views of consumer behaviour",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2018-q6a"
  },
@@ -304,9 +347,11 @@ const ECO_QUESTIONS = [
   "erKey": "6b",
   "paper": 1,
   "series": "June 2018",
-  "theme": 3,
+  "theme": 1,
+  "topicCode": "1.1.3",
+  "topicName": "The economic problem",
   "themeConfident": false,
-  "year": 2,
+  "year": 1,
   "id": "p1-june2018-q6b"
  },
  {
@@ -319,9 +364,11 @@ const ECO_QUESTIONS = [
   "erKey": "6c",
   "paper": 1,
   "series": "June 2018",
-  "theme": 3,
+  "theme": 1,
+  "topicCode": "1.2.8",
+  "topicName": "Consumer and producer surplus",
   "themeConfident": false,
-  "year": 2,
+  "year": 1,
   "id": "p1-june2018-q6c"
  },
  {
@@ -335,7 +382,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2018",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.2.3",
+  "topicName": "Price, income and cross elasticities of demand",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2018-q6d"
  },
@@ -349,9 +398,11 @@ const ECO_QUESTIONS = [
   "erKey": "6e",
   "paper": 1,
   "series": "June 2018",
-  "theme": 1,
+  "theme": 3,
+  "topicCode": "3.5.2",
+  "topicName": "Supply of labour",
   "themeConfident": false,
-  "year": 1,
+  "year": 2,
   "id": "p1-june2018-q6e"
  },
  {
@@ -364,9 +415,11 @@ const ECO_QUESTIONS = [
   "erKey": "7",
   "paper": 1,
   "series": "June 2018",
-  "theme": 1,
+  "theme": 3,
+  "topicCode": "3.3.2",
+  "topicName": "Costs",
   "themeConfident": false,
-  "year": 1,
+  "year": 2,
   "id": "p1-june2018-q7"
  },
  {
@@ -380,6 +433,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2018",
   "theme": 3,
+  "topicCode": "3.1.3",
+  "topicName": "Demergers",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2018-q8"
@@ -395,6 +450,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2019",
   "theme": 1,
+  "topicCode": "1.2.5",
+  "topicName": "Elasticity of supply",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2019-q1"
@@ -410,6 +467,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2019",
   "theme": 1,
+  "topicCode": "1.1.4",
+  "topicName": "Production possibility frontiers",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2019-q2"
@@ -425,6 +484,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2019",
   "theme": 3,
+  "topicCode": "3.4.3",
+  "topicName": "Monopolistic competition",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2019-q3"
@@ -440,6 +501,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2019",
   "theme": 3,
+  "topicCode": "3.1.3",
+  "topicName": "Demergers",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2019-q4"
@@ -455,6 +518,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2019",
   "theme": 1,
+  "topicCode": "1.1.5",
+  "topicName": "Specialisation and the division of labour",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2019-q5"
@@ -470,6 +535,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2019",
   "theme": 1,
+  "topicCode": "1.1.2",
+  "topicName": "Positive and normative economic statements",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2019-q6a"
@@ -485,6 +552,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2019",
   "theme": 3,
+  "topicCode": "3.3.3",
+  "topicName": "Economies and diseconomies of scale",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2019-q6b"
@@ -500,7 +569,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2019",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.3.4",
+  "topicName": "Information gaps",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2019-q6c"
  },
@@ -514,9 +585,11 @@ const ECO_QUESTIONS = [
   "erKey": "6d",
   "paper": 1,
   "series": "June 2019",
-  "theme": 3,
-  "themeConfident": false,
-  "year": 2,
+  "theme": 1,
+  "topicCode": "1.1.3",
+  "topicName": "The economic problem",
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2019-q6d"
  },
  {
@@ -530,7 +603,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2019",
   "theme": 3,
-  "themeConfident": true,
+  "topicCode": "3.6.1",
+  "topicName": "Government intervention",
+  "themeConfident": false,
   "year": 2,
   "id": "p1-june2019-q6e"
  },
@@ -545,6 +620,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2019",
   "theme": 3,
+  "topicCode": "3.5.4",
+  "topicName": "Labour market issues",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2019-q7"
@@ -560,6 +637,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2019",
   "theme": 3,
+  "topicCode": "3.4.4",
+  "topicName": "Oligopoly",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2019-q8"
@@ -575,6 +654,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2020",
   "theme": 1,
+  "topicCode": "1.2.8",
+  "topicName": "Consumer and producer surplus",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2020-q1"
@@ -590,6 +671,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2020",
   "theme": 1,
+  "topicCode": "1.3.2",
+  "topicName": "Externalities",
   "themeConfident": false,
   "year": 1,
   "id": "p1-june2020-q2"
@@ -605,6 +688,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2020",
   "theme": 1,
+  "topicCode": "1.4.1",
+  "topicName": "Government intervention in markets",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2020-q3"
@@ -619,9 +704,11 @@ const ECO_QUESTIONS = [
   "erKey": "4a",
   "paper": 1,
   "series": "June 2020",
-  "theme": 1,
-  "themeConfident": false,
-  "year": 1,
+  "theme": 3,
+  "topicCode": "3.3.2",
+  "topicName": "Costs",
+  "themeConfident": true,
+  "year": 2,
   "id": "p1-june2020-q4"
  },
  {
@@ -635,6 +722,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2020",
   "theme": 3,
+  "topicCode": "3.3.3",
+  "topicName": "Economies and diseconomies of scale",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2020-q5"
@@ -650,7 +739,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2020",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.2.8",
+  "topicName": "Consumer and producer surplus",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2020-q6a"
  },
@@ -665,7 +756,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2020",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.2.2",
+  "topicName": "Demand",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2020-q6b"
  },
@@ -680,6 +773,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2020",
   "theme": 3,
+  "topicCode": "3.6.1",
+  "topicName": "Government intervention",
   "themeConfident": false,
   "year": 2,
   "id": "p1-june2020-q6c"
@@ -695,6 +790,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2020",
   "theme": 3,
+  "topicCode": "3.4.5",
+  "topicName": "Monopoly",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2020-q6d"
@@ -709,9 +806,11 @@ const ECO_QUESTIONS = [
   "erKey": "6e",
   "paper": 1,
   "series": "June 2020",
-  "theme": 3,
-  "themeConfident": false,
-  "year": 2,
+  "theme": 1,
+  "topicCode": "1.2.3",
+  "topicName": "Price, income and cross elasticities of demand",
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2020-q6e"
  },
  {
@@ -724,9 +823,11 @@ const ECO_QUESTIONS = [
   "erKey": "7",
   "paper": 1,
   "series": "June 2020",
-  "theme": 3,
+  "theme": 1,
+  "topicCode": "1.2.8",
+  "topicName": "Consumer and producer surplus",
   "themeConfident": false,
-  "year": 2,
+  "year": 1,
   "id": "p1-june2020-q7"
  },
  {
@@ -740,7 +841,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2020",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.4.6",
+  "topicName": "Monopsony",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-june2020-q8"
  },
@@ -755,7 +858,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2021",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.1.2",
+  "topicName": "Positive and normative economic statements",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2021-q1"
  },
@@ -770,7 +875,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2021",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.2.4",
+  "topicName": "Supply",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2021-q2"
  },
@@ -784,9 +891,11 @@ const ECO_QUESTIONS = [
   "erKey": "3a",
   "paper": 1,
   "series": "June 2021",
-  "theme": 3,
-  "themeConfident": false,
-  "year": 2,
+  "theme": 1,
+  "topicCode": "1.2.5",
+  "topicName": "Elasticity of supply",
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-june2021-q3"
  },
  {
@@ -800,7 +909,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2021",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.2.1",
+  "topicName": "Business objectives",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-june2021-q4"
  },
@@ -815,6 +926,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2021",
   "theme": 3,
+  "topicCode": "3.3.4",
+  "topicName": "Normal profits, supernormal profits and losses",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2021-q5"
@@ -830,7 +943,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2021",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.3.2",
+  "topicName": "Costs",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-june2021-q6a"
  },
@@ -845,7 +960,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2021",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.3.2",
+  "topicName": "Externalities",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2021-q6b"
  },
@@ -860,7 +977,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2021",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.2.1",
+  "topicName": "Business objectives",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-june2021-q6c"
  },
@@ -875,6 +994,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2021",
   "theme": 1,
+  "topicCode": "1.1.3",
+  "topicName": "The economic problem",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2021-q6d"
@@ -889,9 +1010,11 @@ const ECO_QUESTIONS = [
   "erKey": "6e",
   "paper": 1,
   "series": "June 2021",
-  "theme": 3,
+  "theme": 1,
+  "topicCode": "1.2.8",
+  "topicName": "Consumer and producer surplus",
   "themeConfident": false,
-  "year": 2,
+  "year": 1,
   "id": "p1-june2021-q6e"
  },
  {
@@ -905,6 +1028,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2021",
   "theme": 3,
+  "topicCode": "3.5.4",
+  "topicName": "Labour market issues",
   "themeConfident": false,
   "year": 2,
   "id": "p1-june2021-q7"
@@ -919,9 +1044,11 @@ const ECO_QUESTIONS = [
   "erKey": "8",
   "paper": 1,
   "series": "June 2021",
-  "theme": 3,
-  "themeConfident": true,
-  "year": 2,
+  "theme": 1,
+  "topicCode": "1.2.1",
+  "topicName": "Rational decision making",
+  "themeConfident": false,
+  "year": 1,
   "id": "p1-june2021-q8"
  },
  {
@@ -935,6 +1062,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2022",
   "theme": 1,
+  "topicCode": "1.2.3",
+  "topicName": "Price, income and cross elasticities of demand",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2022-q1"
@@ -950,6 +1079,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2022",
   "theme": 1,
+  "topicCode": "1.2.3",
+  "topicName": "Price, income and cross elasticities of demand",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2022-q2"
@@ -965,7 +1096,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2022",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.4.1",
+  "topicName": "Government intervention in markets",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2022-q3"
  },
@@ -980,7 +1113,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2022",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.4.4",
+  "topicName": "Oligopoly",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-june2022-q4"
  },
@@ -995,6 +1130,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2022",
   "theme": 3,
+  "topicCode": "3.6.1",
+  "topicName": "Government intervention",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2022-q5"
@@ -1010,7 +1147,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2022",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.4.4",
+  "topicName": "Oligopoly",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-june2022-q6a"
  },
@@ -1025,7 +1164,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2022",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.2.3",
+  "topicName": "Price, income and cross elasticities of demand",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2022-q6b"
  },
@@ -1039,9 +1180,11 @@ const ECO_QUESTIONS = [
   "erKey": "6c",
   "paper": 1,
   "series": "June 2022",
-  "theme": 3,
+  "theme": 1,
+  "topicCode": "1.1.3",
+  "topicName": "The economic problem",
   "themeConfident": false,
-  "year": 2,
+  "year": 1,
   "id": "p1-june2022-q6c"
  },
  {
@@ -1054,9 +1197,11 @@ const ECO_QUESTIONS = [
   "erKey": "6d",
   "paper": 1,
   "series": "June 2022",
-  "theme": 1,
-  "themeConfident": false,
-  "year": 1,
+  "theme": 3,
+  "topicCode": "3.3.1",
+  "topicName": "Revenue",
+  "themeConfident": true,
+  "year": 2,
   "id": "p1-june2022-q6d"
  },
  {
@@ -1070,7 +1215,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2022",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.4.7",
+  "topicName": "Contestability",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-june2022-q6e"
  },
@@ -1085,6 +1232,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2022",
   "theme": 3,
+  "topicCode": "3.4.1",
+  "topicName": "Efficiency",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2022-q7"
@@ -1100,7 +1249,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2022",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.5.2",
+  "topicName": "Supply of labour",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-june2022-q8"
  },
@@ -1115,7 +1266,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2023",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.1.6",
+  "topicName": "Free market, mixed and command economies",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2023-q1"
  },
@@ -1129,9 +1282,11 @@ const ECO_QUESTIONS = [
   "erKey": "2a",
   "paper": 1,
   "series": "June 2023",
-  "theme": 1,
-  "themeConfident": true,
-  "year": 1,
+  "theme": 3,
+  "topicCode": "3.4.1",
+  "topicName": "Efficiency",
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-june2023-q2"
  },
  {
@@ -1144,9 +1299,11 @@ const ECO_QUESTIONS = [
   "erKey": "3a",
   "paper": 1,
   "series": "June 2023",
-  "theme": 1,
-  "themeConfident": false,
-  "year": 1,
+  "theme": 3,
+  "topicCode": "3.4.3",
+  "topicName": "Monopolistic competition",
+  "themeConfident": true,
+  "year": 2,
   "id": "p1-june2023-q3"
  },
  {
@@ -1160,6 +1317,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2023",
   "theme": 1,
+  "topicCode": "1.2.8",
+  "topicName": "Consumer and producer surplus",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2023-q4"
@@ -1175,7 +1334,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2023",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.5.3",
+  "topicName": "Wage determination",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-june2023-q5"
  },
@@ -1190,6 +1351,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2023",
   "theme": 3,
+  "topicCode": "3.4.4",
+  "topicName": "Oligopoly",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2023-q6a"
@@ -1205,7 +1368,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2023",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.2.10",
+  "topicName": "Alternative views of consumer behaviour",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2023-q6b"
  },
@@ -1220,7 +1385,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2023",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.2.3",
+  "topicName": "Price, income and cross elasticities of demand",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2023-q6c"
  },
@@ -1235,6 +1402,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2023",
   "theme": 1,
+  "topicCode": "1.1.3",
+  "topicName": "The economic problem",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2023-q6d"
@@ -1249,9 +1418,11 @@ const ECO_QUESTIONS = [
   "erKey": "6e",
   "paper": 1,
   "series": "June 2023",
-  "theme": 3,
+  "theme": 1,
+  "topicCode": "1.2.3",
+  "topicName": "Price, income and cross elasticities of demand",
   "themeConfident": false,
-  "year": 2,
+  "year": 1,
   "id": "p1-june2023-q6e"
  },
  {
@@ -1265,6 +1436,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2023",
   "theme": 3,
+  "topicCode": "3.6.1",
+  "topicName": "Government intervention",
   "themeConfident": false,
   "year": 2,
   "id": "p1-june2023-q7"
@@ -1279,9 +1452,11 @@ const ECO_QUESTIONS = [
   "erKey": "8",
   "paper": 1,
   "series": "June 2023",
-  "theme": 1,
+  "theme": 3,
+  "topicCode": "3.6.1",
+  "topicName": "Government intervention",
   "themeConfident": false,
-  "year": 1,
+  "year": 2,
   "id": "p1-june2023-q8"
  },
  {
@@ -1295,6 +1470,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2024",
   "theme": 1,
+  "topicCode": "1.2.3",
+  "topicName": "Price, income and cross elasticities of demand",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2024-q1"
@@ -1310,6 +1487,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2024",
   "theme": 1,
+  "topicCode": "1.2.6",
+  "topicName": "Price determination",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2024-q2"
@@ -1325,6 +1504,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2024",
   "theme": 3,
+  "topicCode": "3.2.1",
+  "topicName": "Business objectives",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2024-q3"
@@ -1340,6 +1521,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2024",
   "theme": 1,
+  "topicCode": "1.4.2",
+  "topicName": "Government failure",
   "themeConfident": true,
   "year": 1,
   "id": "p1-june2024-q4"
@@ -1355,6 +1538,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2024",
   "theme": 3,
+  "topicCode": "3.4.4",
+  "topicName": "Oligopoly",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2024-q5"
@@ -1370,7 +1555,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2024",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.2.7",
+  "topicName": "Price mechanism",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-june2024-q6a"
  },
@@ -1384,9 +1571,11 @@ const ECO_QUESTIONS = [
   "erKey": "6b",
   "paper": 1,
   "series": "June 2024",
-  "theme": 1,
-  "themeConfident": false,
-  "year": 1,
+  "theme": 3,
+  "topicCode": "3.5.2",
+  "topicName": "Supply of labour",
+  "themeConfident": true,
+  "year": 2,
   "id": "p1-june2024-q6b"
  },
  {
@@ -1400,6 +1589,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2024",
   "theme": 3,
+  "topicCode": "3.3.3",
+  "topicName": "Economies and diseconomies of scale",
   "themeConfident": false,
   "year": 2,
   "id": "p1-june2024-q6c"
@@ -1415,6 +1606,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2024",
   "theme": 3,
+  "topicCode": "3.6.1",
+  "topicName": "Government intervention",
   "themeConfident": true,
   "year": 2,
   "id": "p1-june2024-q6d"
@@ -1429,9 +1622,11 @@ const ECO_QUESTIONS = [
   "erKey": "6e",
   "paper": 1,
   "series": "June 2024",
-  "theme": 1,
-  "themeConfident": false,
-  "year": 1,
+  "theme": 3,
+  "topicCode": "3.6.1",
+  "topicName": "Government intervention",
+  "themeConfident": true,
+  "year": 2,
   "id": "p1-june2024-q6e"
  },
  {
@@ -1445,7 +1640,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2024",
   "theme": 3,
-  "themeConfident": true,
+  "topicCode": "3.6.1",
+  "topicName": "Government intervention",
+  "themeConfident": false,
   "year": 2,
   "id": "p1-june2024-q7"
  },
@@ -1460,7 +1657,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "June 2024",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.4.7",
+  "topicName": "Contestability",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-june2024-q8"
  },
@@ -1474,9 +1673,11 @@ const ECO_QUESTIONS = [
   "erKey": "1a",
   "paper": 1,
   "series": "Specimen",
-  "theme": 1,
+  "theme": 3,
+  "topicCode": "3.3.1",
+  "topicName": "Revenue",
   "themeConfident": false,
-  "year": 1,
+  "year": 2,
   "id": "p1-specimen-q1"
  },
  {
@@ -1489,9 +1690,11 @@ const ECO_QUESTIONS = [
   "erKey": "2a",
   "paper": 1,
   "series": "Specimen",
-  "theme": 1,
-  "themeConfident": true,
-  "year": 1,
+  "theme": 3,
+  "topicCode": "3.3.2",
+  "topicName": "Costs",
+  "themeConfident": false,
+  "year": 2,
   "id": "p1-specimen-q2"
  },
  {
@@ -1504,9 +1707,11 @@ const ECO_QUESTIONS = [
   "erKey": "3a",
   "paper": 1,
   "series": "Specimen",
-  "theme": 1,
+  "theme": 3,
+  "topicCode": "3.3.1",
+  "topicName": "Revenue",
   "themeConfident": true,
-  "year": 1,
+  "year": 2,
   "id": "p1-specimen-q3"
  },
  {
@@ -1520,6 +1725,8 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "Specimen",
   "theme": 3,
+  "topicCode": "3.3.3",
+  "topicName": "Economies and diseconomies of scale",
   "themeConfident": true,
   "year": 2,
   "id": "p1-specimen-q4"
@@ -1535,7 +1742,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "Specimen",
   "theme": 3,
-  "themeConfident": false,
+  "topicCode": "3.1.1",
+  "topicName": "Sizes and types of firms",
+  "themeConfident": true,
   "year": 2,
   "id": "p1-specimen-q5"
  },
@@ -1550,7 +1759,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "Specimen",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.2.4",
+  "topicName": "Supply",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-specimen-q6a"
  },
@@ -1564,9 +1775,11 @@ const ECO_QUESTIONS = [
   "erKey": "6b",
   "paper": 1,
   "series": "Specimen",
-  "theme": 3,
-  "themeConfident": false,
-  "year": 2,
+  "theme": 1,
+  "topicCode": "1.2.1",
+  "topicName": "Rational decision making",
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-specimen-q6b"
  },
  {
@@ -1579,9 +1792,11 @@ const ECO_QUESTIONS = [
   "erKey": "6c",
   "paper": 1,
   "series": "Specimen",
-  "theme": 3,
+  "theme": 1,
+  "topicCode": "1.1.3",
+  "topicName": "The economic problem",
   "themeConfident": false,
-  "year": 2,
+  "year": 1,
   "id": "p1-specimen-q6c"
  },
  {
@@ -1595,7 +1810,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "Specimen",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.2.3",
+  "topicName": "Price, income and cross elasticities of demand",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-specimen-q6d"
  },
@@ -1609,9 +1826,11 @@ const ECO_QUESTIONS = [
   "erKey": "6e",
   "paper": 1,
   "series": "Specimen",
-  "theme": 3,
-  "themeConfident": false,
-  "year": 2,
+  "theme": 1,
+  "topicCode": "1.2.8",
+  "topicName": "Consumer and producer surplus",
+  "themeConfident": true,
+  "year": 1,
   "id": "p1-specimen-q6e"
  },
  {
@@ -1625,7 +1844,9 @@ const ECO_QUESTIONS = [
   "paper": 1,
   "series": "Specimen",
   "theme": 1,
-  "themeConfident": false,
+  "topicCode": "1.4.1",
+  "topicName": "Government intervention in markets",
+  "themeConfident": true,
   "year": 1,
   "id": "p1-specimen-q7"
  },
@@ -1639,9 +1860,11 @@ const ECO_QUESTIONS = [
   "erKey": "8",
   "paper": 1,
   "series": "Specimen",
-  "theme": 1,
-  "themeConfident": false,
-  "year": 1,
+  "theme": 3,
+  "topicCode": "3.5.3",
+  "topicName": "Wage determination",
+  "themeConfident": true,
+  "year": 2,
   "id": "p1-specimen-q8"
  },
  {
@@ -1655,6 +1878,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2017",
   "theme": 2,
+  "topicCode": "2.4.1",
+  "topicName": "National income",
   "themeConfident": true,
   "year": 1,
   "id": "p2-june2017-q1"
@@ -1670,6 +1895,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2017",
   "theme": 2,
+  "topicCode": "2.4.4",
+  "topicName": "The multiplier",
   "themeConfident": true,
   "year": 1,
   "id": "p2-june2017-q2"
@@ -1685,7 +1912,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2017",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.1.2",
+  "topicName": "Inflation",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2017-q3"
  },
@@ -1700,6 +1929,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2017",
   "theme": 4,
+  "topicCode": "4.2.2",
+  "topicName": "Inequality",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2017-q4"
@@ -1715,6 +1946,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2017",
   "theme": 4,
+  "topicCode": "4.3.1",
+  "topicName": "Measures of development",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2017-q5"
@@ -1730,6 +1963,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2017",
   "theme": 4,
+  "topicCode": "4.1.7",
+  "topicName": "Exchange rates",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2017-q6a"
@@ -1745,6 +1980,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2017",
   "theme": 2,
+  "topicCode": "2.1.2",
+  "topicName": "Inflation",
   "themeConfident": false,
   "year": 1,
   "id": "p2-june2017-q6b"
@@ -1759,9 +1996,11 @@ const ECO_QUESTIONS = [
   "erKey": "6c",
   "paper": 2,
   "series": "June 2017",
-  "theme": 4,
-  "themeConfident": true,
-  "year": 2,
+  "theme": 2,
+  "topicCode": "2.1.4",
+  "topicName": "Balance of payments",
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2017-q6c"
  },
  {
@@ -1775,6 +2014,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2017",
   "theme": 4,
+  "topicCode": "4.4.3",
+  "topicName": "Role of central banks",
   "themeConfident": false,
   "year": 2,
   "id": "p2-june2017-q6d"
@@ -1789,9 +2030,11 @@ const ECO_QUESTIONS = [
   "erKey": "6e",
   "paper": 2,
   "series": "June 2017",
-  "theme": 4,
+  "theme": 2,
+  "topicCode": "2.6.3",
+  "topicName": "Supply-side policies",
   "themeConfident": true,
-  "year": 2,
+  "year": 1,
   "id": "p2-june2017-q6e"
  },
  {
@@ -1805,6 +2048,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2017",
   "theme": 4,
+  "topicCode": "4.5.4",
+  "topicName": "Macroeconomic policies in a global context",
   "themeConfident": false,
   "year": 2,
   "id": "p2-june2017-q7"
@@ -1819,9 +2064,11 @@ const ECO_QUESTIONS = [
   "erKey": "8",
   "paper": 2,
   "series": "June 2017",
-  "theme": 2,
+  "theme": 4,
+  "topicCode": "4.5.4",
+  "topicName": "Macroeconomic policies in a global context",
   "themeConfident": false,
-  "year": 1,
+  "year": 2,
   "id": "p2-june2017-q8"
  },
  {
@@ -1835,6 +2082,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2018",
   "theme": 4,
+  "topicCode": "4.1.2",
+  "topicName": "Specialisation and trade",
   "themeConfident": false,
   "year": 2,
   "id": "p2-june2018-q1"
@@ -1850,6 +2099,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2018",
   "theme": 2,
+  "topicCode": "2.2.1",
+  "topicName": "The characteristics of aggregate demand",
   "themeConfident": true,
   "year": 1,
   "id": "p2-june2018-q2"
@@ -1865,6 +2116,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2018",
   "theme": 2,
+  "topicCode": "2.1.4",
+  "topicName": "Balance of payments",
   "themeConfident": false,
   "year": 1,
   "id": "p2-june2018-q3"
@@ -1880,6 +2133,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2018",
   "theme": 2,
+  "topicCode": "2.6.1",
+  "topicName": "Possible macroeconomic objectives",
   "themeConfident": true,
   "year": 1,
   "id": "p2-june2018-q4"
@@ -1895,6 +2150,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2018",
   "theme": 4,
+  "topicCode": "4.2.1",
+  "topicName": "Absolute and relative poverty",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2018-q6a"
@@ -1910,6 +2167,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2018",
   "theme": 4,
+  "topicCode": "4.2.1",
+  "topicName": "Absolute and relative poverty",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2018-q6b"
@@ -1925,7 +2184,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2018",
   "theme": 4,
-  "themeConfident": false,
+  "topicCode": "4.1.1",
+  "topicName": "Globalisation",
+  "themeConfident": true,
   "year": 2,
   "id": "p2-june2018-q6c"
  },
@@ -1940,6 +2201,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2018",
   "theme": 4,
+  "topicCode": "4.2.2",
+  "topicName": "Inequality",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2018-q6d"
@@ -1955,6 +2218,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2018",
   "theme": 4,
+  "topicCode": "4.4.1",
+  "topicName": "Role of financial markets",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2018-q6e"
@@ -1970,7 +2235,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2018",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.2.4",
+  "topicName": "Government expenditure (G)",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2018-q7"
  },
@@ -1984,9 +2251,11 @@ const ECO_QUESTIONS = [
   "erKey": "8",
   "paper": 2,
   "series": "June 2018",
-  "theme": 4,
-  "themeConfident": false,
-  "year": 2,
+  "theme": 2,
+  "topicCode": "2.5.4",
+  "topicName": "The impact of economic growth",
+  "themeConfident": true,
+  "year": 1,
   "id": "p2-june2018-q8"
  },
  {
@@ -2000,7 +2269,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2019",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.1.2",
+  "topicName": "Inflation",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2019-q1"
  },
@@ -2015,7 +2286,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2019",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.4.3",
+  "topicName": "Equilibrium levels of real national output",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2019-q2"
  },
@@ -2030,7 +2303,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2019",
   "theme": 4,
-  "themeConfident": false,
+  "topicCode": "4.1.8",
+  "topicName": "International competitiveness",
+  "themeConfident": true,
   "year": 2,
   "id": "p2-june2019-q3"
  },
@@ -2044,9 +2319,11 @@ const ECO_QUESTIONS = [
   "erKey": "4a",
   "paper": 2,
   "series": "June 2019",
-  "theme": 2,
+  "theme": 4,
+  "topicCode": "4.5.2",
+  "topicName": "Taxation",
   "themeConfident": false,
-  "year": 1,
+  "year": 2,
   "id": "p2-june2019-q4"
  },
  {
@@ -2060,7 +2337,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2019",
   "theme": 4,
-  "themeConfident": false,
+  "topicCode": "4.2.2",
+  "topicName": "Inequality",
+  "themeConfident": true,
   "year": 2,
   "id": "p2-june2019-q5"
  },
@@ -2075,6 +2354,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2019",
   "theme": 4,
+  "topicCode": "4.4.1",
+  "topicName": "Role of financial markets",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2019-q6a"
@@ -2089,9 +2370,11 @@ const ECO_QUESTIONS = [
   "erKey": "6b",
   "paper": 2,
   "series": "June 2019",
-  "theme": 2,
+  "theme": 4,
+  "topicCode": "4.1.7",
+  "topicName": "Exchange rates",
   "themeConfident": false,
-  "year": 1,
+  "year": 2,
   "id": "p2-june2019-q6b"
  },
  {
@@ -2104,9 +2387,11 @@ const ECO_QUESTIONS = [
   "erKey": "6c",
   "paper": 2,
   "series": "June 2019",
-  "theme": 4,
+  "theme": 2,
+  "topicCode": "2.1.1",
+  "topicName": "Economic growth",
   "themeConfident": true,
-  "year": 2,
+  "year": 1,
   "id": "p2-june2019-q6c"
  },
  {
@@ -2119,9 +2404,11 @@ const ECO_QUESTIONS = [
   "erKey": "6d",
   "paper": 2,
   "series": "June 2019",
-  "theme": 2,
+  "theme": 4,
+  "topicCode": "4.4.3",
+  "topicName": "Role of central banks",
   "themeConfident": false,
-  "year": 1,
+  "year": 2,
   "id": "p2-june2019-q6d"
  },
  {
@@ -2135,6 +2422,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2019",
   "theme": 4,
+  "topicCode": "4.4.3",
+  "topicName": "Role of central banks",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2019-q6e"
@@ -2150,6 +2439,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2019",
   "theme": 4,
+  "topicCode": "4.1.4",
+  "topicName": "Trading blocs and the WTO",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2019-q7"
@@ -2164,9 +2455,11 @@ const ECO_QUESTIONS = [
   "erKey": "8",
   "paper": 2,
   "series": "June 2019",
-  "theme": 2,
+  "theme": 4,
+  "topicCode": "4.5.3",
+  "topicName": "Public sector finances",
   "themeConfident": false,
-  "year": 1,
+  "year": 2,
   "id": "p2-june2019-q8"
  },
  {
@@ -2180,7 +2473,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2020",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.1.1",
+  "topicName": "Economic growth",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2020-q1"
  },
@@ -2195,6 +2490,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2020",
   "theme": 2,
+  "topicCode": "2.2.1",
+  "topicName": "The characteristics of aggregate demand",
   "themeConfident": true,
   "year": 1,
   "id": "p2-june2020-q2"
@@ -2210,6 +2507,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2020",
   "theme": 4,
+  "topicCode": "4.1.7",
+  "topicName": "Exchange rates",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2020-q3"
@@ -2225,7 +2524,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2020",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.1.1",
+  "topicName": "Economic growth",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2020-q4"
  },
@@ -2240,7 +2541,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2020",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.5.2",
+  "topicName": "Output gaps",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2020-q5"
  },
@@ -2255,6 +2558,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2020",
   "theme": 4,
+  "topicCode": "4.3.3",
+  "topicName": "Strategies influencing growth and development",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2020-q6a"
@@ -2270,7 +2575,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2020",
   "theme": 4,
-  "themeConfident": true,
+  "topicCode": "4.3.3",
+  "topicName": "Strategies influencing growth and development",
+  "themeConfident": false,
   "year": 2,
   "id": "p2-june2020-q6b"
  },
@@ -2285,7 +2592,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2020",
   "theme": 4,
-  "themeConfident": false,
+  "topicCode": "4.5.1",
+  "topicName": "Public expenditure",
+  "themeConfident": true,
   "year": 2,
   "id": "p2-june2020-q6c"
  },
@@ -2300,6 +2609,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2020",
   "theme": 4,
+  "topicCode": "4.1.4",
+  "topicName": "Trading blocs and the WTO",
   "themeConfident": false,
   "year": 2,
   "id": "p2-june2020-q6d"
@@ -2315,6 +2626,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2020",
   "theme": 4,
+  "topicCode": "4.1.4",
+  "topicName": "Trading blocs and the WTO",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2020-q6e"
@@ -2330,7 +2643,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2020",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.5.4",
+  "topicName": "The impact of economic growth",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2020-q7"
  },
@@ -2345,6 +2660,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2020",
   "theme": 4,
+  "topicCode": "4.2.2",
+  "topicName": "Inequality",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2020-q8"
@@ -2359,9 +2676,11 @@ const ECO_QUESTIONS = [
   "erKey": "1a",
   "paper": 2,
   "series": "June 2021",
-  "theme": 2,
+  "theme": 4,
+  "topicCode": "4.5.3",
+  "topicName": "Public sector finances",
   "themeConfident": false,
-  "year": 1,
+  "year": 2,
   "id": "p2-june2021-q1"
  },
  {
@@ -2375,6 +2694,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2021",
   "theme": 2,
+  "topicCode": "2.2.1",
+  "topicName": "The characteristics of aggregate demand",
   "themeConfident": true,
   "year": 1,
   "id": "p2-june2021-q2"
@@ -2390,7 +2711,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2021",
   "theme": 4,
-  "themeConfident": false,
+  "topicCode": "4.1.7",
+  "topicName": "Exchange rates",
+  "themeConfident": true,
   "year": 2,
   "id": "p2-june2021-q3"
  },
@@ -2405,7 +2728,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2021",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.3.1",
+  "topicName": "The characteristics of aggregate supply",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2021-q4"
  },
@@ -2419,9 +2744,11 @@ const ECO_QUESTIONS = [
   "erKey": "5a",
   "paper": 2,
   "series": "June 2021",
-  "theme": 4,
-  "themeConfident": false,
-  "year": 2,
+  "theme": 2,
+  "topicCode": "2.1.1",
+  "topicName": "Economic growth",
+  "themeConfident": true,
+  "year": 1,
   "id": "p2-june2021-q5"
  },
  {
@@ -2434,9 +2761,11 @@ const ECO_QUESTIONS = [
   "erKey": "6a",
   "paper": 2,
   "series": "June 2021",
-  "theme": 4,
-  "themeConfident": true,
-  "year": 2,
+  "theme": 2,
+  "topicCode": "2.4.3",
+  "topicName": "Equilibrium levels of real national output",
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2021-q6a"
  },
  {
@@ -2450,6 +2779,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2021",
   "theme": 2,
+  "topicCode": "2.5.4",
+  "topicName": "The impact of economic growth",
   "themeConfident": false,
   "year": 1,
   "id": "p2-june2021-q6b"
@@ -2464,9 +2795,11 @@ const ECO_QUESTIONS = [
   "erKey": "6c",
   "paper": 2,
   "series": "June 2021",
-  "theme": 4,
-  "themeConfident": false,
-  "year": 2,
+  "theme": 2,
+  "topicCode": "2.6.3",
+  "topicName": "Supply-side policies",
+  "themeConfident": true,
+  "year": 1,
   "id": "p2-june2021-q6c"
  },
  {
@@ -2480,6 +2813,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2021",
   "theme": 4,
+  "topicCode": "4.1.5",
+  "topicName": "Restrictions on free trade",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2021-q6d"
@@ -2494,9 +2829,11 @@ const ECO_QUESTIONS = [
   "erKey": "6e",
   "paper": 2,
   "series": "June 2021",
-  "theme": 4,
-  "themeConfident": true,
-  "year": 2,
+  "theme": 2,
+  "topicCode": "2.4.2",
+  "topicName": "Injections and withdrawals",
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-june2021-q6e"
  },
  {
@@ -2510,7 +2847,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2021",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.6.2",
+  "topicName": "Demand-side policies",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2021-q7"
  },
@@ -2525,7 +2864,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2021",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.6.1",
+  "topicName": "Possible macroeconomic objectives",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2021-q8"
  },
@@ -2540,6 +2881,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2022",
   "theme": 2,
+  "topicCode": "2.4.1",
+  "topicName": "National income",
   "themeConfident": true,
   "year": 1,
   "id": "p2-june2022-q1"
@@ -2555,7 +2898,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2022",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.2.2",
+  "topicName": "Consumption (C)",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2022-q2"
  },
@@ -2569,9 +2914,11 @@ const ECO_QUESTIONS = [
   "erKey": "3a",
   "paper": 2,
   "series": "June 2022",
-  "theme": 4,
-  "themeConfident": false,
-  "year": 2,
+  "theme": 2,
+  "topicCode": "2.2.3",
+  "topicName": "Investment (I)",
+  "themeConfident": true,
+  "year": 1,
   "id": "p2-june2022-q3"
  },
  {
@@ -2584,9 +2931,11 @@ const ECO_QUESTIONS = [
   "erKey": "4a",
   "paper": 2,
   "series": "June 2022",
-  "theme": 2,
-  "themeConfident": false,
-  "year": 1,
+  "theme": 4,
+  "topicCode": "4.5.3",
+  "topicName": "Public sector finances",
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2022-q4"
  },
  {
@@ -2600,6 +2949,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2022",
   "theme": 4,
+  "topicCode": "4.4.1",
+  "topicName": "Role of financial markets",
   "themeConfident": false,
   "year": 2,
   "id": "p2-june2022-q5"
@@ -2615,6 +2966,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2022",
   "theme": 4,
+  "topicCode": "4.2.2",
+  "topicName": "Inequality",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2022-q6a"
@@ -2629,9 +2982,11 @@ const ECO_QUESTIONS = [
   "erKey": "6b",
   "paper": 2,
   "series": "June 2022",
-  "theme": 2,
-  "themeConfident": false,
-  "year": 1,
+  "theme": 4,
+  "topicCode": "4.2.2",
+  "topicName": "Inequality",
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2022-q6b"
  },
  {
@@ -2644,9 +2999,11 @@ const ECO_QUESTIONS = [
   "erKey": "6c",
   "paper": 2,
   "series": "June 2022",
-  "theme": 4,
-  "themeConfident": false,
-  "year": 2,
+  "theme": 2,
+  "topicCode": "2.1.1",
+  "topicName": "Economic growth",
+  "themeConfident": true,
+  "year": 1,
   "id": "p2-june2022-q6c"
  },
  {
@@ -2660,7 +3017,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2022",
   "theme": 4,
-  "themeConfident": true,
+  "topicCode": "4.5.2",
+  "topicName": "Taxation",
+  "themeConfident": false,
   "year": 2,
   "id": "p2-june2022-q6d"
  },
@@ -2674,9 +3033,11 @@ const ECO_QUESTIONS = [
   "erKey": "6e",
   "paper": 2,
   "series": "June 2022",
-  "theme": 4,
-  "themeConfident": false,
-  "year": 2,
+  "theme": 2,
+  "topicCode": "2.6.3",
+  "topicName": "Supply-side policies",
+  "themeConfident": true,
+  "year": 1,
   "id": "p2-june2022-q6e"
  },
  {
@@ -2689,9 +3050,11 @@ const ECO_QUESTIONS = [
   "erKey": "7",
   "paper": 2,
   "series": "June 2022",
-  "theme": 4,
+  "theme": 2,
+  "topicCode": "2.6.3",
+  "topicName": "Supply-side policies",
   "themeConfident": false,
-  "year": 2,
+  "year": 1,
   "id": "p2-june2022-q7"
  },
  {
@@ -2704,9 +3067,11 @@ const ECO_QUESTIONS = [
   "erKey": "8",
   "paper": 2,
   "series": "June 2022",
-  "theme": 2,
-  "themeConfident": false,
-  "year": 1,
+  "theme": 4,
+  "topicCode": "4.1.1",
+  "topicName": "Globalisation",
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2022-q8"
  },
  {
@@ -2720,6 +3085,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2023",
   "theme": 2,
+  "topicCode": "2.6.3",
+  "topicName": "Supply-side policies",
   "themeConfident": true,
   "year": 1,
   "id": "p2-june2023-q1"
@@ -2735,7 +3102,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2023",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.5.2",
+  "topicName": "Output gaps",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2023-q2"
  },
@@ -2750,6 +3119,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2023",
   "theme": 2,
+  "topicCode": "2.1.1",
+  "topicName": "Economic growth",
   "themeConfident": true,
   "year": 1,
   "id": "p2-june2023-q3"
@@ -2765,6 +3136,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2023",
   "theme": 2,
+  "topicCode": "2.2.2",
+  "topicName": "Consumption (C)",
   "themeConfident": true,
   "year": 1,
   "id": "p2-june2023-q4"
@@ -2780,7 +3153,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2023",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.4.2",
+  "topicName": "Injections and withdrawals",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2023-q5"
  },
@@ -2795,6 +3170,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2023",
   "theme": 4,
+  "topicCode": "4.1.4",
+  "topicName": "Trading blocs and the WTO",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2023-q6a"
@@ -2809,9 +3186,11 @@ const ECO_QUESTIONS = [
   "erKey": "6b",
   "paper": 2,
   "series": "June 2023",
-  "theme": 4,
+  "theme": 2,
+  "topicCode": "2.2.3",
+  "topicName": "Investment (I)",
   "themeConfident": false,
-  "year": 2,
+  "year": 1,
   "id": "p2-june2023-q6b"
  },
  {
@@ -2824,9 +3203,11 @@ const ECO_QUESTIONS = [
   "erKey": "6c",
   "paper": 2,
   "series": "June 2023",
-  "theme": 4,
-  "themeConfident": false,
-  "year": 2,
+  "theme": 2,
+  "topicCode": "2.5.4",
+  "topicName": "The impact of economic growth",
+  "themeConfident": true,
+  "year": 1,
   "id": "p2-june2023-q6c"
  },
  {
@@ -2840,7 +3221,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2023",
   "theme": 4,
-  "themeConfident": false,
+  "topicCode": "4.3.3",
+  "topicName": "Strategies influencing growth and development",
+  "themeConfident": true,
   "year": 2,
   "id": "p2-june2023-q6d"
  },
@@ -2855,7 +3238,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2023",
   "theme": 4,
-  "themeConfident": false,
+  "topicCode": "4.3.3",
+  "topicName": "Strategies influencing growth and development",
+  "themeConfident": true,
   "year": 2,
   "id": "p2-june2023-q6e"
  },
@@ -2869,9 +3254,11 @@ const ECO_QUESTIONS = [
   "erKey": "7",
   "paper": 2,
   "series": "June 2023",
-  "theme": 2,
-  "themeConfident": false,
-  "year": 1,
+  "theme": 4,
+  "topicCode": "4.1.8",
+  "topicName": "International competitiveness",
+  "themeConfident": true,
+  "year": 2,
   "id": "p2-june2023-q7"
  },
  {
@@ -2885,6 +3272,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2023",
   "theme": 4,
+  "topicCode": "4.5.4",
+  "topicName": "Macroeconomic policies in a global context",
   "themeConfident": false,
   "year": 2,
   "id": "p2-june2023-q8"
@@ -2900,7 +3289,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2024",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.5.3",
+  "topicName": "Trade or business cycle",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2024-q1"
  },
@@ -2915,7 +3306,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2024",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.2.3",
+  "topicName": "Investment (I)",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2024-q2"
  },
@@ -2930,6 +3323,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2024",
   "theme": 4,
+  "topicCode": "4.4.1",
+  "topicName": "Role of financial markets",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2024-q3"
@@ -2945,6 +3340,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2024",
   "theme": 2,
+  "topicCode": "2.2.1",
+  "topicName": "The characteristics of aggregate demand",
   "themeConfident": true,
   "year": 1,
   "id": "p2-june2024-q4"
@@ -2960,6 +3357,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2024",
   "theme": 4,
+  "topicCode": "4.1.2",
+  "topicName": "Specialisation and trade",
   "themeConfident": false,
   "year": 2,
   "id": "p2-june2024-q5"
@@ -2975,6 +3374,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2024",
   "theme": 4,
+  "topicCode": "4.5.2",
+  "topicName": "Taxation",
   "themeConfident": true,
   "year": 2,
   "id": "p2-june2024-q6a"
@@ -2990,7 +3391,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2024",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.2.1",
+  "topicName": "The characteristics of aggregate demand",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2024-q6b"
  },
@@ -3005,6 +3408,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2024",
   "theme": 4,
+  "topicCode": "4.5.3",
+  "topicName": "Public sector finances",
   "themeConfident": false,
   "year": 2,
   "id": "p2-june2024-q6c"
@@ -3020,7 +3425,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2024",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.6.2",
+  "topicName": "Demand-side policies",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-june2024-q6d"
  },
@@ -3034,9 +3441,11 @@ const ECO_QUESTIONS = [
   "erKey": "6e",
   "paper": 2,
   "series": "June 2024",
-  "theme": 4,
-  "themeConfident": false,
-  "year": 2,
+  "theme": 2,
+  "topicCode": "2.6.3",
+  "topicName": "Supply-side policies",
+  "themeConfident": true,
+  "year": 1,
   "id": "p2-june2024-q6e"
  },
  {
@@ -3049,9 +3458,11 @@ const ECO_QUESTIONS = [
   "erKey": "7",
   "paper": 2,
   "series": "June 2024",
-  "theme": 2,
+  "theme": 4,
+  "topicCode": "4.5.4",
+  "topicName": "Macroeconomic policies in a global context",
   "themeConfident": false,
-  "year": 1,
+  "year": 2,
   "id": "p2-june2024-q7"
  },
  {
@@ -3065,7 +3476,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "June 2024",
   "theme": 4,
-  "themeConfident": false,
+  "topicCode": "4.1.1",
+  "topicName": "Globalisation",
+  "themeConfident": true,
   "year": 2,
   "id": "p2-june2024-q8"
  },
@@ -3080,7 +3493,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "Specimen",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.1.3",
+  "topicName": "Employment and unemployment",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-specimen-q1"
  },
@@ -3094,9 +3509,11 @@ const ECO_QUESTIONS = [
   "erKey": "2a",
   "paper": 2,
   "series": "Specimen",
-  "theme": 2,
-  "themeConfident": true,
-  "year": 1,
+  "theme": 4,
+  "topicCode": "4.5.2",
+  "topicName": "Taxation",
+  "themeConfident": false,
+  "year": 2,
   "id": "p2-specimen-q2"
  },
  {
@@ -3110,7 +3527,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "Specimen",
   "theme": 4,
-  "themeConfident": false,
+  "topicCode": "4.4.2",
+  "topicName": "Market failure in the financial sector",
+  "themeConfident": true,
   "year": 2,
   "id": "p2-specimen-q3"
  },
@@ -3124,9 +3543,11 @@ const ECO_QUESTIONS = [
   "erKey": "4a",
   "paper": 2,
   "series": "Specimen",
-  "theme": 4,
-  "themeConfident": false,
-  "year": 2,
+  "theme": 2,
+  "topicCode": "2.4.3",
+  "topicName": "Equilibrium levels of real national output",
+  "themeConfident": true,
+  "year": 1,
   "id": "p2-specimen-q4"
  },
  {
@@ -3140,6 +3561,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "Specimen",
   "theme": 4,
+  "topicCode": "4.1.2",
+  "topicName": "Specialisation and trade",
   "themeConfident": true,
   "year": 2,
   "id": "p2-specimen-q5"
@@ -3155,7 +3578,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "Specimen",
   "theme": 2,
-  "themeConfident": false,
+  "topicCode": "2.1.1",
+  "topicName": "Economic growth",
+  "themeConfident": true,
   "year": 1,
   "id": "p2-specimen-q6a"
  },
@@ -3170,6 +3595,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "Specimen",
   "theme": 4,
+  "topicCode": "4.3.2",
+  "topicName": "Factors influencing growth and development",
   "themeConfident": false,
   "year": 2,
   "id": "p2-specimen-q6b"
@@ -3185,7 +3612,9 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "Specimen",
   "theme": 4,
-  "themeConfident": true,
+  "topicCode": "4.5.4",
+  "topicName": "Macroeconomic policies in a global context",
+  "themeConfident": false,
   "year": 2,
   "id": "p2-specimen-q6c"
  },
@@ -3199,9 +3628,11 @@ const ECO_QUESTIONS = [
   "erKey": "6d",
   "paper": 2,
   "series": "Specimen",
-  "theme": 4,
-  "themeConfident": true,
-  "year": 2,
+  "theme": 2,
+  "topicCode": "2.5.1",
+  "topicName": "Causes of growth",
+  "themeConfident": false,
+  "year": 1,
   "id": "p2-specimen-q6d"
  },
  {
@@ -3215,6 +3646,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "Specimen",
   "theme": 4,
+  "topicCode": "4.5.4",
+  "topicName": "Macroeconomic policies in a global context",
   "themeConfident": true,
   "year": 2,
   "id": "p2-specimen-q6e"
@@ -3230,6 +3663,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "Specimen",
   "theme": 4,
+  "topicCode": "4.1.7",
+  "topicName": "Exchange rates",
   "themeConfident": false,
   "year": 2,
   "id": "p2-specimen-q7"
@@ -3245,6 +3680,8 @@ const ECO_QUESTIONS = [
   "paper": 2,
   "series": "Specimen",
   "theme": 4,
+  "topicCode": "4.2.2",
+  "topicName": "Inequality",
   "themeConfident": true,
   "year": 2,
   "id": "p2-specimen-q8"

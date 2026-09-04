@@ -59,6 +59,37 @@ const PacksView = (function () {
     }).length;
   }
 
+  /* The assessment objectives a question's marks are split across. Edexcel
+     writes them as a run-on line ("Knowledge 2, Application 2, Analysis 4"),
+     which buries the thing that actually shapes your answer: how many marks
+     are for knowing it, applying it, analysing it and evaluating it. Each
+     gets its own badge and its own colour. */
+  const AO = [
+    { re: /knowledge/i,   key: "k",  label: "K",  title: "Knowledge — define it, state it" },
+    { re: /application/i, key: "ap", label: "AP", title: "Application — use the data and the context" },
+    { re: /analysis/i,    key: "an", label: "AN", title: "Analysis — build the chain of reasoning" },
+    { re: /evaluation/i,  key: "ev", label: "EV", title: "Evaluation — judge it, and say what it depends on" }
+  ];
+
+  function aoBadges(line) {
+    const found = [];
+    line.split(/[,;]/).forEach(function (bit) {
+      const n = (bit.match(/(\d+)/) || [])[1];
+      if (!n) return;
+      AO.forEach(function (ao) {
+        if (ao.re.test(bit)) found.push({ ao: ao, n: n });
+      });
+    });
+    if (!found.length) return '<div class="ms2-marks">' + UI.esc(line) + '</div>';
+    /* Always in the order the marks are earned, whatever order the mark
+       scheme happens to list them in. */
+    found.sort(function (a, b) { return AO.indexOf(a.ao) - AO.indexOf(b.ao); });
+    return '<div class="ms2-ao">' + found.map(function (f) {
+      return '<span class="ao ao-' + f.ao.key + '" title="' + UI.esc(f.ao.title) + '">' +
+        '<b>' + f.ao.label + '</b>' + f.n + '</span>';
+    }).join("") + '</div>';
+  }
+
   /* ---------- mark scheme, laid out rather than dumped ----------
      Edexcel mark schemes have a shape: a marks line ("Knowledge 2,
      Application 2, Analysis 4"), then indicative content as bullets, then
@@ -100,7 +131,7 @@ const PacksView = (function () {
       }
       if (/^(Knowledge|KAA|Application|Analysis|Evaluation)\b.*\d/.test(line) && line.length < 120) {
         closeList();
-        html += '<div class="ms2-marks">' + UI.esc(line) + '</div>';
+        html += aoBadges(line);
         return;
       }
       if (/^(Level\s*\d|\d+\s+A completely)/i.test(line)) {
@@ -155,10 +186,21 @@ const PacksView = (function () {
 
   function yearPill(q) {
     if (!q.year) return '<span class="pill">year unclear</span>';
-    return '<span class="pill' + (q.themeConfident ? " acc" : "") + '" title="' +
-      (q.themeConfident ? "Theme " + q.theme + ", worked out from the wording"
-                        : "Theme " + q.theme + " is the best guess; the wording is ambiguous") +
-      '">Year ' + q.year + ' · T' + q.theme + (q.themeConfident ? "" : "?") + '</span>';
+    return '<span class="pill acc" title="' +
+      (q.topicCode ? "Specification " + q.topicCode + " — " + q.topicName : "Theme " + q.theme) +
+      '">Y' + q.year + ' · ' + UI.esc(q.topicCode || ("T" + q.theme)) + '</span>';
+  }
+
+  /* The specification subtopic the question examines, so you know what to go
+     and revise rather than only which year it came from. */
+  function topicLine(q) {
+    if (!q.topicCode) return "";
+    return '<div class="qpack-topic">' +
+      '<span class="qpack-topic-code">' + UI.esc(q.topicCode) + '</span>' +
+      '<span class="qpack-topic-name">' + UI.esc(q.topicName) + '</span>' +
+      '<span class="spacer"></span>' +
+      '<span class="tiny faint">Theme ' + q.theme + ' · Year ' + q.year + '</span>' +
+    '</div>';
   }
 
   function reportFor(q) {
@@ -194,6 +236,7 @@ const PacksView = (function () {
   function body(q, er) {
     const show = !!revealed[q.id];
     return '<div class="qpack-body">' +
+      topicLine(q) +
       '<div class="qpack-q">' + questionHtml(q.text) + '</div>' +
       '<div class="row wrap" style="gap:8px;margin:12px 0">' +
         '<span class="pill">' + q.marks + ' marks</span>' +
