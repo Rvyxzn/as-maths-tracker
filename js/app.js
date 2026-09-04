@@ -801,6 +801,19 @@ function setSidebar(open) {
         ChapterView.revealMs(el.dataset.id + ":" + (el.dataset.key || "own"), false);
         render(); return;
       }
+      /* Open or close an examiner report. Kept as a plain toggle on the
+         element rather than a re-render, so the page does not jump. */
+      case "exrep-toggle": {
+        const wrap = el.closest("[data-exrep]");
+        const body = wrap && wrap.querySelector(".exrep-body");
+        if (!body) return;
+        const open = body.hidden;
+        body.hidden = !open;
+        wrap.classList.toggle("open", open);
+        el.setAttribute("aria-expanded", open ? "true" : "false");
+        return;
+      }
+
       case "ch-record": { recordChapter(el.dataset.id); return; }
 
       /* Take today's logged time back off one chapter. Confirmed, because

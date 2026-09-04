@@ -11,3 +11,8 @@ desktop.ini
 # Scratch files
 _*_tmp.*
 *.log
+
+# Examiner report PDFs (~90 MB). Their text lives in js/eco-examiner-reports.js,
+# which is what the app actually reads. Safe to delete the folder; the exact
+# Pearson URLs are recorded in that file's header if they are ever needed again.
+Exam questions PDFs/A-Level Economics/Examiner Reports/

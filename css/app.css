@@ -1505,6 +1505,22 @@ Pen flyout, hover-expanding tool picker: draw/erase, colour wheel, size
 .weighted-note .tiny{margin-top:4px}
 .warn-text{color:var(--amber)}
 
+/* examiner report, folded under a mark scheme */
+.exrep{margin-top:10px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface-2)}
+.exrep-head{
+  display:flex;align-items:center;gap:8px;width:100%;padding:9px 11px;
+  background:none;border:0;cursor:pointer;color:var(--text);font:inherit;font-size:12.5px;text-align:left;
+}
+.exrep-head:hover{background:var(--surface)}
+.exrep-head .ico{flex:0 0 auto;margin:0;color:var(--accent)}
+.exrep-title{font-weight:700}
+.exrep-src{color:var(--faint);font-size:11.5px}
+.exrep-chev{margin-left:auto;transition:transform .16s;color:var(--muted)}
+.exrep.open .exrep-chev{transform:rotate(180deg)}
+.exrep-body{padding:0 13px 12px;border-top:1px solid var(--border)}
+.exrep-body p{margin:11px 0 0;font-size:13px;line-height:1.62;color:var(--text)}
+.exrep-foot{margin-top:9px;font-size:11px;color:var(--faint);font-style:italic}
+
 /* whether you are actually backed up, stated where you can see it */
 .backup-state{
   display:flex;align-items:center;gap:9px;margin-top:12px;

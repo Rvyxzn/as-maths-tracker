@@ -572,6 +572,33 @@ chapter numbering, so this badge is what keeps them apart at a glance. */
      The marks column shows the number, not an M1/A1/B1 code: the real codes
      say whether a mark is for method or accuracy, and that is not recorded
      in the question bank, inventing it would be worse than omitting it. */
+  /* The examiner's own report on a question, folded away under its mark
+     scheme. Collapsed by default because it is long: the mark scheme tells
+     you what earns the marks, this tells you what people actually did wrong,
+     which is only worth reading once you have attempted it.
+
+     Pearson's wording, not a summary -- so it is escaped, never treated as
+     markup, and attributed to the series it came from. */
+  function examinerReport(text, opts) {
+    if (!text) return "";
+    opts = opts || {};
+    const id = "er" + Math.random().toString(36).slice(2, 9);
+    const src = [opts.series, opts.paper ? "Paper " + opts.paper : "", opts.question ? "Q" + opts.question : ""]
+                  .filter(Boolean).join(" · ");
+    return '<div class="exrep" data-exrep>' +
+      '<button class="exrep-head" type="button" data-action="exrep-toggle" aria-expanded="false" aria-controls="' + id + '">' +
+        icon("info") +
+        '<span class="exrep-title">Examiner report</span>' +
+        (src ? '<span class="exrep-src">' + esc(src) + '</span>' : "") +
+        '<span class="exrep-chev" aria-hidden="true">▾</span>' +
+      '</button>' +
+      '<div class="exrep-body" id="' + id + '" hidden>' +
+        '<p>' + esc(text) + '</p>' +
+        '<div class="exrep-foot">Pearson examiners’ report' + (opts.series ? ", " + esc(opts.series) : "") + '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
   function markScheme(text) {
     const lines = String(text == null ? "" : text).split("\n");
     let total = 0;
@@ -724,6 +751,7 @@ canvas-rendered PDF being the case in point, must be treated as
     empty: empty, accPill: accPill, lineChart: lineChart, hBars: hBars, donut: donut, taskCard: taskCard,
     focusButton: focusButton, morph: morph, icon: icon, math: math, todayToggle: todayToggle,
     markScheme: markScheme,
+    examinerReport: examinerReport,
     focusDial: focusDial, timeBar: timeBar, timerChip: timerChip,
     num: num, pct: pct, RAG_EMOJI: RAG_EMOJI, RAG_LABEL: RAG_LABEL
   };
