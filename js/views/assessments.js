@@ -60,6 +60,7 @@ const AssessmentsView = (function () {
       '<th>Assessment</th><th>Kind</th><th>Date</th><th>Result</th><th>Attached to</th><th></th>' +
       '</tr></thead><tbody>' + rows.map(function (a) {
           const p = SchoolAssessments.pct(a);
+          const nWrong = TestReview.countFor(a);
           const chapters = (a.chapterIds || []).map(function (cid) {
               const inf = CHAPTER_INDEX[cid];
               return inf ? '<span class="pill">' + UI.esc(inf.chapterLabel) + '</span>' : "";
@@ -77,6 +78,8 @@ const AssessmentsView = (function () {
             ? '<span class="faint">whole paper, not attached</span>'
             : (chapters || '<span class="faint">no chapter set</span>')) + '</td>' +
           '<td style="white-space:nowrap">' +
+          '<button class="btn btn-sm' + (nWrong ? " btn-ghost" : "") + '" data-action="test-review" data-id="' + a.id + '">' +
+          (nWrong ? nWrong + ' reviewed' : 'Review') + '</button> ' +
           '<button class="btn btn-sm btn-ghost" data-action="log-assessment" data-id="' + a.id + '">Edit</button> ' +
           '<button class="btn btn-sm btn-ghost" data-action="assess-delete" data-id="' + a.id + '">✕</button>' +
           '</td></tr>';
@@ -267,6 +270,7 @@ const AssessmentsView = (function () {
     function handle(action, el) {
       if (action === "assess-filter") { filters[el.dataset.key] = el.dataset.val; App.render(); return true; }
       if (action === "log-assessment") { modal(el.dataset.id || null); return true; }
+      if (action === "test-review") { TestReview.open(el.dataset.id); return true; }
       if (action === "assess-delete") {
         const a = SchoolAssessments.get(el.dataset.id);
         if (!a) return true;

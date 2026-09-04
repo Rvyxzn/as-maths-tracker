@@ -644,9 +644,22 @@ const Metrics = (function () {
   }
 
   /* Recurring past-paper weaknesses, grouped by section */
+  /* Errors come from two places now: past papers, and the questions you
+     flagged when reviewing a school test. They are the same kind of
+     evidence — a mark lost on a topic — so they are counted together. */
+  function allErrorSources() {
+    const out = Store.get().papers.map(function (p) {
+      return { id: p.id, errors: p.errors || [] };
+    });
+    (Store.get().schoolAssessments || []).forEach(function (a) {
+      if (a.errors && a.errors.length) out.push({ id: a.id, errors: a.errors });
+    });
+    return out;
+  }
+
   function recurringErrors() {
     const bySection = {};
-    Store.get().papers.forEach(function (p) {
+    allErrorSources().forEach(function (p) {
       (p.errors || []).forEach(function (e) {
         const inf = e.topicId ? Store.info(e.topicId) : null;
         const key = inf ? inf.section.id : "unassigned";
@@ -671,7 +684,7 @@ const Metrics = (function () {
 
   function errorTypeTotals() {
     const t = {};
-    Store.get().papers.forEach(function (p) {
+    allErrorSources().forEach(function (p) {
       (p.errors || []).forEach(function (e) {
         const k = e.type || "Other";
         if (!t[k]) t[k] = { type: k, marks: 0, count: 0 };

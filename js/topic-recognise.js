@@ -102,9 +102,23 @@ const TopicRecognise = (function () {
         /* rarity, then length, then a bonus for naming the topic outright */
         score += (b.idf[p] || 0) * wordCount * wordCount * (e.nameSet[p] ? 3 : 1);
       });
+      /* Naming the topic in any order counts too. "Price elasticity of
+         demand" never appears as one phrase inside "Price, income and cross
+         elasticities of demand", but every word of it does, and the rare
+         words in a name are the ones that identify it. */
+      const nw = Object.keys(e.nameWords);
+      if (nw.length) {
+        let hit = 0, whole = 0;
+        nw.forEach(function (w) {
+          const weight = (b.idf[w] || 0) + 0.4;
+          whole += weight;
+          if (qs[w]) hit += weight;
+        });
+        if (whole > 0) score += 14 * (hit / whole) * (hit / whole);
+      }
       /* a subtopic with more requirement text offers more to hit by chance */
       if (score > 0) scored.push({ id: e.id, name: e.name, code: e.code,
-                                   section: e.section, score: score / Math.sqrt(e.size) });
+                                   section: e.section, score: score / Math.sqrt(e.size + 30) });
     });
     scored.sort(function (x, y) { return y.score - x.score; });
 

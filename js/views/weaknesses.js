@@ -43,12 +43,16 @@ const WeaknessesView = (function () {
 
   function recurringCard(recurring) {
     if (!recurring.length) {
-      return '<div class="card"><div class="card-head"><div class="card-title">Recurring past-paper weaknesses</div></div>' +
-        UI.empty("▤", "No past-paper errors logged yet",
-          "Log a paper and record every mark you lost, this is where the tracker gets genuinely useful.") +
-        '<button class="btn btn-primary btn-block" data-action="log-paper">Log a paper</button></div>';
+      return '<div class="card"><div class="card-head"><div class="card-title">Where you keep losing marks</div></div>' +
+        UI.empty("▤", "No mistakes logged yet",
+          "Record the marks you lost, either on a past paper or by reviewing a school test, " +
+          "this is where the tracker gets genuinely useful.") +
+        '<div class="row" style="gap:8px">' +
+        '<button class="btn btn-primary" style="flex:1" data-action="log-paper">Log a paper</button>' +
+        '<button class="btn" style="flex:1" data-action="go" data-view="assessments">Review a test</button>' +
+        '</div></div>';
     }
-    return '<div class="card"><div class="card-head"><div class="card-title">Recurring past-paper weaknesses</div>' +
+    return '<div class="card"><div class="card-head"><div class="card-title">Where you keep losing marks</div>' +
       '<div class="right"><button class="btn btn-sm btn-ghost" data-action="go" data-view="papers">Papers</button></div></div>' +
       '<div class="stack">' + recurring.slice(0, 10).map(function (g) {
         const severe = g.marks >= 5 && g.paperCount >= 2;
@@ -60,7 +64,8 @@ const WeaknessesView = (function () {
             '<span class="pill bad">' + g.marks + ' marks lost</span>' +
           '</div>' +
           '<div class="tiny muted" style="margin-top:6px">' +
-            g.count + ' mistake' + (g.count === 1 ? "" : "s") + ' across ' + g.paperCount + ' paper' + (g.paperCount === 1 ? "" : "s") +
+            g.count + ' mistake' + (g.count === 1 ? "" : "s") + ' across ' + g.paperCount +
+            ' paper or test' + (g.paperCount === 1 ? "" : "s") +
             (g.topType ? ' · most often <b>' + UI.esc(g.topType.toLowerCase()) + '</b>' : "") + '</div>' +
           (severe ? '<div class="tiny" style="margin-top:8px;font-weight:600">⚠️ This has been promoted in your schedule.</div>' : "") +
           (g.topTopic ? '<div style="margin-top:10px"><button class="btn btn-sm" data-action="open-session" data-id="' + g.topTopic + '">Revise ' +
