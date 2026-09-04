@@ -39,6 +39,7 @@ const PacksView = (function () {
   let tariff = 25;
   let openId = null;
   let revealed = {};
+  let showExtracts = {};
   let paperFilter = "all";
   let yearFilter = "all";
 
@@ -263,9 +264,35 @@ const PacksView = (function () {
 
   function body(q, er) {
     const show = !!revealed[q.id];
+    /* The question as it is actually printed. Diagrams and tables do not
+       survive text extraction — a production possibility frontier arrives as
+       "X Y Z W V U 80 100 120 140 1700 50 100" and a sales table as a run of
+       company names and numbers — so the page itself is shown and the
+       extracted text is kept underneath only as a fallback. */
+    const pdfBlock = q.pdf && q.pageFrom
+      ? '<div class="qpdf" data-qpdf data-src="' + UI.esc(q.pdf) + '" ' +
+          'data-from="' + q.pageFrom + '" data-to="' + (q.pageTo || q.pageFrom) + '"></div>' +
+        '<div class="qpack-src tiny faint">' + UI.esc(q.series) + ' Paper ' + q.paper +
+          ', page' + (q.pageTo > q.pageFrom ? "s " + q.pageFrom + "–" + q.pageTo
+                                            : " " + q.pageFrom) + '</div>'
+      : '<div class="qpack-q">' + questionHtml(q.text) + '</div>';
+
+    /* A data response is unanswerable without its extracts, which are printed
+       on the pages before the questions. */
+    const stim = (q.stimFrom && q.stimTo)
+      ? (showExtracts[q.id]
+          ? '<div class="qpdf" data-qpdf data-src="' + UI.esc(q.pdf) + '" ' +
+              'data-from="' + q.stimFrom + '" data-to="' + q.stimTo + '"></div>' +
+            '<button class="btn btn-sm btn-block" style="margin-top:8px" ' +
+              'data-action="pack-extracts-off" data-id="' + q.id + '">Hide the extracts</button>'
+          : '<button class="btn btn-sm btn-block" style="margin-top:10px" ' +
+              'data-action="pack-extracts" data-id="' + q.id + '">' +
+              'Show Extracts and Figures (pages ' + q.stimFrom + '–' + q.stimTo + ')</button>')
+      : "";
+
     return '<div class="qpack-body">' +
       topicLine(q) +
-      '<div class="qpack-q">' + questionHtml(q.text) + '</div>' +
+      pdfBlock + stim +
       '<div class="row wrap" style="gap:8px;margin:12px 0">' +
         '<span class="pill">' + q.marks + ' marks</span>' +
         '<span class="pill">' + minutesFor(q.marks) + ' min</span>' +
@@ -359,6 +386,17 @@ const PacksView = (function () {
       (list.length
         ? '<div class="stack">' + list.map(row).join("") + '</div>'
         : UI.empty("✎", "Nothing matches", "Try another tariff, paper or year."));
+
+    /* the canvases only exist once the markup is in the document */
+    setTimeout(mountPdfs, 0);
+  }
+
+  /* Called after every render: any open question paints its exam page. */
+  function mountPdfs() {
+    document.querySelectorAll("[data-qpdf]").forEach(function (host) {
+      if (typeof PdfViewer === "undefined" || !PdfViewer.renderPages) return;
+      PdfViewer.renderPages(host, host.dataset.src, +host.dataset.from, +host.dataset.to);
+    });
   }
 
   function handle(action, el) {
@@ -368,6 +406,8 @@ const PacksView = (function () {
       case "pack-year":   yearFilter = el.dataset.val; openId = null; App.render(); return true;
       case "pack-open":   openId = (openId === el.dataset.id ? null : el.dataset.id); App.render(); return true;
       case "pack-reveal": revealed[el.dataset.id] = true; App.render(); return true;
+      case "pack-extracts":     showExtracts[el.dataset.id] = true;  App.render(); return true;
+      case "pack-extracts-off": delete showExtracts[el.dataset.id];  App.render(); return true;
       case "pack-hide":   delete revealed[el.dataset.id]; App.render(); return true;
       case "pack-time": {
         const q = ECO_QUESTIONS.filter(function (x) { return x.id === el.dataset.id; })[0];
@@ -378,5 +418,5 @@ const PacksView = (function () {
     return false;
   }
 
-  return { render: render, handle: handle, minutesFor: minutesFor };
+  return { render: render, handle: handle, minutesFor: minutesFor, mountPdfs: mountPdfs };
 })();

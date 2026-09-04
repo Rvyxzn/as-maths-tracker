@@ -840,5 +840,48 @@ const PdfViewer = (function () {
     });
   }
 
-  return { mount: mount, mountAll: mountAll };
+  /* Render a page range of a PDF straight into a container, at the
+     container's own width. Used to show the actual exam page for a question
+     rather than the extracted text: a diagram or a table does not survive
+     text extraction -- a production possibility frontier comes out as
+     "X Y Z W V U 80 100 120 140 1700 50 100" -- and no amount of tidying
+     will bring it back. The page itself always will. */
+  const docCache = {};
+  function renderPages(host, src, from, to) {
+    if (!host || host.dataset.done === "1") return Promise.resolve();
+    host.dataset.done = "1";
+    host.innerHTML = '<div class="qpdf-wait tiny faint">Loading the exam page…</div>';
+    return ensureLib().then(function () {
+      if (!docCache[src]) docCache[src] = window.pdfjsLib.getDocument(src).promise;
+      return docCache[src];
+    }).then(function (pdf) {
+      host.innerHTML = "";
+      const last = Math.min(to || from, pdf.numPages);
+      let chain = Promise.resolve();
+      for (let p = from; p <= last; p++) {
+        (function (n) {
+          chain = chain.then(function () {
+            return pdf.getPage(n).then(function (page) {
+              const width = host.clientWidth || 640;
+              const base = page.getViewport({ scale: 1 });
+              const dpr = window.devicePixelRatio || 1;
+              const vp = page.getViewport({ scale: (width / base.width) * dpr });
+              const canvas = document.createElement("canvas");
+              canvas.className = "qpdf-page";
+              canvas.width = vp.width; canvas.height = vp.height;
+              canvas.style.width = "100%"; canvas.style.height = "auto";
+              host.appendChild(canvas);
+              return page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+            });
+          });
+        })(p);
+      }
+      return chain;
+    }).catch(function (e) {
+      host.innerHTML = '<div class="tiny faint">Could not load the exam page (' +
+                       (e && e.message ? e.message : "unknown error") + ').</div>';
+    });
+  }
+
+  return { mount: mount, mountAll: mountAll, renderPages: renderPages };
 })();

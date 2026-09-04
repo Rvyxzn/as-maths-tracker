@@ -1525,6 +1525,16 @@ Pen flyout, hover-expanding tool picker: draw/erase, colour wheel, size
 .qpack-body{padding:0 14px 14px;border-top:1px solid var(--border)}
 
 /* the question, on its own, with nothing else to read */
+/* the question as printed in the paper */
+.qpdf{
+  margin-top:13px;border-radius:10px;overflow:hidden;
+  border:1px solid var(--border);background:#fff;
+}
+.qpdf-page{display:block;width:100%;height:auto}
+.qpdf-page+.qpdf-page{border-top:1px solid #e5e7eb}
+.qpdf-wait{padding:26px;text-align:center;color:var(--muted)}
+.qpack-src{margin-top:6px;text-align:right}
+
 .qpack-q{
   margin-top:13px;padding:14px 15px;border-radius:10px;background:var(--surface-2);
   border-left:3px solid var(--accent);font-size:13.5px;line-height:1.75;
