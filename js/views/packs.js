@@ -43,6 +43,8 @@ const PacksView = (function () {
   let caseWidth = null;        // px, once you have dragged the divider
   let paperFilter = "all";
   let yearFilter = "all";
+  let practiceQueue = [];
+  let practiceIndex = 0;
 
   function minutesFor(marks) { return Math.round(marks * ECO_MINUTES_PER_MARK); }
   function byId(id) { return ECO_QUESTIONS.filter(function (q) { return q.id === id; })[0]; }
@@ -161,32 +163,126 @@ const PacksView = (function () {
     return '<div class="ms2">' + html + "</div>";
   }
 
-  /* ---------- question text ---------- */
-  const BREAK = /^(\([a-e]\)|\(\d+\)$|[A-D]\s+[A-Z(]|[A-D]$|Extract\s|Figure\s|Table\s)/;
+  /* ---------- question text ----------
+
+     The questions come out of the papers as one run of text: the PDF knows
+     where every glyph sits but nothing about parts, options or tables, so a
+     part marker, the stem of a multiple choice and its four options all
+     arrive welded into the same paragraph. Reading that is miserable, and
+     worse, an option silently swallowed into the previous sentence looks
+     like part of the question rather than one of the answers.
+
+     So the text is cut back into its real pieces here, in the order a paper
+     actually uses them: parts, then the stem, then A to D. */
+
+  /* "(a)", "(b)" ... starting a new part, wherever they appear */
+  const PART = /\s(?=\([a-e]\)\s)/g;
+  /* the sentence that always introduces a multiple choice */
+  const STEM = /\s(?=Which\s+(?:one\s+)?of\s+the\s+following)/g;
+  /* a mark tariff sitting on its own, e.g. "(2)" */
+  const TARIFF = /^\((\d{1,2})\)$/;
+
+  /* Options run together as "A ... B ... C ... D ...". Splitting on a bare
+     capital would cut the text at every stray initial, so each letter is
+     found in turn and only ever after the one before it. */
+  function splitOptions(line) {
+    /* One scan for every standalone capital that could be an option label,
+       then keep only those that run A, B, C, D in order. A letter that never
+       reached the text layer -- because its label lives inside the figure
+       that is the option -- is skipped rather than ending the scan. */
+    const re = /(?:^|[\s.;:])([A-E])\s+(?=\S)/g;
+    const hits = [];
+    let m;
+    while ((m = re.exec(line))) {
+      hits.push({ letter: m[1],
+                  at: m.index + (m[0][0] === m[1] ? 0 : 1),
+                  from: re.lastIndex });
+    }
+    const order = ["A", "B", "C", "D", "E"];
+    const marks = [];
+    let want = 0;
+    hits.forEach(function (h) {
+      while (want < order.length && order[want] !== h.letter) want++;
+      if (want < order.length && order[want] === h.letter) { marks.push(h); want++; }
+    });
+    /* one or two lone letters are initials, not a set of answers */
+    if (marks.length < 3) return null;
+    const head = line.slice(0, marks[0].at).trim();
+    const opts = marks.map(function (mk, i) {
+      const to = i + 1 < marks.length ? marks[i + 1].at : line.length;
+      return { letter: mk.letter, text: line.slice(mk.from, to).trim() };
+    });
+    return { head: head, opts: opts };
+  }
+
+  function segments(t) {
+    let text = String(t || "").replace(/\s+/g, " ").trim();
+    text = text.replace(PART, "\n").replace(STEM, "\n");
+    /* a tariff belongs on its own line, never trailing a sentence */
+    text = text.replace(/\s\((\d{1,2})\)(?=\s|$)/g, "\n($1)\n");
+    return text.split("\n").map(function (l) { return l.trim(); })
+               .filter(function (l) { return l.length; });
+  }
+
+  /* Marks, money, percentages and quantities are the things you are asked to
+     use, so they are picked out of the sentence rather than left to be found. */
+  function numbers(safe) {
+    return safe.replace(
+      /(£\s?[\d,]+(?:\.\d+)?(?:\s?(?:billion|million|bn|m|k))?|\$\s?[\d,]+(?:\.\d+)?(?:\s?(?:billion|million|bn|m|k))?|[\d,]+(?:\.\d+)?\s?%|\b\d[\d, ]*\.?\d*\b)/g,
+      '<b class="q-num">$1</b>');
+  }
+
+  function lineHtml(l) {
+    const tar = l.match(TARIFF);
+    if (tar) return '<span class="q-tariff">' + tar[1] + ' mark' + (tar[1] === "1" ? "" : "s") + '</span>';
+
+    const part = l.match(/^\(([a-e])\)\s*([\s\S]*)$/);
+    if (part) {
+      const rest = splitOptions(part[2]);
+      const body = rest ? rest.head : part[2];
+      return '<span class="q-part"><b class="q-part-n">(' + part[1] + ')</b> ' +
+        numbers(UI.esc(body)) + '</span>' + (rest ? optionsHtml(rest.opts) : "");
+    }
+
+    const sp = splitOptions(l);
+    if (sp) {
+      return (sp.head ? '<span class="q-line">' + numbers(UI.esc(sp.head)) + '</span>' : "") +
+             optionsHtml(sp.opts);
+    }
+    return '<span class="q-line">' + numbers(UI.esc(l)) + '</span>';
+  }
+
+  function optionsHtml(opts) {
+    return '<div class="q-opts">' + opts.map(function (o) {
+      return '<div class="q-opt"><b class="q-opt-l">' + o.letter + '</b>' +
+             '<span>' + numbers(UI.esc(o.text)) + '</span></div>';
+    }).join("") + '</div>';
+  }
 
   function questionHtml(t) {
-    const lines = String(t || "").split("\n")
-      .map(function (l) { return l.trim(); }).filter(function (l) { return l.length; });
-    const out = [];
-    lines.forEach(function (l) {
-      if (!out.length || BREAK.test(l)) { out.push(l); return; }
-      const prev = out[out.length - 1];
-      if (/[.?:;]$/.test(prev) && /^[A-Z(]/.test(l)) out.push(l);
-      else out[out.length - 1] = prev + " " + l;
-    });
-    return out.map(function (l) {
-      /* the multiple-choice options and the tariff read as their own things */
-      if (/^\(\d+\)$/.test(l)) return '<span class="q-tariff">' + UI.esc(l.replace(/[()]/g, "")) + ' marks</span>';
-      if (/^[A-D]\s/.test(l)) return '<span class="q-opt"><b>' + l.charAt(0) + '</b>' + UI.esc(l.slice(2)) + '</span>';
-      if (/^\([a-e]\)/.test(l)) return '<span class="q-part">' + UI.esc(l) + '</span>';
-      return '<span class="q-line">' + UI.esc(l) + '</span>';
-    }).join("");
+    return segments(t).map(lineHtml).join("");
   }
 
   /* ---------- the case study ---------- */
   function caseFor(q) {
-    return (q.caseKey && typeof ECO_CASE_STUDIES !== "undefined")
-      ? ECO_CASE_STUDIES[q.caseKey] : null;
+    if (!q.caseKey || typeof ECO_CASE_STUDIES === "undefined") return null;
+    const study = ECO_CASE_STUDIES[q.caseKey];
+    if (!study) return null;
+    /* The figures live on the shared stimulus pages for this case. Attach
+       that source here instead of duplicating its PDF path in every figure. */
+    return Object.assign({}, study, { source: { pdf: q.pdf, from: q.stimFrom, to: q.stimTo } });
+  }
+
+  function attemptsFor(id) {
+    return (Store.get().packAttempts || []).filter(function (a) { return a.questionId === id; })
+      .sort(function (a, b) { return String(b.at || "").localeCompare(String(a.at || "")); });
+  }
+  function lastAttempt(id) { return attemptsFor(id)[0] || null; }
+  function daysAgo(iso) { return Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 86400000)); }
+  function scoreTone(a) {
+    if (!a || !a.available) return "new";
+    const pct = Math.round(a.got / a.available * 100);
+    return pct < 50 ? "red" : pct < 65 ? "amber" : "green";
   }
 
   function figureHtml(f) {
@@ -196,8 +292,7 @@ const PacksView = (function () {
     return '<div class="cs-fig">' +
       '<div class="cs-fig-head"><b>' + UI.esc(f.label) + '</b>' +
         (f.caption ? '<span>' + UI.esc(f.caption) + '</span>' : "") + '</div>' +
-      (rows ? '<table class="cs-table"><tbody>' + rows + '</tbody></table>'
-            : '<div class="tiny faint">The figure in the paper is a chart; its values are not printed as text.</div>') +
+      (rows ? '<table class="cs-table"><tbody>' + rows + '</tbody></table>' : "") +
     '</div>';
   }
 
@@ -251,6 +346,9 @@ const PacksView = (function () {
   }
 
   function row(q) {
+    const last = lastAttempt(q.id);
+    const score = last && last.available ? Math.round(last.got / last.available * 100) : null;
+    const age = last ? daysAgo(last.at) : null;
     return '<div class="qpack">' +
       '<button class="qpack-head" data-action="pack-open" data-id="' + q.id + '">' +
         '<span class="qpack-marks">' + q.marks + '</span>' +
@@ -262,6 +360,9 @@ const PacksView = (function () {
           (caseFor(q) ? '<span class="pill">case study</span>' : "") +
           (reportFor(q) ? '<span class="pill good">report</span>' : "") +
         '</span>' +
+        '<span class="qpack-result ' + scoreTone(last) + '" title="' +
+          (last ? 'Last attempted ' + age + ' day' + (age === 1 ? '' : 's') + ' ago' : 'Not attempted yet') + '">' +
+          (last ? '<b>✓</b><span>' + score + '%</span><small>' + age + 'd</small>' : '<span>○</span>') + '</span>' +
       '</button>' +
     '</div>';
   }
@@ -306,6 +407,7 @@ const PacksView = (function () {
             '</div>' +
             '<div class="spacer"></div>' +
             '<span class="pill">' + minutesFor(q.marks) + ' min</span>' +
+            (practiceQueue.length ? '<span class="pill acc">Practice ' + (practiceIndex + 1) + ' / ' + practiceQueue.length + '</span>' : '') +
             '<button class="btn btn-sm" data-action="pack-time" data-id="' + q.id + '">Time me</button>' +
             '<button class="icon-btn" data-action="pack-close" title="Close">✕</button>' +
           '</div>' +
@@ -327,6 +429,8 @@ const PacksView = (function () {
                   'Reveal answer' + (er ? " and examiner report" : "") + '</button>' +
                 '<div class="tiny faint" style="text-align:center;margin-top:8px">Write your answer first — ' +
                   minutesFor(q.marks) + ' minutes is what it is worth.</div>') +
+            (show ? '<div class="qscore"><label>Score</label><input class="input" id="packScore" type="number" min="0" max="' + q.marks + '" placeholder="out of ' + q.marks + '">' +
+              '<button class="btn btn-primary" data-action="pack-mark" data-id="' + q.id + '">Save score</button></div>' : '') +
           '</div>' +
         '</div>' +
       '</div>' +
@@ -384,6 +488,8 @@ const PacksView = (function () {
           }).join("") +
         '</div>' +
         '<div style="margin-top:12px">' + yearBar() + '</div>' +
+        '<div class="row wrap" style="gap:8px;margin-top:12px"><button class="btn btn-primary" data-action="pack-random">Random question</button>' +
+        '<button class="btn" data-action="pack-practice">Build a practice set</button><span class="tiny faint">Filters apply to both.</span></div>' +
       '</div>' +
 
       '<div class="card">' +
@@ -405,7 +511,40 @@ const PacksView = (function () {
 
     document.body.classList.toggle("has-focus", !!focused);
     /* the divider only exists once the markup is in the document */
-    setTimeout(mountSplit, 0);
+    setTimeout(function () { mountSplit(); mountSourcePages(); }, 0);
+  }
+
+  function mountSourcePages() {
+    if (typeof PdfViewer === "undefined") return;
+    document.querySelectorAll("[data-figure-pdf]").forEach(function (host) {
+      PdfViewer.renderPages(host, host.dataset.figurePdf, +host.dataset.figureFrom, +host.dataset.figureTo);
+    });
+    document.querySelectorAll("[data-question-pdf]").forEach(function (host) {
+      PdfViewer.renderPages(host, host.dataset.questionPdf, +host.dataset.questionFrom, +host.dataset.questionTo);
+    });
+  }
+
+  function shuffled(list) {
+    const out = list.slice();
+    for (let i = out.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const x = out[i]; out[i] = out[j]; out[j] = x; }
+    return out;
+  }
+  function openPractice() {
+    UI.modal({ title: "Build a question practice set", body:
+      '<div class="tiny muted">Uses the paper and year filters above. Leave one field blank to choose by the other.</div>' +
+      '<div class="form-grid" style="margin-top:14px"><div class="field"><label class="label">Questions</label><input class="input" id="packCount" type="number" min="1" placeholder="e.g. 5"></div>' +
+      '<div class="field"><label class="label">Total marks</label><input class="input" id="packMarks" type="number" min="5" placeholder="e.g. 25"></div></div>',
+      footer: '<button class="btn" data-c>Cancel</button><button class="btn btn-primary" id="packStart">Start practice</button>',
+      onMount: function (box) { box.querySelector('#packStart').onclick = function () {
+        const wantedCount = +box.querySelector('#packCount').value || 0;
+        const wantedMarks = +box.querySelector('#packMarks').value || 0;
+        const pool = shuffled(ECO_QUESTIONS.filter(function (q) { return (paperFilter === 'all' || String(q.paper) === paperFilter) && (yearFilter === 'all' || String(q.year) === yearFilter); }));
+        const chosen = [], marks = { value: 0 };
+        pool.some(function (q) { if ((wantedCount && chosen.length >= wantedCount) || (wantedMarks && marks.value + q.marks > wantedMarks && chosen.length)) return true; chosen.push(q.id); marks.value += q.marks; return false; });
+        if (!chosen.length) { UI.toast('No questions match those filters', 'bad'); return; }
+        practiceQueue = chosen; practiceIndex = 0; focusId = chosen[0]; caseOpen = false; UI.closeModal(); App.render();
+      }; }
+    });
   }
 
   /* The divider between the case study and the question.
@@ -468,6 +607,8 @@ const PacksView = (function () {
       case "pack-tariff": tariff = +el.dataset.val; App.render(); return true;
       case "pack-paper":  paperFilter = el.dataset.val; App.render(); return true;
       case "pack-year":   yearFilter = el.dataset.val; App.render(); return true;
+      case "pack-random": { const pool = questions(); if (!pool.length) return true; practiceQueue = []; focusId = pool[Math.floor(Math.random() * pool.length)].id; caseOpen = false; App.render(); return true; }
+      case "pack-practice": openPractice(); return true;
       case "pack-open":   focusId = el.dataset.id; caseOpen = false; caseWidth = null; App.render(); return true;
       case "pack-keep": return true;            // a click inside the card
       case "pack-close": focusId = null; App.render(); return true;
@@ -478,6 +619,16 @@ const PacksView = (function () {
         const q = byId(el.dataset.id);
         if (q) App.startQuestionTimer(q);
         return true;
+      }
+      case "pack-mark": {
+        const q = byId(el.dataset.id), input = document.querySelector('#packScore');
+        const got = input ? Number(input.value) : NaN;
+        if (!q || !Number.isFinite(got) || got < 0 || got > q.marks) { UI.toast('Enter a score between 0 and ' + (q ? q.marks : 'the available marks'), 'bad'); return true; }
+        Store.mutate(function (st) { st.packAttempts.unshift({ questionId: q.id, got: got, available: q.marks, at: new Date().toISOString() }); });
+        UI.toast('Saved ' + got + ' / ' + q.marks, got / q.marks >= .65 ? 'ok' : 'warn');
+        if (practiceQueue.length && practiceIndex < practiceQueue.length - 1) { practiceIndex++; focusId = practiceQueue[practiceIndex]; revealed = {}; caseOpen = false; }
+        else if (practiceQueue.length) { practiceQueue = []; practiceIndex = 0; focusId = null; }
+        App.render(); return true;
       }
     }
     return false;

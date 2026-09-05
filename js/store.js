@@ -136,6 +136,7 @@ const Store = (function () {
       customSubs: [], // user-added topics
       papers: [], // past paper records
       schoolAssessments: [], // class tests, mini-assessments and school mocks
+      packAttempts: [], // Economics question-pack attempts, newest first
       plan: null, // { generatedAt, days:{ iso: [task] } }
       taskState: {}, // { taskId: {status, doneAt, movedTo} }
       timer: null, // live session timer {label, kind, refId, startedAt, accumulated, running}
@@ -164,6 +165,7 @@ const Store = (function () {
     }
     if (s.paperLevelFilter === undefined) s.paperLevelFilter = "all";
     if (!st.schoolAssessments) st.schoolAssessments = [];
+    if (!st.packAttempts) st.packAttempts = [];
 
     if (/8MA0/.test(s.qualification || "")) {
       s.qualification = "Pearson Edexcel A level Mathematics (9MA0)";

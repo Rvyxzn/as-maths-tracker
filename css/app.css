@@ -1522,6 +1522,8 @@ Pen flyout, hover-expanding tool picker: draw/erase, colour wheel, size
 .qpack-main b{font-size:13px}
 .qpack-main small{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .qpack-tags{flex:0 0 auto;display:flex;gap:6px;align-items:center}
+.qpack-result{min-width:46px;display:flex;align-items:center;justify-content:center;gap:3px;padding:5px 6px;border-radius:8px;font-size:11px;font-variant-numeric:tabular-nums;background:var(--surface-2);color:var(--muted)}
+.qpack-result b{font-size:14px}.qpack-result small{font-size:10px;font-weight:700;opacity:.75}.qpack-result.red{background:rgba(239,68,68,.14);color:#ef4444}.qpack-result.amber{background:rgba(245,158,11,.16);color:#d97706}.qpack-result.green{background:rgba(16,185,129,.14);color:#059669}
 .qpack-body{padding:0 14px 14px;border-top:1px solid var(--border)}
 
 /* the question, on its own, with nothing else to read */
@@ -1558,9 +1560,25 @@ Pen flyout, hover-expanding tool picker: draw/erase, colour wheel, size
 /* the question itself, set to read like the paper */
 .qtext{display:flex;flex-direction:column;gap:11px;font-size:15.5px;line-height:1.72}
 .q-line{display:block}
-.q-part{display:block;font-weight:600;margin-top:6px}
-.q-opt{display:block;padding-left:6px}
-.q-opt b{display:inline-block;min-width:22px;font-weight:700;color:var(--accent)}
+.q-part{display:block;font-weight:600;margin-top:12px}
+.q-part-n{color:var(--accent);font-weight:800;margin-right:2px}
+
+/* Multiple choice: one option per line, the letter carried in its own
+   column so the answers line up and read as a set of alternatives. */
+.q-opts{display:grid;gap:6px;margin:10px 0 4px}
+.q-opt{
+  display:grid;grid-template-columns:26px minmax(0,1fr);align-items:start;gap:8px;
+  padding:8px 11px;border-radius:9px;border:1px solid var(--border);
+  background:var(--surface-2);font-weight:500;
+}
+.q-opt-l{
+  display:flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:6px;font-size:12px;font-weight:800;
+  background:var(--accent);color:var(--accent-ink);
+}
+/* Marks, money and quantities are what the question asks you to use. */
+.q-num{font-weight:700;color:var(--text);background:var(--accent-soft);
+  padding:0 3px;border-radius:4px}
 .q-tariff{
   align-self:flex-end;padding:2px 10px;border-radius:999px;
   background:var(--surface-2);color:var(--muted);font-size:12px;font-weight:600;
@@ -1725,6 +1743,14 @@ Pen flyout, hover-expanding tool picker: draw/erase, colour wheel, size
 .cs-table{width:100%;border-collapse:collapse;font-size:12.5px}
 .cs-table td{padding:4px 6px;border-bottom:1px solid var(--border)}
 .cs-table td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.cs-source,.qpaper{margin:0 0 18px;padding:12px 13px;border-radius:10px;background:var(--surface);border:1px solid var(--border-strong)}
+.cs-source-head,.qpaper-head{display:flex;flex-direction:column;gap:3px;margin-bottom:10px}
+.cs-source-head b,.qpaper-head b{font-size:12.5px;color:var(--accent)}
+.cs-source-head span,.qpaper-head span{font-size:12px;color:var(--muted);line-height:1.5}
+.cs-source-pages{max-height:520px;overflow:auto;border-radius:7px;background:#fff;scrollbar-gutter:stable}
+.qpaper-pages{max-height:620px;overflow:auto;border-radius:7px;background:#fff;scrollbar-gutter:stable}
+.cs-source-pages .qpdf-page,.qpaper-pages .qpdf-page{display:block;width:100%;height:auto;margin:0 0 8px}
+.cs-source-pages .qpdf-page:last-child,.qpaper-pages .qpdf-page:last-child{margin-bottom:0}
 .cs-ext{margin-bottom:18px;padding-left:13px;border-left:3px solid var(--accent)}
 .cs-ext-label{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent)}
 .cs-ext-head{margin:4px 0 7px;font-weight:700;font-size:13.5px;line-height:1.4}
@@ -2150,6 +2176,8 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
   padding:10px 13px;border-radius:10px;cursor:pointer;font:inherit;transition:.13s;
   border:1.5px solid var(--border);background:var(--surface);color:var(--text);
 }
+.qscore{display:flex;align-items:center;gap:8px;margin-top:16px;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2)}
+.qscore label{font-weight:700}.qscore .input{width:120px;padding:7px 9px}
 .rv-cand:hover{border-color:var(--accent)}
 .rv-cand.on{border-color:var(--accent);background:var(--surface-2)}
 .rv-cand.on .rv-name{color:var(--accent)}
@@ -2165,3 +2193,63 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .rv-row-main{flex:1;min-width:0}
 .rv-row-q{font-size:13.5px;line-height:1.45;margin-bottom:5px}
 .rv-row-meta{display:flex;flex-wrap:wrap;align-items:center;gap:9px}
+
+/* ---------- the countdown, parked on the right edge ----------
+   Collapsed it is a slim tab showing the time and a draining bar;
+   expanded it is a card with a ring that empties like a phone timer. */
+/* Above the question overlay (900): timing a question is exactly when you
+   need to see the clock, so it floats over the paper rather than behind it. */
+#countdownDock{position:fixed;top:50%;right:0;transform:translateY(-50%);z-index:950}
+#countdownDock:empty{display:none}
+
+.cd-peek{
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  padding:12px 9px;border:1px solid var(--border-strong);border-right:0;
+  border-radius:13px 0 0 13px;background:var(--surface);color:var(--text);
+  font:inherit;cursor:pointer;box-shadow:-4px 0 18px rgba(0,0,0,.16);
+  transition:transform .18s,border-color .18s;
+}
+.cd-peek:hover{transform:translateX(-3px);border-color:var(--accent)}
+.cd-peek-time{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.01em}
+.cd-peek-bar{width:5px;height:54px;border-radius:3px;background:var(--surface-2);
+  display:flex;align-items:flex-end;overflow:hidden}
+.cd-peek-bar i{display:block;width:100%;background:var(--accent);border-radius:3px;
+  transition:height .9s linear}
+.cd.soon .cd-peek-bar i{background:var(--amber)}
+.cd.over .cd-peek-bar i{background:var(--red)}
+.cd.over .cd-peek-time,.cd.over .cd-time b{color:var(--red)}
+.cd.soon .cd-time b{color:var(--amber)}
+
+.cd-card{
+  display:none;width:212px;padding:15px 15px 13px;
+  border:1px solid var(--border-strong);border-right:0;border-radius:15px 0 0 15px;
+  background:var(--surface);box-shadow:-6px 0 26px rgba(0,0,0,.22);
+}
+.cd.open .cd-card{display:block}
+.cd.open .cd-peek{display:none}
+.cd-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cd-card-title{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.cd-x{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:13px;padding:2px 4px;border-radius:6px}
+.cd-x:hover{background:var(--surface-2);color:var(--text)}
+
+.cd-ring{position:relative;width:150px;height:150px;margin:0 auto}
+.cd-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.cd-track{fill:none;stroke:var(--surface-2);stroke-width:9}
+.cd-prog{fill:none;stroke:var(--accent);stroke-width:9;stroke-linecap:round;
+  transition:stroke-dashoffset .9s linear,stroke .3s}
+.cd.soon .cd-prog{stroke:var(--amber)}
+.cd.over .cd-prog{stroke:var(--red)}
+.cd.paused .cd-prog{opacity:.45}
+.cd-time{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:2px;text-align:center}
+.cd-time b{font-size:29px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.cd-time small{font-size:10.5px;color:var(--muted);max-width:104px;line-height:1.25}
+.cd-label{margin:11px 0 10px;font-size:11.5px;color:var(--muted);text-align:center;
+  line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.cd-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+
+@media (max-width:820px){
+  .cd-card{width:180px}
+  .cd-ring{width:124px;height:124px}
+  .cd-time b{font-size:24px}
+}

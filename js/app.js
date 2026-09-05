@@ -94,6 +94,7 @@ function setSidebar(open) {
     topActions.style.display = (current === "onboarding" || Metrics.examPassed()) ? "none" : "";
     renderFocusDial();
     renderTimerChip();
+    Countdown.sync();
 
     /* Build into a detached node, then either swap wholesale (new view, so
        the entrance animation should play) or morph in place (same view, so
@@ -424,6 +425,7 @@ function setSidebar(open) {
     noteChapterPlace(action, el);
 
     /* view-specific handlers first */
+    if (Countdown.handle(action)) return;
     if (current === "onboarding" && OnboardingView.handle(action, el, e)) return;
     if (current === "session" && SessionView.handle(action, el)) return;
     if (TopicsView.handle(action, el)) return;
@@ -2024,7 +2026,7 @@ function setSidebar(open) {
     const t = Store.get().timer;
     const chip = document.getElementById("timerChip");
     if (t && !chip) { document.getElementById("timerSlot").innerHTML = UI.timerChip(); return; }
-    if (!t) { if (chip) document.getElementById("timerSlot").innerHTML = ""; return; }
+    if (!t) { if (chip) document.getElementById("timerSlot").innerHTML = ""; Countdown.sync(); return; }
     const total = Math.floor(Store.timerElapsedMs() / 1000);
     const h = Math.floor(total / 3600), m = Math.floor((total % 3600) / 60), sec = total % 60;
     const clock = (h ? h + ":" + String(m).padStart(2, "0") : String(m)) + ":" + String(sec).padStart(2, "0");
@@ -2045,6 +2047,7 @@ function setSidebar(open) {
       }
     }
     if (t.running) refreshTimeBars();
+    Countdown.sync();
   }
 
   /* Time a single exam question at the real Edexcel rate. */

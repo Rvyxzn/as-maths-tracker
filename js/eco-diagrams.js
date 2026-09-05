@@ -44,13 +44,20 @@ const ECO_DIAGRAM = (function () {
   function guides(q, p) {
     return line(L, py(p), px(q), py(p), "ed-gd") + line(px(q), py(p), px(q), B, "ed-gd");
   }
+  /* A labelled point must project cleanly to both axes. Keeping this in one
+     helper prevents floating labels and missing dotted guides. */
+  function axisPoint(q, p, pLabel, qLabel) {
+    return guides(q, p) + dot(px(q), py(p)) +
+      (pLabel ? txt(L - 8, py(p) + 4, pLabel, "ed-t", "end") : "") +
+      (qLabel ? txt(px(q), B + 14, qLabel, "ed-t") : "");
+  }
 
   /* The vertical axis is labelled above itself rather than beside it — a
      label like "Cost / Revenue" is wider than the whole left margin. */
   function axes(xLabel, yLabel) {
     return line(L, T - 6, L, B, "ed-ax") + line(L, B, R + 8, B, "ed-ax") +
       txt(L - 6, T - 12, yLabel || "Price", "ed-al", "start") +
-      txt(R + 8, B + 17, xLabel || "Quantity", "ed-al", "end");
+      txt(R + 8, B + 31, xLabel || "Quantity", "ed-al", "end");
   }
 
   function frame(inner, alt) {
@@ -77,11 +84,9 @@ const ECO_DIAGRAM = (function () {
     return frame(
       axes() +
       curve(90, 20, "ed-d") + curve(20, 90, "ed-s") +
-      guides(e.q, e.p) + dot(px(e.q), py(e.p)) +
+      axisPoint(e.q, e.p, "P₁", "Q₁") +
       txt(px(100) + 7, py(20) + 4, "D", "ed-lbl", "start") +
-      txt(px(100) + 7, py(90) + 4, "S", "ed-lbl", "start") +
-      txt(L - 8, py(e.p) + 4, "P₁", "ed-t", "end") +
-      txt(px(e.q), B + 14, "Q₁", "ed-t"),
+      txt(px(100) + 7, py(90) + 4, "S", "ed-lbl", "start"),
       "Supply and demand meeting at one equilibrium price and quantity");
   };
 
@@ -91,15 +96,11 @@ const ECO_DIAGRAM = (function () {
     return frame(
       axes() +
       curve(90, 20, "ed-d") + curve(120, 50, "ed-d ed-new") + curve(20, 90, "ed-s") +
-      guides(a.q, a.p) + guides(b.q, b.p) +
-      dot(px(a.q), py(a.p)) + dot(px(b.q), py(b.p)) +
+      axisPoint(a.q, a.p, "P₁", "Q₁") + axisPoint(b.q, b.p, "P₂", "Q₂") +
       '<path class="ed-arrow" d="M' + px(52) + ',' + py(56) + ' L' + px(66) + ',' + py(70) + '"/>' +
       txt(px(100) + 7, py(20) + 4, "D₁", "ed-lbl", "start") +
       txt(px(100) + 7, py(50) + 4, "D₂", "ed-lbl", "start") +
-      txt(px(100) + 7, py(90) + 4, "S", "ed-lbl", "start") +
-      txt(L - 8, py(a.p) + 4, "P₁", "ed-t", "end") +
-      txt(L - 8, py(b.p) + 4, "P₂", "ed-t", "end") +
-      txt(px(a.q), B + 14, "Q₁", "ed-t") + txt(px(b.q), B + 14, "Q₂", "ed-t"),
+      txt(px(100) + 7, py(90) + 4, "S", "ed-lbl", "start"),
       "Demand shifting right raises both the equilibrium price and quantity");
   };
 
@@ -115,13 +116,10 @@ const ECO_DIAGRAM = (function () {
       axes() +
       curve(90, 20, "ed-d") + curve(20, 90, "ed-s") +
       line(L, py(cap), R, py(cap), "ed-cap") +
-      guides(e.q, e.p) + dot(px(e.q), py(e.p)) +
-      dot(px(qs), py(cap)) + dot(px(qd), py(cap)) +
+      axisPoint(e.q, e.p, "Pe", "Qe") +
+      axisPoint(qs, cap, "Pmax", "Qs") + axisPoint(qd, cap, null, "Qd") +
       line(px(qs), py(cap) - 9, px(qd), py(cap) - 9, "ed-gap") +
-      txt((px(qs) + px(qd)) / 2, py(cap) - 14, "shortage", "ed-note") +
-      txt(R + 7, py(cap) + 4, "Pmax", "ed-lbl", "start") +
-      txt(L - 8, py(e.p) + 4, "Pe", "ed-t", "end") +
-      txt(px(qs), B + 14, "Qs", "ed-t") + txt(px(qd), B + 14, "Qd", "ed-t"),
+      txt((px(qs) + px(qd)) / 2, py(cap) - 14, "shortage", "ed-note"),
       "A maximum price below equilibrium leaves quantity demanded above quantity supplied");
   };
 
@@ -135,12 +133,10 @@ const ECO_DIAGRAM = (function () {
       axes() +
       curve(90, 20, "ed-d") + curve(20, 90, "ed-s") +
       line(L, py(floor), R, py(floor), "ed-cap") +
-      dot(px(e.q), py(e.p)) + dot(px(qd), py(floor)) + dot(px(qs), py(floor)) +
+      axisPoint(e.q, e.p, "Pe", "Qe") +
+      axisPoint(qd, floor, "Pmin", "Qd") + axisPoint(qs, floor, null, "Qs") +
       line(px(qd), py(floor) - 9, px(qs), py(floor) - 9, "ed-gap") +
-      txt((px(qd) + px(qs)) / 2, py(floor) - 14, "surplus", "ed-note") +
-      txt(R + 7, py(floor) + 4, "Pmin", "ed-lbl", "start") +
-      txt(L - 8, py(e.p) + 4, "Pe", "ed-t", "end") +
-      txt(px(qd), B + 14, "Qd", "ed-t") + txt(px(qs), B + 14, "Qs", "ed-t"),
+      txt((px(qd) + px(qs)) / 2, py(floor) - 14, "surplus", "ed-note"),
       "A minimum price above equilibrium leaves quantity supplied above quantity demanded");
   };
 
@@ -150,16 +146,14 @@ const ECO_DIAGRAM = (function () {
     return frame(
       axes() +
       curve(90, 20, "ed-d") + curve(20, 90, "ed-s") + curve(44, 114, "ed-s ed-new") +
-      guides(a.q, a.p) + guides(b.q, b.p) +
-      dot(px(a.q), py(a.p)) + dot(px(b.q), py(b.p)) +
+      axisPoint(a.q, a.p, "P₁", "Q₁") + axisPoint(b.q, b.p, "Pc", "Q₂") +
       line(px(b.q), py(b.p), px(b.q), py(b.p - 24), "ed-gap") +
+      line(L, py(b.p - 24), px(b.q), py(b.p - 24), "ed-gd") +
       txt(px(b.q) + 30, py(b.p - 12), "tax per unit", "ed-note", "start") +
       txt(px(100) + 7, py(20) + 4, "D", "ed-lbl", "start") +
       txt(px(100) + 7, py(90) + 4, "S", "ed-lbl", "start") +
       txt(px(100) + 7, py(97) + 4, "S+tax", "ed-lbl", "start") +
-      txt(L - 8, py(a.p) + 4, "P₁", "ed-t", "end") +
-      txt(L - 8, py(b.p) + 4, "P₂", "ed-t", "end") +
-      txt(px(a.q), B + 14, "Q₁", "ed-t") + txt(px(b.q), B + 14, "Q₂", "ed-t"),
+      txt(L - 8, py(b.p - 24) + 4, "Pp", "ed-t", "end"),
       "An indirect tax shifts supply up by the tax, raising price and cutting quantity");
   };
 
@@ -169,14 +163,10 @@ const ECO_DIAGRAM = (function () {
     return frame(
       axes() +
       curve(90, 20, "ed-d") + curve(20, 90, "ed-s") + curve(-4, 66, "ed-s ed-new") +
-      guides(a.q, a.p) + guides(b.q, b.p) +
-      dot(px(a.q), py(a.p)) + dot(px(b.q), py(b.p)) +
+      axisPoint(a.q, a.p, "P₁", "Q₁") + axisPoint(b.q, b.p, "P₂", "Q₂") +
       txt(px(100) + 7, py(20) + 4, "D", "ed-lbl", "start") +
       txt(px(100) + 7, py(90) + 4, "S", "ed-lbl", "start") +
       txt(px(100) + 7, py(66) + 4, "S+sub", "ed-lbl", "start") +
-      txt(L - 8, py(a.p) + 4, "P₁", "ed-t", "end") +
-      txt(L - 8, py(b.p) + 4, "P₂", "ed-t", "end") +
-      txt(px(a.q), B + 14, "Q₁", "ed-t") + txt(px(b.q), B + 14, "Q₂", "ed-t"),
       "A subsidy shifts supply down, lowering price and raising quantity");
   };
 
@@ -186,13 +176,12 @@ const ECO_DIAGRAM = (function () {
     return frame(
       axes("Quantity", "Cost / Benefit") +
       curve(90, 20, "ed-d") + curve(20, 90, "ed-s") + curve(44, 114, "ed-s ed-new") +
-      dot(px(priv.q), py(priv.p)) + dot(px(soc.q), py(soc.p)) +
+      axisPoint(soc.q, soc.p, "P*", "Q*") + axisPoint(priv.q, priv.p, "P₁", "Q₁") +
       '<path class="ed-fill" d="M' + px(soc.q) + ',' + py(soc.p) + ' L' + px(priv.q) + ',' +
         py(priv.p) + ' L' + px(priv.q) + ',' + py(priv.p + 24) + ' Z"/>' +
       txt(px(100) + 7, py(20) + 4, "MPB = MSB", "ed-lbl", "start") +
       txt(px(100) + 7, py(90) + 4, "MPC", "ed-lbl", "start") +
       txt(px(100) + 7, py(100) + 4, "MSC", "ed-lbl", "start") +
-      txt(px(soc.q), B + 14, "Q*", "ed-t") + txt(px(priv.q), B + 14, "Q₁", "ed-t") +
       txt(L + 2, B + 31, "shaded area = welfare loss", "ed-note", "start"),
       "Marginal social cost above marginal private cost, so the market overproduces");
   };
@@ -212,13 +201,12 @@ const ECO_DIAGRAM = (function () {
       line(px(0), py(arAt(0)), px(100), py(arAt(100)), "ed-d") +
       line(px(0), py(mrAt(0)), px(50), py(0), "ed-mr") +
       line(px(0), py(mcAt(0)), px(100), py(mcAt(100)), "ed-s") +
-      line(px(qProfit), py(mcAt(qProfit)), px(qProfit), B, "ed-gd") +
-      line(px(qRev), B, px(qRev), py(arAt(qRev)), "ed-gd") +
+      axisPoint(qProfit, arAt(qProfit), "Pπ", "Qπ") +
+      axisPoint(qRev, arAt(qRev), "Pr", "Qr") +
       dot(px(qProfit), py(mcAt(qProfit))) + dot(px(qRev), py(0)) +
       txt(px(100) + 7, py(arAt(100)) + 4, "AR = D", "ed-lbl", "start") +
       txt(px(18), py(64) + 4, "MR", "ed-lbl", "end") +
       txt(px(100) + 7, py(mcAt(100)) + 4, "MC", "ed-lbl", "start") +
-      txt(px(qProfit), B + 14, "Qπ", "ed-t") + txt(px(qRev), B + 14, "Qr", "ed-t") +
       txt(px(qProfit) - 6, py(mcAt(qProfit)) - 12, "MC = MR", "ed-note", "end") +
       txt(px(qRev) + 6, B - 10, "MR = 0", "ed-note", "start"),
       "Profit maximising where marginal cost meets marginal revenue, revenue maximising where marginal revenue is zero");
@@ -239,10 +227,7 @@ const ECO_DIAGRAM = (function () {
       line(px(0), py(100), px(50), py(0), "ed-mr") +
       line(px(0), py(mcAt(0)), px(100), py(mcAt(100)), "ed-s") +
       line(px(0), py(acAt(0)), px(100), py(acAt(100)), "ed-ac") +
-      line(px(q), py(p), px(q), B, "ed-gd") +
-      dot(px(q), py(p)) + dot(px(q), py(c)) +
-      txt(L - 8, py(p) + 4, "P", "ed-t", "end") + txt(L - 8, py(c) + 4, "AC", "ed-t", "end") +
-      txt(px(q), B + 14, "Q", "ed-t") +
+      axisPoint(q, p, "P", "Q") + axisPoint(q, c, "AC", null) +
       txt(px(100) + 7, py(arAt(100)) + 4, "AR", "ed-lbl", "start") +
       txt(px(100) + 7, py(mcAt(100)) + 4, "MC", "ed-lbl", "start") +
       txt(px(100) + 7, py(acAt(100)) + 4, "AC", "ed-lbl", "start") +
@@ -256,14 +241,10 @@ const ECO_DIAGRAM = (function () {
     return frame(
       axes("Real GDP", "Price level") +
       curve(90, 20, "ed-d") + curve(120, 50, "ed-d ed-new") + curve(20, 90, "ed-s") +
-      guides(a.q, a.p) + guides(b.q, b.p) +
-      dot(px(a.q), py(a.p)) + dot(px(b.q), py(b.p)) +
+      axisPoint(a.q, a.p, "P₁", "Y₁") + axisPoint(b.q, b.p, "P₂", "Y₂") +
       txt(px(100) + 7, py(20) + 4, "AD₁", "ed-lbl", "start") +
       txt(px(100) + 7, py(50) + 4, "AD₂", "ed-lbl", "start") +
-      txt(px(100) + 7, py(90) + 4, "AS", "ed-lbl", "start") +
-      txt(L - 8, py(a.p) + 4, "P₁", "ed-t", "end") +
-      txt(L - 8, py(b.p) + 4, "P₂", "ed-t", "end") +
-      txt(px(a.q), B + 14, "Y₁", "ed-t") + txt(px(b.q), B + 14, "Y₂", "ed-t"),
+      txt(px(100) + 7, py(90) + 4, "AS", "ed-lbl", "start"),
       "Aggregate demand rising lifts both the price level and real output");
   };
 
@@ -281,7 +262,8 @@ const ECO_DIAGRAM = (function () {
       arc(100, 92, "ed-ppf") + arc(78, 72, "ed-ppf ed-old") +
       /* the frontier is (x/100)^2 + (y/92)^2 = 1, so a point is on it,
          inside it or beyond it by whether that sum is 1, less or more */
-      dot(px(60), py(73.6)) + txt(px(60) + 8, py(73.6) - 6, "A", "ed-t", "start") +
+      axisPoint(60, 73.6, "Ca", "Ka") +
+      txt(px(60) + 8, py(73.6) - 6, "A", "ed-t", "start") +
       dot(px(35), py(35)) + txt(px(35) + 8, py(35) + 4, "B", "ed-t", "start") +
       dot(px(80), py(80)) + txt(px(80) + 8, py(80) - 4, "C", "ed-t", "start") +
       txt(L - 6, B + 31, "A on it · B inside, spare capacity · C beyond, not attainable",
@@ -295,12 +277,9 @@ const ECO_DIAGRAM = (function () {
       axes() +
       curve(64, 36, "ed-d") +
       line(px(38), py(100), px(62), py(0), "ed-d ed-new") +
-      dot(px(50), py(50)) +
-      line(L, py(50), px(50), py(50), "ed-gd") +
+      axisPoint(50, 50, "P", "Q") +
       txt(px(100) + 7, py(36) + 4, "elastic", "ed-lbl", "start") +
       txt(px(62) + 4, py(4), "inelastic", "ed-lbl", "start") +
-      txt(L - 8, py(50) + 4, "P", "ed-t", "end") +
-      txt(px(50), B + 14, "Q", "ed-t") +
       txt(L - 6, B + 31, "the flatter the curve, the more price elastic demand is", "ed-note", "start"),
       "A flatter demand curve is more price elastic than a steeper one");
   };
