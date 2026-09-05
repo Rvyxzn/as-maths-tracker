@@ -25,6 +25,179 @@
 
 const ECO_QUESTION_TABLES = {
 
+  "p2-specimen-q2": {
+    keep: "The chart below shows the annual percentage change in the value of US exports and imports.",
+    resume: "Throughout this period, the USA has run a trade deficit.",
+    chart: { kind: "bar", exact: false, unit: "%", yLabel: "annual % change",
+             caption: "Annual percentage change in the value of US exports and imports, July 2011 to January 2013",
+             x: ["Jul 11", "Aug 11", "Sep 11", "Oct 11", "Nov 11", "Dec 11", "Jan 12", "Feb 12", "Mar 12", "Apr 12",
+                 "May 12", "Jun 12", "Jul 12", "Aug 12", "Sep 12", "Oct 12", "Nov 12", "Dec 12", "Jan 13"],
+             series: [
+               { name: "Exports", values: [15.4, 18.5, 18.0, 12.2, 11.3, 7.9, 7.3, 12.4, 6.2, 3.0,
+                                           6.2, 8.1, 0.2, 1.4, 0.8, 2.3, 3.5, 3.0, 4.3] },
+               { name: "Imports", values: [13.8, 14.2, 13.0, 12.0, 12.4, 10.7, 9.5, 9.7, 6.0, 6.2,
+                                           5.0, 0.1, 2.9, -0.5, -1.6, 3.6, 3.2, -3.7, 1.1] }
+             ] }
+  },
+
+  "p2-specimen-q4": {
+    keep: "The chart below shows the price of crude oil from 1 January 2007 to 1 January 2014.",
+    chart: { kind: "line", exact: false, yLabel: "US$ per barrel",
+             caption: "Crude oil price, 1 January 2007 to 1 January 2014",
+             x: ["2007", "", "", "", "2008", "", "", "", "2009", "", "", "", "2010", "", "", "",
+                 "2011", "", "", "", "2012", "", "", "", "2013", "", "", "", "2014"],
+             series: [{ name: "Crude oil price",
+                        values: [60, 64, 72, 88, 100, 128, 140, 60, 42, 60, 68, 74,
+                                 78, 76, 74, 86, 90, 113, 88, 95, 100, 105, 85, 92,
+                                 95, 94, 105, 98, 98] }] }
+  },
+
+  "p2-june2023-q4": {
+    keep: "UK consumption, % of GDP, 2004–2021",
+    chart: { kind: "line", exact: false, unit: "%", yLabel: "% of GDP",
+             caption: "UK consumption as a percentage of GDP, 2004–2021",
+             x: [2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012,
+                 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021],
+             series: [{ name: "Consumption",
+                        values: [85.0, 84.63, 84.0, 83.63, 84.63, 86.55, 85.8, 85.15, 85.32,
+                                 84.85, 84.17, 83.83, 83.8, 83.0, 83.28, 83.05, 83.1, 83.5] }] }
+  },
+
+  "p2-specimen-q1": {
+    keep: "The chart below shows UK regional unemployment in December 2013, as measured by both the International Labour Organisation (ILO) and the Claimant Count.",
+    chart: { kind: "bar", exact: false, yLabel: "thousands of people",
+             caption: "UK regional unemployment, December 2013",
+             note: "London's ILO bar runs off the top of the paper's scale; it is about 335 thousand.",
+             x: ["North East", "North West", "Yorks & Humber", "East Mids", "West Mids",
+                 "East of England", "London", "South East", "South West"],
+             series: [
+               { name: "ILO",            values: [133, 270, 235, 149, 221, 178, 335, 244, 187] },
+               { name: "Claimant Count", values: [74, 155, 132, 81, 131, 85, 173, 101, 66] }
+             ] }
+  },
+
+  "p2-june2022-q2": {
+    keep: "Annual percentage change in average UK house prices",
+    chart: { kind: "line", exact: false, unit: "%", yLabel: "annual % change",
+             caption: "Annual percentage change in average UK house prices, May 2018 to May 2021",
+             x: ["May 18", "Aug 18", "Nov 18", "Feb 19", "May 19", "Aug 19", "Nov 19", "Feb 20",
+                 "May 20", "Jun 20", "Aug 20", "Nov 20", "Feb 21", "Mar 21", "May 21"],
+             series: [{ name: "House price growth",
+                        values: [2.4, 2.0, 1.9, 0.4, 0.9, 0.7, 0.8, 2.3,
+                                 3.7, 0.1, 5.0, 6.5, 7.2, 5.7, 10.9] }] }
+  },
+
+  "p2-june2022-q3": {
+    keep: "Bank of England base interest rate, 2016–2020",
+    chart: { kind: "line", step: true, exact: true, unit: "%", yLabel: "%",
+             caption: "Bank of England base interest rate, 2016–2020",
+             note: "The rate is set at a meeting and holds until the next one, so it steps rather than slopes.",
+             x: ["2016", "", "", "", "2017", "", "", "", "2018", "", "", "",
+                 "2019", "", "", "", "2020", "", "", ""],
+             series: [{ name: "Base rate",
+                        values: [0.50, 0.50, 0.25, 0.25, 0.25, 0.25, 0.25, 0.50,
+                                 0.50, 0.50, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75,
+                                 0.10, 0.10, 0.10, 0.10] }] }
+  },
+
+  "p2-june2019-q1": {
+    keep: "Monthly additions to UK credit card lending, £ billions, 2015 – 2017",
+    chart: { kind: "line", exact: false, yLabel: "£ billions",
+             caption: "Monthly additions to UK credit card lending, 2015–2017",
+             note: "The paper marks two points: January 2016 at 13 000 and March 2017 at 15 000.",
+             x: ["Sep 15", "Oct 15", "Nov 15", "Dec 15", "Jan 16", "Feb 16", "Mar 16", "Apr 16",
+                 "May 16", "Jun 16", "Jul 16", "Aug 16", "Sep 16", "Oct 16", "Nov 16", "Dec 16",
+                 "Jan 17", "Feb 17", "Mar 17", "Apr 17", "May 17", "Jun 17", "Jul 17", "Aug 17", "Sep 17"],
+             series: [{ name: "Credit card lending",
+                        values: [13900, 13800, 14600, 15050, 13000, 13700, 14300, 13700,
+                                 14200, 14600, 14100, 14400, 15050, 14400, 14700, 15200,
+                                 14900, 13200, 15000, 13750, 15750, 15200, 15350, 15250, 14500] }] }
+  },
+
+  "p2-june2021-q3": {
+    keep: "British pound to US dollar exchange rate (value of one pound in dollars), June 2017 to June 2019.",
+    chart: { kind: "line", exact: false, yLabel: "US$ per £",
+             caption: "British pound to US dollar exchange rate, June 2017 to June 2019",
+             note: "The paper marks 1 January 2018 at $1.35 and 1 January 2019 at $1.25, which is what part (a) turns on.",
+             x: ["Jun 17", "Aug 17", "Oct 17", "Dec 17", "Jan 18", "Mar 18", "Apr 18", "Jun 18",
+                 "Aug 18", "Oct 18", "Dec 18", "Jan 19", "Mar 19", "May 19", "Jun 19"],
+             series: [{ name: "$ per £",
+                        values: [1.27, 1.30, 1.32, 1.34, 1.35, 1.40, 1.43, 1.33,
+                                 1.29, 1.30, 1.27, 1.25, 1.32, 1.28, 1.27] }] }
+  },
+
+  "p1-june2024-q5": {
+    keep: "The graph below shows the largest mortgage lenders in the United Kingdom (UK) in 2020, by market share.",
+    chart: { kind: "hbar", exact: true, unit: "%",
+             caption: "Largest UK mortgage lenders in 2020, by market share",
+             rows: [["Other", 24.9], ["Lloyds", 19.5], ["Nationwide", 12.7], ["Santander UK", 11.1],
+                    ["Natwest", 10.9], ["Barclays", 9.8], ["HSBC", 7.2], ["Virgin Money", 3.9]] }
+  },
+
+  "p2-june2017-q1": {
+    keep: "The chart below shows the UK unemployment rate, seasonally adjusted, from 2008 to 2015",
+    chart: { kind: "line", exact: false, unit: "%", yLabel: "% of all economically active",
+             caption: "UK unemployment rate, seasonally adjusted, 2008–2015",
+             x: [2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015],
+             series: [{ name: "Unemployment rate",
+                        values: [5.2, 7.6, 7.9, 7.9, 8.3, 7.7, 6.5, 5.4] }] }
+  },
+
+  "p2-june2017-q3": {
+    keep: "The chart below shows UK inflation as measured by the Consumer Prices Index (CPI), 2011 to 2015.",
+    chart: { kind: "line", exact: false, unit: "%", yLabel: "annual % change in prices",
+             caption: "UK inflation measured by the CPI, September 2011 to 2015",
+             x: ["Sep 11", "Jan 12", "Jul 12", "Jan 13", "Jul 13", "Jan 14", "Jul 14", "Jan 15", "Jul 15"],
+             series: [
+               { name: "CPI",                      values: [5.2, 3.6, 2.6, 2.7, 2.8, 1.9, 1.6, 0.3, 0.0] },
+               { name: "Other goods and services", values: [3.9, 3.4, 2.2, 2.3, 2.5, 1.8, 1.9, 0.6, 0.8] },
+               { name: "Food and fuel",            values: [1.3, 0.9, 0.4, 0.3, 0.5, 0.1, -0.3, -0.9, -0.7] }
+             ] }
+  },
+
+  "p2-june2017-q4": {
+    keep: "The chart below shows the UK Gini coefficient of incomes, 2007 to 2013.",
+    chart: { kind: "line", exact: false, yLabel: "Gini coefficient",
+             caption: "UK Gini coefficient of incomes, 2007 to 2013",
+             x: [2007, 2008, 2009, 2010, 2011, 2012, 2013],
+             series: [{ name: "Gini coefficient",
+                        values: [0.360, 0.358, 0.360, 0.340, 0.342, 0.340, 0.345] }] }
+  },
+
+  /* ---------- Section A charts ----------
+     Each question prints its own chart. Where the paper prints the values
+     beside the bars or in a table they are its own; where it only drew a
+     line they were read off it, and the chart says so. */
+
+  "p2-june2020-q1": {
+    keep: "UK real Gross Domestic Product (GDP), annual percentage change 2014–2017",
+    chart: { kind: "bar", exact: true, unit: "%", yLabel: "% change on a year earlier",
+             caption: "UK real GDP, annual percentage change 2014–2017",
+             x: [2014, 2015, 2016, 2017],
+             series: [{ name: "Real GDP growth", values: [2.9, 2.3, 1.8, 1.7] }] }
+  },
+
+  "p2-june2023-q2": {
+    keep: "UK unemployment rate (%), December 2020 – June 2022",
+    chart: { kind: "line", exact: true, unit: "%", yLabel: "% unemployed",
+             caption: "UK unemployment rate, December 2020 to June 2022",
+             x: ["Dec 20", "Jan 21", "Feb 21", "Mar 21", "Apr 21", "May 21", "Jun 21", "Jul 21",
+                 "Aug 21", "Sep 21", "Oct 21", "Nov 21", "Dec 21", "Jan 22", "Feb 22", "Mar 22",
+                 "Apr 22", "May 22", "Jun 22"],
+             series: [{ name: "Unemployment rate",
+                        values: [5.2, 5.1, 5.0, 5.0, 4.9, 4.9, 4.7, 4.6, 4.4, 4.3, 4.2,
+                                 4.1, 4.0, 4.0, 3.8, 3.7, 3.8, 3.8, 3.8] }] }
+  },
+
+  "p2-june2023-q3": {
+    keep: "UK real GDP, 2020–2022",
+    head: ["Year", "Annual percentage change on previous year", "Total (£ millions)"],
+    rows: [["2020", "−9.9%", "2 045 091"],
+           ["2021", "7.5%", "2 198 473"],
+           ["2022 (forecast)", "3.5%", ""]],
+    note: "The 2022 total is blank in the paper — working it out is part (a)."
+  },
+
   /* Four diagrams as the four answers. The text extraction interleaved all
      four sets of axis labels into one run of words, which is how "Output of
      consumer goods 0 Output of capital goods Option A Y X" ended up inside

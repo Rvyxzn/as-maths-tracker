@@ -2509,3 +2509,4 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
   font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
   background:var(--amber-soft);color:var(--amber);border:1px solid var(--amber);
 }
+.efbreak{fill:none;stroke:var(--muted);stroke-width:1.3}

@@ -33,9 +33,19 @@ const ECO_FIGURE = (function () {
   }
 
   /* A scale that ends on a round number, so the top gridline is a value a
-     reader can actually use rather than whatever the maximum happened to be. */
-  function nice(max, min) {
-    const lo = Math.min(0, min == null ? 0 : min);
+     reader can actually use rather than whatever the maximum happened to be.
+
+     `floorAtZero` is true for bars, because the length of a bar is the
+     value and a bar chart that starts anywhere else lies about it. A line
+     chart is read by its shape, and forcing zero on a series that lives
+     between 12 000 and 16 000 flattens the shape into a straight line —
+     which is why the papers themselves break the axis there. */
+  function nice(max, min, floorAtZero) {
+    let lo = Math.min(0, min == null ? 0 : min);
+    if (!floorAtZero && min != null && min > 0 && (max - min) < min * 0.6) {
+      const pad = (max - min) * 0.25 || Math.abs(max) * 0.05;
+      lo = min - pad;
+    }
     const span = (max - lo) || 1;
     const step = Math.pow(10, Math.floor(Math.log10(span / 4)));
     const mult = [1, 2, 2.5, 5, 10].filter(function (m) { return span / (step * m) <= 5.5; })[0] || 10;
@@ -71,6 +81,12 @@ const ECO_FIGURE = (function () {
 
   function grid(sc, unit) {
     let out = "";
+    /* A scale that does not start at zero says so, the way a printed chart
+       does, so nobody reads the bottom of the plot as nothing. */
+    if (sc.lo > 0) {
+      out += '<path class="efbreak" d="M' + (L - 5) + ',' + (B - 4) +
+             ' l5,-3 l-5,-3 l5,-3" />';
+    }
     for (let v = sc.lo; v <= sc.hi + 1e-9; v += sc.step) {
       const y = B - ((v - sc.lo) / (sc.hi - sc.lo)) * (B - T);
       out += line(L, y, R, y, "efg") +
@@ -100,7 +116,7 @@ const ECO_FIGURE = (function () {
   /* ---------- a line chart over time ---------- */
   function lineChart(f) {
     const all = f.series.reduce(function (a, s) { return a.concat(s.values.filter(function (v) { return v != null; })); }, []);
-    const sc = nice(Math.max.apply(null, all), Math.min.apply(null, all));
+    const sc = nice(Math.max.apply(null, all), Math.min.apply(null, all), f.zero === true);
     const n = f.x.length;
     const xAt = function (i) { return n < 2 ? (L + R) / 2 : L + (i / (n - 1)) * (R - L); };
     const yAt = function (v) { return B - ((v - sc.lo) / (sc.hi - sc.lo)) * (B - T); };
@@ -116,12 +132,21 @@ const ECO_FIGURE = (function () {
 
     f.series.forEach(function (s, si) {
       const pts = [];
-      s.values.forEach(function (v, i) { if (v != null) pts.push(xAt(i) + "," + yAt(v)); });
-      out += '<polyline class="efp s' + (si % 5) + '" points="' + pts.join(" ") + '"/>';
       s.values.forEach(function (v, i) {
         if (v == null) return;
-        out += '<circle class="efd s' + (si % 5) + '" cx="' + xAt(i) + '" cy="' + yAt(v) + '" r="3"/>';
+        /* A rate set at a meeting holds until the next one, so it steps
+           rather than slopes: a diagonal between two levels draws a gradual
+           change that never happened. */
+        if (f.step && pts.length) pts.push(xAt(i) + "," + pts[pts.length - 1].split(",")[1]);
+        pts.push(xAt(i) + "," + yAt(v));
       });
+      out += '<polyline class="efp s' + (si % 5) + '" points="' + pts.join(" ") + '"/>';
+      if (!f.step) {
+        s.values.forEach(function (v, i) {
+          if (v == null) return;
+          out += '<circle class="efd s' + (si % 5) + '" cx="' + xAt(i) + '" cy="' + yAt(v) + '" r="3"/>';
+        });
+      }
     });
 
     out += legend(f.series.map(function (s) { return s.name; }), f.yLabel);
@@ -132,7 +157,7 @@ const ECO_FIGURE = (function () {
   /* ---------- vertical bars, grouped where there is more than one series ---------- */
   function barChart(f) {
     const all = f.series.reduce(function (a, s) { return a.concat(s.values.filter(function (v) { return v != null; })); }, []);
-    const sc = nice(Math.max.apply(null, all), 0);
+    const sc = nice(Math.max.apply(null, all), 0, true);
     const n = f.x.length, k = f.series.length;
     const slot = (R - L) / n;
     const bw = Math.min(38, (slot * 0.72) / k);
