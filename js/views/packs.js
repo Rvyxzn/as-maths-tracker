@@ -398,7 +398,9 @@ const PacksView = (function () {
       }
       text = text.slice(0, after) + back + text.slice(lineEnd);
     }
-    block = tbl.chart
+    block = tbl.diagram
+      ? '<div class="qfig">' + ECO_QDIAGRAM.render(tbl.diagram) + '</div>'
+      : tbl.chart
       ? '<div class="qfig">' + ECO_FIGURE.render(tbl.chart) + '</div>'
       : '<div class="qtbl-wrap"><table class="qtbl">' +
           (tbl.head ? '<thead><tr>' + tbl.head.map(function (h) {

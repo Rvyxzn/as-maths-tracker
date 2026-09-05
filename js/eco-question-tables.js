@@ -25,6 +25,76 @@
 
 const ECO_QUESTION_TABLES = {
 
+  /* ---------- questions that are the diagram ----------
+     Each is drawn from the paper's own geometry: the same intercepts, the
+     same axis values, the same labelled points in the same places. */
+
+  "p1-june2018-q1": {
+    keep: "The diagram refers to production possibility frontiers for a country that produces capital goods and consumer goods.",
+    resume: "Originally, the economy has a production possibility frontier",
+    diagram: {
+      kind: "ppf", alt: "Two production possibility frontiers, XY and XZ, with points W, V and U at 50 capital goods",
+      xLabel: "Output of consumer goods", yLabel: "Output of capital goods",
+      xMax: 195, yMax: 118, xTicks: [80, 100, 120, 140, 170], yTicks: [50, 100],
+      curves: [{ from: [0, 100], to: [120, 0], label: "XY", labelAt: [58, 74] },
+               { from: [0, 100], to: [170, 0], label: "XZ", labelAt: [104, 66] }],
+      points: [{ x: 0, y: 100, label: "X", dx: 6, dy: -7 },
+               { x: 120, y: 0, label: "Y", dx: 4, dy: -7 },
+               { x: 170, y: 0, label: "Z", dx: 4, dy: -7 },
+               { x: 80, y: 50, label: "W", guides: true, dx: -4, dy: -8 },
+               { x: 100, y: 50, label: "V", guides: true, dx: -4, dy: -8 },
+               { x: 140, y: 50, label: "U", guides: true, dx: -4, dy: -8 }]
+    }
+  },
+
+  "p1-june2023-q2": {
+    keep: "The production possibility frontier shows last year's harvest for a UK farmer at point X.",
+    diagram: {
+      kind: "ppf", alt: "A straight production possibility frontier for wheat and oats with points W, X, Y and Z",
+      xLabel: "Oats", yLabel: "Wheat",
+      xMax: 5.4, yMax: 8.4, xTicks: [1, 2, 3, 4, 5], yTicks: [1, 2, 3, 4, 5, 6, 7],
+      curves: [{ from: [0, 8], to: [4, 0], shape: "straight" }],
+      points: [{ x: 1, y: 6, label: "Y", guides: true, dx: 7, dy: -5 },
+               { x: 2, y: 4, label: "X", guides: true, dx: 7, dy: 4 },
+               { x: 3, y: 5, label: "Z", dx: 8, dy: 4 },
+               { x: 1.5, y: 2, label: "W", dx: -3, dy: 15 }]
+    }
+  },
+
+  "p2-specimen-q5": {
+    keep: "Colombia and Zambia each produce copper and emeralds. The production possibility frontiers below show the two countries' productive capacities for these goods.",
+    diagram: {
+      kind: "ppf", alt: "Production possibility frontiers for Colombia and Zambia, copper against emeralds",
+      xLabel: "Emeralds (kg)", yLabel: "Copper (million tonnes)",
+      xMax: 1150, yMax: 580, xTicks: [500, 1000], yTicks: [100, 500],
+      curves: [{ from: [0, 500], to: [700, 0], shape: "straight", label: "PPF Zambia", labelAt: [210, 380] },
+               { from: [0, 100], to: [1000, 0], shape: "straight", label: "PPF Colombia", labelAt: [760, 78] }],
+      points: []
+    }
+  },
+
+  "p2-june2022-q4": {
+    keep: "The trade cycle",
+    diagram: {
+      kind: "cycle", alt: "The trade cycle, with point Z at a peak above the trend line",
+      trend: [[0, 18], [100, 74]],
+      actual: [[0, 44], [14, 32], [26, 30], [38, 44], [50, 68], [60, 74], [72, 70], [84, 62], [100, 62]],
+      points: [{ x: 60, y: 74, label: "Z", dx: 8, dy: -6 }],
+      notes: [{ x: 26, y: 92, text: "Positive output gap", anchor: "middle" }]
+    }
+  },
+
+  "p2-june2024-q4": {
+    keep: "Real GDP Trend GDP growth",
+    diagram: {
+      kind: "cycle", alt: "The trade cycle, with points A, B, C and D on the actual GDP path",
+      yLabel: "Real GDP", trend: [[0, 18], [100, 74]],
+      actual: [[0, 44], [14, 30], [26, 27], [34, 28], [46, 46], [58, 72], [66, 78], [78, 74], [90, 66], [100, 64]],
+      points: [{ x: 14, y: 30, label: "A" }, { x: 34, y: 28, label: "B" },
+               { x: 66, y: 78, label: "C", dy: -9 }, { x: 90, y: 66, label: "D" }]
+    }
+  },
+
   "p1-june2017-q1": {
     keep: "The table shows market data for e-cigarette kits. The original equilibrium price is £23.",
     head: ["Price £", "Quantity demanded per month (000)", "Quantity supplied per month (000)",
