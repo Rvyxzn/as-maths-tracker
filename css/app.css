@@ -2283,3 +2283,52 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .ef-table th{font-weight:700;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
 .ef-table td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
 .eft.efs{font-size:8.6px}
+
+/* ---------- question rows: status strip, recency, to-do ---------- */
+.qpack{position:relative;padding-left:5px}
+.qpack-strip{
+  position:absolute;left:0;top:8px;bottom:8px;width:4px;border-radius:0 3px 3px 0;
+  background:var(--border-strong);
+}
+.qpack-strip.red{background:#ef4444}
+.qpack-strip.amber{background:#f59e0b}
+.qpack-strip.green{background:#10b981}
+.qpack.todo{background:var(--accent-soft)}
+
+.qpack-o{opacity:.5}
+.qpack-when{
+  display:inline-flex;align-items:center;gap:4px;min-width:56px;
+  font-size:10.5px;font-weight:700;color:var(--muted);
+}
+.qpack-clock{
+  width:9px;height:9px;border-radius:50%;border:1.6px solid currentColor;flex:none;
+  position:relative;
+}
+.qpack-clock::after{
+  content:"";position:absolute;left:50%;top:1.4px;width:1.5px;height:3px;
+  background:currentColor;transform-origin:bottom center;
+}
+.qpack-when.green{color:#10b981}
+.qpack-when.amber{color:#f59e0b}
+.qpack-when.red{color:#ef4444}
+.qpack-when.new{color:transparent}
+
+.qpack-star{
+  position:absolute;right:9px;top:9px;border:0;background:transparent;cursor:pointer;
+  color:var(--muted);font-size:15px;line-height:1;padding:3px 5px;border-radius:6px;
+}
+.qpack-star:hover{background:var(--surface-2);color:var(--text)}
+.qpack-star.on{color:var(--accent)}
+.qpack-last{
+  padding:0 14px 10px 20px;font-size:11.5px;color:var(--muted);
+}
+.qpack-last b{color:var(--text)}
+
+.qpack-total{
+  display:inline-flex;align-items:baseline;gap:7px;padding:6px 11px;border-radius:9px;
+  background:var(--surface-2);font-variant-numeric:tabular-nums;
+}
+.qpack-total b{font-size:14px;font-weight:800}
+.qpack-total span{font-size:12px;font-weight:700}
+.qpack-total small{font-size:10.5px;color:var(--muted);font-weight:600}
+.qpack-total.red{color:#ef4444}.qpack-total.amber{color:#d97706}.qpack-total.green{color:#059669}

@@ -45,6 +45,7 @@ const PacksView = (function () {
   let yearFilter = "all";
   let practiceQueue = [];
   let practiceIndex = 0;
+  let todoOnly = false;
 
   function minutesFor(marks) { return Math.round(marks * ECO_MINUTES_PER_MARK); }
   function byId(id) { return ECO_QUESTIONS.filter(function (q) { return q.id === id; })[0]; }
@@ -54,8 +55,20 @@ const PacksView = (function () {
       if (q.marks !== tariff) return false;
       if (paperFilter !== "all" && String(q.paper) !== paperFilter) return false;
       if (yearFilter !== "all" && String(q.year) !== yearFilter) return false;
+      if (todoOnly && !onTodo(q.id)) return false;
       return true;
     });
+  }
+
+  /* What you have actually scored on the questions in front of you, so the
+     tariff you are weakest at is visible without opening anything. */
+  function scoreSummary() {
+    const t = tally(questions());
+    if (!t.done) return '<span class="tiny faint">None of these attempted yet</span>';
+    const tone = t.pct < 50 ? "red" : t.pct < 65 ? "amber" : "green";
+    return '<span class="qpack-total ' + tone + '">' +
+      '<b>' + t.got + '/' + t.avail + '</b><span>' + t.pct + '%</span>' +
+      '<small>' + t.done + ' of ' + t.total + ' done</small></span>';
   }
 
   function countBy(fn) {
@@ -285,6 +298,37 @@ const PacksView = (function () {
     return pct < 50 ? "red" : pct < 65 ? "amber" : "green";
   }
 
+  /* How stale an attempt is. A question answered correctly three months ago
+     is not a question you can still answer, so recency is shown next to the
+     score rather than folded into it. */
+  function ageTone(days) {
+    if (days == null) return "new";
+    return days <= 7 ? "green" : days <= 21 ? "amber" : "red";
+  }
+
+  /* ---------- the to-do list ---------- */
+  function todo() { return Store.get().packTodo || []; }
+  function onTodo(id) { return todo().indexOf(id) >= 0; }
+  function toggleTodo(id) {
+    Store.mutate(function (st) {
+      if (!st.packTodo) st.packTodo = [];
+      const i = st.packTodo.indexOf(id);
+      if (i >= 0) st.packTodo.splice(i, 1); else st.packTodo.push(id);
+    });
+  }
+
+  /* Everything you have scored, for the running total beside the filters. */
+  function tally(list) {
+    let got = 0, avail = 0, done = 0;
+    list.forEach(function (q) {
+      const a = lastAttempt(q.id);
+      if (!a || !a.available) return;
+      got += a.got; avail += a.available; done++;
+    });
+    return { got: got, avail: avail, done: done, total: list.length,
+             pct: avail ? Math.round(got / avail * 100) : null };
+  }
+
   /* A figure is drawn from its data where we have it, and falls back to
      whatever the extraction managed otherwise. The drawn one wins: a chart
      is what the paper showed you, and half these questions ask you to read
@@ -361,7 +405,9 @@ const PacksView = (function () {
     const last = lastAttempt(q.id);
     const score = last && last.available ? Math.round(last.got / last.available * 100) : null;
     const age = last ? daysAgo(last.at) : null;
-    return '<div class="qpack">' +
+    const tone = scoreTone(last);
+    return '<div class="qpack' + (onTodo(q.id) ? " todo" : "") + '">' +
+      '<span class="qpack-strip ' + tone + '"></span>' +
       '<button class="qpack-head" data-action="pack-open" data-id="' + q.id + '">' +
         '<span class="qpack-marks">' + q.marks + '</span>' +
         '<span class="qpack-main">' +
@@ -372,10 +418,21 @@ const PacksView = (function () {
           (caseFor(q) ? '<span class="pill">case study</span>' : "") +
           (reportFor(q) ? '<span class="pill good">report</span>' : "") +
         '</span>' +
-        '<span class="qpack-result ' + scoreTone(last) + '" title="' +
-          (last ? 'Last attempted ' + age + ' day' + (age === 1 ? '' : 's') + ' ago' : 'Not attempted yet') + '">' +
-          (last ? '<b>✓</b><span>' + score + '%</span><small>' + age + 'd</small>' : '<span>○</span>') + '</span>' +
+        '<span class="qpack-result ' + tone + '">' +
+          (last ? '<b>✓</b><span>' + score + '%</span>' : '<span class="qpack-o">○</span>') +
+        '</span>' +
+        '<span class="qpack-when ' + ageTone(age) + '">' +
+          (last ? '<i class="qpack-clock"></i><span>' +
+                  (age === 0 ? "today" : age + "d ago") + '</span>' : '') + '</span>' +
       '</button>' +
+      '<button class="qpack-star' + (onTodo(q.id) ? " on" : "") + '" data-action="pack-todo" data-id="' + q.id +
+        '" title="' + (onTodo(q.id) ? "Remove from your to-do list" : "Add to your to-do list") + '">' +
+        (onTodo(q.id) ? "★" : "☆") + '</button>' +
+      (last ? '<div class="qpack-last">Last attempted ' +
+              (age === 0 ? "today" : age + " day" + (age === 1 ? "" : "s") + " ago") +
+              ' · <b>' + last.got + '/' + last.available + '</b>' +
+              (attemptsFor(q.id).length > 1 ? ' · ' + attemptsFor(q.id).length + ' attempts' : '') +
+              '</div>' : "") +
     '</div>';
   }
 
@@ -500,8 +557,14 @@ const PacksView = (function () {
           }).join("") +
         '</div>' +
         '<div style="margin-top:12px">' + yearBar() + '</div>' +
-        '<div class="row wrap" style="gap:8px;margin-top:12px"><button class="btn btn-primary" data-action="pack-random">Random question</button>' +
-        '<button class="btn" data-action="pack-practice">Build a practice set</button><span class="tiny faint">Filters apply to both.</span></div>' +
+        '<div class="row wrap" style="gap:8px;margin-top:12px">' +
+          '<button class="btn btn-primary" data-action="pack-random">Random question</button>' +
+          '<button class="btn" data-action="pack-practice">Build a practice set</button>' +
+          '<button class="btn' + (todoOnly ? " btn-primary" : "") + '" data-action="pack-todo-only">' +
+            '★ To-do' + (todo().length ? ' (' + todo().length + ')' : '') + '</button>' +
+          (todo().length ? '<button class="btn" data-action="pack-todo-start">Work through the list</button>' : '') +
+          '<div class="spacer"></div>' + scoreSummary() +
+        '</div>' +
       '</div>' +
 
       '<div class="card">' +
@@ -542,15 +605,36 @@ const PacksView = (function () {
     return out;
   }
   function openPractice() {
-    UI.modal({ title: "Build a question practice set", body:
-      '<div class="tiny muted">Uses the paper and year filters above. Leave one field blank to choose by the other.</div>' +
-      '<div class="form-grid" style="margin-top:14px"><div class="field"><label class="label">Questions</label><input class="input" id="packCount" type="number" min="1" placeholder="e.g. 5"></div>' +
-      '<div class="field"><label class="label">Total marks</label><input class="input" id="packMarks" type="number" min="5" placeholder="e.g. 25"></div></div>',
-      footer: '<button class="btn" data-c>Cancel</button><button class="btn btn-primary" id="packStart">Start practice</button>',
-      onMount: function (box) { box.querySelector('#packStart').onclick = function () {
+    const tariffs = TARIFFS.slice();
+    const picked = {};
+    UI.modal({ title: "Build a question practice set", wide: true, body:
+      '<div class="field"><label class="label">Which tariffs?</label>' +
+        '<div class="chips" id="packTar">' + tariffs.map(function (t) {
+          return '<button type="button" class="chip" data-tar="' + t + '">' + t + ' mark</button>';
+        }).join("") + '</div>' +
+        '<div class="tiny faint" style="margin-top:6px">Pick none and it uses every tariff. ' +
+        'The paper and year filters above still apply.</div></div>' +
+      '<div class="form-grid" style="margin-top:14px"><div class="field"><label class="label">How many questions</label><input class="input" id="packCount" type="number" min="1" placeholder="e.g. 5"></div>' +
+      '<div class="field"><label class="label">Or total marks</label><input class="input" id="packMarks" type="number" min="5" placeholder="e.g. 25"></div></div>' +
+      '<div class="tiny faint">Leave one blank to choose by the other. At 1.2 minutes a mark, 25 marks is half an hour.</div>',
+      footer: '<button class="btn" data-modal-close>Cancel</button><button class="btn btn-primary" id="packStart">Start practice</button>',
+      onMount: function (box) {
+      box.querySelectorAll('[data-tar]').forEach(function (b2) {
+        b2.onclick = function () {
+          const t = +b2.dataset.tar;
+          picked[t] = !picked[t];
+          b2.classList.toggle("on", !!picked[t]);
+        };
+      });
+      box.querySelector('#packStart').onclick = function () {
         const wantedCount = +box.querySelector('#packCount').value || 0;
         const wantedMarks = +box.querySelector('#packMarks').value || 0;
-        const pool = shuffled(ECO_QUESTIONS.filter(function (q) { return (paperFilter === 'all' || String(q.paper) === paperFilter) && (yearFilter === 'all' || String(q.year) === yearFilter); }));
+        const only = Object.keys(picked).filter(function (k) { return picked[k]; }).map(Number);
+        const pool = shuffled(ECO_QUESTIONS.filter(function (q) {
+          if (only.length && only.indexOf(q.marks) < 0) return false;
+          return (paperFilter === 'all' || String(q.paper) === paperFilter) &&
+                 (yearFilter === 'all' || String(q.year) === yearFilter);
+        }));
         const chosen = [], marks = { value: 0 };
         pool.some(function (q) { if ((wantedCount && chosen.length >= wantedCount) || (wantedMarks && marks.value + q.marks > wantedMarks && chosen.length)) return true; chosen.push(q.id); marks.value += q.marks; return false; });
         if (!chosen.length) { UI.toast('No questions match those filters', 'bad'); return; }
@@ -621,6 +705,14 @@ const PacksView = (function () {
       case "pack-year":   yearFilter = el.dataset.val; App.render(); return true;
       case "pack-random": { const pool = questions(); if (!pool.length) return true; practiceQueue = []; focusId = pool[Math.floor(Math.random() * pool.length)].id; caseOpen = false; App.render(); return true; }
       case "pack-practice": openPractice(); return true;
+      case "pack-todo": toggleTodo(el.dataset.id); App.render(); return true;
+      case "pack-todo-only": todoOnly = !todoOnly; App.render(); return true;
+      case "pack-todo-start": {
+        const ids = todo().filter(byId);
+        if (!ids.length) { UI.toast("Nothing on your to-do list yet", "bad"); return true; }
+        practiceQueue = ids; practiceIndex = 0; focusId = ids[0]; caseOpen = false;
+        App.render(); return true;
+      }
       case "pack-open":   focusId = el.dataset.id; caseOpen = false; caseWidth = null; App.render(); return true;
       case "pack-keep": return true;            // a click inside the card
       case "pack-close": focusId = null; App.render(); return true;
