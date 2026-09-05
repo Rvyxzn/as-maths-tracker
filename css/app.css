@@ -2413,3 +2413,16 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .qd-curve.qd-s2{stroke:#f0724f;stroke-dasharray:6 4}
 .qd-curve.qd-mr{stroke:#4fa9f0;stroke-dasharray:6 4}
 .qd-curve.qd-ac{stroke:#3fbf87}
+
+/* four diagrams as the four answers */
+.qd-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:4px 0}
+.qd-opt{position:relative;padding:8px 6px 4px;border:1px solid var(--border);border-radius:10px;background:var(--surface-2)}
+.qd-opt-l{
+  position:absolute;right:9px;top:8px;z-index:1;
+  display:flex;align-items:center;justify-content:center;width:21px;height:21px;
+  border-radius:6px;background:var(--accent);color:var(--accent-ink);
+  font-size:12px;font-weight:800;
+}
+.qd-arrow{stroke:var(--text);stroke-width:1.6}
+.qd-arrowhead{fill:var(--text)}
+@media (max-width:640px){ .qd-opts{grid-template-columns:1fr} }
