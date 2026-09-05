@@ -46,12 +46,38 @@ const PacksView = (function () {
   let practiceQueue = [];
   let practiceIndex = 0;
   let todoOnly = false;
+  let query = "";
   const figOpen = {};            // which case-study figures are expanded
 
   function minutesFor(marks) { return Math.round(marks * ECO_MINUTES_PER_MARK); }
   function byId(id) { return ECO_QUESTIONS.filter(function (q) { return q.id === id; })[0]; }
 
+  /* What you might type looking for a question: a word from it, the topic it
+     is on, its code, or the year of the paper. A search is not worth having
+     if "2022" or "PED" misses. */
+  function haystack(q) {
+    return (q.text + " " + (q.topicName || "") + " " + (q.topicCode || "") + " " +
+            (q.series || "") + " " + (q.section || "") + " Paper " + q.paper +
+            " Year " + q.year + " " + q.marks + " mark").toLowerCase();
+  }
+
+  function matches(q, terms) {
+    const hay = haystack(q);
+    return terms.every(function (t) { return hay.indexOf(t) >= 0; });
+  }
+
   function questions() {
+    /* Searching looks across every tariff: if you type "PED" you want the
+       question, not the question filtered to whichever tariff was showing. */
+    const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    if (terms.length) {
+      return ECO_QUESTIONS.filter(function (q) {
+        if (paperFilter !== "all" && String(q.paper) !== paperFilter) return false;
+        if (yearFilter !== "all" && String(q.year) !== yearFilter) return false;
+        if (todoOnly && !onTodo(q.id)) return false;
+        return matches(q, terms);
+      });
+    }
     return ECO_QUESTIONS.filter(function (q) {
       if (q.marks !== tariff) return false;
       if (paperFilter !== "all" && String(q.paper) !== paperFilter) return false;
@@ -749,6 +775,11 @@ const PacksView = (function () {
         '</div>' +
         '<div style="margin-top:12px">' + yearBar() + '</div>' +
         '<div class="row wrap" style="gap:8px;margin-top:12px">' +
+          '<input class="input" id="packSearch" placeholder="Search questions — elasticity, PED, June 2022, 1.2.5…" ' +
+            'value="' + UI.esc(query) + '" style="flex:1;min-width:240px">' +
+          (query ? '<button class="btn btn-sm" data-action="pack-clear">Clear</button>' : "") +
+        '</div>' +
+        '<div class="row wrap" style="gap:8px;margin-top:10px">' +
           '<button class="btn btn-primary" data-action="pack-random">Random question</button>' +
           '<button class="btn" data-action="pack-practice">Build a practice set</button>' +
           '<button class="btn' + (todoOnly ? " btn-primary" : "") + '" data-action="pack-todo-only">' +
@@ -889,6 +920,15 @@ const PacksView = (function () {
     bar.addEventListener("pointercancel", finish);
   }
 
+  /* Re-rendering replaces the input, so the caret has to be put back or the
+     box loses focus after the first keystroke. */
+  function setSearch(v) {
+    query = v;
+    App.render();
+    const box = document.getElementById("packSearch");
+    if (box) { box.focus(); box.setSelectionRange(box.value.length, box.value.length); }
+  }
+
   function handle(action, el) {
     switch (action) {
       case "pack-tariff": tariff = +el.dataset.val; App.render(); return true;
@@ -902,6 +942,7 @@ const PacksView = (function () {
         App.render();
         return true;
       }
+      case "pack-clear": query = ""; App.render(); return true;
       case "pack-todo": toggleTodo(el.dataset.id); App.render(); return true;
       case "pack-todo-only": todoOnly = !todoOnly; App.render(); return true;
       case "pack-todo-start": {
@@ -935,5 +976,5 @@ const PacksView = (function () {
     return false;
   }
 
-  return { render: render, handle: handle, minutesFor: minutesFor };
+  return { render: render, setSearch: setSearch, handle: handle, minutesFor: minutesFor };
 })();

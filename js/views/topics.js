@@ -44,7 +44,9 @@ const TopicsView = (function () {
           (Subjects.current().usesYears
             ? chipGroup("year", ["all", "1", "2"], { all: "Both years", "1": "Year 1", "2": "Year 2" })
             : "") +
-          chipGroup("rag", ["all", "red", "amber", "green", "unrated"], { all: "All RAG", red: "🔴 Red", amber: "🟠 Amber", green: "🟢 Green", unrated: "Unrated" }) +
+          chipGroup("rag", ["all", "red", "amber", "green", "new", "unrated"],
+            { all: "All RAG", red: "🔴 Red", amber: "🟠 Amber", green: "🟢 Green",
+              new: "⚪ Not taught", unrated: "Unrated" }) +
           chipGroup("status", ["all", "notstarted", "video", "questions", "covered", "due"],
             { all: "Any status", notstarted: "Not started", video: "Video done", questions: "Questions done", covered: "Covered", due: "Due for review" }) +
         '</div>' +
@@ -89,7 +91,7 @@ const TopicsView = (function () {
       if (!yearPasses(inf.year || (inf.section && inf.section.year), filters.year)) return false;
       const eff = Metrics.effectiveRag(id).rag;
       if (filters.rag === "unrated" && t.rag) return false;
-      if (["red", "amber", "green"].indexOf(filters.rag) >= 0 && eff !== filters.rag) return false;
+      if (["red", "amber", "green", "new"].indexOf(filters.rag) >= 0 && eff !== filters.rag) return false;
       if (filters.status === "notstarted" && (t.videoDone || t.questionSets.length)) return false;
       if (filters.status === "video" && !t.videoDone) return false;
       if (filters.status === "questions" && !t.questionSets.length) return false;
@@ -195,13 +197,17 @@ const TopicsView = (function () {
   }
 
   function sectionCard(sec, paper, ids) {
-    const counts = { red: 0, amber: 0, green: 0, unassessed: 0 };
-    let covered = 0;
+    const counts = { red: 0, amber: 0, green: 0, new: 0, unassessed: 0 };
+    let covered = 0, marks = 0;
     ids.forEach(function (id) {
       const e = Metrics.effectiveRag(id).rag;
       if (e) counts[e]++; else counts.unassessed++;
       if (Metrics.isCovered(id)) covered++;
+      marks += Metrics.practice(id).marks;
     });
+    /* Rated but barely tested: worth flagging on the list, since the whole
+       point of the list is deciding what to open next. */
+    const thin = counts.unassessed < ids.length && counts.new < ids.length && marks < 20;
     const overall = counts.red ? "red" : counts.amber ? "amber" : counts.unassessed === ids.length ? null : "green";
     const open = openSections[sec.id] !== false;
     return '<div class="topic-card ' + (overall || "") + '" style="cursor:default">' +
@@ -215,7 +221,11 @@ const TopicsView = (function () {
           '<div class="tiny muted" style="margin-top:4px">' + UI.esc(sec.desc) + '</div>' +
         '</div>' +
         '<div style="text-align:right"><div class="tiny muted">' + covered + '/' + ids.length + ' covered</div>' +
-        '<div style="width:120px;margin-top:5px">' + UI.ragBar(counts) + '</div></div>' +
+        '<div style="width:120px;margin-top:5px">' + UI.ragBar(counts) + '</div>' +
+        (thin ? '<div class="thin-flag" title="' +
+          (marks === 0 ? "No questions logged on this chapter"
+                       : "Only " + marks + " marks of practice logged") + '">' +
+          (marks === 0 ? "untested" : "thin practice") + '</div>' : "") + '</div>' +
         '<span class="faint" style="font-size:16px">' + (open ? "▾" : "▸") + '</span>' +
       '</div>' +
       (open ? '<div style="margin-top:10px;border-top:1px solid var(--border);padding-top:6px">' +

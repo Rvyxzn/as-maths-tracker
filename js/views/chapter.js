@@ -15,6 +15,74 @@ const ChapterView = (function () {
   const pdfUrls = {}; // blob urls for attached PDFs, by chapter
   let pdfLoaded = {}; // what has already been fetched out of IndexedDB
 
+  /* Which chapters this one assumes. Folded by default: on a chapter you
+     are ready for it is a footnote, and only worth opening when it is not. */
+  const prereqOpen = {};
+
+  function prereqPeek(cid) {
+    if (typeof PREREQS === "undefined") return "";
+    const all = PREREQS.forChapter(cid);
+    if (!all.length) return "";
+    const gaps = all.filter(function (p) { return !p.ready; });
+    const open = prereqOpen[cid];
+
+    return '<div class="prq' + (gaps.length ? " warn" : "") + (open ? " open" : "") + '">' +
+      '<button class="prq-head" data-action="prq-toggle" data-id="' + cid + '">' +
+        '<span class="prq-ico">' + (gaps.length ? UI.icon("alert") : UI.icon("info")) + '</span>' +
+        '<span class="prq-main">' +
+          '<b>' + (gaps.length
+            ? "This builds on " + gaps.length + " chapter" + (gaps.length === 1 ? "" : "s") + " you have not covered"
+            : "Builds on " + all.length + " earlier chapter" + (all.length === 1 ? "" : "s")) + '</b>' +
+          '<small>' + (open ? "Click to fold away" : "Click to see which") + '</small>' +
+        '</span>' +
+        '<span class="prq-chev">' + (open ? "−" : "+") + '</span>' +
+      '</button>' +
+      (open ? '<div class="prq-body">' + all.map(function (p) {
+        return '<button class="prq-row' + (p.ready ? " ok" : "") + '" data-action="open-chapter" data-id="' + p.id + '">' +
+          '<span class="prq-tick">' + (p.ready ? "✓" : "!") + '</span>' +
+          '<span class="prq-row-main"><b>' + UI.esc(p.label) + '</b>' +
+            '<span>' + UI.esc(p.why) + '</span>' +
+            '<small>' + p.covered + ' of ' + p.total + ' subtopics covered' +
+              (p.red ? ' · ' + p.red + ' red' : '') + '</small></span>' +
+        '</button>';
+      }).join("") + '</div>' : "") +
+    '</div>';
+  }
+
+  /* A rating with almost no practice behind it is a guess. Saying so is a
+     different message from "you are weak at this", and it is the one that
+     applies to most greens early on. */
+  function practiceNote(cid, inf, eff) {
+    const subs = (inf.chapter.subs || []).map(function (x) { return x.id; });
+    if (!subs.length) return "";
+    let marks = 0, attempts = 0;
+    subs.forEach(function (id) {
+      const pr = Metrics.practice(id);
+      marks += pr.marks; attempts += pr.attempts;
+    });
+    if (marks >= 20) return "";
+    const rag = eff && eff.rag;
+    if (rag === "new") return "";       // not taught yet: practice is not the answer
+
+    const strong = rag === "green";
+    return '<div class="pnote' + (attempts === 0 ? " none" : "") + '">' +
+      UI.icon("alert") +
+      '<div><b>' + (attempts === 0
+        ? "No questions logged on this chapter yet"
+        : "Only " + marks + " marks of practice logged here") + '</b>' +
+      '<div class="tiny muted" style="margin-top:3px">' +
+        (attempts === 0
+          ? (strong ? "It is rated green, but nothing has tested that yet."
+                    : "Nothing here has been tested yet, so the rating is a guess.")
+          : (strong ? "Green on this little practice is optimistic. A full question or two would confirm it."
+                    : "Not enough to tell whether the rating is right.")) +
+      '</div></div>' +
+      '<div class="spacer"></div>' +
+      '<button class="btn btn-sm btn-primary" data-action="go" data-view="' +
+        (Subjects.currentId() === "economics" ? "packs" : "examq") + '">Do questions</button>' +
+    '</div>';
+  }
+
   function render(root, cid) {
     const inf = Store.info(cid);
     if (!inf || !inf.chapter) { root.innerHTML = UI.empty("❓", "Chapter not found"); return; }
@@ -34,7 +102,9 @@ const ChapterView = (function () {
 
     root.innerHTML =
       '<button class="btn btn-sm btn-ghost" data-action="go" data-view="topics" style="margin-bottom:14px">← All chapters</button>' +
+      prereqPeek(cid) +
       header(cid, inf, t, eff, st) +
+      practiceNote(cid, inf, eff) +
       methodCard(cid, inf) +
       notesCard(cid) +
       stepper(st) +
@@ -807,6 +877,6 @@ middling, two harder and one easier, and only those are totalled. */
   function revealMs(key, on) { if (on) revealedMs[key] = true; else delete revealedMs[key]; }
   function resetPdf(cid) { pdfLoaded[cid] = null; }
 
-  return { render: render, setOpenQ: setOpenQ, getOpenQ: getOpenQ, setBand: setBand,
+  return { prqToggle: function (id) { prereqOpen[id] = !prereqOpen[id]; }, render: render, setOpenQ: setOpenQ, getOpenQ: getOpenQ, setBand: setBand,
            revealMs: revealMs, resetPdf: resetPdf };
 })();

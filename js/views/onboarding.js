@@ -401,7 +401,7 @@ const OnboardingView = (function () {
 
   function keydown(e) {
     if (step !== 3) return;
-    const map = { "1": "red", "2": "amber", "3": "green" };
+    const map = { "1": "red", "2": "amber", "3": "green", "4": "new" };
     if (map[e.key]) {
       handle("assess-rate", { dataset: { v: map[e.key] } });
       e.preventDefault();

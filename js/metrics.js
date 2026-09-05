@@ -96,6 +96,54 @@ const Metrics = (function () {
      always labelled as weighted so the numbers never disagree silently. */
   const EXAM_WEIGHT = 1.5;
 
+  /* ---------- how much practice a topic has actually had ----------
+
+     A green rating on a topic you have answered two questions on is a guess,
+     not a measurement. This counts the practice behind the rating so the app
+     can say "you are probably fine, but you have barely tested it" — which
+     is a different message from "you are weak at this".
+
+     Marks, not question count: two 25-markers is real practice, ten
+     one-mark multiple choices is not. */
+  const THIN_MARKS = 12;
+
+  function practice(id) {
+    const t = Store.topic(id);
+    let marks = 0, attempts = 0;
+
+    (t.questionSets || []).forEach(function (q) {
+      attempts++;
+      marks += (+q.marksAvailable || 0) || (+q.attempted || 0);
+    });
+
+    /* Economics practice is logged against the question bank rather than as
+       a question set, so it has to be counted from there too. */
+    if (typeof ECO_QUESTIONS !== "undefined") {
+      const inf = Store.info(id);
+      const code = inf && inf.sub ? inf.sub.code : null;
+      const chapterCode = inf && inf.chapter ? String(inf.chapter.num) : null;
+      const byId = {};
+      ECO_QUESTIONS.forEach(function (q) { byId[q.id] = q; });
+      (Store.get().packAttempts || []).forEach(function (a) {
+        const q = byId[a.questionId];
+        if (!q) return;
+        const hit = (code && q.topicCode === code) ||
+                    (!code && chapterCode && String(q.topicCode || "").indexOf(chapterCode + ".") === 0);
+        if (!hit) return;
+        attempts++; marks += (+a.available || 0);
+      });
+    }
+
+    /* Past-paper errors are evidence the topic has been examined, even
+       though they are recorded as losses rather than as attempts. */
+    const loss = paperLoss(id);
+    if (loss.count) attempts += loss.count;
+
+    return { attempts: attempts, marks: marks,
+             thin: marks < THIN_MARKS,
+             none: attempts === 0 };
+  }
+
   function accuracy(id) {
     const t = Store.topic(id);
     const sets = t.questionSets;
@@ -165,7 +213,11 @@ const Metrics = (function () {
       ? SchoolAssessments.latestSignal(id) : { pct: null, assessment: null };
     if (!base && latestTest.pct === null) return { rag: null, base: null, reasons: [], adjusted: false };
 
-    let level = base === "red" ? 0 : base === "amber" ? 1 : 2;
+    /* "Not taught yet" is the weakest thing you can say about a topic, so it
+       sits below red for priority — but it is kept distinct, because the
+       answer to it is a lesson, not more practice. */
+    const notTaught = base === "new";
+    let level = (base === "red" || notTaught) ? 0 : base === "amber" ? 1 : 2;
     /* A score from the most recently logged test is the freshest evidence
        there is, so it replaces rather than averages with older tests: log a
        result and the plan reacts to it the same day.
@@ -198,8 +250,13 @@ const Metrics = (function () {
     if (loss.marks >= 8 && level > 0) { level = Math.max(0, level - 1); reasons.push("you lost " + loss.marks + " marks on it across your past papers"); }
     else if (loss.marks >= 4 && level > 1) { level = 1; reasons.push("you lost " + loss.marks + " marks on it in past papers"); }
 
-    const rag = level === 0 ? "red" : level === 1 ? "amber" : "green";
-    return { rag: rag, base: base, reasons: reasons, adjusted: rag !== base };
+    /* A topic you have not been taught stays "new" unless something you have
+       actually done says otherwise. */
+    const moved = reasons.length > 0;
+    const rag = notTaught && !moved ? "new"
+              : level === 0 ? "red" : level === 1 ? "amber" : "green";
+    return { rag: rag, base: base, reasons: reasons,
+             notTaught: notTaught && !moved, adjusted: rag !== base };
   }
 
   /* ---------- topic completion checklist ---------- */
@@ -768,6 +825,7 @@ const Metrics = (function () {
     AS_BOUNDARY_SERIES: AS_BOUNDARY_SERIES,
     timeDoneToday: timeDoneToday, timeEntriesToday: timeEntriesToday,
     weaknesses: weaknesses, weaknessesByChapter: weaknessesByChapter, chapterRollup: chapterRollup,
+    practice: practice,
     recurringErrors: recurringErrors, errorTypeTotals: errorTypeTotals,
     availableMinutes: availableMinutes, requiredMinutes: requiredMinutes, feasibility: feasibility
   };

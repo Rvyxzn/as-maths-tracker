@@ -41,6 +41,7 @@ const Scheduler = (function () {
 
     // 1. RAG
     if (!eff.rag) { s += 80; reasons.push("it has not been assessed yet"); }
+    else if (eff.rag === "new") { s += 104; reasons.push("you have not been taught it yet"); }
     else if (eff.rag === "red") { s += 100; reasons.push("it is currently RED"); }
     else if (eff.rag === "amber") { s += 58; reasons.push("it is currently AMBER"); }
     else { s += 20; }

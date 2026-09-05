@@ -2426,3 +2426,86 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .qd-arrow{stroke:var(--text);stroke-width:1.6}
 .qd-arrowhead{fill:var(--text)}
 @media (max-width:640px){ .qd-opts{grid-template-columns:1fr} }
+
+/* ---------- what the next exam covers ---------- */
+.exchk{display:flex;flex-direction:column;gap:2px;margin-top:12px}
+.exchk-row{
+  display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  padding:9px 8px;border:0;border-radius:9px;background:transparent;
+  color:inherit;font:inherit;cursor:pointer;transition:background .13s;
+}
+.exchk-row:hover{background:var(--surface-2)}
+.exchk-box{
+  flex:none;width:19px;height:19px;border-radius:6px;
+  border:1.6px solid var(--border-strong);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;color:transparent;
+}
+.exchk-row.done .exchk-box{background:var(--green);border-color:var(--green);color:#fff}
+.exchk-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.exchk-main b{font-size:13px;font-weight:600}
+.exchk-row.done .exchk-main b{opacity:.65}
+.exchk-main small{font-size:11px;color:var(--muted)}
+.rag-dot.none{
+  width:10px;height:10px;border-radius:50%;flex:none;
+  border:1.5px dashed var(--border-strong);background:transparent;opacity:.6;
+}
+
+/* ---------- prerequisites ---------- */
+.prq{border:1px solid var(--border);border-radius:12px;background:var(--surface-2);margin-bottom:14px;overflow:hidden}
+.prq.warn{border-color:var(--amber);background:var(--amber-soft)}
+.prq-head{
+  display:flex;align-items:center;gap:11px;width:100%;text-align:left;
+  padding:11px 13px;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;
+}
+.prq-head:hover{background:rgba(127,127,127,.07)}
+.prq-ico{flex:none;display:flex;opacity:.85}
+.prq-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.prq-main b{font-size:13px;font-weight:700}
+.prq-main small{font-size:11px;color:var(--muted)}
+.prq-chev{
+  flex:none;width:21px;height:21px;border-radius:6px;background:var(--surface);
+  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--muted);
+}
+.prq.open .prq-chev{background:var(--accent);color:var(--accent-ink)}
+.prq-body{padding:2px 10px 10px;display:flex;flex-direction:column;gap:6px}
+.prq-row{
+  display:flex;align-items:flex-start;gap:10px;width:100%;text-align:left;
+  padding:9px 11px;border:1px solid var(--border);border-radius:9px;
+  background:var(--surface);color:inherit;font:inherit;cursor:pointer;
+}
+.prq-row:hover{border-color:var(--accent)}
+.prq-tick{
+  flex:none;width:19px;height:19px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;background:var(--amber);color:#1b1200;
+}
+.prq-row.ok .prq-tick{background:var(--green);color:#04231a}
+.prq-row-main{display:flex;flex-direction:column;gap:2px;min-width:0}
+.prq-row-main b{font-size:12.5px}
+.prq-row-main span{font-size:11.5px;color:var(--muted);line-height:1.45}
+.prq-row-main small{font-size:10.5px;color:var(--muted);opacity:.85}
+
+/* "Not taught yet" is a rating, but a quiet one: it is the absence of the
+   thing, so it reads as greyed out rather than as another colour. */
+.rag-btn[data-v="new"]{opacity:.55}
+.rag-btn[data-v="new"].sel{opacity:1;background:var(--surface-2);border-color:var(--border-strong);color:var(--muted)}
+.rag-new,.rag.rag-new{color:var(--muted);opacity:.7}
+.dot-new{background:var(--border-strong);opacity:.8}
+.rag-dot.new{background:var(--border-strong);opacity:.55}
+.topic-row.is-new,.sub-row.is-new{opacity:.55}
+
+/* a rating with no practice behind it */
+.pnote{
+  display:flex;align-items:center;gap:11px;margin-bottom:14px;
+  padding:11px 13px;border-radius:12px;
+  border:1px solid var(--amber);background:var(--amber-soft);
+}
+.pnote.none{border-color:var(--border-strong);background:var(--surface-2)}
+.pnote b{font-size:13px}
+.pnote svg{flex:none;opacity:.85}
+.thin-flag{
+  display:inline-block;margin-top:6px;padding:2px 8px;border-radius:20px;
+  font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  background:var(--amber-soft);color:var(--amber);border:1px solid var(--amber);
+}

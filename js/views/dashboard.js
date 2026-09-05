@@ -70,7 +70,7 @@ const DashboardView = (function () {
       journeyCard() +
       alerts(feas, recurring, c) +
       '<div class="grid g-main" style="margin-top:18px">' +
-        '<div class="stack" style="gap:18px">' + todayCard(tasks, pending, doneCount, ph) + likelyCard() + paperBreakdown() + '</div>' +
+        '<div class="stack" style="gap:18px">' + todayCard(tasks, pending, doneCount, ph) + examChecklist() + likelyCard() + paperBreakdown() + '</div>' +
         '<div class="stack" style="gap:18px">' + progressCard(c) + weakCard() + pastPaperCard(ps) + '</div>' +
       '</div>';
   }
@@ -334,6 +334,57 @@ const DashboardView = (function () {
      of those you are currently weak on. The honesty note is not decoration:
      there is no published frequency table for 8MA0, so this must never read
      as though it were measured. */
+  /* ---------- what the next exam covers ----------
+
+     The exam stack says when the test is. This says what is on it, and how
+     far through it you are — a checklist of exactly the chapters you
+     attached when you logged it, which is the only list that matters in the
+     week before a class test. */
+  function examChecklist() {
+    const next = (typeof ExamLogger !== "undefined") ? ExamLogger.nextUp() : null;
+    if (!next || !next.chapterIds || !next.chapterIds.length) return "";
+
+    const rows = next.chapterIds.map(function (cid) {
+      const inf = CHAPTER_INDEX[cid];
+      if (!inf || !inf.chapter) return null;
+      const subs = (inf.chapter.subs || []).map(function (x) { return x.id; });
+      const rated = subs.filter(function (id) { return Store.topic(id).rag; }).length;
+      const covered = subs.filter(function (id) { return Metrics.isCovered(id); }).length;
+      /* the weakest effective rating in the chapter is the one that matters */
+      let worst = null;
+      subs.forEach(function (id) {
+        const e = Metrics.effectiveRag(id);
+        if (!e.rag) return;
+        const rank = { red: 0, amber: 1, green: 2 };
+        if (worst === null || rank[e.rag] < rank[worst]) worst = e.rag;
+      });
+      return { cid: cid, name: inf.chapter.name, label: inf.chapterLabel,
+               total: subs.length, rated: rated, covered: covered, rag: worst,
+               done: subs.length > 0 && covered === subs.length };
+    }).filter(Boolean);
+    if (!rows.length) return "";
+
+    const done = rows.filter(function (r) { return r.done; }).length;
+    return '<div class="card"><div class="card-head">' +
+        '<div class="card-title">On your next exam</div>' +
+        '<div class="right tiny muted">' + done + ' of ' + rows.length + ' covered</div>' +
+      '</div>' +
+      '<div class="tiny muted" style="margin-bottom:10px">' + UI.esc(next.title) + '</div>' +
+      UI.bar(Math.round(done / rows.length * 100), "thin") +
+      '<div class="exchk">' + rows.map(function (r) {
+        return '<button class="exchk-row' + (r.done ? " done" : "") + '" data-action="open-chapter" data-id="' + r.cid + '">' +
+          '<span class="exchk-box">' + (r.done ? "✓" : "") + '</span>' +
+          '<span class="exchk-main"><b>' + UI.esc(r.name) + '</b>' +
+            '<small>' + r.covered + ' of ' + r.total + ' subtopics covered</small></span>' +
+          (r.rag ? UI.ragDot(r.rag) : '<span class="rag-dot none" title="Not rated"></span>') +
+        '</button>';
+      }).join("") + '</div>' +
+      (done < rows.length
+        ? '<div class="tiny faint" style="margin-top:10px">The chapters without a tick are what to spend the ' +
+          'time on. Click one to open it.</div>' : "") +
+    '</div>';
+  }
+
   function likelyCard() {
     const rows = Metrics.likelyTopics({ limit: 8 });
     if (!rows.length) return "";

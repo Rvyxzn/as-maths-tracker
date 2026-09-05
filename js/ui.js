@@ -77,8 +77,12 @@ const UI = (function () {
   }
 
   /* ---------- small bits ---------- */
-  const RAG_LABEL = { red: "RED", amber: "AMBER", green: "GREEN" };
-  const RAG_EMOJI = { red: "🔴", amber: "🟠", green: "🟢" };
+  /* "new" is the fourth rating: not learned yet. It is not a weak green or a
+     confident red, it is the absence of the thing being rated, and treating
+     it as unrated meant the planner could not tell "I have not been taught
+     this" apart from "I have not got round to saying". */
+  const RAG_LABEL = { red: "RED", amber: "AMBER", green: "GREEN", new: "NOT TAUGHT" };
+  const RAG_EMOJI = { red: "🔴", amber: "🟠", green: "🟢", new: "⚪" };
 
   /* ---------- loose date parsing ----------
      A native <input type="date"> reports an empty value until every part of
@@ -237,7 +241,7 @@ chapter numbering, so this badge is what keeps them apart at a glance. */
 
   function ragPicker(current, action, id, wide) {
     return '<div class="rag-pick' + (wide ? " row" : "") + '" style="' + (wide ? "width:100%" : "") + '">' +
-      ["red", "amber", "green"].map(function (v) {
+      ["red", "amber", "green", "new"].map(function (v) {
         return '<button class="rag-btn ' + (wide ? "wide " : "") + (current === v ? "sel" : "") + '" data-v="' + v + '" data-action="' + action + '" data-id="' + esc(id) + '">' +
           RAG_EMOJI[v] + " " + RAG_LABEL[v] + '</button>';
       }).join("") + '</div>';

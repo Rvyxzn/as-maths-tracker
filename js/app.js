@@ -569,7 +569,8 @@ function setSidebar(open) {
       case "likely-why": likelyWhyModal(); return;
       case "what-now": whatNowModal(); return;
       case "continue-revision": continueRevision(); return;
-      case "open-chapter": go("chapter", { id: el.dataset.id }); return;
+      case "prq-toggle": ChapterView.prqToggle(el.dataset.id); render(); return;
+      case "open-chapter": openChapter(el.dataset.id); return;
       case "go-papers": go("papers"); return;
       case "set-time": timeModal(Metrics.today()); return;
       case "set-day-time": timeModal(el.dataset.date); return;
@@ -1875,6 +1876,45 @@ function setSidebar(open) {
   }
 
   /* ---------- live timer ---------- */
+  /* Opening a chapter that assumes ones you have not covered is worth a
+     word before you start, not after you are lost. It is a recommendation
+     and not a lock: you may be revisiting, or your class may have done it
+     in a different order. Answered once per chapter per session. */
+  const prqWarned = {};
+
+  function openChapter(cid) {
+    const gaps = (typeof PREREQS !== "undefined") ? PREREQS.missing(cid) : [];
+    if (!gaps.length || prqWarned[cid]) { go("chapter", { id: cid }); return; }
+    prqWarned[cid] = true;
+
+    const inf = Store.info(cid);
+    const name = inf && inf.chapter ? inf.chapter.name : "This chapter";
+    UI.modal({
+      title: "Start with what it builds on?",
+      body: '<p class="tiny muted" style="margin-bottom:12px">' + UI.esc(name) +
+        ' assumes ' + (gaps.length === 1 ? "a chapter" : gaps.length + " chapters") +
+        ' you have not covered yet. Doing ' + (gaps.length === 1 ? "it" : "them") +
+        ' first usually saves time rather than costing it.</p>' +
+        '<div class="prq-body">' + gaps.map(function (p) {
+          return '<div class="prq-row"><span class="prq-tick">!</span>' +
+            '<span class="prq-row-main"><b>' + UI.esc(p.label) + '</b>' +
+            '<span>' + UI.esc(p.why) + '</span>' +
+            '<small>' + p.covered + ' of ' + p.total + ' subtopics covered</small></span></div>';
+        }).join("") + '</div>',
+      footer: '<button class="btn" id="prqAnyway">Open it anyway</button>' +
+              '<button class="btn btn-primary" id="prqFirst">Open ' +
+                UI.esc(gaps[0].label) + ' first</button>',
+      onMount: function (box) {
+        box.querySelector("#prqAnyway").onclick = function () {
+          UI.closeModal(); go("chapter", { id: cid });
+        };
+        box.querySelector("#prqFirst").onclick = function () {
+          UI.closeModal(); go("chapter", { id: gaps[0].id });
+        };
+      }
+    });
+  }
+
   function timerStartModal(label, kind, refId, onStart, taskId) {
     if (!Store.settings().timerPrompt) { if (onStart) onStart(false); return; }
     UI.modal({
@@ -2148,6 +2188,7 @@ function setSidebar(open) {
     document.addEventListener("input", function (e) {
       const el = e.target;
       if (el.id === "topicSearch") { TopicsView.setSearch(el.value); return; }
+      if (el.id === "packSearch") { PacksView.setSearch(el.value); return; }
       if (el.dataset && el.dataset.s) { SessionView.setField(el.dataset.s, el.value); return; }
     });
     document.addEventListener("change", function (e) {
