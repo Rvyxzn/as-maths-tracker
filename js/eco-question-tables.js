@@ -13,6 +13,12 @@
    that introduces it: everything after that sentence on the same
    line is the flattened grid, and is replaced by the table below.
 
+   `resume` is where the question starts talking again on the far
+   side of the table. Without it, a question that says "as a
+   result of the advertising campaign, demand increased by 3 000"
+   after its table loses the very change it is asking you to
+   calculate.
+
    A blank cell is blank in the paper too — the last columns of a
    supply and demand table are there for your working.
    ============================================================ */
@@ -28,7 +34,8 @@ const ECO_QUESTION_TABLES = {
            ["23", "7", "7", "", ""],
            ["22", "8", "6", "", ""],
            ["21", "9", "5", "", ""]],
-    note: "The last two columns are blank in the paper — they are for your working."
+    note: "The last two columns are blank in the paper — they are for your working.",
+    resume: "As a result of a successful advertising campaign"
   },
 
   "p1-june2022-q2": {
@@ -59,7 +66,8 @@ const ECO_QUESTION_TABLES = {
            ["£35", "320", "400", ""],
            ["£40", "280", "440", ""],
            ["£45", "240", "480", ""]],
-    note: "The last column is blank in the paper — it is for your working."
+    note: "The last column is blank in the paper — it is for your working.",
+    resume: "As a result of an increase in packaging costs"
   },
 
   "p1-specimen-q4": {

@@ -113,18 +113,75 @@ const PacksView = (function () {
   }
 
   /* ---------- mark scheme ---------- */
-  function msSheet(text) {
+
+  /* A row of the answer grid: nothing but numbers. */
+  function isGridRow(l) {
+    return /^[-\d][\d.,\s]*$/.test(l) && (l.match(/\d+/g) || []).length >= 3;
+  }
+  /* A wrapped header cell above that grid: a word or two, no sentence. */
+  function isGridHead(l) {
+    return l.length <= 14 && !/[.:;?]$/.test(l) && !isAoLine(l) &&
+           !/^(•|\(\d+\)|\([a-e]\))/.test(l);
+  }
+
+  /* The mark scheme for a table question prints the completed table, and a
+     PDF gives that back one cell per line: "Price", "£", "Quantity",
+     "demanded", "per month", "(000)" and then "25 5 9 8 10". Joined into
+     prose it is unreadable, and it is the answer. Pulled out as a grid it
+     is the answer laid out the way the paper lays it out. */
+  function liftGrid(lines) {
+    const out = [];
+    for (let i = 0; i < lines.length; i++) {
+      if (!isGridRow(lines[i])) { out.push(lines[i]); continue; }
+      let end = i;
+      while (end + 1 < lines.length && isGridRow(lines[end + 1])) end++;
+      if (end - i + 1 < 3) { out.push(lines[i]); continue; }
+      /* the wrapped header cells sit immediately above the first row */
+      let head = [];
+      while (out.length && isGridHead(out[out.length - 1])) head.unshift(out.pop());
+      out.push({ grid: lines.slice(i, end + 1).map(function (r) { return r.trim().split(/\s+/); }),
+                 headCells: head });
+      i = end;
+    }
+    return out;
+  }
+
+  function gridHtml(node, id) {
+    const spec = (typeof ECO_QUESTION_TABLES !== "undefined") ? ECO_QUESTION_TABLES[id] : null;
+    const cols = node.grid[0].length;
+    /* the question's own column names are the right ones, since this is that
+       same table filled in */
+    const head = (spec && spec.head && spec.head.length === cols) ? spec.head : null;
+    return '<div class="qtbl-wrap"><table class="qtbl ms2-grid">' +
+      (head ? '<thead><tr>' + head.map(function (h) {
+        return '<th>' + UI.esc(h) + '</th>'; }).join("") + '</tr></thead>' : "") +
+      '<tbody>' + node.grid.map(function (r) {
+        return '<tr>' + r.map(function (c, i) {
+          return '<td' + (i ? ' class="num"' : '') + '>' + UI.esc(c) + '</td>';
+        }).join("") + '</tr>';
+      }).join("") + '</tbody></table></div>';
+  }
+
+  function msSheet(text, id) {
     const raw = String(text || "").split("\n").map(function (l) { return l.trim(); })
                   .filter(function (l) { return l.length; });
 
-    const STARTS = /^(•|[A-D]\s|Level\s*\d|\(?[a-e]\)|Knowledge|KAA|Application|Analysis|Evaluation|Effects|NB\b|\(\d+\)|\d+\s+[A-Z])/;
-    const lines = [];
+    /* A lone letter is the answer to a multiple choice, so it starts its own
+       line rather than being glued onto the part marker above it as "(b) C". */
+    /* A row of the answer grid has to survive the paragraph joining below,
+       or it is glued onto the sentence above it and there is no grid left
+       to lift out. */
+    const GRID_ROW = /^[-\d][\d.,]*(?:\s+[-\d][\d.,]*){2,}$/;
+    const STARTS = /^(•|[A-D]\s|[A-E]$|Level\s*\d|\(?[a-e]\)|Knowledge|KAA|Application|Analysis|Evaluation|Effects|NB\b|\(\d+\)|\d+\s+[A-Z])/;
+    const joined = [];
     raw.forEach(function (l) {
-      const isNew = STARTS.test(l) || (/^[A-Z]/.test(l) && lines.length &&
-                                       /[.:;?]$/.test(lines[lines.length - 1]));
-      if (!lines.length || isNew) lines.push(l);
-      else lines[lines.length - 1] += " " + l;
+      const isNew = STARTS.test(l) || GRID_ROW.test(l) ||
+                    (/^[A-Z]/.test(l) && joined.length &&
+                     /[.:;?]$/.test(joined[joined.length - 1]));
+      if (!joined.length || isNew) joined.push(l);
+      else joined[joined.length - 1] += " " + l;
     });
+    const lines = liftGrid(joined);
 
     let html = "", inList = false, inLevel = false;
     const closeList = function () { if (inList) { html += "</ul>"; inList = false; } };
@@ -135,6 +192,11 @@ const PacksView = (function () {
     let started = false;
 
     lines.forEach(function (line) {
+      if (line && line.grid) {
+        closeLevel(); closeList();
+        html += gridHtml(line, id);
+        return;
+      }
       if (hasEval && EVAL_HEAD.test(line)) {
         closeLevel(); closeList();
         const rest = line.replace(/^Evaluation\s*:?\s*/i, "").trim();
@@ -187,7 +249,14 @@ const PacksView = (function () {
       }
       if (/^\(?\d+\)?$/.test(line)) {
         closeList();
-        html += '<div class="ms2-total">' + UI.esc(line.replace(/[()]/g, "")) + ' marks</div>';
+        const n = line.replace(/[()]/g, "");
+        html += '<div class="ms2-total">' + UI.esc(n) + (n === "1" ? " mark" : " marks") + '</div>';
+        return;
+      }
+      /* the answer to a multiple choice, on its own */
+      if (/^[A-E]$/.test(line)) {
+        closeList();
+        html += '<div class="ms2-answer"><span>Answer</span><b>' + UI.esc(line) + '</b></div>';
         return;
       }
       closeList();
@@ -316,9 +385,18 @@ const PacksView = (function () {
     if (at >= 0) {
       const after = at + tbl.keep.length;
       const endOfLine = text.indexOf("\n", after);
-      /* everything between the introducing sentence and the next line is the
-         grid, read as prose */
-      text = text.slice(0, after) + (endOfLine < 0 ? "" : text.slice(endOfLine));
+      const lineEnd = endOfLine < 0 ? text.length : endOfLine;
+      /* Everything between the introducing sentence and the end of that line
+         is the grid read as prose. The question often carries on talking
+         after it, though — "as a result of the campaign, demand increased by
+         3 000" — and that is the change you are being asked to calculate, so
+         it has to survive the cut. */
+      let back = "";
+      if (tbl.resume) {
+        const r = text.indexOf(tbl.resume, after);
+        if (r >= 0 && r < lineEnd) back = " " + text.slice(r, lineEnd);
+      }
+      text = text.slice(0, after) + back + text.slice(lineEnd);
     }
     block = tbl.chart
       ? '<div class="qfig">' + ECO_FIGURE.render(tbl.chart) + '</div>'
@@ -600,7 +678,7 @@ const PacksView = (function () {
 
             (show
               ? diagramBlock(q) +
-                (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' + msSheet(q.ms)
+                (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' + msSheet(q.ms, q.id)
                       : '<div class="tiny faint">No mark scheme was found for this one.</div>') +
                 (er ? UI.examinerReport(er, { series: q.series, paper: q.paper,
                                               question: q.q + (q.part ? "(" + q.part + ")" : "") }) : "") +
