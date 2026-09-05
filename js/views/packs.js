@@ -85,6 +85,17 @@ const PacksView = (function () {
     { re: /evaluation/i,  key: "ev", label: "EV", title: "Evaluation — judge it, and say what it depends on" }
   ];
 
+  /* The AO allocation is its own line and looks like "Knowledge 2" or
+     "Knowledge 1, Application 3" — a name and a number, and nothing else.
+
+     "Knowledge/understanding: 1 mark for identifying a role; 1 mark for
+     linked development" is an instruction that happens to start with the
+     same word, and reading it as an allocation put a second, invented
+     "K 1" badge under the real one. */
+  const AO_LINE = /^(?:(?:knowledge(?:\/understanding)?|application|analysis|evaluation|kaa)\s*\d+\s*[,;]?\s*)+$/i;
+
+  function isAoLine(line) { return AO_LINE.test(line.trim()); }
+
   function aoBadges(line) {
     const found = [];
     line.split(/[,;]/).forEach(function (bit) {
@@ -141,9 +152,18 @@ const PacksView = (function () {
         html += '<div class="ms2-part">Part ' + UI.esc(line.replace(/[()]/g, "")) + '</div>';
         return;
       }
-      if (/^(Knowledge|KAA|Application|Analysis|Evaluation)\b.*\d/.test(line) && line.length < 120) {
+      if (isAoLine(line)) {
         closeList();
         html += aoBadges(line);
+        return;
+      }
+      /* "Knowledge/understanding:", "Application:" and the like introduce the
+         marks below them, so they read as a heading rather than a sentence. */
+      if (/^(Knowledge(\/understanding)?|Application|Analysis|Evaluation)\s*:/i.test(line)) {
+        closeList();
+        const cut = line.indexOf(":");
+        html += '<div class="ms2-lead"><b>' + UI.esc(line.slice(0, cut)) + '</b>' +
+                UI.esc(line.slice(cut + 1)) + '</div>';
         return;
       }
       if (/^(Level\s*\d|\d+\s+A completely)/i.test(line)) {
@@ -233,8 +253,17 @@ const PacksView = (function () {
     text = text.replace(PART, "\n").replace(STEM, "\n");
     /* a tariff belongs on its own line, never trailing a sentence */
     text = text.replace(/\s\((\d{1,2})\)(?=\s|$)/g, "\n($1)\n");
-    return text.split("\n").map(function (l) { return l.trim(); })
-               .filter(function (l) { return l.length; });
+    const lines = text.split("\n").map(function (l) { return l.trim(); })
+                      .filter(function (l) { return l.length; });
+    /* A part whose whole wording is the multiple-choice stem gets split from
+       its own marker, leaving "(c)" sitting alone. Put it back together. */
+    const out = [];
+    lines.forEach(function (l) {
+      const prev = out[out.length - 1];
+      if (prev && /^\([a-e]\)$/.test(prev)) out[out.length - 1] = prev + " " + l;
+      else out.push(l);
+    });
+    return out;
   }
 
   /* Marks, money, percentages and quantities are the things you are asked to

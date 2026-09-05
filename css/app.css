@@ -2332,3 +2332,5 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .qpack-total span{font-size:12px;font-weight:700}
 .qpack-total small{font-size:10.5px;color:var(--muted);font-weight:600}
 .qpack-total.red{color:#ef4444}.qpack-total.amber{color:#d97706}.qpack-total.green{color:#059669}
+.ms2-lead{margin:10px 0 4px;font-size:12.8px;line-height:1.5;color:var(--muted)}
+.ms2-lead b{color:var(--text);font-weight:700;margin-right:5px}
