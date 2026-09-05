@@ -11,7 +11,7 @@ Exam question sets, the PDFs sitting in "Exam questions PDFs".
    one, `approx: true` says so in the UI rather than pretending.
    ============================================================ */
 
-const PDF_ROOT = "Exam questions PDFs/AS maths (Year 1)/";
+const PDF_ROOT = "Exam questions PDFs/A-Level Maths/AS maths (Year 1)/";
 
 /* [folder, questions file, mark scheme file] */
 const EXAM_SETS = {

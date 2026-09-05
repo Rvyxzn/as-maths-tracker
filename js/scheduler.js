@@ -40,12 +40,17 @@ const Scheduler = (function () {
     let s = 0;
 
     // 1. RAG
-    if (!t.rag) { s += 80; reasons.push("it has not been assessed yet"); }
-    else if (eff.rag === "red") { s += 100; reasons.push("you rated it RED"); }
-    else if (eff.rag === "amber") { s += 58; reasons.push("you rated it AMBER"); }
+    if (!eff.rag) { s += 80; reasons.push("it has not been assessed yet"); }
+    else if (eff.rag === "red") { s += 100; reasons.push("it is currently RED"); }
+    else if (eff.rag === "amber") { s += 58; reasons.push("it is currently AMBER"); }
     else { s += 20; }
+    /* A topic can be adjusted without ever having been self-rated, when the
+       only evidence is a logged test, so there may be no base to move from. */
     if (eff.adjusted && eff.reasons.length) {
-      reasons.push("it was moved from " + eff.base.toUpperCase() + " to " + eff.rag.toUpperCase() + " because " + eff.reasons[0]);
+      reasons.push(eff.base
+        ? "it was moved from " + eff.base.toUpperCase() + " to " + eff.rag.toUpperCase() +
+          " because " + eff.reasons[0]
+        : "it is " + eff.rag.toUpperCase() + " because " + eff.reasons[0]);
     }
 
     // 2. never covered

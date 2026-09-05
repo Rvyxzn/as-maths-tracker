@@ -161,9 +161,30 @@ const Metrics = (function () {
     const t = Store.topic(id);
     const base = t.rag;
     const reasons = [];
-    if (!base) return { rag: null, base: null, reasons: [], adjusted: false };
+    const latestTest = typeof SchoolAssessments !== "undefined"
+      ? SchoolAssessments.latestSignal(id) : { pct: null, assessment: null };
+    if (!base && latestTest.pct === null) return { rag: null, base: null, reasons: [], adjusted: false };
 
     let level = base === "red" ? 0 : base === "amber" ? 1 : 2;
+    /* A score from the most recently logged test is the freshest evidence
+       there is, so it replaces rather than averages with older tests: log a
+       result and the plan reacts to it the same day.
+
+       It is trusted asymmetrically. A bad result drops the topic as far as
+       it says, because there is no reading of 40% that means you are fine.
+       A good result only lifts the topic one level, because one decent test
+       is not enough to overturn your own judgement that a chapter is weak —
+       rate it green yourself, or sit another, and it will get there. */
+    if (latestTest.pct !== null) {
+      const fromTest = latestTest.pct < 50 ? 0 : latestTest.pct < 65 ? 1 : 2;
+      const capped = fromTest > level ? Math.min(fromTest, level + 1) : fromTest;
+      const title = latestTest.assessment && latestTest.assessment.title;
+      if (capped !== level) {
+        reasons.push("your latest test" + (title ? " (“" + title + "”)" : "") +
+                     " was " + latestTest.pct + "%");
+      }
+      level = capped;
+    }
     const acc = accuracy(id);
 
     if (acc !== null) {
@@ -176,18 +197,6 @@ const Metrics = (function () {
     const loss = paperLoss(id);
     if (loss.marks >= 8 && level > 0) { level = Math.max(0, level - 1); reasons.push("you lost " + loss.marks + " marks on it across your past papers"); }
     else if (loss.marks >= 4 && level > 1) { level = 1; reasons.push("you lost " + loss.marks + " marks on it in past papers"); }
-
-    /* A school test on this chapter is real, marked evidence, so it carries
-       the same weight as your own question scores. Grade-only entries are
-       excluded upstream because a letter has no percentage behind it. */
-    if (typeof SchoolAssessments !== "undefined") {
-      const sa = SchoolAssessments.signal(id);
-      if (sa.avg !== null) {
-        const where = sa.count > 1 ? "across " + sa.count + " school tests" : "in a school test";
-        if (sa.avg < 50 && level > 0) { level = 0; reasons.push("you scored " + sa.avg + "% " + where); }
-        else if (sa.avg < 65 && level > 1) { level = 1; reasons.push("you scored " + sa.avg + "% " + where); }
-      }
-    }
 
     const rag = level === 0 ? "red" : level === 1 ? "amber" : "green";
     return { rag: rag, base: base, reasons: reasons, adjusted: rag !== base };

@@ -179,6 +179,21 @@ const SchoolAssessments = (function () {
       return { avg: avg, count: rel.length };
     }
 
+    /* The plan needs a current signal rather than an average of every test
+    ever taken. A better result this week should not stay buried under an
+    older weak result (and vice versa). `updatedAt` is set whenever an entry
+    is saved; older records gracefully fall back to their test date. */
+    function latestSignal(id) {
+      const rel = forTopic(id).filter(function (a) { return pct(a) != null; })
+      .sort(function (a, b) {
+        const aWhen = a.updatedAt || a.loggedAt || a.date || "";
+        const bWhen = b.updatedAt || b.loggedAt || b.date || "";
+        return bWhen.localeCompare(aWhen);
+      });
+      if (!rel.length) return { pct: null, assessment: null };
+      return { pct: pct(rel[0]), assessment: rel[0] };
+    }
+
     /* Overall grade trend, mocks and topic tests together. */
     function trend() {
       const withPct = all().filter(function (a) { return pct(a) != null; })
@@ -206,8 +221,15 @@ const SchoolAssessments = (function () {
       Store.mutate(function (st) {
           if (!st.schoolAssessments) st.schoolAssessments = [];
           const i = st.schoolAssessments.findIndex(function (a) { return a.id === rec.id; });
-          if (i >= 0) st.schoolAssessments[i] = rec;
+          const now = new Date().toISOString();
+          if (i >= 0) {
+            rec.loggedAt = st.schoolAssessments[i].loggedAt || now;
+            rec.updatedAt = now;
+            st.schoolAssessments[i] = rec;
+          }
           else {
+            rec.loggedAt = now;
+            rec.updatedAt = now;
             st.schoolAssessments.push(rec);
             Store.log("Logged school assessment: " + rec.title, "paper");
           }
@@ -226,7 +248,7 @@ const SchoolAssessments = (function () {
 
     return {
       suggest: suggest, all: all, get: get, pct: pct, forTopic: forTopic,
-      signal: signal, trend: trend, summary: summary, save: save, remove: remove,
+      signal: signal, latestSignal: latestSignal, trend: trend, summary: summary, save: save, remove: remove,
       GRADES: ["A*", "A", "B", "C", "D", "E", "U"]
     };
   })();
