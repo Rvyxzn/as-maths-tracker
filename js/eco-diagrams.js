@@ -21,7 +21,8 @@ const ECO_DIAGRAM = (function () {
   /* The box is wider than the plot on purpose. Curves are labelled at their
      right-hand end and the axes are labelled outside them, so drawing to the
      edge clipped "MSC" to "MF" and "Cost / Revenue" to "Revenue". */
-  const W = 372, H = 226;              // viewBox
+  const W = 372, H = 248;              // viewBox, tall enough for the
+                                       // axis name and a footnote beneath it
   const L = 54, R = 268;               // plot area, left and right
   const T = 30, B = 182;               // top and bottom
 
@@ -182,7 +183,7 @@ const ECO_DIAGRAM = (function () {
       txt(px(100) + 7, py(20) + 4, "MPB = MSB", "ed-lbl", "start") +
       txt(px(100) + 7, py(90) + 4, "MPC", "ed-lbl", "start") +
       txt(px(100) + 7, py(100) + 4, "MSC", "ed-lbl", "start") +
-      txt(L + 2, B + 31, "shaded area = welfare loss", "ed-note", "start"),
+      txt(L + 2, B + 45, "shaded area = welfare loss", "ed-note", "start"),
       "Marginal social cost above marginal private cost, so the market overproduces");
   };
 
@@ -231,7 +232,7 @@ const ECO_DIAGRAM = (function () {
       txt(px(100) + 7, py(arAt(100)) + 4, "AR", "ed-lbl", "start") +
       txt(px(100) + 7, py(mcAt(100)) + 4, "MC", "ed-lbl", "start") +
       txt(px(100) + 7, py(acAt(100)) + 4, "AC", "ed-lbl", "start") +
-      txt(L + 2, B + 31, "shaded area = supernormal profit", "ed-note", "start"),
+      txt(L + 2, B + 45, "shaded area = supernormal profit", "ed-note", "start"),
       "A monopoly setting output where marginal cost meets marginal revenue and charging above average cost");
   };
 
@@ -266,7 +267,7 @@ const ECO_DIAGRAM = (function () {
       txt(px(60) + 8, py(73.6) - 6, "A", "ed-t", "start") +
       dot(px(35), py(35)) + txt(px(35) + 8, py(35) + 4, "B", "ed-t", "start") +
       dot(px(80), py(80)) + txt(px(80) + 8, py(80) - 4, "C", "ed-t", "start") +
-      txt(L - 6, B + 31, "A on it · B inside, spare capacity · C beyond, not attainable",
+      txt(L - 6, B + 45, "A on it · B inside, spare capacity · C beyond, not attainable",
           "ed-note", "start"),
       "A production possibility frontier with points on, inside and beyond it");
   };
@@ -280,7 +281,7 @@ const ECO_DIAGRAM = (function () {
       axisPoint(50, 50, "P", "Q") +
       txt(px(100) + 7, py(36) + 4, "elastic", "ed-lbl", "start") +
       txt(px(62) + 4, py(4), "inelastic", "ed-lbl", "start") +
-      txt(L - 6, B + 31, "the flatter the curve, the more price elastic demand is", "ed-note", "start"),
+      txt(L - 6, B + 45, "the flatter the curve, the more price elastic demand is", "ed-note", "start"),
       "A flatter demand curve is more price elastic than a steeper one");
   };
 

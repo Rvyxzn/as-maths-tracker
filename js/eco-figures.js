@@ -74,6 +74,71 @@ const ECO_FIGURES = {
         { name: "Orange/EE",     values: [13.9, 13.3, 12.2, 12.2, 13.2, 14.4, 15.4, 15.6, 16.2, 17.8, 18.5] },
         { name: "Wholesale line rental", values: [10.4, 10.0, 9.7, 9.4, 9.1, 8.8, 8.4, 8.1, 7.8, 7.4, 7.1] }
       ] }
+  ],
+
+  "p1-june2020": [
+    { label: "Figure 1", kind: "bar", exact: true,
+      caption: "UK government subsidy to Northern, a train operating company in Northern England",
+      yLabel: "£ millions",
+      x: [2017, 2018],
+      series: [{ name: "Subsidy", values: [277.0, 287.9] }] },
+    { label: "Figure 3", kind: "bar", exact: true,
+      caption: "Price of a single off-peak train journey, Edinburgh to Leeds, Saturday 22 December 2018, 19:00",
+      yLabel: "£",
+      x: ["Adult", "16–25 Railcard"],
+      series: [{ name: "Fare", values: [105.30, 69.50] }] }
+  ],
+
+  "p1-june2021": [
+    { label: "Figure 1", kind: "hbar", exact: true, unit: "%",
+      caption: "Package holiday market share of the six largest providers, booked by UK residents, 2019",
+      rows: [["TUI", 29], ["Jet2", 16], ["Thomas Cook", 13],
+             ["Expedia", 8], ["On The Beach", 6], ["BA Holidays", 4]] },
+    { label: "Figure 2", kind: "table", exact: true,
+      caption: "Jet2 package holiday prices to Sorrento — 2 adults, 7 nights from Monday 25 May 2020",
+      note: "Half board, premium double or twin room, return flights from Edinburgh, 22 kg bag allowance, ATOL protected. Prices accessed 22 and 23 September 2019.",
+      head: ["", "Before Thomas Cook shut down", "12 hours after"],
+      rows: [["Holiday price from", "£1 576", "£1 648"],
+             ["Per person price", "£788", "£824"]] }
+  ],
+
+  "p1-june2022": [
+    { label: "Figure 1", kind: "hbar", exact: true,
+      caption: "Branded coffee shops by number of shops in the UK in 2021",
+      rows: [["Other chains", 3748], ["Costa", 2681], ["Starbucks", 1025],
+             ["Caffè Nero", 648], ["AMT", 50], ["Soho Coffee", 40], ["Coffee Republic", 30]] },
+    { label: "Figure 2", kind: "line", exact: true,
+      caption: "International coffee price (Arabica bean), US dollars per kilogram, 2020",
+      yLabel: "US$ per kg",
+      x: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      series: [{ name: "Arabica price",
+                 values: [3.13, 2.99, 3.27, 3.41, 3.30, 3.12, 3.24, 3.60, 3.67, 3.35, 3.31, 3.48] }] }
+  ],
+
+  "p1-june2023": [
+    { label: "Figure 1", kind: "bar", exact: true, unit: "%",
+      caption: "Market share of UK online streaming services, Q2 2021 to Q2 2022",
+      yLabel: "share %",
+      x: ["Q2 2021", "Q3 2021", "Q4 2021", "Q1 2022", "Q2 2022"],
+      series: [
+        { name: "Amazon Prime Video", values: [37.9, 41.1, 45.0, 27.1, 25.9] },
+        { name: "Disney+",            values: [16.0, 17.7, 19.3, 14.1, 21.5] },
+        { name: "Netflix",            values: [15.0, 10.5, 5.0, 9.4, 4.5] },
+        { name: "NOW",                values: [11.3, 11.2, 5.6, 11.0, 11.1] },
+        { name: "AppleTV+",           values: [4.0, 5.5, 7.3, 9.2, 9.9] },
+        { name: "BritBox",            values: [4.0, 3.0, 5.7, 6.0, 5.9] },
+        { name: "Others",             values: [11.8, 11.0, 12.1, 23.2, 21.2] }
+      ] },
+    { label: "Figure 2", kind: "table", exact: true,
+      caption: "UK online streaming services — monthly fees, September 2022",
+      head: ["Streaming service provider", "September 2022"],
+      rows: [["Netflix premium (4 users / ultra HD)", "£15.99"],
+             ["Netflix standard (2 users / HD)", "£10.99"],
+             ["Netflix basic (single user / non HD)", "£6.99"],
+             ["Amazon Prime Video", "£8.99"],
+             ["Amazon Prime Video — student price", "£4.49"],
+             ["Disney+", "£7.99"],
+             ["AppleTV+", "£4.99"]] }
   ]
 
 };
