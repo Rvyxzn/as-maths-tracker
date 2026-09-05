@@ -302,8 +302,48 @@ const PacksView = (function () {
     }).join("") + '</div>';
   }
 
-  function questionHtml(t) {
-    return segments(t).map(lineHtml).join("");
+  /* A question that prints a table carries the grid separately, because the
+     PDF only gives it back as a run of words. The flattened version is cut
+     out of the text and the real one put in its place, at the point in the
+     question where the paper prints it. */
+  function questionHtml(t, id) {
+    const tbl = (typeof ECO_QUESTION_TABLES !== "undefined") ? ECO_QUESTION_TABLES[id] : null;
+    if (!tbl) return segments(t).map(lineHtml).join("");
+
+    let text = String(t || "");
+    const at = text.indexOf(tbl.keep);
+    let block = "";
+    if (at >= 0) {
+      const after = at + tbl.keep.length;
+      const endOfLine = text.indexOf("\n", after);
+      /* everything between the introducing sentence and the next line is the
+         grid, read as prose */
+      text = text.slice(0, after) + (endOfLine < 0 ? "" : text.slice(endOfLine));
+    }
+    block = tbl.chart
+      ? '<div class="qfig">' + ECO_FIGURE.render(tbl.chart) + '</div>'
+      : '<div class="qtbl-wrap"><table class="qtbl">' +
+          (tbl.head ? '<thead><tr>' + tbl.head.map(function (h) {
+            return '<th>' + UI.esc(h) + '</th>'; }).join("") + '</tr></thead>' : "") +
+          '<tbody>' + tbl.rows.map(function (r) {
+            return '<tr>' + r.map(function (c, i) {
+              return '<td' + (i && c ? ' class="num"' : (c ? '' : ' class="blank"')) + '>' +
+                     UI.esc(c) + '</td>';
+            }).join("") + '</tr>';
+          }).join("") + '</tbody></table>' +
+          (tbl.note ? '<div class="qtbl-note">' + UI.esc(tbl.note) + '</div>' : "") +
+        '</div>';
+
+    /* put the table back where the paper has it: straight after the sentence
+       that introduces it, before the first part */
+    const segs = segments(text);
+    let out = "", placed = false;
+    segs.forEach(function (l) {
+      const html = lineHtml(l);
+      out += html;
+      if (!placed && l.indexOf(tbl.keep.slice(0, 30)) >= 0) { out += block; placed = true; }
+    });
+    return placed ? out : segs.map(lineHtml).join("") + block;
   }
 
   /* ---------- the case study ---------- */
@@ -553,7 +593,7 @@ const PacksView = (function () {
           '</div>' +
 
           '<div class="qfocus-scroll">' +
-            '<div class="qtext">' + questionHtml(q.text) + '</div>' +
+            '<div class="qtext">' + questionHtml(q.text, q.id) + '</div>' +
             (g.split ? '<div class="qfocus-guide"><b>' + UI.esc(g.name) + '</b>' +
                        '<span class="pill acc">' + UI.esc(g.split) + '</span>' +
                        '<p>' + UI.esc(g.how) + '</p></div>' : "") +

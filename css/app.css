@@ -2374,3 +2374,14 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .hero-peek-t{font-size:11.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .add-exam.slim{padding:11px 14px}
 .add-exam.slim small{display:none}
+
+/* ---------- a table printed inside a question ---------- */
+.qtbl-wrap{margin:14px 0;overflow-x:auto}
+.qtbl{border-collapse:collapse;font-size:13px;min-width:100%}
+.qtbl th,.qtbl td{border:1px solid var(--border-strong);padding:7px 11px;text-align:left;vertical-align:top}
+.qtbl th{background:var(--surface-2);font-weight:700;font-size:11.5px;line-height:1.35;color:var(--muted)}
+.qtbl td{font-variant-numeric:tabular-nums}
+.qtbl td.num{text-align:right;font-weight:600}
+.qtbl td.blank{background:repeating-linear-gradient(45deg,transparent,transparent 5px,var(--surface-2) 5px,var(--surface-2) 10px)}
+.qtbl-note{margin-top:6px;font-size:11.5px;color:var(--muted)}
+.qfig{margin:14px 0;padding:10px;border-radius:10px;background:var(--surface-2)}
