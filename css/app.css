@@ -2407,3 +2407,9 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .qd-actual{fill:none;stroke:#4fa9f0;stroke-width:2.2;stroke-linecap:round}
 .qd-gd{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 3;opacity:.75}
 .qd-pt{fill:var(--text)}
+.qd-curve{fill:none;stroke:#4fa9f0;stroke-width:2.1}
+.qd-curve.qd-d{stroke:#4fa9f0}
+.qd-curve.qd-s{stroke:#f0724f}
+.qd-curve.qd-s2{stroke:#f0724f;stroke-dasharray:6 4}
+.qd-curve.qd-mr{stroke:#4fa9f0;stroke-dasharray:6 4}
+.qd-curve.qd-ac{stroke:#3fbf87}

@@ -25,6 +25,60 @@
 
 const ECO_QUESTION_TABLES = {
 
+  "p1-specimen-q3": {
+    keep: "Hawaii has a tax on packets of cigarettes. The diagram below shows the effect of this tax.",
+    diagram: {
+      kind: "plot", alt: "A specific tax shifting supply from S to S1, price rising from $5.10 to $7.39",
+      xLabel: "Quantity of cigarettes (thousands)", yLabel: "Price of cigarettes ($)",
+      xMax: 24, yMax: 14,
+      xTicks: [10, 14], yTicks: [3.58, 5.10, 7.39],
+      /* D through (10, 7.39) and (14, 5.10); S through (10, 3.58) and
+         (14, 5.10); S1 is S raised by the tax, through (10, 7.39). */
+      curves: [
+        { from: [0.5, 12.83], to: [22, 0.52], cls: "qd-d", label: "D" },
+        { from: [2, 0.54], to: [22, 8.14], cls: "qd-s", label: "S" },
+        { from: [2, 4.35], to: [19, 10.81], cls: "qd-s2", label: "S1", ldy: -2 }
+      ],
+      points: [{ x: 14, y: 5.10 }, { x: 10, y: 7.39 }, { x: 10, y: 3.58 }]
+    }
+  },
+
+  "p1-june2017-q3": {
+    keep: "The Indian government has introduced a subsidy on domestic cooking gas cylinders in the city of Mumbai. The diagram below shows the effect following the introduction of the subsidy.",
+    diagram: {
+      kind: "plot", alt: "A subsidy shifting supply from S to S1, price falling from 526 to 455 rupees",
+      xLabel: "Quantity of gas cylinders, daily (million)", yLabel: "Price per cylinder (Rupees)",
+      xMax: 3.0, yMax: 1250,
+      xTicks: [1.5, 1.8], yTicks: [455, 526, 1023],
+      curves: [
+        { from: [0, 881], to: [2.85, 206], cls: "qd-d", label: "D" },
+        { from: [1.219, 60], to: [1.895, 1180], cls: "qd-s", label: "S", ldy: -4 },
+        { from: [1.562, 60], to: [2.238, 1180], cls: "qd-s2", label: "S1", ldy: -4 }
+      ],
+      points: [{ x: 1.5, y: 526 }, { x: 1.8, y: 455 }, { x: 1.8, y: 1023 }]
+    }
+  },
+
+  "p1-june2018-q4": {
+    keep: "Emily owns and operates a nail ink salon. The diagram shows the cost and revenue curves for treatments at her nail ink salon.",
+    resume: "Initially, Emily sets her price to maximise profits.",
+    diagram: {
+      kind: "plot", alt: "Cost and revenue curves, with profit maximising output 25 and revenue maximising output 36",
+      xLabel: "Quantity of treatments per day", yLabel: "Costs, revenue per treatment (£)",
+      xMax: 62, yMax: 30,
+      xTicks: [25, 36], yTicks: [8, 9, 12, 17],
+      curves: [
+        { from: [0, 28.36], to: [58, 2.0], cls: "qd-d", label: "AR" },
+        { from: [0, 28.36], to: [36, 0], cls: "qd-mr", label: "MR", ldy: 26, ldx: 4 },
+        { points: [[6, 3.5], [14, 5.4], [25, 8.7], [33, 13], [40, 18.5], [44, 22]],
+          cls: "qd-s", label: "MC", ldy: -4 },
+        { points: [[8, 13.5], [16, 10.6], [25, 9], [36, 8], [46, 8.6], [56, 10.5]],
+          cls: "qd-ac", label: "AC" }
+      ],
+      points: [{ x: 25, y: 17 }, { x: 25, y: 9 }, { x: 36, y: 12 }, { x: 36, y: 8 }]
+    }
+  },
+
   /* ---------- questions that are the diagram ----------
      Each is drawn from the paper's own geometry: the same intercepts, the
      same axis values, the same labelled points in the same places. */
