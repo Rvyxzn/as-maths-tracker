@@ -827,6 +827,7 @@ function setSidebar(open) {
         return;
       }
 
+      case "hero-front": { DashboardView.setFront(+el.dataset.i); render(); return; }
       case "log-exam": { ExamLogger.open(); return; }
       case "edit-exam": {
         const rec = (Store.get().schoolAssessments || [])

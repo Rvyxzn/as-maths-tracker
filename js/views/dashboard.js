@@ -4,11 +4,23 @@ Dashboard, the "how prepared am I / what do I do now" view
 
 const DashboardView = (function () {
 
+  /* which exam card is at the front of the stack */
+  let front = 0;
+
   /* Logging a test is the one thing the planner cannot work out for itself,
      so it gets a proper invitation rather than being buried in a menu. Once
      something is logged and unsat, this becomes the countdown to it. */
   function examLoggerCard() {
     const next = (typeof ExamLogger !== "undefined") ? ExamLogger.nextUp() : null;
+    /* The hero is the countdown now, so repeating it here would say the same
+       thing twice. Once something is logged this is just the way to add
+       another one. */
+    if (next) {
+      return '<button class="add-exam slim" data-action="log-exam" style="margin-bottom:16px">' +
+        '<span class="add-exam-plus">+</span>' +
+        '<span class="add-exam-main"><b>Log another exam</b>' +
+        '<small>Another test, a mock, anything with a date.</small></span></button>';
+    }
     if (!next) {
       return '<button class="add-exam" data-action="log-exam" style="margin-bottom:16px">' +
         '<span class="add-exam-plus">+</span>' +
@@ -63,26 +75,120 @@ const DashboardView = (function () {
       '</div>';
   }
 
-  function hero(d, ph, c, ps) {
-    const passed = Metrics.examPassed();
-    const examDay = Metrics.isExamDay();
-    const cls = passed || examDay ? "done" : d <= 7 ? "urgent" : "";
-    const label = passed ? "Exam complete" : examDay ? "Today is the exam" : d === 1 ? "Day until exam" : "Days until exam";
-    const value = passed ? "✓" : examDay ? "0" : String(d);
+  /* ---------- the exam stack ----------
+
+     There is rarely only one exam that matters. The A level is the one the
+     planner works back from, but a class test on Friday is the one deciding
+     what you do tonight, and a hero counting down to next summer while a
+     test sits two days away is showing the less useful of the two things it
+     knows. Worse, once the A level date passes it says "exam complete" for
+     ever, over the top of every real test still to come.
+
+     So every exam with a date is a card, soonest in front, the rest peeking
+     out behind it. Click one to bring it forward. */
+
+  function examCards() {
+    const today = Metrics.today();
+    const cards = [];
+    const settings = Store.settings();
+
+    if (settings.examDate) {
+      cards.push({ id: "spec", kind: "spec", title: Subjects.current().name,
+                   sub: settings.qualification, date: settings.examDate });
+    }
+    if (typeof ExamLogger !== "undefined") {
+      ExamLogger.awaiting().forEach(function (a) {
+        if (!a.date) return;
+        cards.push({ id: a.id, kind: "logged", title: a.title, date: a.date, rec: a });
+      });
+    }
+    cards.forEach(function (card) {
+      card.days = Math.round((Date.parse(card.date + "T00:00:00") -
+                              Date.parse(today + "T00:00:00")) / 86400000);
+    });
+    /* still to come first, soonest of those in front; anything already sat
+       falls to the back rather than out of the stack, because a test you
+       have not scored yet is still something to deal with */
+    cards.sort(function (x, y) {
+      const xp = x.days < 0, yp = y.days < 0;
+      if (xp !== yp) return xp ? 1 : -1;
+      return xp ? y.days - x.days : x.days - y.days;
+    });
+    return cards;
+  }
+
+  function heroFace(card, ph, c, ps) {
+    const passed = card.days < 0;
+    const isSpec = card.kind === "spec";
+    const cls = passed ? "done" : card.days <= 7 ? "urgent" : "";
+    /* Naming the exam in the label is the whole point of the stack: "days
+       until Paper 3" says which clock this is, where "days until exam" left
+       you to work it out from the date underneath. */
+    const shortName = !isSpec && card.title.length <= 22 ? card.title : null;
+    const label = passed
+        ? (isSpec ? "Exam complete" : "Waiting on your score")
+        : card.days === 0
+          ? (isSpec ? "Today is the exam" : (shortName || card.title) + " is today")
+        : "Days until " + (isSpec ? "exam" : (shortName || "it"));
+    const value = passed ? "✓" : String(card.days);
+
+    const covers = !isSpec && card.rec.chapterIds
+      ? card.rec.chapterIds.map(function (cid) {
+          const inf = CHAPTER_INDEX[cid];
+          return inf && inf.chapter ? inf.chapter.name : null;
+        }).filter(Boolean) : [];
+
     return '<div class="hero ' + cls + '">' +
       '<div class="row" style="align-items:flex-start"><div>' +
-        '<div class="hero-lbl">' + label + '</div>' +
+        '<div class="hero-lbl">' + UI.esc(label) + '</div>' +
         '<div class="hero-days">' + value + '</div>' +
-        '<div style="opacity:.9;font-size:13.5px;margin-top:4px">' + Metrics.fmtDateLong(Store.settings().examDate) + ' · ' + UI.esc(Store.settings().qualification) + '</div>' +
+        '<div class="hero-when">' + Metrics.fmtDateLong(card.date) + ' · ' +
+          UI.esc(isSpec ? card.sub : card.title) + '</div>' +
       '</div><div class="spacer"></div>' +
-      '<div style="text-align:right"><span class="phase-chip">' + UI.esc(ph.name) + '</span></div></div>' +
-      '<div style="margin-top:12px;font-size:13px;opacity:.92;max-width:62ch">' + UI.esc(ph.desc) + '</div>' +
-      '<div class="hero-meta">' +
-        '<div>Specification covered<b>' + c.coveredPct + '%</b></div>' +
-        '<div>Assessed<b>' + c.assessedPct + '%</b></div>' +
-        '<div>Red topics<b>' + c.red + '</b></div>' +
-        '<div>Past papers logged<b>' + ps.count + (ps.avg != null ? " · avg " + ps.avg + "%" : "") + '</b></div>' +
-      '</div></div>';
+      '<div style="text-align:right"><span class="phase-chip">' +
+        UI.esc(isSpec ? ph.name : (covers.length ? covers.length + " chapters" : "Class test")) +
+      '</span></div></div>' +
+
+      (isSpec
+        ? '<div style="margin-top:12px;font-size:13px;opacity:.92;max-width:62ch">' + UI.esc(ph.desc) + '</div>' +
+          '<div class="hero-meta">' +
+            '<div>Specification covered<b>' + c.coveredPct + '%</b></div>' +
+            '<div>Assessed<b>' + c.assessedPct + '%</b></div>' +
+            '<div>Red topics<b>' + c.red + '</b></div>' +
+            '<div>Past papers logged<b>' + ps.count + (ps.avg != null ? " · avg " + ps.avg + "%" : "") + '</b></div>' +
+          '</div>'
+        : '<div class="hero-covers">' +
+            (covers.length
+              ? covers.slice(0, 5).map(function (n) {
+                  return '<span class="hero-chip">' + UI.esc(n) + '</span>'; }).join("") +
+                (covers.length > 5 ? '<span class="hero-chip">+' + (covers.length - 5) + ' more</span>' : "")
+              : '<span class="hero-chip">Nothing attached, so the planner cannot prioritise for it</span>') +
+          '</div>' +
+          '<div class="hero-acts">' +
+            '<button class="btn btn-sm" data-action="edit-exam" data-id="' + card.id + '">Edit</button>' +
+            '<button class="btn btn-sm" data-action="go" data-view="assessments">Add my score</button>' +
+          '</div>') +
+    '</div>';
+  }
+
+  function hero(d, ph, c, ps) {
+    const cards = examCards();
+    if (!cards.length) return "";
+    if (front >= cards.length) front = 0;
+
+    const behind = cards.map(function (card, i) { return { card: card, i: i }; })
+      .filter(function (x) { return x.i !== front; })
+      .slice(0, 3)
+      .map(function (x, n) {
+        return '<button class="hero-peek" data-action="hero-front" data-i="' + x.i + '" ' +
+          'style="--n:' + n + '" title="' + UI.esc(x.card.title) + '">' +
+          '<span class="hero-peek-d">' + (x.card.days < 0 ? "✓" : x.card.days) + '</span>' +
+          '<span class="hero-peek-t">' + UI.esc(x.card.title) + '</span>' +
+        '</button>';
+      }).join("");
+
+    return '<div class="hero-stack">' + heroFace(cards[front], ph, c, ps) +
+      (behind ? '<div class="hero-behind">' + behind + '</div>' : "") + '</div>';
   }
 
 /* MY AS MATHS JOURNEY, where you are in the method, and what is next */
@@ -326,5 +432,5 @@ const DashboardView = (function () {
       '</div>' + UI.lineChart(pts, { height: 150 }) + '</div>';
   }
 
-  return { render: render };
+  return { render: render, setFront: function (i) { front = i; } };
 })();
