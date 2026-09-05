@@ -2253,3 +2253,33 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
   .cd-ring{width:124px;height:124px}
   .cd-time b{font-size:24px}
 }
+
+/* ---------- the figures, redrawn ---------- */
+.ef{width:100%;height:auto;display:block}
+.efg{stroke:var(--border);stroke-width:1;opacity:.55}
+.efax{stroke:var(--muted);stroke-width:1.4}
+.eft{fill:var(--muted);font-size:10.5px;font-weight:600}
+.efa{fill:var(--muted);font-size:10.5px;font-weight:700;letter-spacing:.04em}
+.efl{fill:var(--text);font-size:11px;font-weight:600}
+.efv{fill:var(--text);font-size:10px;font-weight:700}
+.efp{fill:none;stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+.efd{stroke:var(--surface);stroke-width:1.4}
+.efb,.efk{stroke:none}
+/* one accent per series, readable in both themes */
+.s0{stroke:#4fa9f0}  .efb.s0,.efd.s0,.efk.s0{fill:#4fa9f0}
+.s1{stroke:#f0724f}  .efb.s1,.efd.s1,.efk.s1{fill:#f0724f}
+.s2{stroke:#3fbf87}  .efb.s2,.efd.s2,.efk.s2{fill:#3fbf87}
+.s3{stroke:#b47ef0}  .efb.s3,.efd.s3,.efk.s3{fill:#b47ef0}
+.s4{stroke:#e0b13c}  .efb.s4,.efd.s4,.efk.s4{fill:#e0b13c}
+
+.cs-fig-note{font-size:11px;color:var(--muted);margin:2px 0 8px}
+.cs-fig-approx{
+  display:inline-flex;align-items:center;gap:5px;margin-top:7px;
+  font-size:10.5px;color:var(--muted);
+}
+.ef-tablewrap{overflow-x:auto;margin:4px 0}
+.ef-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.ef-table th,.ef-table td{padding:6px 9px;border-bottom:1px solid var(--border);text-align:left}
+.ef-table th{font-weight:700;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+.ef-table td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.eft.efs{font-size:8.6px}

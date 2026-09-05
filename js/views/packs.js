@@ -285,21 +285,33 @@ const PacksView = (function () {
     return pct < 50 ? "red" : pct < 65 ? "amber" : "green";
   }
 
-  function figureHtml(f) {
+  /* A figure is drawn from its data where we have it, and falls back to
+     whatever the extraction managed otherwise. The drawn one wins: a chart
+     is what the paper showed you, and half these questions ask you to read
+     a trend off it. */
+  function figureHtml(f, drawn) {
+    const chart = drawn ? ECO_FIGURE.render(drawn) : "";
     const rows = (f.data || []).map(function (d) {
       return '<tr><td>' + UI.esc(d[0]) + '</td><td class="num">' + UI.esc(d[1]) + '</td></tr>';
     }).join("");
     return '<div class="cs-fig">' +
       '<div class="cs-fig-head"><b>' + UI.esc(f.label) + '</b>' +
         (f.caption ? '<span>' + UI.esc(f.caption) + '</span>' : "") + '</div>' +
-      (rows ? '<table class="cs-table"><tbody>' + rows + '</tbody></table>' : "") +
+      (drawn && drawn.note ? '<div class="cs-fig-note">' + UI.esc(drawn.note) + '</div>' : "") +
+      (chart || (rows ? '<table class="cs-table"><tbody>' + rows + '</tbody></table>' : "")) +
+      (drawn && drawn.exact === false
+        ? '<div class="cs-fig-approx">' +
+          'Read off the printed chart, so these are close rather than exact.</div>' : "") +
     '</div>';
   }
 
-  function caseHtml(cs) {
+  function caseHtml(cs, key) {
+    const drawn = (typeof ECO_FIGURE !== "undefined") ? ECO_FIGURE.forCase(key) : [];
+    const byLabel = {};
+    drawn.forEach(function (d) { byLabel[d.label] = d; });
     return '<div class="cs-head">' + UI.icon("info") + '<span>Case Study</span></div>' +
       (cs.title ? '<h4 class="cs-title">' + UI.esc(cs.title) + '</h4>' : "") +
-      cs.figures.map(figureHtml).join("") +
+      cs.figures.map(function (f) { return figureHtml(f, byLabel[f.label]); }).join("") +
       cs.extracts.map(function (e) {
         return '<div class="cs-ext">' +
           '<div class="cs-ext-label">' + UI.esc(e.label) + '</div>' +
@@ -386,7 +398,7 @@ const PacksView = (function () {
                 '</button>' +
                 '<div class="qcase-body"' +
                   (caseOpen && caseWidth ? ' style="width:' + caseWidth + 'px"' : "") + '>' +
-                  caseHtml(cs) + '</div>' +
+                  caseHtml(cs, q.caseKey) + '</div>' +
               '</aside>' +
               /* Drag the divider to give either side more room; a plain click
                  on the knob folds the case study away. */
