@@ -1736,10 +1736,26 @@ Pen flyout, hover-expanding tool picker: draw/erase, colour wheel, size
 }
 .cs-head .ico{margin:0}
 .cs-title{margin:0 0 16px;font-size:16px;font-family:var(--font-display);line-height:1.35}
-.cs-fig{margin-bottom:18px;padding:12px 13px;border-radius:10px;background:var(--surface-2)}
-.cs-fig-head{display:flex;flex-direction:column;gap:3px;margin-bottom:9px}
+.cs-fig{margin-bottom:14px;border-radius:10px;background:var(--surface-2);overflow:hidden;
+  border:1px solid transparent;transition:border-color .15s}
+.cs-fig.open{border-color:var(--border-strong)}
+.cs-fig-head{
+  display:flex;align-items:flex-start;gap:10px;width:100%;text-align:left;
+  padding:12px 13px;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;
+}
+.cs-fig-head:hover{background:var(--surface)}
+.cs-fig-titles{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
 .cs-fig-head b{font-size:12.5px;color:var(--accent)}
 .cs-fig-head span{font-size:12px;color:var(--muted);line-height:1.5}
+.cs-fig-head em{font-style:normal;font-size:11px;font-weight:600;color:var(--accent);opacity:.85;margin-top:2px}
+.cs-fig-chev{
+  flex:none;width:22px;height:22px;border-radius:6px;background:var(--surface);
+  display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;
+  color:var(--muted);line-height:1;
+}
+.cs-fig.open .cs-fig-chev{background:var(--accent);color:var(--accent-ink)}
+.cs-fig-body{padding:0 13px 13px;animation:figIn .16s ease}
+@keyframes figIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
 .cs-table{width:100%;border-collapse:collapse;font-size:12.5px}
 .cs-table td{padding:4px 6px;border-bottom:1px solid var(--border)}
 .cs-table td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}

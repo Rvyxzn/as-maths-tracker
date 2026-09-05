@@ -46,6 +46,7 @@ const PacksView = (function () {
   let practiceQueue = [];
   let practiceIndex = 0;
   let todoOnly = false;
+  const figOpen = {};            // which case-study figures are expanded
 
   function minutesFor(marks) { return Math.round(marks * ECO_MINUTES_PER_MARK); }
   function byId(id) { return ECO_QUESTIONS.filter(function (q) { return q.id === id; })[0]; }
@@ -362,19 +363,60 @@ const PacksView = (function () {
      whatever the extraction managed otherwise. The drawn one wins: a chart
      is what the paper showed you, and half these questions ask you to read
      a trend off it. */
-  function figureHtml(f, drawn) {
+  /* A caption is the line printed above the figure, but the chart's own axis
+     labels sit on the next line down and the extraction ran the two
+     together: "Population of Rwanda (millions), 2008 to 2018 2008 2009 2010
+     2011 ...". The tick labels are data, not caption, so they come off. */
+  function caption(c) {
+    let t = String(c || "").trim();
+
+    /* The tick labels start by repeating a year the caption has already
+       named — "2008 to 2018" then "2008 2009 2010 …" — so the repeat is
+       where the caption ends. Cutting there keeps the range it states,
+       which a blind trim of trailing years would throw away with the rest. */
+    const years = [];
+    const re = /\b(?:19|20)\d{2}\b/g;
+    let m;
+    while ((m = re.exec(t))) {
+      if (years.indexOf(m[0]) >= 0 && years.length >= 2) { t = t.slice(0, m.index); break; }
+      years.push(m[0]);
+    }
+    t = t.replace(/(?:\s+Q[1-4]\s+(?:19|20)\d{2}){2,}\s*$/, "");
+    t = t.replace(/(?:\s+[\d.,]+%?){4,}\s*$/, "");
+    return t.replace(/[\s,;:–—-]+$/, "").replace(/\s+\b(?:to|and)$/i, "").trim();
+  }
+
+  /* Figures start folded. The case panel is narrow and a question usually
+     needs one of its three figures, so opening all of them pushes the
+     extracts off the screen; and the question stays visible either way
+     because the figure expands inside the panel beside it. */
+  function figureHtml(f, drawn, key) {
+    const fid = key + "|" + f.label;
+    const open = !!figOpen[fid];
     const chart = drawn ? ECO_FIGURE.render(drawn) : "";
     const rows = (f.data || []).map(function (d) {
       return '<tr><td>' + UI.esc(d[0]) + '</td><td class="num">' + UI.esc(d[1]) + '</td></tr>';
     }).join("");
-    return '<div class="cs-fig">' +
-      '<div class="cs-fig-head"><b>' + UI.esc(f.label) + '</b>' +
-        (f.caption ? '<span>' + UI.esc(f.caption) + '</span>' : "") + '</div>' +
-      (drawn && drawn.note ? '<div class="cs-fig-note">' + UI.esc(drawn.note) + '</div>' : "") +
-      (chart || (rows ? '<table class="cs-table"><tbody>' + rows + '</tbody></table>' : "")) +
-      (drawn && drawn.exact === false
-        ? '<div class="cs-fig-approx">' +
-          'Read off the printed chart, so these are close rather than exact.</div>' : "") +
+    const body = chart || (rows ? '<table class="cs-table"><tbody>' + rows + '</tbody></table>' : "");
+
+    return '<div class="cs-fig' + (open ? " open" : "") + '">' +
+      '<button class="cs-fig-head" data-action="pack-fig" data-fig="' + UI.esc(fid) + '">' +
+        '<span class="cs-fig-titles">' +
+          '<b>' + UI.esc(f.label) + '</b>' +
+          (f.caption ? '<span>' + UI.esc(caption(f.caption)) + '</span>' : "") +
+          '<em>' + (open ? "Click to fold away" :
+                    body ? "Click to expand" : "Click to expand · no chart data yet") + '</em>' +
+        '</span>' +
+        '<span class="cs-fig-chev">' + (open ? "−" : "+") + '</span>' +
+      '</button>' +
+      (open ? '<div class="cs-fig-body">' +
+          (drawn && drawn.note ? '<div class="cs-fig-note">' + UI.esc(drawn.note) + '</div>' : "") +
+          (body || '<div class="tiny faint">This figure has not been redrawn yet, so only its ' +
+                   'title is here. The extracts below still carry the case study.</div>') +
+          (drawn && drawn.exact === false
+            ? '<div class="cs-fig-approx">Read off the printed chart, so these are close rather than exact.</div>'
+            : "") +
+        '</div>' : "") +
     '</div>';
   }
 
@@ -384,7 +426,7 @@ const PacksView = (function () {
     drawn.forEach(function (d) { byLabel[d.label] = d; });
     return '<div class="cs-head">' + UI.icon("info") + '<span>Case Study</span></div>' +
       (cs.title ? '<h4 class="cs-title">' + UI.esc(cs.title) + '</h4>' : "") +
-      cs.figures.map(function (f) { return figureHtml(f, byLabel[f.label]); }).join("") +
+      cs.figures.map(function (f) { return figureHtml(f, byLabel[f.label], key); }).join("") +
       cs.extracts.map(function (e) {
         return '<div class="cs-ext">' +
           '<div class="cs-ext-label">' + UI.esc(e.label) + '</div>' +
@@ -734,6 +776,12 @@ const PacksView = (function () {
       case "pack-year":   yearFilter = el.dataset.val; App.render(); return true;
       case "pack-random": { const pool = questions(); if (!pool.length) return true; practiceQueue = []; focusId = pool[Math.floor(Math.random() * pool.length)].id; caseOpen = false; App.render(); return true; }
       case "pack-practice": openPractice(); return true;
+      case "pack-fig": {
+        const k = el.dataset.fig;
+        figOpen[k] = !figOpen[k];
+        App.render();
+        return true;
+      }
       case "pack-todo": toggleTodo(el.dataset.id); App.render(); return true;
       case "pack-todo-only": todoOnly = !todoOnly; App.render(); return true;
       case "pack-todo-start": {
