@@ -48,6 +48,27 @@ const ECO_FIGURE = (function () {
     return v.toFixed(dp).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   }
 
+  /* How many decimals to print, from the data itself unless the figure says
+     otherwise. Money has to say otherwise: £105.30 is the number 105.3 by
+     the time JavaScript sees it, and a price written as £105.3 next to
+     £69.5 looks like a mistake. */
+  function decimals(values, forced) {
+    if (forced != null) return forced;
+    return values.reduce(function (d, v) {
+      const s = String(v);
+      const i = s.indexOf(".");
+      return Math.max(d, i < 0 ? 0 : s.length - i - 1);
+    }, 0);
+  }
+
+  /* Every value in a figure is written to the same number of decimals, the
+     most any of them needs. A fare of £105.30 printed as £105.3 next to
+     £69.50 reads as sloppy rather than as money. */
+  function fmtValue(v, dp) {
+    return v.toFixed(dp == null ? 0 : dp).replace(/\B(?=(\d{3})+(?!\d)\.)/g, " ")
+            .replace(/^(\d+)(?=(\d{3})+$)/, "$1 ");
+  }
+
   function grid(sc, unit) {
     let out = "";
     for (let v = sc.lo; v <= sc.hi + 1e-9; v += sc.step) {
@@ -63,9 +84,11 @@ const ECO_FIGURE = (function () {
       esc(title || "Figure") + '">' + inner + '</svg>';
   }
 
-  function legend(names) {
+  /* The axis name sits above the axis, so the legend has to start clear of
+     it rather than at the left edge of the plot. */
+  function legend(names, yLabel) {
     if (names.length < 2) return "";
-    let x = L;
+    let x = Math.max(L, (yLabel ? (L - 46) + yLabel.length * 5.6 + 12 : L));
     return names.map(function (n, i) {
       const out = '<rect class="efk s' + (i % 5) + '" x="' + x + '" y="' + (T - 18) + '" width="11" height="11" rx="2"/>' +
         txt(x + 16, T - 8, n, "efl", "start");
@@ -101,7 +124,7 @@ const ECO_FIGURE = (function () {
       });
     });
 
-    out += legend(f.series.map(function (s) { return s.name; }));
+    out += legend(f.series.map(function (s) { return s.name; }), f.yLabel);
     if (f.yLabel) out += txt(L - 46, T - 8, f.yLabel, "efa", "start");
     return frame(out, f.caption);
   }
@@ -115,24 +138,29 @@ const ECO_FIGURE = (function () {
     const bw = Math.min(38, (slot * 0.72) / k);
     const yAt = function (v) { return B - ((v - sc.lo) / (sc.hi - sc.lo)) * (B - T); };
 
+    const dp = decimals(all, f.dp);
     let out = grid(sc, f.unit) + line(L, T, L, B, "efax") + line(L, B, R, B, "efax");
     /* Category names are as long as they are; when they would collide, the
        labels shrink rather than overlap or get cut. */
     const longest = f.x.reduce(function (m, l) { return Math.max(m, String(l).length); }, 0);
     const tick = longest * 6 > slot ? "eft efs" : "eft";
+    /* Twenty years of labels will not fit however small the type, so past the
+       point where they would touch, only every other one is drawn. The bars
+       are all still there; the axis just stops shouting. */
+    const every = longest * 4.4 > slot ? Math.ceil((longest * 4.4) / slot) : 1;
     f.x.forEach(function (lab, i) {
       const cx = L + slot * (i + 0.5);
-      out += txt(cx, B + 16, lab, tick);
+      if (i % every === 0) out += txt(cx, B + 16, lab, tick);
       f.series.forEach(function (s, si) {
         const v = s.values[i];
         if (v == null) return;
         const x = cx - (k * bw) / 2 + si * bw;
         out += '<rect class="efb s' + (si % 5) + '" x="' + x + '" y="' + yAt(v) +
                '" width="' + (bw - 2) + '" height="' + Math.max(0, B - yAt(v)) + '" rx="2"/>';
-        if (k * n <= 14) out += txt(x + (bw - 2) / 2, yAt(v) - 5, fmt(v, sc.step) + (f.unit || ""), "efv");
+        if (k * n <= 14) out += txt(x + (bw - 2) / 2, yAt(v) - 5, fmtValue(v, dp) + (f.unit || ""), "efv");
       });
     });
-    out += legend(f.series.map(function (s) { return s.name; }));
+    out += legend(f.series.map(function (s) { return s.name; }), f.yLabel);
     if (f.yLabel) out += txt(L - 46, T - 8, f.yLabel, "efa", "start");
     return frame(out, f.caption);
   }
@@ -144,6 +172,7 @@ const ECO_FIGURE = (function () {
     const n = f.rows.length;
     const gap = (B - T) / n;
     const bh = Math.min(24, gap * 0.66);
+    const dp = decimals(vals, f.dp);
     const x0 = 150;
     let out = "";
     f.rows.forEach(function (r, i) {
@@ -151,7 +180,7 @@ const ECO_FIGURE = (function () {
       const w = max > 0 ? (r[1] / max) * (R - x0 - 42) : 0;
       out += txt(x0 - 9, y + bh / 2 + 4, r[0], "eft", "end") +
              '<rect class="efb s0" x="' + x0 + '" y="' + y + '" width="' + w + '" height="' + bh + '" rx="3"/>' +
-             txt(x0 + w + 7, y + bh / 2 + 4, fmt(r[1], 1) + (f.unit || ""), "efv", "start");
+             txt(x0 + w + 7, y + bh / 2 + 4, fmtValue(r[1], dp) + (f.unit || ""), "efv", "start");
     });
     out += line(x0, T, x0, B, "efax");
     return frame(out, f.caption);
