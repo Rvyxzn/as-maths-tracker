@@ -388,6 +388,7 @@ const PracticeView = (function () {
     }
 
     if (PracticeTest.kindOf(it.key) === "mex") return examBody(it, q, show);
+    if (PracticeTest.kindOf(it.key) === "pp") return paperBody(it, q, show);
 
     return '<div class="qtext">' + UI.math(q.q) + '</div>' +
       (q.img ? '<img class="qz-img" src="' + UI.esc(q.img) + '" alt="Question">' : "") +
@@ -451,6 +452,41 @@ const PracticeView = (function () {
                   '<div class="pdf-frame" style="height:min(62vh,720px)">' +
                     '<div class="pdfv" data-src="' + msUrl + '"></div></div>'
                 : '<div class="tiny faint">No mark scheme found for this set.</div>') +
+          '</div>'
+        : revealButton(it));
+  }
+
+  /* A whole past paper's question. Same idea as a topic-set one — the page
+     is the question — but the PDFs live in the past-paper folder and the
+     chapter was inferred rather than given, so where that inference was not
+     clear it says so instead of asserting a topic. */
+  function paperBody(it, q, show) {
+    const root = "Exam questions PDFs/A-Level Maths/Past papers/";
+    const qUrl = encodeURI(root + "Questions/" + q.pdf + ".pdf");
+    const msUrl = encodeURI(root + "Mark schemes/" + q.pdf + " MS.pdf");
+    const clean = !(q.flags || []).length;
+
+    return (q.guess
+        ? '<div class="tiny faint" style="margin-bottom:10px">' +
+            'Topic inferred from the wording — a past paper is not filed by topic, so this one is a ' +
+            'best guess and does not count towards any chapter’s rating.</div>'
+        : "") +
+      '<div class="pt-paper" data-pdf-src="' + qUrl + '" data-pdf-from="' + q.pageFrom +
+        '" data-pdf-to="' + q.pageTo + '"></div>' +
+      (clean
+        ? '<details class="pt-astext"><summary>Show it as text</summary>' +
+            '<div class="qtext">' + UI.math(q.text) + '</div></details>'
+        : "") +
+      (show
+        ? '<div class="qz-ms" style="margin-top:16px">' +
+            '<div class="qz-ms-h">' + UI.icon("check") + 'Mark scheme</div>' +
+            (q.msFrom
+              ? '<div class="pt-paper" data-pdf-src="' + msUrl + '" data-pdf-from="' + q.msFrom +
+                '" data-pdf-to="' + q.msTo + '"></div>'
+              : '<div class="tiny muted">Could not place this one in the scheme — look for ' +
+                '<b>question ' + q.num + '</b>.</div>' +
+                '<div class="pdf-frame" style="height:min(62vh,720px)">' +
+                  '<div class="pdfv" data-src="' + msUrl + '"></div></div>') +
           '</div>'
         : revealButton(it));
   }

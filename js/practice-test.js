@@ -126,6 +126,34 @@ const PracticeTest = (function () {
     return out;
   }
 
+  /* Whole past papers. These carry a real tariff and a real page range, but
+     their chapter is inferred from the wording rather than given, so a
+     question whose topic was not clear is marked `guess`: it can still be
+     picked and sat, and it still shows the printed page and its scheme, but
+     it never credits a chapter when the test is marked. A wrong chapter
+     quietly moving a RAG rating is worse than no chapter at all. */
+  function mathsPaperPool() {
+    if (typeof MATHS_PAPER_QUESTIONS === "undefined") return [];
+    const out = [];
+    MATHS_PAPER_QUESTIONS.forEach(function (q) {
+      const cids = (q.chapters || []).filter(function (c) { return CHAPTER_INDEX[c]; });
+      const cid = cids[0];
+      if (!cid) return;
+      const inf = CHAPTER_INDEX[cid];
+      out.push({
+        key: "pp:" + q.id, marks: q.marks, cid: cid, cids: cids, subId: null,
+        source: "paper", guess: !!q.guess,
+        group: inf.paper.short, year: inf.year || 1,
+        label: q.series + " · Paper " + q.paper + " · Q" + q.num,
+        topic: inf.chapter.name,
+        where: q.strand ? q.strand + (q.guess ? " · topic inferred" : " · " + inf.chapter.name)
+                        : inf.chapter.name,
+        preview: q.text
+      });
+    });
+    return out;
+  }
+
   function mathsBankPool() {
     if (typeof ALL_CHAPTER_IDS === "undefined") return [];
     const out = [];
@@ -167,7 +195,7 @@ const PracticeTest = (function () {
      asked for: mixing a 2-mark bank question into a paper of 10-markers
      makes the total meaningless. */
   function mathsPool(includeBank) {
-    const exam = mathsExamPool();
+    const exam = mathsExamPool().concat(mathsPaperPool());
     if (!includeBank && exam.length) return exam;
     return exam.concat(mathsBankPool());
   }
@@ -187,6 +215,11 @@ const PracticeTest = (function () {
       if (typeof ECO_QUESTIONS === "undefined") return null;
       const id = bits.slice(1).join(":");
       return ECO_QUESTIONS.filter(function (q) { return q.id === id; })[0] || null;
+    }
+    if (bits[0] === "pp") {
+      if (typeof MATHS_PAPER_QUESTIONS === "undefined") return null;
+      const pid = bits.slice(1).join(":");
+      return MATHS_PAPER_QUESTIONS.filter(function (q) { return q.id === pid; })[0] || null;
     }
     if (bits[0] === "mex") {
       if (typeof MATHS_EXAM_QUESTIONS === "undefined") return null;
@@ -236,7 +269,7 @@ const PracticeTest = (function () {
         .sort(function (x, y) { return String(y.at || "").localeCompare(String(x.at || "")); })[0];
       return a ? { got: a.got, avail: a.available, at: a.at } : null;
     }
-    if (bits[0] === "mex") {
+    if (bits[0] === "mex" || bits[0] === "pp") {
       const id = bits.slice(1).join(":");
       const a = (Store.get().examAttempts || []).filter(function (x) { return x.questionId === id; })
         .sort(function (x, y) { return String(y.at || "").localeCompare(String(x.at || "")); })[0];
@@ -460,7 +493,9 @@ const PracticeTest = (function () {
       name: nameFor(items, opts),
       opts: opts || {},
       targetMins: minutesFor(marks),
-      items: items.map(function (m) { return { key: m.key, marks: m.marks, cid: m.cid, subId: m.subId || null }; }),
+      items: items.map(function (m) {
+        return { key: m.key, marks: m.marks, cid: m.cid, subId: m.subId || null, guess: !!m.guess };
+      }),
       scores: {},
       startedAt: null,
       finishedAt: null,
@@ -533,7 +568,7 @@ const PracticeTest = (function () {
         if (!st.packAttempts) st.packAttempts = [];
         st.packAttempts.unshift({ questionId: bits.slice(1).join(":"), got: marks,
                                   available: item.marks, at: at, test: id });
-      } else if (bits[0] === "mex") {
+      } else if (bits[0] === "mex" || bits[0] === "pp") {
         if (!st.examAttempts) st.examAttempts = [];
         st.examAttempts.unshift({ questionId: bits.slice(1).join(":"), got: marks,
                                   available: item.marks, at: at, test: id });
@@ -575,12 +610,14 @@ const PracticeTest = (function () {
       const s = scoreOf(t, it.key);
       if (!s) return;
       const cid = it.cid || "unknown";
-      if (!map[cid]) map[cid] = { cid: cid, got: 0, avail: 0, n: 0 };
+      if (!map[cid]) map[cid] = { cid: cid, got: 0, avail: 0, n: 0, guessed: 0 };
       map[cid].got += s.got; map[cid].avail += it.marks; map[cid].n++;
+      if (it.guess) map[cid].guessed++;
     });
     return Object.keys(map).map(function (cid) {
       const r = map[cid];
       r.pct = r.avail ? Math.round(r.got / r.avail * 100) : null;
+      r.allGuessed = r.n > 0 && r.guessed === r.n;
       r.name = CHAPTER_INDEX[cid] ? CHAPTER_INDEX[cid].chapter.name : "Unattributed";
       r.label = CHAPTER_INDEX[cid] ? CHAPTER_INDEX[cid].chapterLabel : "";
       return r;
@@ -607,6 +644,7 @@ const PracticeTest = (function () {
 
       chapters.forEach(function (c) {
         if (!c.avail || !CHAPTER_INDEX[c.cid]) return;
+        if (c.allGuessed) return;   // an inferred chapter never moves a rating
         const topic = Store.topic(c.cid);
         if (!topic.questionSets) topic.questionSets = [];
         topic.questionSets.push({
