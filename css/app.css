@@ -2755,3 +2755,6 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
   .tt-grid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr))}
   .tt-f .input,.tt-f.wide .input{width:70px}
 }
+.tt-hm{display:inline-flex;align-items:center;gap:4px}
+.tt-hm .input{width:52px;padding:5px 6px;font-size:12.5px;text-align:right}
+.tt-hm em{font-style:normal;font-size:11px;font-weight:700;color:var(--muted)}

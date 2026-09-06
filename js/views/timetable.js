@@ -51,6 +51,8 @@ const TimetableView = (function () {
         '</div>' +
       '</div>' +
       '<div class="row wrap" style="gap:8px;margin-top:12px">' +
+        '<button class="btn" data-action="tt-use-rec-all" ' +
+          'title="Reset every subject to its recommended hours">Use recommended</button>' +
         '<button class="btn btn-primary" data-action="tt-generate">' +
           (t.generatedAt ? "Rebuild the timetable" : "Build my timetable") + '</button>' +
         '<button class="btn" data-action="tt-export">Export</button>' +
@@ -176,8 +178,8 @@ const TimetableView = (function () {
         '<div class="tt-timeline" style="height:' + height + 'px" data-lo="' + lo + '" data-iso="' + iso + '">' +
           hours + free + items +
         '</div>' +
-        '<div class="tiny faint" style="margin-top:10px">Drag a block to move it. The shaded ' +
-          'stretches are when you said you are free.</div>' +
+        '<div class="tiny faint" style="margin-top:10px">Drag a block to move it, double-click to ' +
+          'edit it. The shaded stretches are when you said you are free.</div>' +
       '</div>';
   }
 
@@ -208,10 +210,19 @@ const TimetableView = (function () {
             '" data-tt-rank="' + s.id + '"></label>' +
         '<label class="tt-f"><span>Now</span>' + gradeSelect(s.id, "predicted", s.predicted) + '</label>' +
         '<label class="tt-f"><span>Target</span>' + gradeSelect(s.id, "target", s.target) + '</label>' +
+        /* Hours and minutes as two boxes. One box holding minutes read as
+           hours: "18" meant eighteen minutes a week while the line under it
+           suggested eighteen hours, and nothing on screen said which. */
         '<label class="tt-f wide"><span>Per week</span>' +
-          '<input class="input" type="number" min="0" step="15" value="' + using +
-            '" data-tt-mins="' + s.id + '" placeholder="' + suggested + '">' +
+          '<span class="tt-hm">' +
+            '<input class="input" type="number" min="0" max="99" value="' + Math.floor(using / 60) +
+              '" data-tt-h="' + s.id + '"><em>h</em>' +
+            '<input class="input" type="number" min="0" max="59" step="5" value="' + (using % 60) +
+              '" data-tt-m="' + s.id + '"><em>m</em>' +
+          '</span>' +
           '<small class="tt-rec">suggests ' + fmt(suggested) + '</small></label>' +
+        '<button class="btn btn-sm" data-action="tt-use-rec" data-id="' + s.id + '" ' +
+          'title="Put the recommendation back">Recommended</button>' +
         '<button class="btn btn-sm' + (s.off ? " btn-primary" : "") + '" data-action="tt-sub-off" data-id="' + s.id + '">' +
           (s.off ? "Off" : "On") + '</button>' +
       '</div>';
@@ -292,11 +303,19 @@ const TimetableView = (function () {
   /* Inputs are wired rather than re-rendered on every keystroke, so typing a
      number does not rebuild the page underneath the caret. */
   function wire() {
-    document.querySelectorAll("[data-tt-mins]").forEach(function (el) {
-      el.onchange = function () {
-        Timetable.setSubject(el.dataset.ttMins, { mins: el.value === "" ? null : +el.value });
-        App.render();
-      };
+    /* Either box writes the whole figure, so they cannot disagree. */
+    const setHM = function (id) {
+      const h = document.querySelector('[data-tt-h="' + id + '"]');
+      const m = document.querySelector('[data-tt-m="' + id + '"]');
+      const mins = (+(h && h.value) || 0) * 60 + (+(m && m.value) || 0);
+      Timetable.setSubject(id, { mins: mins });
+      App.render();
+    };
+    document.querySelectorAll("[data-tt-h]").forEach(function (el) {
+      el.onchange = function () { setHM(el.dataset.ttH); };
+    });
+    document.querySelectorAll("[data-tt-m]").forEach(function (el) {
+      el.onchange = function () { setHM(el.dataset.ttM); };
     });
     document.querySelectorAll("[data-tt-rank]").forEach(function (el) {
       el.onchange = function () { Timetable.setSubject(el.dataset.ttRank, { rank: +el.value }); App.render(); };
@@ -344,6 +363,10 @@ const TimetableView = (function () {
         const top = Math.max(0, drag.top + (e.clientY - drag.startY));
         el.style.top = top + "px";
       };
+      el.ondblclick = function (e) {
+        if (e.target.closest("[data-action]")) return;
+        editModal(el.dataset.iso, el.dataset.id);
+      };
       el.onpointerup = function (e) {
         if (!drag || drag.el !== el) return;
         el.classList.remove("dragging");
@@ -360,24 +383,46 @@ const TimetableView = (function () {
      actions
      ------------------------------------------------------------ */
 
-  function blockModal(iso) {
+  /* Editing a block asks exactly what adding one asks, so it is the same
+     modal with the fields filled in and a delete on the end. */
+  function editModal(iso, id) {
+    const b = Timetable.blocksOn(iso).filter(function (x) { return x.id === id; })[0];
+    if (!b || b.kind === "busy") return;
+    blockModal(iso, b);
+  }
+
+  function blockModal(iso, existing) {
     const subs = Timetable.subjects();
     UI.modal({
-      title: "Add a block",
+      title: existing ? "Edit this block" : "Add a block",
       body: '<div class="form-grid">' +
           '<div class="field"><label class="label">What</label>' +
             '<select class="input" id="ttWhat">' +
-              subs.map(function (s) { return '<option value="' + s.id + '">' + UI.esc(s.name) + '</option>'; }).join("") +
-              '<option value="__other">Something else</option>' +
+              subs.map(function (s) {
+                return '<option value="' + s.id + '"' +
+                  (existing && existing.subjectId === s.id ? " selected" : "") + '>' +
+                  UI.esc(s.name) + '</option>'; }).join("") +
+              '<option value="__other"' + (existing && !existing.subjectId ? " selected" : "") +
+                '>Something else</option>' +
             '</select></div>' +
           '<div class="field"><label class="label">Label (if something else)</label>' +
-            '<input class="input" id="ttLabel" placeholder="e.g. Piano practice"></div>' +
-          '<div class="field"><label class="label">From</label><input class="input" type="time" id="ttFrom" value="17:00"></div>' +
-          '<div class="field"><label class="label">To</label><input class="input" type="time" id="ttTo" value="18:00"></div>' +
+            '<input class="input" id="ttLabel" placeholder="e.g. Piano practice" value="' +
+              (existing && !existing.subjectId ? UI.esc(existing.label) : "") + '"></div>' +
+          '<div class="field"><label class="label">From</label><input class="input" type="time" id="ttFrom" value="' +
+            (existing ? existing.from : "17:00") + '"></div>' +
+          '<div class="field"><label class="label">To</label><input class="input" type="time" id="ttTo" value="' +
+            (existing ? existing.to : "18:00") + '"></div>' +
         '</div>',
-      footer: '<button class="btn" data-modal-close>Cancel</button>' +
-              '<button class="btn btn-primary" id="ttSave">Add it</button>',
+      footer: (existing ? '<button class="btn btn-danger" id="ttDel">Delete</button>' : "") +
+              '<button class="btn" data-modal-close>Cancel</button>' +
+              '<button class="btn btn-primary" id="ttSave">' +
+                (existing ? "Save" : "Add it") + '</button>',
       onMount: function (box) {
+        const del = box.querySelector("#ttDel");
+        if (del) del.onclick = function () {
+          Timetable.removeBlock(iso, existing.id);
+          UI.closeModal(); App.render();
+        };
         box.querySelector("#ttSave").onclick = function () {
           const what = box.querySelector("#ttWhat").value;
           const from = box.querySelector("#ttFrom").value;
@@ -386,13 +431,15 @@ const TimetableView = (function () {
             UI.toast("The end has to be after the start", "bad"); return;
           }
           const s = subs.filter(function (x) { return x.id === what; })[0];
-          Timetable.addBlock(iso, {
+          const patch = {
             subjectId: s ? s.id : null,
             label: s ? s.name : (box.querySelector("#ttLabel").value || "Other"),
             from: from, to: to,
             colour: s ? s.colour : "#64748b",
             kind: s ? "revision" : "custom"
-          });
+          };
+          if (existing) Timetable.updateBlock(iso, existing.id, patch);
+          else Timetable.addBlock(iso, patch);
           UI.closeModal(); App.render();
         };
       }
@@ -536,6 +583,18 @@ const TimetableView = (function () {
             mode = "grid"; App.render();
           });
         return true;
+      }
+      /* Back to the suggestion, for one subject or all of them: having
+         typed over it, there was no way back to it without working the
+         number out again by hand. */
+      case "tt-use-rec": {
+        Timetable.setSubject(el.dataset.id, { mins: null });
+        App.render(); return true;
+      }
+      case "tt-use-rec-all": {
+        Timetable.subjects().forEach(function (s) { Timetable.setSubject(s.id, { mins: null }); });
+        UI.toast("Every subject back to its recommended hours", "ok", 2600);
+        mode = "setup"; App.render(); return true;
       }
       case "tt-export": doExport(); return true;
       case "tt-import": doImport(); return true;
