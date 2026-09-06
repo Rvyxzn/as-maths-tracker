@@ -89,9 +89,29 @@ const ExamLogger = (function () {
       title: existing ? "Edit this test" : "Log an exam",
       wide: true,
       body: body,
-      footer: '<button class="btn" data-modal-close>Cancel</button>' +
+      /* An exam you have logged can be changed or called off. Without a way
+         to delete one, a test that moved or was cancelled sat in the stack
+         for ever, counting down and pulling its chapters up the plan. */
+      footer: (existing && existing.id
+                ? '<button class="btn btn-danger" id="xDelete">Delete</button>'
+                : '') +
+              '<button class="btn" data-modal-close>Cancel</button>' +
               '<button class="btn btn-primary" id="xSave">Save the exam</button>',
       onMount: function (box) {
+        const del = box.querySelector("#xDelete");
+        if (del) del.onclick = function () {
+          UI.confirm("Delete this exam?",
+            "It comes off the dashboard and the planner stops working towards it. " +
+            "Nothing you have already revised is affected.",
+            "Delete it", true).then(function (ok) {
+              if (!ok) return;
+              SchoolAssessments.remove(existing.id);
+              UI.closeModal();
+              if (typeof Scheduler !== "undefined") Scheduler.regenerate("an exam was deleted");
+              UI.toast("Exam deleted", "ok");
+              App.render();
+            });
+        };
         const $ = function (id) { return box.querySelector(id); };
         const nPicked = function () {
           return Object.keys(picked).filter(function (k) { return picked[k]; }).length;
