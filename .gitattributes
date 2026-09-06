@@ -1,0 +1,7 @@
+# PDFs are binary. Say so explicitly rather than leaving git to sniff it:
+# this repo carries a few hundred of them and the working tree is full of
+# CRLF/LF conversion, which must never be applied to a PDF.
+*.pdf binary -text -diff
+
+# Git LFS is deliberately NOT used for these. See the note in
+# js/exam-pdfs.js next to PDF_ROOTS for why.

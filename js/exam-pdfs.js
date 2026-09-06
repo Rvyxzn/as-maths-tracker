@@ -11,7 +11,25 @@ Exam question sets, the PDFs sitting in "Exam questions PDFs".
    one, `approx: true` says so in the UI rather than pretending.
    ============================================================ */
 
-/* Two collections sit side by side. The AS sets cover Year 1 only; the
+/* WHY THESE ARE PLAIN FILES IN THE REPO, AND NOT GIT LFS
+
+   Because GitHub Pages does not resolve LFS pointers. It would serve the
+   130-byte pointer file in place of every PDF, and this whole section, the
+   past papers and the printed-question view would all break at once.
+
+   There is a way round it -- deploy Pages from an Action that checks out
+   with lfs: true -- but the arithmetic does not work either. These PDFs are
+   around 350 MB, a GitHub Free account gets 1 GB of LFS bandwidth a month,
+   and an Actions checkout spends that on every build. Three deploys and it
+   is gone.
+
+   If the repo ever does need to slim down, the route is GitHub Releases:
+   upload the PDFs as release assets and point these two roots at the
+   release URLs. Release assets do not count towards repository size, are
+   served by GitHub's CDN, and use no LFS quota. That is a change to these
+   two strings and nothing else, which is exactly why they are two strings.
+
+   Two collections sit side by side. The AS sets cover Year 1 only; the
    A level sets are the whole-course topic collections, which is where every
    Year 2 topic lives and where the harder Year 1 questions are. A chapter
    can point at both, and usually should: the AS set to get going, the A
