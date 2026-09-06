@@ -13,6 +13,9 @@ const App = (function () {
     { id: "today", label: "Today’s Plan", icon: "✓" },
     { id: "topics", label: "My Topics", icon: "☰" },
     { id: "calendar", label: "Calendar", icon: "▦" },
+    /* The one part of the app that spans subjects, so it is shown under
+       every one of them rather than belonging to any. */
+    { id: "timetable", label: "Timetable", icon: "◱" },
     /* The exam-question PDFs are the maths ones. Economics has Question
        Packs instead and Geography has neither, so this is not shown to
        them rather than showing them somebody else's papers. */
@@ -33,7 +36,7 @@ const App = (function () {
     dashboard: "Dashboard", today: "Today’s Plan", topics: "My Topics", topic: "Topic", chapter: "Chapter", paperview: "Paper",
     calendar: "Calendar", examq: "Exam Questions", papers: "Past Papers", weaknesses: "Weaknesses",
     assessments: "School Tests", flashcards: "Formula Flashcards", packs: "Question Packs",
-    practice: "Practice Test",
+    practice: "Practice Test", timetable: "Timetable",
     progress: "Progress", settings: "Settings", session: "Revision Session", onboarding: "Getting Started"
   };
 
@@ -120,6 +123,7 @@ function setSidebar(open) {
       case "assessments": AssessmentsView.render(buf); break;
       case "packs": PacksView.render(buf); break;
       case "practice": PracticeView.render(buf); break;
+      case "timetable": TimetableView.render(buf); break;
       case "flashcards": FlashcardsView.render(buf); break;
       case "weaknesses": WeaknessesView.render(buf); break;
       case "progress": ProgressView.render(buf); break;
@@ -437,6 +441,7 @@ function setSidebar(open) {
     if (CalendarView.handle(action, el)) return;
     if (PapersView.handle(action, el)) return;
     if (AssessmentsView.handle(action, el)) return;
+    if (typeof TimetableView !== "undefined" && TimetableView.handle(action, el)) return;
     if (typeof PracticeView !== "undefined" && PracticeView.handle(action, el)) return;
     if (typeof PacksView !== "undefined" && PacksView.handle(action, el)) return;
     if (action === "anki-export") { ankiExport(el.dataset.id); return; }
