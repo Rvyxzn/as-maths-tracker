@@ -5,6 +5,7 @@ Past Papers: tracker, filters, and per-paper error log
 const PapersView = (function () {
 
   const filters = { type: "all", level: "all", scope: "all", timing: "all" };
+  let libOpen = false;
   const ERROR_TYPES = ["Knowledge gap", "Method error", "Algebra error", "Calculator error", "Misread question", "Time pressure", "Careless mistake"];
   const PAPER_TYPES = ["Pure", "Statistics", "Mechanics", "Statistics & Mechanics", "Mixed"];
 
@@ -39,6 +40,8 @@ const PapersView = (function () {
         }), { height: 180, emptyText: "Log a paper with a mark to start the graph" }) +
       '</div>' +
 
+      library() +
+
       '<div class="card" style="margin-bottom:18px"><div class="row wrap" style="gap:16px">' +
       chips("level", ["all", "as", "alevel"], { all: "AS + A level", as: "AS papers", alevel: "A level papers" }) +
         chips("type", ["all"].concat(PAPER_TYPES), { all: "All papers" }) +
@@ -53,6 +56,64 @@ const PapersView = (function () {
             '<div class="row" style="justify-content:center;gap:8px">' +
               '<button class="btn btn-primary" data-action="log-paper">Log your first paper</button>' +
               '<a class="btn" href="' + REFERENCE_LINKS[0].url + '" target="_blank" rel="noopener">Pearson past papers ↗</a></div>'));
+  }
+
+  /* ------------------------------------------------------------
+     the library of papers that are actually on disk
+
+     24 of them, downloaded and sitting next to index.html, and
+     until now reachable only through the practice test, which
+     pulls individual questions out of them. A past paper is
+     mostly for sitting whole, so here they are, whole.
+     ------------------------------------------------------------ */
+
+  function library() {
+    if (typeof PAST_PAPERS === "undefined") return "";
+    const years = pastPapersByYear();
+    return '<div class="card" style="margin-bottom:18px">' +
+      '<div class="card-head">' +
+        '<div class="card-title">The papers themselves</div>' +
+        '<div class="right"><button class="btn btn-sm" data-action="pp-lib">' +
+          (libOpen ? "Hide them" : "Show all " + PAST_PAPERS.length) + '</button></div>' +
+      '</div>' +
+      '<div class="tiny muted">Every Edexcel 9MA0 paper from 2018 to 2024, plus the sample ' +
+        'assessment materials, with mark schemes. They open here, nothing to download.</div>' +
+      (libOpen
+        ? years.map(function (g) {
+            return '<div class="section-label">' +
+                (g.year === "Sample" ? "Sample assessment materials" : g.year) + '</div>' +
+              '<div class="stack">' + g.papers.map(paperRow).join("") + '</div>';
+          }).join("")
+        : "") +
+    '</div>';
+  }
+
+  function paperRow(p) {
+    /* Say what is odd about the odd ones out here, rather than letting
+       someone find out halfway through sitting one. */
+    const note = p.scan
+        ? "a scan, so the practice test cannot pull questions from it"
+        : (p.marks && p.marks < 100)
+        ? (p.marks <= 50 ? "the source file is only half this paper"
+                         : "one question escaped the extraction")
+        : null;
+    return '<div class="pp-row">' +
+      '<span class="pp-n">' + p.paper + '</span>' +
+      '<span class="pp-main">' +
+        '<b>' + UI.esc((p.year === "Sample" ? "Sample" : p.year) + " \u00b7 Paper " + p.paper +
+          " \u00b7 " + p.kind) + '</b>' +
+        '<small>' + (p.questions
+            ? p.questions + " questions \u00b7 " + p.marks + " marks in the practice test"
+            : "not in the practice test") +
+          (note ? " \u00b7 " + UI.esc(note) : "") + '</small>' +
+      '</span>' +
+      '<a class="btn btn-sm" href="' + pastPaperUrl(p, "q") + '" target="_blank" rel="noopener">Paper</a>' +
+      (p.hasMs
+        ? '<a class="btn btn-sm btn-ghost" href="' + pastPaperUrl(p, "ms") + '" target="_blank" rel="noopener">Scheme</a>'
+        : "") +
+      '<button class="btn btn-sm btn-primary" data-action="pp-log" data-name="' + UI.esc(p.name) +
+        '" title="Log a score for this paper">Log</button>' +
+    '</div>';
   }
 
   function stat(k, v, sub) {
@@ -109,7 +170,7 @@ const PapersView = (function () {
   }
 
   /* ---------- add / edit paper ---------- */
-  function paperModal(id) {
+  function paperModal(id, prefill) {
     const existing = id ? Store.get().papers.filter(function (p) { return p.id === id; })[0] : null;
     /* If a paper timer is running, bank it and pre-fill the time taken */
     let timed = null;
@@ -119,13 +180,13 @@ const PapersView = (function () {
       timed = { minutes: Math.round(mins), type: lt.paperType, duration: lt.paperDuration };
       Store.mutate(function () { Store.timerStop(true); });
     }
-    const p = existing || {
+    const p = existing || Object.assign({
       title: "", url: "", type: timed && timed.type ? timed.type : "Pure", date: Metrics.today(),
       level: "alevel",
       duration: timed && timed.duration ? timed.duration : 120,
       timeTaken: timed ? timed.minutes : "",
       mark: "", total: 100, timed: true, full: true, notes: ""
-    };
+    }, prefill || {});
     UI.modal({
       title: existing ? "Edit paper" : "Log a past paper",
       wide: true,
@@ -321,6 +382,20 @@ const PapersView = (function () {
       }
       case "paper-filter": filters[el.dataset.key] = el.dataset.val; App.render(); return true;
       case "log-paper": paperModal(el && el.dataset ? el.dataset.id : null); return true;
+      case "pp-lib": libOpen = !libOpen; App.render(); return true;
+      /* Logging one of these should not mean typing its name out again. */
+      case "pp-log": {
+        const rec = (typeof PAST_PAPERS !== "undefined" ? PAST_PAPERS : [])
+          .filter(function (x) { return x.name === el.dataset.name; })[0];
+        if (!rec) return true;
+        paperModal(null, {
+          title: (rec.year === "Sample" ? "Sample" : rec.year) + " Paper " + rec.paper + " " + rec.kind,
+          type: rec.paper === 3 ? "Statistics & Mechanics" : "Pure",
+          level: "alevel",
+          url: pastPaperUrl(rec, "q")
+        });
+        return true;
+      }
       case "paper-errors": errorModal(el.dataset.id); return true;
       case "paper-delete": {
         const id = el.dataset.id;

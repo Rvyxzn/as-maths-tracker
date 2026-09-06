@@ -2827,3 +2827,17 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
   .tt-f.wide .input { width: 112px; }
   .tt-hm .input { width: 62px; }
 }
+
+/* the library of past papers */
+.pp-row{
+  display:flex;align-items:center;gap:10px;padding:9px 11px;
+  border:1px solid var(--border);border-radius:11px;background:var(--surface);
+}
+.pp-n{
+  flex:0 0 auto;width:26px;height:26px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:12.5px;
+}
+.pp-main{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
+.pp-main b{font-size:12.5px}
+.pp-main small{font-size:11px;color:var(--muted)}
