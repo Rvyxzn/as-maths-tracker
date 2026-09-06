@@ -29,8 +29,78 @@ const PMT_ECO_PAPERS = "https://www.physicsandmathstutor.com/past-papers/a-level
 const ECONPLUSDAL = "https://www.youtube.com/@EconplusDal";
 const TUTOR2U_ECO = "https://www.tutor2u.net/economics";
 
-/* A channel-scoped YouTube search. Always resolves to that creator's videos
-   on the topic, and cannot rot the way a hardcoded playlist id can. */
+/* ------------------------------------------------------------
+   EconPlusDal playlists, checked rather than guessed
+
+   The video link used to be a channel-scoped SEARCH, on the
+   reasoning that a search cannot rot the way a hardcoded
+   playlist id can. Reasonable, and it meant every topic sent you
+   to a results page to pick from rather than to the series.
+
+   These ids were read off the channel's own playlists page and
+   each one's title was checked against what it is mapped to
+   here, so they are not guesses. The four course playlists line
+   up with the Edexcel themes exactly, because the channel is
+   organised the same way the specification is:
+
+     Theme 1  Microeconomics, Year 1        43 videos
+     Theme 2  Macroeconomics, Year 1        43 videos
+     Theme 3  Microeconomics, Year 2        40 videos
+     Theme 4  Macroeconomics, Year 2        44 videos
+
+   WHY THESE ARE LINKS AND NOT AN EMBEDDED PLAYLIST. Maths sets
+   `playlist` per chapter, which drives the watch-every-video
+   step and counts your progress through it. That works there
+   because a playlist IS a chapter. Here one playlist covers a
+   whole theme, so attaching it to 1.2 would tell you that
+   "How markets work" needs 43 videos watched and hold the
+   chapter open until you had. A link is honest about what it
+   is; a progress bar over the wrong denominator is not.
+
+   The diagram and topic series are narrower than a theme, so
+   where one genuinely belongs to a chapter it is listed too.
+   ------------------------------------------------------------ */
+
+const EPD_PLAYLIST = "https://www.youtube.com/playlist?list=";
+
+/* theme number -> the course playlist for it */
+const EPD_THEME = {
+  1: { id: "PLWeicFreBUYCOFC2A0SlKrpEYgwaSF63t", name: "Microeconomics, Year 1", count: 43 },
+  2: { id: "PLWeicFreBUYDlaLppnRTZpwgBASflf4lU", name: "Macroeconomics, Year 1", count: 43 },
+  3: { id: "PLWeicFreBUYDwmBZ0AiJwhCNSCb0di9eI", name: "Microeconomics, Year 2", count: 40 },
+  4: { id: "PLWeicFreBUYBW3kSFnfBC8MSvPdH6DbqQ", name: "Macroeconomics, Year 2", count: 44 },
+  5: { id: "PLWeicFreBUYCuUesTjG3RLfnYynR_6AsM", name: "Edexcel exam technique", count: 18 }
+};
+
+/* chapter id -> the narrower series that actually covers it */
+const EPD_TOPIC = {
+  "eco1-2": [["PLWeicFreBUYCuNX9eIFvxSXfvqmQZ56GV", "Demand, supply, elasticity and price controls, drawn"],
+             ["PLWeicFreBUYDiPDqmdQafZ3eSxVUEdOPX", "Behavioural economics and utility theory"]],
+  "eco1-3": [["PLWeicFreBUYBRcEEeVbCYFxKqrYEBT4WK", "Market failure, drawn"]],
+  "eco1-4": [["PLWeicFreBUYBRcEEeVbCYFxKqrYEBT4WK", "Market failure and intervention, drawn"]],
+  "eco2-1": [["PLWeicFreBUYBrW52KNuBPAAq4YuTHqQQo", "Growth, inflation, unemployment and inequality, drawn"]],
+  "eco2-2": [["PLWeicFreBUYAFmz0NbEJkb1Lk6T6lY_a3", "AD/AS, drawn"]],
+  "eco2-3": [["PLWeicFreBUYAFmz0NbEJkb1Lk6T6lY_a3", "AD/AS, drawn"]],
+  "eco2-4": [["PLWeicFreBUYAFmz0NbEJkb1Lk6T6lY_a3", "AD/AS, drawn"]],
+  "eco2-5": [["PLWeicFreBUYBrW52KNuBPAAq4YuTHqQQo", "Growth, inflation, unemployment and inequality, drawn"]],
+  "eco2-6": [["PLWeicFreBUYABzU6C6coJdjCBOrMTIvVw", "AD/AS, Phillips curve and macro policy"]],
+  "eco3-4": [["PLWeicFreBUYAkFuVvehYzvo6oZnRCcHUc", "Market structures, drawn"]],
+  "eco3-5": [["PLWeicFreBUYDmQmlnMnDDYU5ifAqlTkGF", "The labour market, drawn"],
+             ["PLWeicFreBUYCs7NjXgFhQpoEDvnryFip2", "Labour market, inequality and poverty"]],
+  "eco3-6": [["PLWeicFreBUYAkFuVvehYzvo6oZnRCcHUc", "Market structures and regulation, drawn"]],
+  "eco4-1": [["PLWeicFreBUYDtdp2JwDmZIYH3ROWG5wDM", "International trade, drawn"],
+             ["PLWeicFreBUYCKmmqatYfaiBoNjc_3INk5", "Balance of payments, trade and protectionism"],
+             ["PLWeicFreBUYCJJOkgx6l4bpi3aoT6E28z", "Exchange rates, globalisation and integration"]],
+  "eco4-2": [["PLWeicFreBUYCs7NjXgFhQpoEDvnryFip2", "Inequality and poverty"]],
+  "eco4-3": [["PLWeicFreBUYBmtPeoW8MOMudTm6OaCgjF", "Development economics"]],
+  "eco4-4": [["PLWeicFreBUYCU4IjUPrKMzP5XIt-5idCu", "Financial markets"]],
+  "eco4-5": [["PLWeicFreBUYABzU6C6coJdjCBOrMTIvVw", "Macro policy and performance"]],
+  "eco5-1": [["PLWeicFreBUYD-AhJtDQ8q-hO7U5Bwd1J4", "Writing analysis, evaluation and judgement"]],
+  "eco5-2": [["PLWeicFreBUYD-AhJtDQ8q-hO7U5Bwd1J4", "Writing analysis, evaluation and judgement"]]
+};
+
+/* Kept as the fallback for anything not covered above: a channel-scoped
+   search always resolves to that creator's videos on the topic. */
 function econVideoSearch(topicName) {
   return "https://www.youtube.com/@EconplusDal/search?query=" + encodeURIComponent(topicName);
 }
@@ -141,8 +211,21 @@ function buildLinks(sec, r) {
     links.push({ label: "PMT summary notes", url: r.notes.summary, kind: "notes",
                  note: "Shorter, for revisiting once you know it" });
   }
-  links.push({ label: "EconPlusDal on this topic", url: econVideoSearch(sec.name), kind: "video",
-               note: "Content explained. Watch after making your flashcards" });
+  /* the series for this theme, then anything narrower that covers this
+     chapter specifically, then the search as a last resort */
+  const theme = EPD_THEME[r.theme || 1];
+  if (theme) {
+    links.push({ label: "EconPlusDal: " + theme.name, url: EPD_PLAYLIST + theme.id, kind: "video",
+                 note: theme.count + " videos across the theme. Watch after making your flashcards" });
+  }
+  (EPD_TOPIC[sec.id] || []).forEach(function (t) {
+    links.push({ label: "EconPlusDal: " + t[1], url: EPD_PLAYLIST + t[0], kind: "video",
+                 note: "The series on this chapter specifically" });
+  });
+  if (!theme) {
+    links.push({ label: "EconPlusDal on this topic", url: econVideoSearch(sec.name), kind: "video",
+                 note: "Content explained. Watch after making your flashcards" });
+  }
   links.push({ label: "PMT Theme " + (r.theme || 1) + " page", url: PMT_ECO_THEME + "theme-" + (r.theme || 1) + "/",
                kind: "questions", note: "Example answers, exam technique and definitions" });
   if (r.examTechnique) {
