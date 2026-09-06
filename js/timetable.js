@@ -503,6 +503,27 @@ const Timetable = (function () {
 
   function uid() { return "b" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 
+  /* The steps are done in order, so a sitting covers a stretch of that
+     order rather than all of it. A block from 60 to 130 minutes into a
+     chapter gets the tail of the playlist and the start of the questions,
+     and says so — showing every step on every part told you what the
+     chapter needs, which you already knew, and not what to do now. */
+  function sliceSteps(steps, fromMin, toMin) {
+    const out = [];
+    let at = 0;
+    (steps || []).forEach(function (s) {
+      const a = at, b = at + (s.mins || 0);
+      at = b;
+      const lo = Math.max(a, fromMin), hi = Math.min(b, toMin);
+      if (hi <= lo) return;
+      const portion = Math.round(hi - lo);
+      out.push({ label: s.label, detail: s.detail, mins: portion,
+                 part: portion < (s.mins || 0),
+                 carried: lo > a });
+    });
+    return out;
+  }
+
   /* Build a fortnight (or whatever span is asked for) from today.
 
      Blocks you have moved, added or pinned survive: `mine` marks a block as
@@ -532,6 +553,8 @@ const Timetable = (function () {
     const queues = opts.queues || chapterQueues();
     const cursor = {};
     list.forEach(function (x) { cursor[x.id] = 0; });
+    const partNo = opts.partNo || (opts.partNo = {});      // key -> sittings so far
+    const partsOf = opts.partsOf || (opts.partsOf = {});   // key -> sittings in total
 
     let made = 0, touched = 0;
     for (let i = 0; i < days; i++) {
@@ -621,10 +644,10 @@ const Timetable = (function () {
              out as ninety minutes and then twenty, and nobody sits down for
              twenty minutes of Quadratics. Two sittings of seventy is the
              same work and a better evening. */
-          let len;
+          let len, sittings = 1;
           if (need > maxSit) {
-            const parts = Math.ceil(need / maxSit);
-            len = Math.round((need / parts) / 5) * 5;
+            sittings = Math.ceil(need / maxSit);
+            len = Math.round((need / sittings) / 5) * 5;
           } else {
             len = need;
           }
@@ -649,19 +672,32 @@ const Timetable = (function () {
           if (ch && carry[key] === 0) cursor[best.id]++;
           else if (!ch) cursor[best.id]++;
 
-          const steps = ch && ch.steps
-            ? ch.steps.filter(function (x) { return !x.done; })
-                .map(function (x) { return { label: x.label, detail: x.detail, mins: x.mins }; })
-            : [];
+          /* where this sitting sits inside the chapter's remaining work */
+          const total = ch ? ch.minutes : len;
+          const doneBefore = ch ? Math.max(0, total - need) : 0;
+          const undone = ch ? ch.steps.filter(function (x) { return !x.done; }) : [];
+          const steps = ch ? sliceSteps(undone, doneBefore, doneBefore + len) : [];
+
+          /* The count comes from the split itself, not from dividing the
+             total by this block's length: a later sitting often gets a
+             little more room, so that arithmetic said "part 1 of 3" for
+             work that finished in two. */
+          if (ch && partsOf[key] == null) partsOf[key] = Math.max(1, sittings);
+          partNo[key] = (partNo[key] || 0) + 1;
+          const nParts = ch ? Math.max(partsOf[key] || 1, partOf ? 2 : 1) : 1;
           placed.push({
             id: uid(), subjectId: best.id,
-            label: (ch ? ch.label : best.name) + (partOf ? " \u00b7 part" : ""),
+            label: (ch ? ch.label : best.name) +
+                   (nParts > 1 ? " \u00b7 part " + partNo[key] + " of " + nParts : ""),
             subjectName: best.name,
             chapterId: ch ? ch.cid : null,
             work: ch ? ch.kind : "chapter",
             why: ch ? ch.why : "",
             rag: ch ? ch.rag : null,
-            eta: ch ? ch.minutes : null,
+            eta: ch ? ch.minutes : null,        // the whole chapter's remaining work
+            sitting: len,                        // what this block is worth
+            partNo: ch ? partNo[key] : 1,
+            partCount: nParts,
             steps: steps,
             from: toClock(at), to: toClock(at + len),
             colour: best.colour, kind: "revision", mine: false
@@ -675,6 +711,32 @@ const Timetable = (function () {
       placed.sort(function (a, b) { return toMins(a.from) - toMins(b.from); });
       s.days[iso] = placed;
     }
+    /* Number the parts from what was actually placed.
+
+       Predicting the count when the first sitting is scheduled cannot be
+       right: a later day often has less room than this one, so work that
+       looked like two sittings becomes three. Counting them afterwards is
+       exact, and "part 1 of 2" that turns into three parts is exactly the
+       kind of small lie that stops people trusting the thing. */
+    const tally = {};
+    Object.keys(s.days).sort().forEach(function (iso) {
+      (s.days[iso] || []).forEach(function (b) {
+        if (b.kind !== "revision" || !b.chapterId || b.mine) return;
+        const k = b.subjectId + "|" + b.chapterId;
+        tally[k] = (tally[k] || 0) + 1;
+        b.partNo = tally[k];
+      });
+    });
+    Object.keys(s.days).forEach(function (iso) {
+      (s.days[iso] || []).forEach(function (b) {
+        if (b.kind !== "revision" || !b.chapterId || b.mine) return;
+        const k = b.subjectId + "|" + b.chapterId;
+        b.partCount = tally[k];
+        const base = String(b.label).split(" · part ")[0];
+        b.label = base + (b.partCount > 1 ? " · part " + b.partNo + " of " + b.partCount : "");
+      });
+    });
+
     s.generatedAt = new Date().toISOString();
     s.setUp = true;
     save();

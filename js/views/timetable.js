@@ -154,8 +154,7 @@ const TimetableView = (function () {
           'px;--c:' + b.colour + '">' +
         '<span class="tt-block-main"><b>' + UI.esc(b.label) + '</b>' +
           '<small>' + b.from + '–' + b.to +
-            (b.subjectName ? ' · ' + UI.esc(b.subjectName) : '') +
-            (b.eta ? ' · ' + fmt(b.eta) + ' left on it' : '') + '</small></span>' +
+            (b.subjectName ? ' · ' + UI.esc(b.subjectName) : '') + '</small></span>' +
         (b.kind === "busy"
           ? '<span class="tt-lock" title="A recurring commitment. Edit it in Set up.">▦</span>'
           : '<button class="tt-pen" data-action="tt-edit" data-id="' + b.id + '" data-iso="' + iso +
@@ -235,7 +234,7 @@ const TimetableView = (function () {
           '<div style="flex:1;min-width:160px">' +
             '<b>' + UI.esc(b.label) + '</b>' +
             '<div class="tiny muted">' + UI.esc(b.subjectName || "") + ' · ' + b.from + '–' + b.to +
-              (b.eta ? ' · about ' + fmt(b.eta) + ' of work left on this chapter' : '') + '</div>' +
+              (b.sitting ? ' · ' + fmt(b.sitting) + ' in this sitting' : '') + '</div>' +
           '</div>' +
           (b.rag ? UI.ragDot(b.rag) : "") +
           (b.chapterId
@@ -249,11 +248,24 @@ const TimetableView = (function () {
              : b.work === "practice" ? "A practice test built from your weakest chapters"
              : "A drill on one mark tariff") + '</div>'
           : "") +
+        /* The chapter's total belongs next to the sitting, not instead of
+           it: a 70 minute block labelled "2h 20m" reads as a 70 minute block
+           that is somehow worth two hours twenty. */
+        (b.eta && b.partCount > 1
+          ? '<div class="tiny faint" style="margin-top:6px">Part ' + b.partNo + ' of ' + b.partCount +
+            '. The chapter needs about ' + fmt(b.eta) + ' altogether, which is why it is split.</div>'
+          : b.eta && b.sitting && b.eta > b.sitting
+          ? '<div class="tiny faint" style="margin-top:6px">The chapter needs about ' + fmt(b.eta) +
+            ' altogether.</div>'
+          : "") +
         (b.why ? '<div class="tiny muted" style="margin-top:8px">Scheduled because ' + UI.esc(b.why) + '.</div>' : "") +
         (steps.length
-          ? '<div class="tt-steps">' + steps.map(function (x, i) {
+          ? '<div class="section-label" style="margin:16px 0 0">In this sitting</div>' +
+            '<div class="tt-steps">' + steps.map(function (x, i) {
               return '<div class="tt-step"><span class="tt-step-n">' + (i + 1) + '</span>' +
-                '<span class="tt-step-main"><b>' + UI.esc(x.label) + '</b>' +
+                '<span class="tt-step-main"><b>' + UI.esc(x.label) +
+                  (x.carried ? ' <span class="tiny faint">(carry on)</span>'
+                             : x.part ? ' <span class="tiny faint">(start it)</span>' : '') + '</b>' +
                   '<small>' + UI.esc(x.detail) + '</small></span>' +
                 '<span class="pill">' + fmt(x.mins) + '</span></div>';
             }).join("") + '</div>'
