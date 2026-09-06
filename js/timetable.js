@@ -107,6 +107,27 @@ const Timetable = (function () {
     catch (e) { if (typeof UI !== "undefined") UI.toast("Could not save the timetable", "bad"); }
   }
 
+  /* A short history of the days, so a mis-drop can be taken back. Only the
+     blocks are kept, not the preferences: undo is for "I dragged that by
+     accident", not for unpicking a whole setup. */
+  const history = [];
+  const HISTORY_MAX = 25;
+
+  function snapshot() {
+    try { history.push(JSON.stringify(get().days)); } catch (e) { return; }
+    if (history.length > HISTORY_MAX) history.shift();
+  }
+
+  function canUndo() { return history.length > 0; }
+
+  function undo() {
+    if (!history.length) return false;
+    const prev = history.pop();
+    try { get().days = JSON.parse(prev); } catch (e) { return false; }
+    save();
+    return true;
+  }
+
   function mutate(fn) { const s = get(); fn(s); save(); return s; }
 
   function reloadForUser() { state = null; return load(); }
@@ -488,6 +509,7 @@ const Timetable = (function () {
      yours, and a regeneration schedules around it rather than over it. */
   function generate(opts) {
     opts = opts || {};
+    snapshot();
     const days = opts.days || 14;
     const startIso = opts.from || Metrics.today();
     const s = get();
@@ -517,7 +539,7 @@ const Timetable = (function () {
       const weekday = new Date(iso + "T00:00:00").getDay();
       if (i > 0 && i % 7 === 0) Object.keys(weekly).forEach(function (k) { owed[k] = weekly[k]; });
 
-      const keep = (s.days[iso] || []).filter(function (b) { return b.mine; });
+      const keep = opts.fresh ? [] : (s.days[iso] || []).filter(function (b) { return b.mine; });
       let runs = freeRuns(weekday);
       if (!runs.length) { s.days[iso] = keep; continue; }
 
@@ -579,12 +601,48 @@ const Timetable = (function () {
              not fit. */
           const key = ch ? (best.id + "|" + (ch.cid || ch.kind)) : best.id;
           let need = ch ? (carry[key] != null ? carry[key] : ch.minutes) : blk;
+
+          /* A leftover too small to sit is finished, not carried. Carrying it
+             deadlocked the whole timetable: the item stayed at the front of
+             the queue, every day computed a length below the minimum, broke
+             out of the day, and every day after the third came out empty. */
+          if (ch && need > 0 && need < 20) {
+            carry[key] = 0;
+            cursor[best.id]++;
+            continue;
+          }
           const room = Math.min(run[1] - at, owed[best.id] > 0 ? owed[best.id] : blk);
           const maxSit = Math.max(blk, s.prefs.maxSitting || 90);
-          let len = Math.min(need, room, maxSit);
-          len = Math.max(20, Math.round(len / 5) * 5);
+          const MIN_SIT = 20;
+
+          /* Work that will not fit one sitting is divided into equal ones
+             rather than filled greedily. Greedy gave the longest block it
+             could and left the remainder as a stub: two hours twenty came
+             out as ninety minutes and then twenty, and nobody sits down for
+             twenty minutes of Quadratics. Two sittings of seventy is the
+             same work and a better evening. */
+          let len;
+          if (need > maxSit) {
+            const parts = Math.ceil(need / maxSit);
+            len = Math.round((need / parts) / 5) * 5;
+          } else {
+            len = need;
+          }
+          len = Math.min(len, room);
+          len = Math.round(len / 5) * 5;
+
+          /* Never leave a scrap behind either: if what would be left is too
+             small to be worth a sitting, swallow it now when there is room,
+             and otherwise give it up so the remainder is viable. */
+          const rest = need - len;
+          if (rest > 0 && rest < MIN_SIT) {
+            if (len + rest <= room) len = need;
+            else len = Math.max(MIN_SIT, need - MIN_SIT);
+          }
+
           if (at + len > run[1]) len = run[1] - at;
-          if (len < 20) { at = run[1]; break; }
+          len = Math.round(len / 5) * 5;
+          if (len < MIN_SIT) { at = run[1]; break; }
 
           const partOf = ch && need > len;
           if (ch) carry[key] = Math.max(0, need - len);
@@ -677,6 +735,7 @@ const Timetable = (function () {
   }
 
   function addBlock(iso, block) {
+    snapshot();
     return mutate(function (s) {
       if (!s.days[iso]) s.days[iso] = [];
       s.days[iso].push(Object.assign({ id: uid(), kind: "revision", mine: true }, block));
@@ -685,6 +744,7 @@ const Timetable = (function () {
   }
 
   function updateBlock(iso, id, patch) {
+    snapshot();
     return mutate(function (s) {
       (s.days[iso] || []).forEach(function (b) {
         if (b.id === id) { Object.assign(b, patch); b.mine = true; }
@@ -694,6 +754,7 @@ const Timetable = (function () {
   }
 
   function removeBlock(iso, id) {
+    snapshot();
     return mutate(function (s) {
       s.days[iso] = (s.days[iso] || []).filter(function (b) { return b.id !== id; });
     });
@@ -713,6 +774,7 @@ const Timetable = (function () {
       return overlaps(start, start + len, toMins(b.from), toMins(b.to));
     });
     if (clash) return false;
+    snapshot();
     mutate(function (st) {
       st.days[iso] = (st.days[iso] || []).filter(function (b) { return b.id !== id; });
       if (!st.days[dest]) st.days[dest] = [];
@@ -828,6 +890,7 @@ const Timetable = (function () {
     recommend: recommend, weeklyCapacity: weeklyCapacity,
     freeRuns: freeRuns, freeMinutesOn: freeMinutesOn, placeableOn: placeableOn, busyOn: busyOn,
     generate: generate, reflow: reflow, blocksOn: blocksOn, dayTotals: dayTotals,
+    undo: undo, canUndo: canUndo, snapshot: snapshot,
     rankWork: rankWork, tariffTrouble: tariffTrouble,
     addBlock: addBlock, updateBlock: updateBlock, removeBlock: removeBlock, moveBlock: moveBlock,
     slotsFor: slotsFor, slotsToday: slotsToday,

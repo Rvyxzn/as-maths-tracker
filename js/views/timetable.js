@@ -56,6 +56,9 @@ const TimetableView = (function () {
           'title="Reset every subject to its recommended hours">Use recommended</button>' +
         '<button class="btn btn-primary" data-action="tt-generate">' +
           (t.generatedAt ? "Rebuild the timetable" : "Build my timetable") + '</button>' +
+        '<button class="btn" data-action="tt-undo"' +
+          (Timetable.canUndo() ? "" : " disabled") + '>Undo</button>' +
+        '<button class="btn" data-action="tt-reset">Reset</button>' +
         '<button class="btn" data-action="tt-export">Export</button>' +
         '<button class="btn" data-action="tt-import">Import</button>' +
         '<div class="spacer"></div>' +
@@ -184,8 +187,7 @@ const TimetableView = (function () {
         '</div>' +
         '<div class="tiny faint" style="margin-top:10px">Click a block to see what it is for, drag ' +
           'to move it, double-click to edit. The shaded stretches are when you said you are free.</div>' +
-      '</div>' +
-      detailPanel(iso);
+      '</div>';
   }
 
   /* What a block is actually asking you to do.
@@ -194,16 +196,40 @@ const TimetableView = (function () {
      watch the playlist then the topic questions" is an instruction. The
      chapter and the order come from the daily planner, so the timetable and
      the plan cannot disagree about what matters. */
-  function detailPanel(iso) {
-    if (!openBlock) return "";
-    const b = Timetable.blocksOn(iso).filter(function (x) { return x.id === openBlock; })[0];
+  /* Clicking a block opens it as a modal rather than a panel below the
+     timeline, so what you clicked and what you are reading are in the same
+     place. Nothing is bound to double click: a double click is two clicks,
+     and binding it meant the first one did something you then had to undo. */
+  function detailModal(iso, id) {
+    const html = detailBody(iso, id);
+    if (!html) return;
+    const b = Timetable.blocksOn(iso).filter(function (x) { return x.id === id; })[0];
+    UI.modal({
+      title: b ? b.label : "Block",
+      wide: true,
+      body: html,
+      footer: '<button class="btn" data-modal-close>Close</button>' +
+        (b && b.kind !== "busy"
+          ? '<button class="btn btn-primary" id="ttEditFromDetail">Edit this block</button>' : ""),
+      onMount: function (box) {
+        const e = box.querySelector("#ttEditFromDetail");
+        if (e) e.onclick = function () { UI.closeModal(); editModal(iso, id); };
+        box.querySelectorAll("[data-action=\"tt-open-chapter\"]").forEach(function (btn) {
+          btn.addEventListener("click", function () { UI.closeModal(); });
+        });
+      }
+    });
+  }
+
+  function detailBody(iso, openId) {
+    const b = Timetable.blocksOn(iso).filter(function (x) { return x.id === openId; })[0];
     if (!b) return "";
     if (b.kind !== "revision") {
-      return '<div class="card tt-detail"><b>' + UI.esc(b.label) + '</b>' +
-        '<div class="tiny muted">' + b.from + '–' + b.to + ' · not revision, so nothing is planned for it.</div></div>';
+      return '<div class="tiny muted">' + b.from + '–' + b.to +
+        ' · not revision, so nothing is planned for it.</div>';
     }
     const steps = b.steps || [];
-    return '<div class="card tt-detail">' +
+    return '<div>' +
         '<div class="row wrap" style="gap:10px;align-items:center">' +
           '<span class="tt-node" style="background:' + b.colour + ';width:14px;height:14px"></span>' +
           '<div style="flex:1;min-width:160px">' +
@@ -438,19 +464,15 @@ const TimetableView = (function () {
         if (Math.abs(dy) > 3) drag.moved = true;
         el.style.top = Math.max(0, drag.top + dy) + "px";
       };
-      el.ondblclick = function (e) {
-        if (e.target.closest("[data-action]")) return;
-        editModal(el.dataset.iso, el.dataset.id);
-      };
       el.onpointerup = function (e) {
         if (!drag || drag.el !== el) return;
         el.classList.remove("dragging");
         /* A press that did not travel is a click, and a click opens the block
            rather than dropping it back where it already was. */
         if (!drag.moved) {
-          openBlock = (openBlock === drag.id) ? null : drag.id;
+          const iso = drag.iso, id = drag.id;
           drag = null;
-          App.render();
+          detailModal(iso, id);
           return;
         }
         const mins = drag.lo + parseFloat(el.style.top) / PX_PER_MIN;
@@ -725,6 +747,23 @@ const TimetableView = (function () {
         Timetable.subjects().forEach(function (s) { Timetable.setSubject(s.id, { mins: null }); });
         UI.toast("Every subject back to its recommended hours", "ok", 2600);
         mode = "setup"; App.render(); return true;
+      }
+      case "tt-undo": {
+        if (!Timetable.undo()) { UI.toast("Nothing to undo", "warn", 1800); return true; }
+        UI.toast("Put back", "ok", 1600);
+        App.render(); return true;
+      }
+      case "tt-reset": {
+        UI.confirm("Reset the timetable?",
+          "Everything is rebuilt from your windows and your hours, including the blocks you moved " +
+          "or added yourself. Your setup is not touched.",
+          "Reset it", true).then(function (ok) {
+            if (!ok) return;
+            const r = Timetable.generate({ days: Math.max(span, 14), fresh: true });
+            UI.toast("Rebuilt from scratch — " + r.made + " blocks", "ok", 3000);
+            mode = "grid"; App.render();
+          });
+        return true;
       }
       case "tt-export": doExport(); return true;
       case "tt-import": doImport(); return true;
