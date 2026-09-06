@@ -163,6 +163,9 @@ const Subjects = (function () {
     ALL_CHAPTER_IDS = Object.keys(CHAPTER_INDEX);
 
     attachChapterData(s.chapterData());
+    /* The exam-question PDFs hang off the index too, and the index has
+       just been rebuilt, so they have to be re-attached with it. */
+    if (typeof attachExamSets === "function") attachExamSets();
     return s;
   }
 

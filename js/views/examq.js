@@ -69,6 +69,11 @@ const ExamQView = (function () {
         '<span class="eq-ico">' + UI.icon("paper") + '</span>' +
         '<div style="flex:1;min-width:0">' +
           '<b>' + UI.esc(s.name) + '</b>' +
+          /* Half these topics appear twice, once at AS and once at A level,
+             so the level belongs next to the name rather than in a detail
+             line: "Proof" and "Proof" are otherwise the same row twice. */
+          ' <span class="pill ' + (s.level === "A level" ? "acc" : "") + '">' +
+            UI.esc(s.level || "AS") + '</span>' +
           '<div class="eq-chaps">' + chapters.map(function (c) {
             return '<span class="eq-chap' + (c.done ? " done" : "") + '">' +
               UI.ragDot(c.rag) + 'Ch ' + UI.esc(c.num) + ' ' + UI.esc(c.name) + '</span>';
