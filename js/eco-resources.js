@@ -63,6 +63,15 @@ const TUTOR2U_ECO = "https://www.tutor2u.net/economics";
 
 const EPD_PLAYLIST = "https://www.youtube.com/playlist?list=";
 
+/* Which playlist to put in the player for a chapter: the one written for
+   that chapter if it exists, the theme series if not. */
+function epdEmbed(secId, theme) {
+  const own = (typeof EPD_TOPIC !== "undefined" && EPD_TOPIC[secId]) ? EPD_TOPIC[secId][0] : null;
+  if (own) return { id: own[0], title: own[1] };
+  const t = (typeof EPD_THEME !== "undefined") ? EPD_THEME[theme] : null;
+  return t ? { id: t.id, title: t.name } : null;
+}
+
 /* theme number -> the course playlist for it */
 const EPD_THEME = {
   1: { id: "PLWeicFreBUYCOFC2A0SlKrpEYgwaSF63t", name: "Microeconomics, Year 1", count: 43 },
@@ -157,9 +166,18 @@ const ECO_CHAPTER_DATA = (function () {
     paper.sections.forEach(function (sec) {
       const r = ECO_RESOURCES[sec.id] || {};
       out[sec.id] = {
-        /* No verified playlist id, so no embedded player. The chapter view
-           already handles this and invites you to paste your own link. */
-        playlist: null,
+        /* The player embeds the narrowest checked series that covers this
+           chapter: its own topic playlist where the channel has one, and the
+           theme series otherwise. Both ids were read off the channel and
+           their titles checked, so neither is a guess.
+
+           `count` is deliberately left off. It is what the watch-every-video
+           step counts towards, and a theme playlist spans four to six
+           chapters — claiming 1.2 needs all 43 would hold the chapter open
+           for videos belonging to 1.1, 1.3 and 1.4. Without it the step uses
+           its own modest default, which you can set per chapter, and the
+           full series is still one click away in the links below. */
+        playlist: epdEmbed(sec.id, r.theme || 1),
         questions: [],
         links: buildLinks(sec, r)
       };
