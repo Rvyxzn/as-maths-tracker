@@ -466,11 +466,16 @@ const PracticeView = (function () {
     const msUrl = encodeURI(root + "Mark schemes/" + q.pdf + " MS.pdf");
     const clean = !(q.flags || []).length;
 
-    return (q.guess
-        ? '<div class="tiny faint" style="margin-bottom:10px">' +
-            'Topic inferred from the wording — a past paper is not filed by topic, so this one is a ' +
-            'best guess and does not count towards any chapter’s rating.</div>'
-        : "") +
+    /* The chapter here is guessed from the wording, and measured honestly it
+       is right about two thirds of the time. Good enough to browse by, not
+       good enough to move a rating, so it says which it is. */
+    const inf = q.chapters && q.chapters[0] ? CHAPTER_INDEX[q.chapters[0]] : null;
+    return '<div class="tiny faint" style="margin-bottom:10px">' +
+        (q.likely && inf
+          ? 'Looks like <b>' + UI.esc(inf.chapterLabel) + '</b>, judged from the wording'
+          : 'Topic unclear — a past paper is not filed by topic') +
+        '. Either way it does not count towards any chapter’s rating; whole papers are ' +
+        'tracked in Past Papers, where you assign the topic of each lost mark yourself.</div>' +
       '<div class="pt-paper" data-pdf-src="' + qUrl + '" data-pdf-from="' + q.pageFrom +
         '" data-pdf-to="' + q.pageTo + '"></div>' +
       (clean
