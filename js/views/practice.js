@@ -330,7 +330,9 @@ const PracticeView = (function () {
           '<div style="flex:1;min-width:0">' +
             '<b>' + UI.esc(m ? m.label : "Question " + (idx + 1)) + '</b>' +
             '<div class="tiny faint">' +
-              UI.esc(inf ? inf.chapter.name + (m && m.where !== inf.chapter.name ? " · " + m.where : "")
+              /* the chapter's own number as well as its name: "1.2 How
+                  markets work", the way the specification refers to it */
+              UI.esc(inf ? inf.chapterLabel + (m && m.where !== inf.chapter.name ? " · " + m.where : "")
                          : (m ? m.where : "")) + '</div>' +
           '</div>' +
           '<span class="pill">' + PracticeTest.minutesFor(it.marks) + ' min worth</span>' +
@@ -366,11 +368,12 @@ const PracticeView = (function () {
             '</div>'
           : "") +
         '<div class="qtext">' + PacksView.questionHtml(q.text, q.id) + '</div>' +
+        /* with the question, because it is part of it */
+        PacksView.diagramBlock(q) +
         (g ? '<div class="qfocus-guide"><b>' + UI.esc(g.name) + '</b>' +
              '<span class="pill acc">' + UI.esc(g.split) + '</span><p>' + UI.esc(g.how) + '</p></div>' : "") +
         (show
-          ? PacksView.diagramBlock(q) +
-            (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' +
+          ? (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' +
                     PacksView.msSheet(q.ms, q.id)
                   : '<div class="tiny faint">No mark scheme was found for this one.</div>') +
             (er ? UI.examinerReport(er, { series: q.series, paper: q.paper,

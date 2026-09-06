@@ -708,13 +708,17 @@ const PacksView = (function () {
 
           '<div class="qfocus-scroll">' +
             '<div class="qtext">' + questionHtml(q.text, q.id) + '</div>' +
+            /* The diagram is part of the question. It used to appear with the
+               mark scheme, which meant every question that turns on reading a
+               diagram was unanswerable until you had given up and revealed
+               the answer. */
+            diagramBlock(q) +
             (g.split ? '<div class="qfocus-guide"><b>' + UI.esc(g.name) + '</b>' +
                        '<span class="pill acc">' + UI.esc(g.split) + '</span>' +
                        '<p>' + UI.esc(g.how) + '</p></div>' : "") +
 
             (show
-              ? diagramBlock(q) +
-                (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' + msSheet(q.ms, q.id)
+              ? (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' + msSheet(q.ms, q.id)
                       : '<div class="tiny faint">No mark scheme was found for this one.</div>') +
                 (er ? UI.examinerReport(er, { series: q.series, paper: q.paper,
                                               question: q.q + (q.part ? "(" + q.part + ")" : "") }) : "") +

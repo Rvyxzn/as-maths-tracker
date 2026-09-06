@@ -134,6 +134,20 @@ const ECO_QUESTION_TABLES = {
                     ["Natwest", 10.9], ["Barclays", 9.8], ["HSBC", 7.2], ["Virgin Money", 3.9]] }
   },
 
+  /* A pie chart in the paper. Drawn as horizontal bars instead: the shares
+     are what the question asks you to read, and a bar you can line up
+     against an axis is easier to read a share off than a wedge. The eight
+     shares are printed beside the chart, so these are exact. */
+  "p1-june2017-q5": {
+    keep: "Figure 1 shows the distribution of the revenue received from the sale of a Starbucks cappuccino drink priced at £2.27 in 2015.",
+    resume: "(a)",
+    chart: { kind: "hbar", exact: true, unit: "%", dp: 0,
+             caption: "Distribution of the revenue from a £2.27 cappuccino, 2015",
+             rows: [["Labour", 24], ["VAT", 17], ["Rent/rates", 15],
+                    ["Admin/overheads", 15], ["Profit", 13], ["Packaging", 8],
+                    ["Coffee", 4], ["Milk", 4]] }
+  },
+
   "p2-june2017-q1": {
     keep: "The chart below shows the UK unemployment rate, seasonally adjusted, from 2008 to 2015",
     chart: { kind: "line", exact: false, unit: "%", yLabel: "% of all economically active",
