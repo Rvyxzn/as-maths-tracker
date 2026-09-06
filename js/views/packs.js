@@ -364,7 +364,7 @@ const PacksView = (function () {
 
   /* Marks, money, percentages and quantities are the things you are asked to
      use, so they are picked out of the sentence rather than left to be found. */
-  const NUM_RE = /(£\s?[\d,]+(?:\.\d+)?(?:\s?(?:billion|million|bn|m|k))?|\$\s?[\d,]+(?:\.\d+)?(?:\s?(?:billion|million|bn|m|k))?|[\d,]+(?:\.\d+)?\s?%|\b\d[\d, ]*\.?\d*\b)/g;
+  const NUM_RE = /(£\s?\d[\d,]*(?:[ ]\d{3})*(?:\.\d+)?(?:\s?(?:billion|million|bn|m|k))?|\$\s?\d[\d,]*(?:[ ]\d{3})*(?:\.\d+)?(?:\s?(?:billion|million|bn|m|k))?|[\d,]+(?:\.\d+)?\s?%|\d[\d, ]*\.?\d*)/g;
 
   function numbers(safe) {
     /* The text arrives already escaped, so an apostrophe is sitting in it as

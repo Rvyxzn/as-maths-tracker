@@ -436,6 +436,8 @@ const PracticeView = (function () {
             '<div class="qz-ms-h">' + UI.icon("check") + 'Mark scheme' +
               (q.msCheck === "unverifiable"
                 ? '<span class="pill" title="Placed by its position in the scheme, which runs in the same order as the questions. This is an older scheme that prints no totals, so there was nothing to check it against.">placed by order</span>'
+                : q.msCheck === "bracketed"
+                ? '<span class="pill warn" title="This one could not be placed directly, so it has been narrowed to the pages between the questions either side of it. The schemes run in order, so it is definitely in here — it may just not start at the top.">narrowed to these pages</span>'
                 : "") +
             '</div>' +
             (msUrl && q.msFrom
