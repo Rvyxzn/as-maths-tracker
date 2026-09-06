@@ -29,6 +29,33 @@ const Scheduler = (function () {
   };
 
   /* ---------- priority scoring ---------- */
+  /* The soonest logged exam that names this topic's chapter, with how hard
+     that should push. Nothing is returned for the specification exam: it
+     covers everything, so boosting everything by the same amount would just
+     move the whole ranking up and change no order at all. */
+  function examFocusFor(id) {
+    if (typeof Metrics === "undefined" || !Metrics.upcomingExams) return null;
+    const cid = Store.chapterOf(id) || id;
+    const today = Metrics.today();
+    const list = Metrics.upcomingExams();
+    for (let i = 0; i < list.length; i++) {
+      const ex = list[i];
+      if (!ex.chapterIds || !ex.chapterIds.length) continue;
+      if (ex.chapterIds.indexOf(cid) < 0) continue;
+      const days = Math.max(0, Metrics.diffDays(today, ex.date));
+      /* 150 the day before, decaying to nothing at six weeks out */
+      const boost = Math.round(150 * Math.max(0, 1 - days / 42));
+      if (boost <= 0) return null;
+      /* A test logged as "Exam" or "Test" reads badly as a proper noun:
+         "it is on Exam" wants an article the way "it is on your Theme 1
+         mock" does not. */
+      const generic = /^(exam|test|assessment|mock|quiz)$/i.test(ex.title.trim());
+      return { boost: boost, days: days, id: ex.id,
+               title: generic ? "your " + ex.title.trim().toLowerCase() : ex.title };
+    }
+    return null;
+  }
+
   function priority(id, opts) {
     opts = opts || {};
     const inf = Store.info(id);
@@ -111,7 +138,26 @@ const Scheduler = (function () {
       if (Journey.chapterComplete(id)) s -= 60;
     }
 
-    // 11. manual controls
+    // 11. what the next exam actually covers
+    /* A logged test names its chapters, which is the strongest statement
+       about what to revise that this app ever gets: not an estimate of what
+       might come up, but a list of what will. It is weighted by how close
+       the test is, because "on the test in three days" and "on the test in
+       six weeks" are not the same instruction, and it is deliberately large
+       enough at the near end to outrank a red chapter that is not on it. */
+    const nx = examFocusFor(id);
+    if (nx) {
+      s += nx.boost;
+      /* Unshifted rather than pushed: only the first three reasons are shown,
+         and "it is on the test on Friday" is the one you would want to read
+         first out of any of them. */
+      reasons.unshift("it is on " + nx.title + ", " +
+        (nx.days === 0 ? "which is today"
+         : nx.days === 1 ? "which is tomorrow"
+         : "which is " + nx.days + " days away"));
+    }
+
+    // 12. manual controls
     s += (t.priorityBoost || 0) * 25;
     if (t.priorityBoost > 0) reasons.push("you manually raised its priority");
     if (t.pinned) { s += 250; reasons.push("you pinned it"); }
@@ -173,8 +219,30 @@ const Scheduler = (function () {
     const st = Store.get();
     const s = st.settings;
     const todayIso = Metrics.today();
-    const examIso = s.examDate;
-    const horizon = Math.min(200, Math.max(0, Metrics.diffDays(todayIso, examIso)));
+    /* The plan runs to the furthest exam still ahead, and each day counts
+       down to the nearest one — which is usually a logged class test long
+       before it is the A level. Planning only to s.examDate meant that the
+       day after that date the horizon was zero and the planner produced
+       nothing at all, however many tests were still to come. */
+    const exams = Metrics.upcomingExams();
+    const lastExam = exams.length ? exams[exams.length - 1] : null;
+    const examIso = lastExam ? lastExam.date : s.examDate;
+    const horizon = lastExam
+      ? Math.min(200, Math.max(1, Metrics.diffDays(todayIso, lastExam.date) + 1))
+      : 14;   /* nothing logged and the date gone: keep a fortnight ticking over */
+
+    /* Which exam a given day is working towards, and how far off it is. */
+    const towards = function (dateIso) {
+      for (let i = 0; i < exams.length; i++) {
+        const d = Metrics.diffDays(dateIso, exams[i].date);
+        if (d >= 0) return { days: d, exam: exams[i] };
+      }
+      return { days: 999, exam: null };
+    };
+    /* Past papers are still paced off the real thing: a full timed paper is
+       the right call ten days before the A level and the wrong one three
+       days before a chapter test. */
+    const specIso = s.examDate;
 
     const activeIds = Store.planIds(); // the method works chapter by chapter
 
@@ -227,7 +295,9 @@ const Scheduler = (function () {
 
     for (let dayN = 0; dayN < horizon; dayN++) {
       const date = Metrics.addDays(todayIso, dayN);
-      const daysToExam = Metrics.diffDays(date, examIso);
+      const aim = towards(date);
+      const daysToExam = aim.days;
+      const daysToSpec = specIso ? Metrics.diffDays(date, specIso) : 999;
       let budget = budgetFor(date);
       const tasks = [];
 
@@ -253,10 +323,23 @@ const Scheduler = (function () {
       if (eve) {
         const cap = Math.min(budget, 90);
         let used = 0;
-        const redRows = rankRows(activeIds, sim, date).filter(function (r) { return r.p.eff.rag === "red"; }).slice(0, 3);
+        const which = aim.exam;
+        const onIt = which && which.chapterIds && which.chapterIds.length ? which.chapterIds : null;
+        const evening = which ? "the day before " + which.title : "the day before the exam";
+        /* The night before a chapter test, the weakest topic in the whole
+           specification is not what to look at. The weakest topic ON THAT
+           TEST is, so when the logged exam says what it covers, the eve
+           narrows to those chapters. */
+        const evePool = onIt ? activeIds.filter(function (id) {
+          return onIt.indexOf(Store.chapterOf(id) || id) >= 0;
+        }) : activeIds;
+        const redRows = rankRows(evePool.length ? evePool : activeIds, sim, date)
+          .filter(function (r) { return r.p.eff.rag === "red"; }).slice(0, 3);
         tasks.push(mk(date, {
-          kind: "formula", title: "Formula and key-fact recall (both papers)", minutes: 25,
-          why: "It is the day before the exam. Short recall beats new content, go through the formulae you must memorise and the ones in the booklet."
+          kind: "formula",
+          title: "Formula and key-fact recall" + (onIt ? " for " + which.title : " (both papers)"),
+          minutes: 25,
+          why: "It is " + evening + ". Short recall beats new content, go through the formulae you must memorise and the ones in the booklet."
         }));
         used += 25;
         if (Store.get().papers.length) {
@@ -303,7 +386,7 @@ const Scheduler = (function () {
                         Math.floor(dayN / paperEveryNDays) > Math.floor((dayN - 1) / paperEveryNDays);
       const forcePaper = finalWeek && !underCovered && dayN % 2 === 0;
       if (!skippedToday("paper") && (wantPaper || forcePaper) && budget >= 55) {
-        const pt = paperTaskFor(date, daysToExam, coveredPct, paperCounter);
+        const pt = paperTaskFor(date, daysToSpec, coveredPct, paperCounter);
         if (pt.minutes <= budget + 20) {
           const mins = Math.min(pt.minutes, budget);
           tasks.push(mk(date, {

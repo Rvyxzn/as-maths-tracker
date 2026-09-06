@@ -364,10 +364,18 @@ const PacksView = (function () {
 
   /* Marks, money, percentages and quantities are the things you are asked to
      use, so they are picked out of the sentence rather than left to be found. */
+  const NUM_RE = /(£\s?[\d,]+(?:\.\d+)?(?:\s?(?:billion|million|bn|m|k))?|\$\s?[\d,]+(?:\.\d+)?(?:\s?(?:billion|million|bn|m|k))?|[\d,]+(?:\.\d+)?\s?%|\b\d[\d, ]*\.?\d*\b)/g;
+
   function numbers(safe) {
-    return safe.replace(
-      /(£\s?[\d,]+(?:\.\d+)?(?:\s?(?:billion|million|bn|m|k))?|\$\s?[\d,]+(?:\.\d+)?(?:\s?(?:billion|million|bn|m|k))?|[\d,]+(?:\.\d+)?\s?%|\b\d[\d, ]*\.?\d*\b)/g,
-      '<b class="q-num">$1</b>');
+    /* The text arrives already escaped, so an apostrophe is sitting in it as
+       &#39; and an ampersand as &amp;. The digits inside an entity are not a
+       number in the question, and bolding them splits the entity open, which
+       is how "the world's longest sea bridge" came out with a bold 39 and a
+       stray &# in front of it. So the string is cut on its entities and only
+       the text between them is marked up. */
+    return safe.split(/(&[#a-zA-Z0-9]+;)/).map(function (bit, n) {
+      return n % 2 ? bit : bit.replace(NUM_RE, '<b class="q-num">$1</b>');
+    }).join("");
   }
 
   function lineHtml(l) {
@@ -976,5 +984,12 @@ const PacksView = (function () {
     return false;
   }
 
-  return { render: render, setSearch: setSearch, handle: handle, minutesFor: minutesFor };
+  /* The question renderer is shared with the practice tests, which show the
+     same Economics questions inside a paper rather than one at a time. It
+     lives here because this is where the extraction quirks it works around
+     are documented; exporting it beats a second, drifting copy. */
+  return { render: render, setSearch: setSearch, handle: handle, minutesFor: minutesFor,
+           questionHtml: questionHtml, msSheet: msSheet, caseFor: caseFor, caseHtml: caseHtml,
+           diagramBlock: diagramBlock, reportFor: reportFor,
+           guideFor: function (marks) { return GUIDE[marks] || null; } };
 })();

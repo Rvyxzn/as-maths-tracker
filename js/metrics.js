@@ -29,10 +29,46 @@ const Metrics = (function () {
     return r ? h + "h " + r + "m" : h + "h";
   }
 
-  /* ---------- exam timing ---------- */
-  function daysLeft() { return Math.max(0, diffDays(today(), Store.settings().examDate)); }
-  function examPassed() { return diffDays(today(), Store.settings().examDate) < 0; }
-  function isExamDay() { return today() === Store.settings().examDate; }
+  /* ---------- exam timing ----------
+
+     "The exam" is whichever one is next, not the specification date alone.
+     A class test on Friday is the exam that decides what you do tonight,
+     and once the A level date itself goes by, a tracker that answers
+     "your exam has passed" to every question is a tracker that has
+     switched itself off with a year of resits still ahead. So the
+     specification date is only the first candidate, the logged tests are
+     the rest, and everything downstream counts down to the soonest of them
+     that is still to come. */
+
+  /* Every exam still ahead, soonest first. */
+  function upcomingExams() {
+    const t = today();
+    const out = [];
+    const spec = Store.settings().examDate;
+    if (spec && diffDays(t, spec) >= 0) {
+      out.push({ id: "spec", kind: "spec", date: spec,
+                 title: (typeof Subjects !== "undefined" ? Subjects.current().name : "Your exam"),
+                 chapterIds: null });
+    }
+    if (typeof ExamLogger !== "undefined") {
+      ExamLogger.awaiting().forEach(function (a) {
+        if (!a.date || diffDays(t, a.date) < 0) return;
+        out.push({ id: a.id, kind: "logged", date: a.date, title: a.title,
+                   chapterIds: a.chapterIds || [] });
+      });
+    }
+    return out.sort(function (a, b) { return a.date.localeCompare(b.date); });
+  }
+
+  function nextExam() { return upcomingExams()[0] || null; }
+  function lastExam() { const l = upcomingExams(); return l[l.length - 1] || null; }
+  function examDateIso() { const n = nextExam(); return n ? n.date : Store.settings().examDate; }
+
+  function daysLeft() { return Math.max(0, diffDays(today(), examDateIso())); }
+  /* Passed only when there is nothing at all left to sit. One logged test
+     still to come is enough to keep the whole app running normally. */
+  function examPassed() { return !nextExam(); }
+  function isExamDay() { return today() === examDateIso(); }
 
   /* Phase of the revision campaign */
   function phase() {
@@ -813,6 +849,7 @@ const Metrics = (function () {
     iso: iso, today: today, addDays: addDays, diffDays: diffDays, parseISO: parseISO,
     fmtDate: fmtDate, fmtDateLong: fmtDateLong, fmtMins: fmtMins,
     daysLeft: daysLeft, examPassed: examPassed, isExamDay: isExamDay, phase: phase,
+    upcomingExams: upcomingExams, nextExam: nextExam, lastExam: lastExam, examDateIso: examDateIso,
     accuracy: accuracy, lastAccuracy: lastAccuracy, bestAccuracy: bestAccuracy, paperLoss: paperLoss,
     effectiveRag: effectiveRag, checklist: checklist, checklistScore: checklistScore, isCovered: isCovered,
     coverage: coverage, nextReviewDate: nextReviewDate, isDue: isDue, daysSinceRevised: daysSinceRevised,

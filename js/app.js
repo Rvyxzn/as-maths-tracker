@@ -19,6 +19,9 @@ const App = (function () {
     { id: "examq", label: "Exam Questions", icon: "✎", subjects: ["maths"] },
     { id: "papers", label: "Past Papers", icon: "▤" },
     { id: "packs", label: "Question Packs", icon: "≣", subjects: ["economics"] },
+    /* A test is assembled from whichever question bank the subject has, so
+       it exists wherever there is one to assemble from. */
+    { id: "practice", label: "Practice Test", icon: "⏱", subjects: ["maths", "economics"] },
     { id: "assessments", label: "School Tests", icon: "✎" },
     { id: "flashcards", label: "Flashcards", icon: "◈" },
     { id: "weaknesses", label: "Weaknesses", icon: "⚠" },
@@ -30,6 +33,7 @@ const App = (function () {
     dashboard: "Dashboard", today: "Today’s Plan", topics: "My Topics", topic: "Topic", chapter: "Chapter", paperview: "Paper",
     calendar: "Calendar", examq: "Exam Questions", papers: "Past Papers", weaknesses: "Weaknesses",
     assessments: "School Tests", flashcards: "Formula Flashcards", packs: "Question Packs",
+    practice: "Practice Test",
     progress: "Progress", settings: "Settings", session: "Revision Session", onboarding: "Getting Started"
   };
 
@@ -115,6 +119,7 @@ function setSidebar(open) {
       case "papers": PapersView.render(buf); break;
       case "assessments": AssessmentsView.render(buf); break;
       case "packs": PacksView.render(buf); break;
+      case "practice": PracticeView.render(buf); break;
       case "flashcards": FlashcardsView.render(buf); break;
       case "weaknesses": WeaknessesView.render(buf); break;
       case "progress": ProgressView.render(buf); break;
@@ -432,6 +437,7 @@ function setSidebar(open) {
     if (CalendarView.handle(action, el)) return;
     if (PapersView.handle(action, el)) return;
     if (AssessmentsView.handle(action, el)) return;
+    if (typeof PracticeView !== "undefined" && PracticeView.handle(action, el)) return;
     if (typeof PacksView !== "undefined" && PacksView.handle(action, el)) return;
     if (action === "anki-export") { ankiExport(el.dataset.id); return; }
     if (action === "switch-subject") { subjectMenu(); return; }
