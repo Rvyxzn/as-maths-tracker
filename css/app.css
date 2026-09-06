@@ -2802,3 +2802,28 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .tt-slot-main{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
 .tt-slot-main b{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tt-slot-main small{font-size:11px;color:var(--muted)}
+
+/* ============================================================
+   Touch screens
+   ============================================================ */
+
+/* Safari on iOS zooms the whole page when you focus a form control whose
+   text is smaller than 16px, and it does not zoom back out afterwards — you
+   are left panning around a magnified layout. The body is 14.5px and the
+   controls inherit it, so every field in the app set it off: tapping a score
+   box or a time meant pinching your way back.
+
+   Sixteen pixels on coarse pointers only, so the desktop keeps its tighter
+   type. Targeting the pointer rather than the width covers tablets, which
+   are wide enough to slip past a width query and still do this. */
+@media (pointer: coarse) {
+  input, select, textarea,
+  .input, select.input, textarea.input,
+  .tt-f .input, .tt-hm .input, .timelog-mins .input, .qscore .input {
+    font-size: 16px;
+  }
+  /* the narrow numeric boxes need the room the bigger text asks for */
+  .tt-f .input { width: 88px; }
+  .tt-f.wide .input { width: 112px; }
+  .tt-hm .input { width: 62px; }
+}

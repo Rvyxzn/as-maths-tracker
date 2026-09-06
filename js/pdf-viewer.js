@@ -43,6 +43,23 @@ const PdfViewer = (function () {
      of racing it, and carries the zoom/pen state for that viewer */
   const sessions = new WeakMap();
   const MIN_SCALE = 0.5, MAX_SCALE = 3;
+
+  /* How finely to rasterise a page.
+
+     Matching the device pixel ratio is the usual advice and it is not
+     enough here: on an ordinary 1x screen it renders exam text at exactly
+     one canvas pixel per CSS pixel, which is legible but soft, and these are
+     pages of small print and fine rules. Two is the floor, so a 1x screen
+     gets a supersampled page that reads crisply, and a 2x screen is
+     unaffected.
+
+     Capped, because a canvas is width x height x 4 bytes and an A4 page at
+     four times linear is already sixteen times the memory. */
+  const MIN_SS = 2, MAX_SS = 3;
+  function superSample(zoom) {
+    const dpr = window.devicePixelRatio || 1;
+    return Math.min(MAX_SS, Math.max(MIN_SS, dpr) * (zoom || 1));
+  }
   /* where a fullscreened .pdfv came from, so it can go home again */
   const homePosition = new WeakMap();
 
@@ -323,6 +340,21 @@ const PdfViewer = (function () {
     viewport.scrollLeft = contentX * newScale - anchorX;
     viewport.scrollTop = contentY * newScale - anchorY;
     updateZoomUI(container, sess);
+    scheduleResharpen(container, sess);
+  }
+
+  /* Zooming stays instant — the transform happens immediately — and the
+     pages are re-rasterised once the zooming stops, so it feels responsive
+     and ends up sharp rather than one or the other. */
+  function scheduleResharpen(container, sess) {
+    if (sess.sharpenTimer) clearTimeout(sess.sharpenTimer);
+    sess.sharpenTimer = setTimeout(function () {
+      sess.sharpenTimer = null;
+      if (sessions.get(container) !== sess) return;
+      if (sess.sharpenedAt === sess.scale) return;
+      sess.sharpenedAt = sess.scale;
+      if (sess.doc) renderDoc(container, sess.doc, sess);
+    }, 260);
   }
 
   function resetZoom(container, sess) {
@@ -332,6 +364,7 @@ const PdfViewer = (function () {
     viewport.scrollLeft = 0;
     viewport.scrollTop = 0;
     updateZoomUI(container, sess);
+    scheduleResharpen(container, sess);
   }
 
   /* Sets the page stack's transform to the current zoom, plus -- when the
@@ -736,6 +769,7 @@ const PdfViewer = (function () {
   }
 
   function renderDoc(container, pdf, sess) {
+    sess.doc = pdf;                 // kept so a zoom can redraw at the new size
     const pagesEl = container.querySelector(".pdfv-pages");
     /* If this is a re-render (a resize, or the width refit), remember where
        the reader was before the pages are thrown away. A full-screen toggle
@@ -769,14 +803,20 @@ const PdfViewer = (function () {
         if (stale()) return;
         const base = page.getViewport({ scale: 1 });
         const fit = Math.max(0.6, (width - 4) / base.width);
-        const dpr = window.devicePixelRatio || 1;
-        const vp = page.getViewport({ scale: fit * dpr });
+        /* The zoom is a CSS transform on the page stack, so a canvas
+           rasterised once at fit size is simply stretched when you zoom in —
+           which is exactly what "blurry" looks like. Rasterising at the
+           current zoom as well means the backing store grows with the
+           magnification and the transform displays it one to one. */
+        const ss = superSample(sess.scale);
+        const vp = page.getViewport({ scale: fit * ss });
 
         const canvas = document.createElement("canvas");
         canvas.className = "pdfv-page";
         canvas.width = vp.width; canvas.height = vp.height;
-        canvas.style.width = (vp.width / dpr) + "px";
-        canvas.style.height = (vp.height / dpr) + "px";
+        /* laid out at its unzoomed size; the transform does the magnifying */
+        canvas.style.width = (vp.width / ss) + "px";
+        canvas.style.height = (vp.height / ss) + "px";
         pagesEl.appendChild(canvas);
 
         const ctx = canvas.getContext("2d");
@@ -877,8 +917,8 @@ const PdfViewer = (function () {
             return pdf.getPage(n).then(function (page) {
               const width = host.clientWidth || 640;
               const base = page.getViewport({ scale: 1 });
-              const dpr = window.devicePixelRatio || 1;
-              const vp = page.getViewport({ scale: (width / base.width) * dpr });
+              const ss = superSample(1);
+              const vp = page.getViewport({ scale: (width / base.width) * ss });
               const canvas = document.createElement("canvas");
               canvas.className = "qpdf-page";
               canvas.width = vp.width; canvas.height = vp.height;
