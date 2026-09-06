@@ -354,14 +354,122 @@ const Timetable = (function () {
     }).sort(function (a, b) { return b.score - a.score; });
   }
 
-  /* Every subject's ranking at once. */
+
+  /* ------------------------------------------------------------
+     what a subject owes, which is not only chapters
+
+     A week of nothing but chapter revision is not how anyone
+     actually revises for a paper. Three other things earn a slot,
+     and each one earns it from evidence rather than from a rule:
+
+       a past paper   when the week's target has not been met
+       a practice test when several chapters are red and nothing
+                      has been sat recently
+       a tariff drill  when one mark tariff is consistently going
+                      badly - eight-markers at 40% is a specific
+                      problem with a specific fix, and "revise
+                      Economics" is not it
+     ------------------------------------------------------------ */
+
+  /* How a subject is doing at each mark tariff, from what has been marked. */
+  function tariffTrouble() {
+    const byTariff = {};
+    const add = function (marks, got, avail) {
+      if (!avail) return;
+      if (!byTariff[marks]) byTariff[marks] = { got: 0, avail: 0, n: 0 };
+      byTariff[marks].got += got; byTariff[marks].avail += avail; byTariff[marks].n++;
+    };
+    (Store.get().packAttempts || []).forEach(function (a) { add(a.available, a.got, a.available); });
+    (Store.get().examAttempts || []).forEach(function (a) { add(a.available, a.got, a.available); });
+    let worst = null;
+    Object.keys(byTariff).forEach(function (k) {
+      const t = byTariff[k];
+      if (t.n < 3) return;                     // three attempts is not a pattern, but it is a hint
+      const pct = Math.round(t.got / t.avail * 100);
+      if (pct >= 60) return;
+      if (!worst || pct < worst.pct) worst = { marks: +k, pct: pct, n: t.n };
+    });
+    return worst;
+  }
+
+  function papersThisWeek() {
+    const since = Metrics.addDays(Metrics.today(), -7);
+    return (Store.get().papers || []).filter(function (p) {
+      return (p.date || p.at || "") >= since;
+    }).length;
+  }
+
+  function lastPracticeTest() {
+    const done = (Store.get().practiceTests || []).filter(function (t) { return t.finishedAt; })
+      .sort(function (a, b) { return String(b.finishedAt).localeCompare(String(a.finishedAt)); })[0];
+    return done ? Metrics.diffDays(String(done.finishedAt).slice(0, 10), Metrics.today()) : null;
+  }
+
+  /* The open subject's work, best first: its chapters, plus whatever else it
+     is short of this week. */
+  function rankWork() {
+    const items = rankChapters().map(function (c) {
+      return { kind: "chapter", cid: c.cid, label: c.label, name: c.name,
+               score: c.score, why: c.why, rag: c.rag, steps: c.steps,
+               minutes: c.minutes };
+    });
+
+    const reds = items.filter(function (i) { return i.rag === "red"; }).length;
+    const papers = (Subjects.current().papers || [])[0];
+    const target = Store.settings().pastPaperTargetPerWeek || 0;
+
+    if (target && papersThisWeek() < target) {
+      items.splice(Math.min(2, items.length), 0, {
+        kind: "paper", cid: null,
+        label: "Past paper" + (papers ? " \u00b7 " + papers.name : ""),
+        name: "Past paper", score: 9999, rag: null,
+        why: "you are short of your " + target + " past paper" + (target === 1 ? "" : "s") + " this week",
+        minutes: papers ? (papers.section || 45) : 60,
+        steps: [{ label: "Sit it timed", detail: "no notes, no pausing", mins: papers ? (papers.section || 45) : 60 },
+                { label: "Mark it", detail: "against the real scheme", mins: 20 },
+                { label: "Log every lost mark", detail: "the error log is what makes it worth doing", mins: 10 }]
+      });
+    }
+
+    const lastTest = lastPracticeTest();
+    if (reds >= 3 && (lastTest === null || lastTest <= -7)) {
+      items.splice(Math.min(4, items.length), 0, {
+        kind: "practice", cid: null,
+        label: "Practice test \u00b7 weak chapters",
+        name: "Practice test", score: 9998, rag: null,
+        why: reds + " chapters are red and you have not sat a practice test recently",
+        minutes: 50,
+        steps: [{ label: "Build it on your red chapters", detail: "Practice Test, Weak spots", mins: 2 },
+                { label: "Sit it against the clock", detail: "the paper's own rate", mins: 40 },
+                { label: "Mark it", detail: "it moves the ratings when you do", mins: 10 }]
+      });
+    }
+
+    const bad = tariffTrouble();
+    if (bad) {
+      items.splice(Math.min(3, items.length), 0, {
+        kind: "drill", cid: null,
+        label: bad.marks + "-mark questions",
+        name: bad.marks + "-markers", score: 9997, rag: "red",
+        why: "you are averaging " + bad.pct + "% on " + bad.marks +
+             "-markers across " + bad.n + " attempts",
+        minutes: 40,
+        steps: [{ label: "Build a set of " + bad.marks + "-markers", detail: "Practice Test, one tariff only", mins: 2 },
+                { label: "Do them back to back", detail: "the same question shape, repeatedly", mins: 30 },
+                { label: "Mark and compare", detail: "what is missing is usually the same thing each time", mins: 8 }]
+      });
+    }
+    return items;
+  }
+
+  /* Every subject's work at once. */
   function chapterQueues() {
     const back = Subjects.currentId();
     const out = {};
     subjectIds().forEach(function (id) {
       try {
         Subjects.switchTo(id);
-        out[id] = rankChapters().slice(0, 40);
+        out[id] = rankWork().slice(0, 40);
       } catch (e) { out[id] = []; }
     });
     Subjects.switchTo(back);
@@ -414,6 +522,9 @@ const Timetable = (function () {
       if (!runs.length) { s.days[iso] = keep; continue; }
 
       const placed = keep.slice();
+      /* how much of each item is still unplaced, so a long chapter can run
+         over two sittings instead of being cut to fit one */
+      const carry = opts.carry || (opts.carry = {});
 
       /* Commitments whose length you know but not their time — the gym for
          two hours on Monday, some time. They go in before revision so they
@@ -446,7 +557,7 @@ const Timetable = (function () {
       });
       runs.forEach(function (run) {
         let at = run[0];
-        while (at + blk <= run[1]) {
+        while (at + Math.min(blk, 20) <= run[1]) {
           const clash = placed.some(function (b) {
             return overlaps(at, at + blk, toMins(b.from), toMins(b.to));
           });
@@ -459,24 +570,47 @@ const Timetable = (function () {
              the ranking runs out rather than leaving a block unnamed */
           const q = queues[best.id] || [];
           const ch = q.length ? q[cursor[best.id] % q.length] : null;
-          if (q.length) cursor[best.id]++;
+
+          /* A block is as long as the work is, not a fixed 45 minutes. You
+             will not finish Quadratics between two and quarter to three, so
+             the block runs for what the chapter still needs — capped by the
+             room left in the evening and by how long anyone can usefully
+             sit at one thing, and carried into another sitting if it does
+             not fit. */
+          const key = ch ? (best.id + "|" + (ch.cid || ch.kind)) : best.id;
+          let need = ch ? (carry[key] != null ? carry[key] : ch.minutes) : blk;
+          const room = Math.min(run[1] - at, owed[best.id] > 0 ? owed[best.id] : blk);
+          const maxSit = Math.max(blk, s.prefs.maxSitting || 90);
+          let len = Math.min(need, room, maxSit);
+          len = Math.max(20, Math.round(len / 5) * 5);
+          if (at + len > run[1]) len = run[1] - at;
+          if (len < 20) { at = run[1]; break; }
+
+          const partOf = ch && need > len;
+          if (ch) carry[key] = Math.max(0, need - len);
+          if (ch && carry[key] === 0) cursor[best.id]++;
+          else if (!ch) cursor[best.id]++;
+
+          const steps = ch && ch.steps
+            ? ch.steps.filter(function (x) { return !x.done; })
+                .map(function (x) { return { label: x.label, detail: x.detail, mins: x.mins }; })
+            : [];
           placed.push({
             id: uid(), subjectId: best.id,
-            label: ch ? ch.label : best.name,
+            label: (ch ? ch.label : best.name) + (partOf ? " \u00b7 part" : ""),
             subjectName: best.name,
             chapterId: ch ? ch.cid : null,
+            work: ch ? ch.kind : "chapter",
             why: ch ? ch.why : "",
             rag: ch ? ch.rag : null,
             eta: ch ? ch.minutes : null,
-            steps: ch ? ch.steps.filter(function (x) { return !x.done; })
-                          .map(function (x) { return { label: x.label, detail: x.detail, mins: x.mins }; })
-                      : [],
-            from: toClock(at), to: toClock(at + blk),
+            steps: steps,
+            from: toClock(at), to: toClock(at + len),
             colour: best.colour, kind: "revision", mine: false
           });
-          owed[best.id] -= blk;
+          owed[best.id] -= len;
           made++;
-          at += blk + brk;
+          at += len + brk;
         }
       });
       touched++;
@@ -493,6 +627,21 @@ const Timetable = (function () {
      reading and editing days
      ------------------------------------------------------------ */
 
+  /* Rebuild from today forward, keeping anything you have touched.
+
+     Called when the work underneath changes — time logged, a chapter
+     recorded, a test marked — because a timetable that still says "45
+     minutes on Quadratics" after you have done ninety is not a plan, it is
+     a leaflet. Only ever forwards: yesterday is history. */
+  function reflow(reason) {
+    const s = get();
+    if (!s.generatedAt) return null;
+    const days = Object.keys(s.days).filter(function (d) { return d >= Metrics.today(); }).length;
+    const r = generate({ days: Math.max(14, days) });
+    r.reason = reason || "";
+    return r;
+  }
+
   function blocksOn(iso) {
     const own = (get().days[iso] || []).slice();
     const weekday = new Date(iso + "T00:00:00").getDay();
@@ -504,6 +653,18 @@ const Timetable = (function () {
                  kind: "busy", fixed: true });
     });
     return own.sort(function (a, b) { return toMins(a.from) - toMins(b.from); });
+  }
+
+  /* When the timetable says to do this chapter today, if it does. Today's
+     Plan lists what to do; this is what tells it when. */
+  function slotsFor(cid, iso) {
+    return (get().days[iso || Metrics.today()] || []).filter(function (b) {
+      return b.chapterId === cid;
+    }).map(function (b) { return { from: b.from, to: b.to, label: b.label }; });
+  }
+
+  function slotsToday() {
+    return (get().days[Metrics.today()] || []).filter(function (b) { return b.kind === "revision"; });
   }
 
   function dayTotals(iso) {
@@ -666,8 +827,10 @@ const Timetable = (function () {
     subjects: subjects, readSubject: readSubject,
     recommend: recommend, weeklyCapacity: weeklyCapacity,
     freeRuns: freeRuns, freeMinutesOn: freeMinutesOn, placeableOn: placeableOn, busyOn: busyOn,
-    generate: generate, blocksOn: blocksOn, dayTotals: dayTotals,
+    generate: generate, reflow: reflow, blocksOn: blocksOn, dayTotals: dayTotals,
+    rankWork: rankWork, tariffTrouble: tariffTrouble,
     addBlock: addBlock, updateBlock: updateBlock, removeBlock: removeBlock, moveBlock: moveBlock,
+    slotsFor: slotsFor, slotsToday: slotsToday,
     setSubject: setSubject, setWindow: setWindow,
     addBusy: addBusy, updateBusy: updateBusy, removeBusy: removeBusy, setPrefs: setPrefs,
     addFlex: addFlex, removeFlex: removeFlex,

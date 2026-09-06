@@ -143,7 +143,8 @@ const TimetableView = (function () {
     const items = blocks.map(function (b) {
       const f = Timetable.toMins(b.from), t = Timetable.toMins(b.to);
       const short = (t - f) < 40;
-      return '<div class="tt-block' + (b.kind === "busy" ? " busy" : "") + (short ? " short" : "") + '" ' +
+      return '<div class="tt-block' + (b.kind === "busy" ? " busy" : "") + (short ? " short" : "") +
+        (openBlock === b.id ? " open" : "") + '" ' +
         'data-id="' + b.id + '" data-iso="' + iso + '" ' +
         (b.kind === "busy" ? "" : 'data-drag="1" ') +
         'style="top:' + ((f - lo) * PX_PER_MIN) + 'px;height:' + ((t - f) * PX_PER_MIN) +
@@ -154,8 +155,8 @@ const TimetableView = (function () {
             (b.eta ? ' · ' + fmt(b.eta) + ' left on it' : '') + '</small></span>' +
         (b.kind === "busy"
           ? '<span class="tt-lock" title="A recurring commitment. Edit it in Set up.">▦</span>'
-          : '<button class="tt-x" data-action="tt-del" data-id="' + b.id + '" data-iso="' + iso +
-            '" title="Remove this block">✕</button>') +
+          : '<button class="tt-pen" data-action="tt-edit" data-id="' + b.id + '" data-iso="' + iso +
+            '" title="Edit this block">✎</button>') +
       '</div>';
     }).join("");
 
@@ -216,6 +217,12 @@ const TimetableView = (function () {
               b.chapterId + '" data-sub="' + UI.esc(b.subjectId || "") + '">Open the chapter</button>'
             : "") +
         '</div>' +
+        (b.work && b.work !== "chapter"
+          ? '<div class="tt-kind ' + b.work + '">' +
+            (b.work === "paper" ? "A whole past paper, timed and marked"
+             : b.work === "practice" ? "A practice test built from your weakest chapters"
+             : "A drill on one mark tariff") + '</div>'
+          : "") +
         (b.why ? '<div class="tiny muted" style="margin-top:8px">Scheduled because ' + UI.esc(b.why) + '.</div>' : "") +
         (steps.length
           ? '<div class="tt-steps">' + steps.map(function (x, i) {
@@ -669,6 +676,7 @@ const TimetableView = (function () {
       case "tt-prev": openIso = Metrics.addDays(el.dataset.iso, -1); App.render(); return true;
       case "tt-next": openIso = Metrics.addDays(el.dataset.iso, 1); App.render(); return true;
       case "tt-add": blockModal(el.dataset.iso); return true;
+      case "tt-edit": editModal(el.dataset.iso, el.dataset.id); return true;
       case "tt-del": Timetable.removeBlock(el.dataset.iso, el.dataset.id); App.render(); return true;
       case "tt-busy-add": busyModal(); return true;
       case "tt-flex-add": flexModal(); return true;

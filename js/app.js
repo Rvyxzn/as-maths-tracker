@@ -627,6 +627,9 @@ function setSidebar(open) {
       }
 
       case "timer-stop": {
+        /* time logged changes what is left, so the timetable is rebuilt from
+           today forward — a plan that still says 45 minutes on Quadratics
+           after you have done ninety is a leaflet, not a plan */
         const ts = Store.get().timer;
         if (!ts) return;
         const tlabel = ts.label;
@@ -634,6 +637,7 @@ function setSidebar(open) {
         Store.mutate(function () { tmins = Store.timerStop(true); });
         UI.toast(tmins > 0 ? "Logged " + Metrics.fmtMins(tmins) + " on " + tlabel : "Timer stopped, nothing logged",
                  tmins > 0 ? "ok" : "warn");
+        reflowTimetable();
         render(); return;
       }
 
@@ -1679,6 +1683,7 @@ function setSidebar(open) {
       Store.log("Recorded " + got + "/" + avail + " on " + Store.info(cid).chapter.name, "session");
     });
     Scheduler.regenerate("chapter questions marked");
+    reflowTimetable();
     UI.toast("Recorded " + got + "/" + avail + " (" + pct + "%). Now update your confidence.", "ok", 5000);
     render();
   }
@@ -2109,6 +2114,18 @@ function setSidebar(open) {
     Store.mutate(function () { Store.timerStart(label, "session", q.id, null, mins); });
     UI.toast("Timing a " + q.marks + " marker — " + mins + " minutes at 1.2 min per mark", "ok", 5000);
     render();
+  }
+
+  /* Keep the timetable honest after the work underneath it changes. Quiet
+     on purpose: it runs off the back of something you already did, so it
+     announces itself only when it actually moved something. */
+  function reflowTimetable() {
+    if (typeof Timetable === "undefined") return;
+    try {
+      const t = Timetable.get();
+      if (!t || !t.generatedAt) return;
+      Timetable.reflow("work logged");
+    } catch (e) {}
   }
 
   function refreshTimeBars() {

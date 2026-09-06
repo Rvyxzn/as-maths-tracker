@@ -331,6 +331,18 @@ chapter numbering, so this badge is what keeps them apart at a glance. */
   }
 
   /* ---------- task card ---------- */
+  /* When the timetable says to do this, if it says anything. The plan is
+     what to do; the timetable is when, and having to hold the two in your
+     head at once is what makes people stop using either. */
+  function slotPill(t) {
+    if (typeof Timetable === "undefined" || !t.topicId) return "";
+    let slots = [];
+    try { slots = Timetable.slotsFor(t.topicId); } catch (e) { return ""; }
+    if (!slots.length) return "";
+    return '<span class="pill acc" title="From your timetable">' +
+      slots.map(function (s) { return s.from; }).join(", ") + '</span>';
+  }
+
   function taskCard(t, opts) {
     opts = opts || {};
     const info = t.topicId ? Store.info(t.topicId) : null;
@@ -352,7 +364,7 @@ chapter numbering, so this badge is what keeps them apart at a glance. */
           (skipped ? '<span class="pill">skipped</span>' : "") +
         '</div>' +
         '<div class="task-meta">' + icon(kindMeta.svg || "star") + " " + kindMeta.label + (sub ? " · " + esc(sub) : "") +
-          " · " + icon("clock") + Metrics.fmtMins(t.minutes) + (t.manual ? " · added by you" : "") + '</div>' +
+          " · " + icon("clock") + Metrics.fmtMins(t.minutes) + slotPill(t) + (t.manual ? " · added by you" : "") + '</div>' +
         (t.why && !opts.hideWhy ? '<div class="task-why"><b>Why this?</b> ' + esc(t.why) + '</div>' : "") +
         (opts.hideActions ? "" :
         '<div class="task-actions">' +

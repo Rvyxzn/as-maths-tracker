@@ -4,6 +4,46 @@
 
 const TodayView = (function () {
 
+
+  /* The day as the timetable laid it out.
+
+     The plan says what to do and the timetable says when, and holding the
+     two in your head at once is what makes people stop using either. The
+     task cards carry a time where the two agree on a chapter; this carries
+     the whole shape of the day regardless, because the plan is a saved
+     snapshot and the timetable ranks live, so they drift apart between
+     rebuilds and the times should not disappear when they do. */
+  function timetableStrip() {
+    if (typeof Timetable === "undefined") return "";
+    let blocks = [];
+    try {
+      Timetable.load();
+      blocks = Timetable.blocksOn(Metrics.today());
+    } catch (e) { return ""; }
+    if (!blocks.length) return "";
+    const mine = Subjects.currentId();
+
+    return '<div class="card" style="margin-bottom:16px">' +
+      '<div class="card-head"><div class="card-title">Your day</div>' +
+        '<div class="right"><button class="btn btn-sm" data-action="go" data-view="timetable">' +
+          'Open the timetable</button></div></div>' +
+      '<div class="tt-strip">' + blocks.map(function (b) {
+        const other = b.subjectId && b.subjectId !== mine;
+        return '<div class="tt-slot' + (b.kind !== "revision" ? " off" : "") +
+            (other ? " other" : "") + '">' +
+          '<span class="tt-slot-t">' + b.from + '</span>' +
+          '<span class="tt-slot-bar" style="background:' + b.colour + '"></span>' +
+          '<span class="tt-slot-main"><b>' + UI.esc(b.label) + '</b>' +
+            '<small>' + b.from + '–' + b.to +
+              (b.subjectName ? ' · ' + UI.esc(b.subjectName) : '') + '</small></span>' +
+          (b.chapterId && !other
+            ? '<button class="btn btn-sm" data-action="open-chapter" data-id="' + b.chapterId + '">Open</button>'
+            : "") +
+        '</div>';
+      }).join("") + '</div>' +
+    '</div>';
+  }
+
   function render(root) {
     const iso = Metrics.today();
     const tasks = Scheduler.tasksFor(iso);
@@ -20,6 +60,7 @@ const TodayView = (function () {
     const ph = Metrics.phase();
 
     root.innerHTML =
+      timetableStrip() +
       '<div class="card" style="margin-bottom:18px">' +
         '<div class="row wrap" style="gap:14px">' +
           '<div style="flex:1;min-width:200px">' +
