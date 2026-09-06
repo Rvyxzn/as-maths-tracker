@@ -359,52 +359,52 @@ const PracticeView = (function () {
         : revealButton(it));
   }
 
-  /* A real exam question, which is a PDF page first and text second.
+  /* A real exam question.
 
-     The extraction is honest about itself: where a figure, a fraction or a
-     broken font means the text alone is not the question, that is said, and
-     the printed page is one click away rather than something you have to
-     know to go and find. */
+     The page is the question. Text extraction cannot carry a diagram, a
+     fraction or a subsetted font, so telling you to go and look at the paper
+     was never an answer — the paper is right there. The question's own pages
+     are rendered out of the PDF, cropped to that question rather than the
+     whole document, and the extracted text is shown alongside only when it
+     came through clean enough to be worth reading. */
   function examBody(it, q, show) {
-    const open = !!caseOpen[it.key];
     const set = typeof EXAM_SETS !== "undefined" ? EXAM_SETS[q.set] : null;
     const qUrl = typeof examSetPath === "function" ? examSetPath(q.set, "q") : null;
     const msUrl = typeof examSetPath === "function" ? examSetPath(q.set, "ms") : null;
-    const why = {
-      figure: "it refers to a figure, which is a drawing rather than text",
-      layout: "it contains a fraction or similar that comes apart in plain text",
-      font: "part of the wording is in a font the paper did not label"
-    };
-    const flags = (q.flags || []).map(function (f) { return why[f]; }).filter(Boolean);
+    const clean = !(q.flags || []).length;
 
-    return (flags.length
-        ? '<div class="pt-warn">' + UI.icon("alert") +
-            '<div><b>Read this one from the paper</b>' +
-            '<div class="tiny">The text below is missing something — ' +
-              UI.esc(flags.join("; ")) + '. Open the printed question.</div></div>' +
-          '</div>'
+    return (qUrl
+        ? '<div class="pt-paper" data-pdf-src="' + qUrl + '" data-pdf-from="' + q.pageFrom +
+          '" data-pdf-to="' + q.pageTo + '"></div>'
+        : '<div class="qtext">' + UI.math(q.text) + '</div>') +
+
+      /* Where the text survived, it is worth having: it reflows on a phone
+         and it is what search looks through. Where it did not, printing it
+         under the real question would only invite you to read the wrong
+         thing. */
+      (clean && qUrl
+        ? '<details class="pt-astext"><summary>Show it as text</summary>' +
+            '<div class="qtext">' + UI.math(q.text) + '</div></details>'
         : "") +
-      '<div class="qtext">' + UI.math(q.text) + '</div>' +
-      (qUrl
-        ? '<button class="btn' + (flags.length && !open ? " btn-primary" : "") + '" ' +
-            'style="margin-top:12px" data-action="pt-case" data-key="' + UI.esc(it.key) + '">' +
-            (open ? "Hide the printed question" : "Show the printed question") + '</button>' +
-          (open
-            ? '<div class="pt-paper" data-question-pdf="' + qUrl +
-                '" data-question-from="' + q.pageFrom + '" data-question-to="' + q.pageTo + '"></div>'
-            : "")
-        : "") +
+
       (show
         ? '<div class="qz-ms" style="margin-top:16px">' +
-            '<div class="qz-ms-h">' + UI.icon("check") + 'Mark scheme</div>' +
-            '<div class="tiny muted" style="padding:0 2px 10px">' +
-              'This is the ' + UI.esc(set ? set.name : q.topic) + ' scheme for the whole topic. ' +
-              'You are looking for <b>question ' + q.num + '</b> — these are compilations, ' +
-              'so the numbering is the source paper’s, not this document’s.</div>' +
-            (msUrl
-              ? '<div class="pdf-frame" style="height:min(62vh,720px)">' +
-                  '<div class="pdfv" data-src="' + msUrl + '"></div></div>'
-              : '<div class="tiny faint">No mark scheme found for this set.</div>') +
+            '<div class="qz-ms-h">' + UI.icon("check") + 'Mark scheme' +
+              (q.msCheck === "unverifiable"
+                ? '<span class="pill" title="Placed by its position in the scheme, which runs in the same order as the questions. This is an older scheme that prints no totals, so there was nothing to check it against.">placed by order</span>'
+                : "") +
+            '</div>' +
+            (msUrl && q.msFrom
+              ? '<div class="pt-paper" data-pdf-src="' + msUrl + '" data-pdf-from="' + q.msFrom +
+                '" data-pdf-to="' + q.msTo + '"></div>'
+              : msUrl
+                ? '<div class="tiny muted" style="padding:0 2px 10px">This one could not be placed in ' +
+                    'the scheme, so here is the whole ' + UI.esc(set ? set.name : q.topic) + ' document. ' +
+                    'Look for <b>question ' + q.num + '</b> — these are compilations, so the ' +
+                    'numbering is the source paper’s.</div>' +
+                  '<div class="pdf-frame" style="height:min(62vh,720px)">' +
+                    '<div class="pdfv" data-src="' + msUrl + '"></div></div>'
+                : '<div class="tiny faint">No mark scheme found for this set.</div>') +
           '</div>'
         : revealButton(it));
   }
@@ -560,9 +560,9 @@ const PracticeView = (function () {
   function mountPages() {
     if (typeof PdfViewer === "undefined") return;
     setTimeout(function () {
-      document.querySelectorAll("[data-question-pdf]").forEach(function (host) {
-        PdfViewer.renderPages(host, host.dataset.questionPdf,
-                              +host.dataset.questionFrom, +host.dataset.questionTo);
+      document.querySelectorAll("[data-pdf-src]").forEach(function (host) {
+        PdfViewer.renderPages(host, host.dataset.pdfSrc,
+                              +host.dataset.pdfFrom, +host.dataset.pdfTo);
       });
     }, 0);
   }
