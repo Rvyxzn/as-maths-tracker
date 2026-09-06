@@ -89,7 +89,38 @@ const PracticeTest = (function () {
     });
   }
 
-  function mathsPool() {
+  /* The real Edexcel questions, at the tariffs the paper sets. These are
+     what a practice test should be made of: the built-in chapter bank is
+     there to check you followed the video, and a "test" made of 2-mark
+     recall questions measures nothing the exam will ask. */
+  function mathsExamPool() {
+    if (typeof MATHS_EXAM_QUESTIONS === "undefined") return [];
+    const out = [];
+    MATHS_EXAM_QUESTIONS.forEach(function (q) {
+      /* A topic set can serve several chapters; the question is filed under
+         the first that exists, so it is counted once rather than once per
+         chapter it happens to touch. */
+      const cid = q.chapters.filter(function (c) { return CHAPTER_INDEX[c]; })[0];
+      if (!cid) return;
+      const inf = CHAPTER_INDEX[cid];
+      out.push({
+        key: "mex:" + q.id,
+        marks: q.marks,
+        cid: cid,
+        subId: null,
+        source: "exam",
+        group: inf.paper.short,
+        year: inf.year || 1,
+        label: q.topic + " · Q" + q.num,
+        topic: inf.chapter.name,
+        where: inf.chapter.name,
+        preview: q.text
+      });
+    });
+    return out;
+  }
+
+  function mathsBankPool() {
     if (typeof ALL_CHAPTER_IDS === "undefined") return [];
     const out = [];
     ALL_CHAPTER_IDS.forEach(function (cid) {
@@ -117,6 +148,7 @@ const PracticeTest = (function () {
                   : "Y" + (inf.year || 1) + " Ch " + inf.chapter.num) + " · Q" + (i + 1),
           topic: inf.chapter.name,
           where: inf.chapter.name,
+          source: "bank",
           preview: q.q
         });
       });
@@ -124,10 +156,19 @@ const PracticeTest = (function () {
     return out;
   }
 
-  function pool() {
+  /* Real exam questions first, and on their own unless the easy bank is
+     asked for: mixing a 2-mark bank question into a paper of 10-markers
+     makes the total meaningless. */
+  function mathsPool(includeBank) {
+    const exam = mathsExamPool();
+    if (!includeBank && exam.length) return exam;
+    return exam.concat(mathsBankPool());
+  }
+
+  function pool(includeBank) {
     const s = subjectId();
     if (s === "economics") return ecoPool();
-    if (s === "maths") return mathsPool();
+    if (s === "maths") return mathsPool(includeBank);
     return [];
   }
 
@@ -139,6 +180,11 @@ const PracticeTest = (function () {
       if (typeof ECO_QUESTIONS === "undefined") return null;
       const id = bits.slice(1).join(":");
       return ECO_QUESTIONS.filter(function (q) { return q.id === id; })[0] || null;
+    }
+    if (bits[0] === "mex") {
+      if (typeof MATHS_EXAM_QUESTIONS === "undefined") return null;
+      const id = bits.slice(1).join(":");
+      return MATHS_EXAM_QUESTIONS.filter(function (q) { return q.id === id; })[0] || null;
     }
     if (bits[0] === "maths") {
       /* the chapter id itself contains a colon, so the index is the last part */
@@ -153,7 +199,9 @@ const PracticeTest = (function () {
   function kindOf(key) { return String(key || "").split(":")[0]; }
 
   function meta(key) {
-    const list = pool();
+    /* Everything, bank included: a test built with the bank still has to be
+       able to describe its own questions afterwards. */
+    const list = pool(true);
     for (let i = 0; i < list.length; i++) if (list[i].key === key) return list[i];
     return null;
   }
@@ -178,6 +226,12 @@ const PracticeTest = (function () {
     if (bits[0] === "eco") {
       const id = bits.slice(1).join(":");
       const a = (Store.get().packAttempts || []).filter(function (x) { return x.questionId === id; })
+        .sort(function (x, y) { return String(y.at || "").localeCompare(String(x.at || "")); })[0];
+      return a ? { got: a.got, avail: a.available, at: a.at } : null;
+    }
+    if (bits[0] === "mex") {
+      const id = bits.slice(1).join(":");
+      const a = (Store.get().examAttempts || []).filter(function (x) { return x.questionId === id; })
         .sort(function (x, y) { return String(y.at || "").localeCompare(String(x.at || "")); })[0];
       return a ? { got: a.got, avail: a.available, at: a.at } : null;
     }
@@ -233,7 +287,7 @@ const PracticeTest = (function () {
   /* Everything the filters leave in play. */
   function eligible(opts) {
     const o = opts || {};
-    return pool().filter(function (m) {
+    return pool(o.includeBank).filter(function (m) {
       if (o.tariffs && o.tariffs.length && o.tariffs.indexOf(m.marks) < 0) return false;
       if (o.minMarks && m.marks < o.minMarks) return false;
       if (o.maxMarks && m.marks > o.maxMarks) return false;
@@ -448,6 +502,10 @@ const PracticeTest = (function () {
         if (!st.packAttempts) st.packAttempts = [];
         st.packAttempts.unshift({ questionId: bits.slice(1).join(":"), got: marks,
                                   available: item.marks, at: at, test: id });
+      } else if (bits[0] === "mex") {
+        if (!st.examAttempts) st.examAttempts = [];
+        st.examAttempts.unshift({ questionId: bits.slice(1).join(":"), got: marks,
+                                  available: item.marks, at: at, test: id });
       } else if (bits[0] === "maths") {
         const idx = +bits[bits.length - 1];
         const cid = bits.slice(1, bits.length - 1).join(":");
@@ -572,6 +630,7 @@ const PracticeTest = (function () {
   return {
     supported: supported, minutesFor: minutesFor, MINS_PER_MARK: MINS_PER_MARK,
     pool: pool, eligible: eligible, choose: choose, question: question, meta: meta,
+    examPool: mathsExamPool,
     kindOf: kindOf, lastAttempt: lastAttempt,
     all: all, get: get, live: live, history: history,
     create: create, swap: swap, drop: drop, start: start,

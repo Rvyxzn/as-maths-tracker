@@ -139,6 +139,7 @@ const Store = (function () {
       packAttempts: [], // Economics question-pack attempts, newest first
       packTodo: [], // question ids you have starred to come back to
       practiceTests: [], // assembled practice tests, newest first
+      examAttempts: [], // maths exam-question attempts, newest first
       plan: null, // { generatedAt, days:{ iso: [task] } }
       taskState: {}, // { taskId: {status, doneAt, movedTo} }
       timer: null, // live session timer {label, kind, refId, startedAt, accumulated, running}
@@ -170,6 +171,7 @@ const Store = (function () {
     if (!st.packAttempts) st.packAttempts = [];
     if (!st.packTodo) st.packTodo = [];
     if (!st.practiceTests) st.practiceTests = [];
+    if (!st.examAttempts) st.examAttempts = [];
 
     if (/8MA0/.test(s.qualification || "")) {
       s.qualification = "Pearson Edexcel A level Mathematics (9MA0)";

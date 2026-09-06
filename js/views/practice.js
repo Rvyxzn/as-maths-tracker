@@ -343,6 +343,8 @@ const PracticeView = (function () {
           : revealButton(it));
     }
 
+    if (PracticeTest.kindOf(it.key) === "mex") return examBody(it, q, show);
+
     return '<div class="qtext">' + UI.math(q.q) + '</div>' +
       (q.img ? '<img class="qz-img" src="' + UI.esc(q.img) + '" alt="Question">' : "") +
       (show
@@ -353,6 +355,56 @@ const PracticeView = (function () {
               ? '<div class="qz-sketch">' + SKETCH.render(q.sketch) +
                 '<div class="tiny faint">What the sketch should look like.</div></div>'
               : "") +
+          '</div>'
+        : revealButton(it));
+  }
+
+  /* A real exam question, which is a PDF page first and text second.
+
+     The extraction is honest about itself: where a figure, a fraction or a
+     broken font means the text alone is not the question, that is said, and
+     the printed page is one click away rather than something you have to
+     know to go and find. */
+  function examBody(it, q, show) {
+    const open = !!caseOpen[it.key];
+    const set = typeof EXAM_SETS !== "undefined" ? EXAM_SETS[q.set] : null;
+    const qUrl = typeof examSetPath === "function" ? examSetPath(q.set, "q") : null;
+    const msUrl = typeof examSetPath === "function" ? examSetPath(q.set, "ms") : null;
+    const why = {
+      figure: "it refers to a figure, which is a drawing rather than text",
+      layout: "it contains a fraction or similar that comes apart in plain text",
+      font: "part of the wording is in a font the paper did not label"
+    };
+    const flags = (q.flags || []).map(function (f) { return why[f]; }).filter(Boolean);
+
+    return (flags.length
+        ? '<div class="pt-warn">' + UI.icon("alert") +
+            '<div><b>Read this one from the paper</b>' +
+            '<div class="tiny">The text below is missing something — ' +
+              UI.esc(flags.join("; ")) + '. Open the printed question.</div></div>' +
+          '</div>'
+        : "") +
+      '<div class="qtext">' + UI.math(q.text) + '</div>' +
+      (qUrl
+        ? '<button class="btn' + (flags.length && !open ? " btn-primary" : "") + '" ' +
+            'style="margin-top:12px" data-action="pt-case" data-key="' + UI.esc(it.key) + '">' +
+            (open ? "Hide the printed question" : "Show the printed question") + '</button>' +
+          (open
+            ? '<div class="pt-paper" data-question-pdf="' + qUrl +
+                '" data-question-from="' + q.pageFrom + '" data-question-to="' + q.pageTo + '"></div>'
+            : "")
+        : "") +
+      (show
+        ? '<div class="qz-ms" style="margin-top:16px">' +
+            '<div class="qz-ms-h">' + UI.icon("check") + 'Mark scheme</div>' +
+            '<div class="tiny muted" style="padding:0 2px 10px">' +
+              'This is the ' + UI.esc(set ? set.name : q.topic) + ' scheme for the whole topic. ' +
+              'You are looking for <b>question ' + q.num + '</b> — these are compilations, ' +
+              'so the numbering is the source paper’s, not this document’s.</div>' +
+            (msUrl
+              ? '<div class="pdf-frame" style="height:min(62vh,720px)">' +
+                  '<div class="pdfv" data-src="' + msUrl + '"></div></div>'
+              : '<div class="tiny faint">No mark scheme found for this set.</div>') +
           '</div>'
         : revealButton(it));
   }
@@ -497,10 +549,22 @@ const PracticeView = (function () {
     }
 
     const t = PracticeTest.live();
-    if (t && t.startedAt) { root.innerHTML = sitting(t); return; }
+    if (t && t.startedAt) { root.innerHTML = sitting(t); mountPages(); return; }
     if (t) { root.innerHTML = preview(t); return; }
 
     root.innerHTML = builder() + history();
+  }
+
+  /* The printed question is a page range out of the topic PDF, which is a
+     different job from showing a whole document and has its own renderer. */
+  function mountPages() {
+    if (typeof PdfViewer === "undefined") return;
+    setTimeout(function () {
+      document.querySelectorAll("[data-question-pdf]").forEach(function (host) {
+        PdfViewer.renderPages(host, host.dataset.questionPdf,
+                              +host.dataset.questionFrom, +host.dataset.questionTo);
+      });
+    }, 0);
   }
 
   /* ------------------------------------------------------------

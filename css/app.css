@@ -2670,3 +2670,19 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
   .pt-bar{position:static}
   .pt-chip{min-width:42px}
 }
+
+/* a question whose text did not survive extraction says so, above the text */
+.pt-warn{
+  display:flex;gap:10px;align-items:flex-start;margin-bottom:14px;
+  padding:11px 13px;border-radius:11px;
+  background:var(--amber-soft);border:1px solid var(--amber);color:var(--text);
+}
+.pt-warn b{display:block;font-size:13px;color:var(--amber)}
+.pt-warn .tiny{color:var(--muted);margin-top:2px}
+.pt-warn .ico{flex:0 0 auto;color:var(--amber);margin-top:1px}
+.pt-paper{
+  margin-top:12px;padding:10px;border-radius:12px;
+  background:var(--surface-2);border:1px solid var(--border);
+  max-height:min(72vh,860px);overflow:auto;
+}
+.pt-paper canvas{max-width:100%;height:auto;display:block;margin:0 auto 10px;border-radius:6px}

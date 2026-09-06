@@ -6,14 +6,40 @@ Exam Questions, every topic question set, by chapter, opened
 const ExamQView = (function () {
 
   let filter = "all";
+  let yearFilter = "all";
   let openSet = null; // set key currently expanded
   const msShown = {}; // set keys whose mark scheme is revealed
 
+  /* A set has no year of its own — it is a pile of questions on a topic. It
+     gets its years from the chapters it serves, so the AS sets come out as
+     Year 1 and the A level ones as whichever years their topic spans. The
+     ones that span both, like Differentiation, appear under either filter,
+     because they genuinely are both. */
+  function yearsOf(s) {
+    const seen = {};
+    (s.chapters || []).forEach(function (cid) {
+      const inf = CHAPTER_INDEX[cid];
+      if (inf) seen[inf.year || 1] = true;
+    });
+    return Object.keys(seen);
+  }
+
+  function inYear(s) {
+    if (yearFilter === "all") return true;
+    return yearsOf(s).indexOf(yearFilter) >= 0;
+  }
+
   function render(root) {
     const sets = allExamSets();
-    const shown = sets.filter(function (s) { return filter === "all" || s.paper === filter; });
-    const counts = { all: sets.length, Pure: 0, Stats: 0, Mech: 0 };
-    sets.forEach(function (s) { counts[s.paper]++; });
+    const byYear = sets.filter(inYear);
+    const shown = byYear.filter(function (s) { return filter === "all" || s.paper === filter; });
+    /* the paper counts follow the year filter, so "Pure (13)" means thirteen
+       of the sets you can actually see */
+    const counts = { all: byYear.length, Pure: 0, Stats: 0, Mech: 0 };
+    byYear.forEach(function (s) { counts[s.paper]++; });
+    const yearCount = function (y) {
+      return sets.filter(function (s) { return yearsOf(s).indexOf(y) >= 0; }).length;
+    };
 
     root.innerHTML =
       '<div class="card" style="margin-bottom:18px">' +
@@ -31,8 +57,21 @@ const ExamQView = (function () {
             chip("Mech", "Mechanics (" + counts.Mech + ")") +
           '</div>' +
         '</div>' +
+        '<div class="yearbar" style="margin-top:14px">' +
+          ybtn("1", "YEAR 1", yearCount("1")) +
+          ybtn("2", "YEAR 2", yearCount("2")) +
+        '</div>' +
+        (yearFilter !== "all"
+          ? '<button class="btn btn-sm btn-block" style="margin-top:8px" ' +
+            'data-action="eq-year" data-val="all">Show both years</button>'
+          : "") +
       '</div>' +
       byPaper(shown);
+  }
+
+  function ybtn(v, label, n) {
+    return '<button class="yearseg' + (yearFilter === v ? " on" : "") + '" ' +
+      'data-action="eq-year" data-val="' + v + '">' + label + '<small>' + n + '</small></button>';
   }
 
   function chip(v, label) {
@@ -50,7 +89,8 @@ const ExamQView = (function () {
       out += '<div class="section-label">' + label[p] + '</div>' +
              '<div class="stack">' + groups[p].map(card).join("") + '</div>';
     });
-    return out || UI.empty("▤", "No question sets match that filter");
+    return out || UI.empty("▤", "No question sets match that filter",
+      yearFilter !== "all" ? "Nothing in Year " + yearFilter + " for that paper." : "");
   }
 
   function card(s) {
@@ -114,7 +154,8 @@ const ExamQView = (function () {
 
   function handle(action, el) {
     switch (action) {
-      case "eq-filter": filter = el.dataset.val; App.render(); return true;
+      case "eq-filter": filter = el.dataset.val; openSet = null; App.render(); return true;
+      case "eq-year": yearFilter = el.dataset.val; openSet = null; App.render(); return true;
       case "eq-open":
         openSet = (openSet === el.dataset.key) ? null : el.dataset.key;
         App.render(); return true;
