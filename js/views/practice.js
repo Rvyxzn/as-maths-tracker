@@ -24,7 +24,8 @@ const PracticeView = (function () {
   let resultId = null;         // a finished test being read
   let chaptersOpen = false;    // the chapter picker in the builder
   let picked = { tariffs: {}, chapters: {}, group: "all", year: "all",
-                 mode: "marks", marks: 50, count: 6, weakFirst: true, unseenOnly: false };
+                 mode: "marks", marks: 50, count: 6, weakFirst: true, unseenOnly: false,
+                 includeBank: false };
 
   /* ------------------------------------------------------------
      shared bits
@@ -46,15 +47,40 @@ const PracticeView = (function () {
     return Object.keys(seen);
   }
 
+  /* Every chapter that has a question of any kind, counted per chapter the
+     question covers rather than per question. Built from the full pool, bank
+     included, so a chapter with no exam questions of its own is still on the
+     list and still pickable — it just says what it would give you. */
   function chaptersAvailable() {
-    const seen = {};
-    PracticeTest.pool().forEach(function (m) { if (m.cid) seen[m.cid] = (seen[m.cid] || 0) + 1; });
-    return Object.keys(seen).map(function (cid) {
+    const exam = {}, bank = {};
+    PracticeTest.pool(true).forEach(function (m) {
+      const mine = m.cids && m.cids.length ? m.cids : (m.cid ? [m.cid] : []);
+      mine.forEach(function (cid) {
+        const box = m.source === "bank" ? bank : exam;
+        box[cid] = (box[cid] || 0) + 1;
+      });
+    });
+    const all = {};
+    Object.keys(exam).forEach(function (c) { all[c] = true; });
+    Object.keys(bank).forEach(function (c) { all[c] = true; });
+    return Object.keys(all).map(function (cid) {
       const inf = CHAPTER_INDEX[cid];
       const eff = Metrics.effectiveRag(cid);
-      return { cid: cid, n: seen[cid], name: inf ? inf.chapter.name : cid,
+      return { cid: cid, n: exam[cid] || 0, bank: bank[cid] || 0,
+               bankOnly: !exam[cid],
+               name: inf ? inf.chapter.name : cid,
                label: inf ? inf.chapterLabel : "", rag: eff ? eff.rag : null };
     }).sort(function (a, b) { return String(a.label).localeCompare(String(b.label)); });
+  }
+
+  /* Picking a chapter that has no exam questions has to bring the bank with
+     it, or the chapter is on the list and still gives you nothing. */
+  function needsBank() {
+    const on = Object.keys(picked.chapters).filter(function (k) { return picked.chapters[k]; });
+    if (!on.length) return false;
+    const byId = {};
+    chaptersAvailable().forEach(function (c) { byId[c.cid] = c; });
+    return on.some(function (cid) { return byId[cid] && byId[cid].bankOnly; });
   }
 
   function currentOpts() {
@@ -64,6 +90,7 @@ const PracticeView = (function () {
       tariffs: tariffs, chapters: chapters,
       group: picked.group, year: picked.year,
       weakFirst: picked.weakFirst, unseenOnly: picked.unseenOnly,
+      includeBank: picked.includeBank || needsBank(),
       marks: picked.mode === "marks" ? +picked.marks || 0 : 0,
       count: picked.mode === "count" ? +picked.count || 0 : 0
     };
@@ -162,6 +189,11 @@ const PracticeView = (function () {
             'Lean on my weak topics</button>' +
           '<button class="chip' + (picked.unseenOnly ? " on" : "") + '" data-action="pt-unseen">' +
             'Only ones I have never done</button>' +
+          (Subjects.currentId() === "maths"
+            ? '<button class="chip' + (picked.includeBank ? " on" : "") + '" data-action="pt-bank" ' +
+              'title="The built-in chapter bank is easier than the real thing. Off by default so a test is exam standard.">' +
+              'Include the easy chapter bank</button>'
+            : "") +
         '</div>' +
 
         '<div class="pt-avail">' +
@@ -180,6 +212,7 @@ const PracticeView = (function () {
     const list = chaptersAvailable();
     return '<div class="pt-chaps">' +
       '<div class="row wrap" style="gap:7px;margin-bottom:9px">' +
+        '<button class="btn btn-sm" data-action="pt-chap-all">Select all</button>' +
         '<button class="btn btn-sm" data-action="pt-chap-none">Clear</button>' +
         '<button class="btn btn-sm" data-action="pt-chap-weak">Just my red and amber ones</button>' +
       '</div>' +
@@ -189,7 +222,9 @@ const PracticeView = (function () {
           UI.ragDot(c.rag) +
           '<span class="pt-chap-name"><b>' + UI.esc(c.label || c.name) + '</b>' +
             (c.label ? '<small>' + UI.esc(c.name) + '</small>' : "") + '</span>' +
-          '<span class="pill">' + c.n + '</span>' +
+          (c.bankOnly
+            ? '<span class="pill warn" title="No past-paper questions filed under this chapter yet, so picking it uses the built-in bank, which is easier.">bank only · ' + c.bank + '</span>'
+            : '<span class="pill">' + c.n + '</span>') +
         '</button>';
       }).join("") +
     '</div>';
@@ -618,6 +653,13 @@ const PracticeView = (function () {
         App.render(); return true;
       }
       case "pt-chap-none": readInputs(); picked.chapters = {}; App.render(); return true;
+      case "pt-chap-all": {
+        readInputs();
+        picked.chapters = {};
+        chaptersAvailable().forEach(function (c) { picked.chapters[c.cid] = true; });
+        App.render(); return true;
+      }
+      case "pt-bank": readInputs(); picked.includeBank = !picked.includeBank; App.render(); return true;
       case "pt-chap-weak": {
         readInputs();
         picked.chapters = {};

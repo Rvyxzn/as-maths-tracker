@@ -848,17 +848,30 @@ const PdfViewer = (function () {
      will bring it back. The page itself always will. */
   const docCache = {};
   function renderPages(host, src, from, to) {
-    if (!host || host.dataset.done === "1") return Promise.resolve();
-    host.dataset.done = "1";
+    if (!host) return Promise.resolve();
+    /* The guard has to remember WHAT was rendered, not merely that something
+       was attempted. A bare "done" flag plus morph() reusing the element
+       across a re-render left a box that was marked finished and was empty,
+       and nothing would ever fill it again — a question that silently showed
+       nothing at all. Re-render whenever the source or the page range
+       changes, or whenever the host is sitting there with no canvas in it. */
+    const stamp = src + "#" + from + "-" + to;
+    if (host.dataset.done === stamp && host.querySelector("canvas")) return Promise.resolve();
+    host.dataset.done = stamp;
     host.innerHTML = '<div class="qpdf-wait tiny faint">Loading the exam page…</div>';
     return ensureLib().then(function () {
       if (!docCache[src]) docCache[src] = window.pdfjsLib.getDocument(src).promise;
       return docCache[src];
     }).then(function (pdf) {
       host.innerHTML = "";
-      const last = Math.min(to || from, pdf.numPages);
+      const first = Math.max(1, Math.min(from || 1, pdf.numPages));
+      const last = Math.min(Math.max(to || first, first), pdf.numPages);
+      if (first > pdf.numPages) {
+        host.innerHTML = '<div class="tiny faint">That page is past the end of this PDF.</div>';
+        return null;
+      }
       let chain = Promise.resolve();
-      for (let p = from; p <= last; p++) {
+      for (let p = first; p <= last; p++) {
         (function (n) {
           chain = chain.then(function () {
             return pdf.getPage(n).then(function (page) {

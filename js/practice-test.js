@@ -76,6 +76,7 @@ const PracticeTest = (function () {
         key: "eco:" + q.id,
         marks: q.marks,
         cid: cid,
+        cids: cid ? [cid] : [],
         subId: subId,
         group: cid && CHAPTER_INDEX[cid] ? CHAPTER_INDEX[cid].paper.short : ("Paper " + q.paper),
         year: q.year || 1,
@@ -97,16 +98,21 @@ const PracticeTest = (function () {
     if (typeof MATHS_EXAM_QUESTIONS === "undefined") return [];
     const out = [];
     MATHS_EXAM_QUESTIONS.forEach(function (q) {
-      /* A topic set can serve several chapters; the question is filed under
-         the first that exists, so it is counted once rather than once per
-         chapter it happens to touch. */
-      const cid = q.chapters.filter(function (c) { return CHAPTER_INDEX[c]; })[0];
+      /* A topic set usually serves several chapters — the Trigonometry set
+         covers four of them. The question is COUNTED under the first, so a
+         pool of 407 is 407 questions and a test cannot draw the same one
+         twice, but it BELONGS to all of them, so every chapter it covers can
+         filter for it. Filing it under the first alone quietly made fifteen
+         chapters unpickable: they served real questions and offered none. */
+      const cids = q.chapters.filter(function (c) { return CHAPTER_INDEX[c]; });
+      const cid = cids[0];
       if (!cid) return;
       const inf = CHAPTER_INDEX[cid];
       out.push({
         key: "mex:" + q.id,
         marks: q.marks,
         cid: cid,
+        cids: cids,
         subId: null,
         source: "exam",
         group: inf.paper.short,
@@ -132,6 +138,7 @@ const PracticeTest = (function () {
           key: "maths:" + cid + ":" + i,
           marks: q.marks || 3,
           cid: cid,
+          cids: [cid],
           subId: null,
           group: inf.paper.short,
           year: inf.year || 1,
@@ -293,7 +300,11 @@ const PracticeTest = (function () {
       if (o.maxMarks && m.marks > o.maxMarks) return false;
       if (o.group && o.group !== "all" && m.group !== o.group) return false;
       if (o.year && o.year !== "all" && String(m.year) !== String(o.year)) return false;
-      if (o.chapters && o.chapters.length && o.chapters.indexOf(m.cid) < 0) return false;
+      if (o.chapters && o.chapters.length) {
+        const mine = m.cids && m.cids.length ? m.cids : [m.cid];
+        const hit = mine.some(function (c) { return o.chapters.indexOf(c) >= 0; });
+        if (!hit) return false;
+      }
       if (o.unseenOnly && lastAttempt(m.key)) return false;
       return true;
     });
@@ -319,6 +330,26 @@ const PracticeTest = (function () {
     const perChapter = {};
     let marks = 0, cap = 1;
     let left = shuffled(bag);
+
+    /* Asking for 5, 8, 12 and 25 mark questions means you want all four, not
+       four questions drawn from the union of them. Weighted picking on its
+       own will happily hand you three 5-markers and a 12, because a tariff
+       with more questions behind it wins more often. So one of each
+       requested tariff is taken first, in the order asked, and only then
+       does the weighting fill the rest of the paper. */
+    const wanted = (o.tariffs || []).slice().sort(function (a, b) { return a - b; });
+    wanted.forEach(function (t) {
+      if (wantCount && chosen.length >= wantCount) return;
+      const room = wantMarks ? wantMarks - marks : Infinity;
+      if (wantMarks && t > room) return;
+      const pickFrom = left.filter(function (m) { return m.marks === t; });
+      if (!pickFrom.length) return;
+      const one = weightedTake(pickFrom, weights);
+      chosen.push(one);
+      marks += one.marks;
+      perChapter[one.cid] = (perChapter[one.cid] || 0) + 1;
+      left = left.filter(function (m) { return m.key !== one.key; });
+    });
 
     while (left.length) {
       if (wantCount && chosen.length >= wantCount) break;
