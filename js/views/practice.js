@@ -54,6 +54,12 @@ const PracticeView = (function () {
   function chaptersAvailable() {
     const exam = {}, bank = {};
     PracticeTest.pool(true).forEach(function (m) {
+      /* The paper and year chips above the list are filters on the whole
+         build, so the chapter list obeys them too: picking Year 1 and then
+         scrolling past forty chapters that Year 1 cannot use is not a list,
+         it is a haystack. */
+      if (picked.group !== "all" && m.group !== picked.group) return;
+      if (picked.year !== "all" && String(m.year) !== String(picked.year)) return;
       const mine = m.cids && m.cids.length ? m.cids : (m.cid ? [m.cid] : []);
       mine.forEach(function (cid) {
         const box = m.source === "bank" ? bank : exam;

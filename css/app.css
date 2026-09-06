@@ -371,8 +371,8 @@ textarea.input{resize:vertical;min-height:66px;line-height:1.5}
 .chips{display:flex;gap:7px;flex-wrap:wrap}
 .chip{padding:5px 12px;border-radius:20px;border:1px solid var(--border-strong);background:var(--surface);
   cursor:pointer;font-size:12.5px;font-weight:600;color:var(--muted);transition:.13s}
-.chip:hover{color:var(--text);border-color:var(--accent)}
-.chip.on{background:var(--grad-fill);border-color:transparent;color:var(--accent-ink)}
+.chip:hover{background:var(--surface-2);color:var(--text);border-color:var(--border-strong)}
+.chip.on{background:var(--grad-fill);border-color:transparent;color:var(--accent-ink);transition:none}
 [data-theme="light"] .chip.on{color:#fff}
 
 /* Dimmer behind an open mobile sidebar. Always display:none at desktop
@@ -733,13 +733,13 @@ Node hover, lifted from the Contar chips: a gradient panel behind the
 .chip,.btn,.rag-btn,.retake-opt,.focus-info,.timer-btn,.cal-cell{
   position:relative;isolation:isolate;overflow:hidden;
 }
+/* The sweeping gradient panel is gone. A control that fills itself in over
+   half a second every time the pointer crosses it is a lot of movement on a
+   page you are trying to read; the sidebar's plain wash says "this one" just
+   as well and says it instantly. The fill is kept for the selected state,
+   where it means something. */
 .chip::before,.btn::before,.rag-btn::before,.retake-opt::before,
-.focus-info::before,.timer-btn::before,.cal-cell::before{
-  content:"";position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(100deg,var(--accent-deep),var(--accent-2));
-  transform:scaleX(0);transform-origin:left center;
-  transition:transform .46s cubic-bezier(.16,.8,.3,1);
-}
+.focus-info::before,.timer-btn::before,.cal-cell::before{ content:none }
 @media (hover:hover) and (pointer:fine){
   .chip:hover::before,.chip:focus-visible::before,
   .btn:hover::before,.btn:focus-visible::before,
@@ -750,23 +750,17 @@ Node hover, lifted from the Contar chips: a gradient panel behind the
 
   .chip:hover,.btn:hover,.retake-opt:hover:not(:disabled),
   .focus-info:hover,.timer-btn:hover{
-    color:var(--accent-ink);border-color:transparent;
+    background:var(--surface-2);color:var(--text);border-color:var(--border-strong);
   }
   .btn:hover .faint,.retake-opt:hover small{color:inherit;opacity:.85}
 }
 [data-theme="light"] .chip:hover,[data-theme="light"] .btn:hover,
 [data-theme="light"] .retake-opt:hover:not(:disabled),
-[data-theme="light"] .focus-info:hover,[data-theme="light"] .timer-btn:hover{color:#fff}
+[data-theme="light"] .focus-info:hover,[data-theme="light"] .timer-btn:hover{color:var(--text)}
 
-/* the primary button already carries the gradient, sweep a lighter wash over it */
-.btn-primary::before{background:linear-gradient(100deg,var(--accent-2),var(--accent-deep))}
-/* keep RAG buttons semantic: they sweep in their own colour, not the brand blue */
-.rag-btn[data-v=red]::before{background:linear-gradient(100deg,var(--red),var(--red))}
-.rag-btn[data-v=amber]::before{background:linear-gradient(100deg,var(--amber),var(--amber))}
-.rag-btn[data-v=green]::before{background:linear-gradient(100deg,var(--green),var(--green))}
+/* RAG buttons keep their own colour on hover, as a wash rather than a fill */
 @media (hover:hover) and (pointer:fine){
-  .rag-btn:hover{color:#fff;border-color:transparent}
-  [data-theme="dark"] .rag-btn:hover{color:#0b1220}
+  .rag-btn:hover{background:var(--surface-2);color:var(--text);border-color:var(--border-strong)}
 }
 /* the focus dial keeps its own green identity */
 .focus-toggle::before{display:none}
