@@ -77,7 +77,8 @@ const Timetable = (function () {
       prefs: {
         subjects: {},           // id -> { mins, rank, target, predicted, colour, off }
         windows: defaultWindows(),   // 0-6 -> { from, to, off }
-        busy: [],               // [{ id, label, days:[0-6], from, to, colour }]
+        busy: [],               // [{ id, label, days:[0-6], from, to, colour }] fixed times
+        flex: [],               // [{ id, label, days:[0-6], mins }] length known, time not
         blockMins: 45,
         breakMins: 15
       },
@@ -292,6 +293,82 @@ const Timetable = (function () {
   }
 
   /* ------------------------------------------------------------
+     what to actually revise in a block
+
+     "Two hours of Maths" is a budget, not an instruction. The
+     daily planner already knows which chapter is worth the next
+     hour: it weighs the RAG rating, how long since you last
+     touched it, what you scored on it, how much of the paper it
+     is worth and what it has cost you in past papers. There is no
+     reason for the timetable to invent a second, worse answer, so
+     it asks the planner rather than guessing.
+
+     The catch is that the planner only ever sees the subject that
+     is open, because every global it reads is rebuilt when the
+     subject changes. So this opens each subject in turn, takes
+     its ranking, and puts back whichever was open before anyone
+     notices.
+     ------------------------------------------------------------ */
+
+  /* The four steps of a chapter, and which of them are still owed. */
+  function stepsFor(cid) {
+    const st = Journey.state(cid);
+    const inf = CHAPTER_INDEX[cid];
+    const m = (inf && inf.sub) ? inf.sub : {};
+    const ex = Store.topic(cid).examScore || {};
+    return [
+      { key: "video", label: "Watch the playlist", done: st.steps.video.done,
+        detail: st.steps.video.count + " of " + st.steps.video.total + " watched",
+        mins: m.vid || 30 },
+      { key: "questions", label: "Topic questions", done: st.steps.questions.done,
+        detail: st.steps.questions.count + " of " + st.steps.questions.total + " answered",
+        mins: m.qs || 30 },
+      { key: "exam", label: "Exam questions", done: ex.avail > 0,
+        detail: (inf && inf.sets && inf.sets.length)
+          ? inf.sets.length + " question set" + (inf.sets.length === 1 ? "" : "s") + " filed here"
+          : "from the question bank",
+        mins: 40 },
+      { key: "mark", label: "Mark it and rate yourself", done: st.steps.marked.done,
+        detail: "record the score, so the plan can move", mins: 10 }
+    ];
+  }
+
+  /* The open subject's chapters, best first, with what each still needs. */
+  function rankChapters() {
+    return Store.planIds().map(function (cid) {
+      const pr = Scheduler.priority(cid);
+      const inf = CHAPTER_INDEX[cid];
+      const steps = stepsFor(cid);
+      const left = steps.filter(function (x) { return !x.done; });
+      return {
+        cid: cid,
+        label: inf ? inf.chapterLabel : cid,
+        name: inf ? inf.chapter.name : cid,
+        score: pr.score,
+        why: (pr.reasons || [])[0] || "",
+        rag: (pr.eff && pr.eff.rag) || null,
+        steps: steps,
+        remaining: left.length,
+        minutes: left.reduce(function (a, x) { return a + x.mins; }, 0) || 30
+      };
+    }).sort(function (a, b) { return b.score - a.score; });
+  }
+
+  /* Every subject's ranking at once. */
+  function chapterQueues() {
+    const back = Subjects.currentId();
+    const out = {};
+    subjectIds().forEach(function (id) {
+      try {
+        Subjects.switchTo(id);
+        out[id] = rankChapters().slice(0, 40);
+      } catch (e) { out[id] = []; }
+    });
+    Subjects.switchTo(back);
+    return out;
+  }
+
+  /* ------------------------------------------------------------
      generating the blocks
      ------------------------------------------------------------ */
 
@@ -321,6 +398,11 @@ const Timetable = (function () {
     });
     const weekly = Object.assign({}, owed);
 
+    /* what each subject should be working on, best first */
+    const queues = opts.queues || chapterQueues();
+    const cursor = {};
+    list.forEach(function (x) { cursor[x.id] = 0; });
+
     let made = 0, touched = 0;
     for (let i = 0; i < days; i++) {
       const iso = Metrics.addDays(startIso, i);
@@ -328,10 +410,40 @@ const Timetable = (function () {
       if (i > 0 && i % 7 === 0) Object.keys(weekly).forEach(function (k) { owed[k] = weekly[k]; });
 
       const keep = (s.days[iso] || []).filter(function (b) { return b.mine; });
-      const runs = freeRuns(weekday);
+      let runs = freeRuns(weekday);
       if (!runs.length) { s.days[iso] = keep; continue; }
 
       const placed = keep.slice();
+
+      /* Commitments whose length you know but not their time — the gym for
+         two hours on Monday, some time. They go in before revision so they
+         get the room, and they take the end of a stretch rather than the
+         middle, because splitting an evening in half wastes both halves. */
+      (s.prefs.flex || []).forEach(function (f) {
+        if ((f.days || []).indexOf(weekday) < 0) return;
+        const want = f.mins || 60;
+        let best = null;
+        runs.forEach(function (r) {
+          if (r[1] - r[0] < want) return;
+          const at = f.prefer === "start" ? r[0] : r[1] - want;
+          const clash = placed.some(function (b) {
+            return overlaps(at, at + want, toMins(b.from), toMins(b.to)); });
+          if (!clash && (best === null || (r[1] - r[0]) > best.span)) {
+            best = { at: at, span: r[1] - r[0] };
+          }
+        });
+        if (best === null) return;
+        placed.push({ id: uid(), subjectId: null, label: f.label,
+                      from: toClock(best.at), to: toClock(best.at + want),
+                      colour: f.colour || "#64748b", kind: "flex", mine: false });
+        const nf = [];
+        runs.forEach(function (r) {
+          if (!overlaps(r[0], r[1], best.at, best.at + want)) { nf.push(r); return; }
+          if (r[0] < best.at) nf.push([r[0], best.at]);
+          if (r[1] > best.at + want) nf.push([best.at + want, r[1]]);
+        });
+        runs = nf.filter(function (r) { return r[1] - r[0] >= 15; });
+      });
       runs.forEach(function (run) {
         let at = run[0];
         while (at + blk <= run[1]) {
@@ -343,8 +455,22 @@ const Timetable = (function () {
           let best = null;
           list.forEach(function (x) { if (!best || owed[x.id] > owed[best.id]) best = x; });
           if (!best || owed[best.id] <= 0) { at = run[1]; break; }
+          /* the next chapter that subject owes work to, cycling round once
+             the ranking runs out rather than leaving a block unnamed */
+          const q = queues[best.id] || [];
+          const ch = q.length ? q[cursor[best.id] % q.length] : null;
+          if (q.length) cursor[best.id]++;
           placed.push({
-            id: uid(), subjectId: best.id, label: best.name,
+            id: uid(), subjectId: best.id,
+            label: ch ? ch.label : best.name,
+            subjectName: best.name,
+            chapterId: ch ? ch.cid : null,
+            why: ch ? ch.why : "",
+            rag: ch ? ch.rag : null,
+            eta: ch ? ch.minutes : null,
+            steps: ch ? ch.steps.filter(function (x) { return !x.done; })
+                          .map(function (x) { return { label: x.label, detail: x.detail, mins: x.mins }; })
+                      : [],
             from: toClock(at), to: toClock(at + blk),
             colour: best.colour, kind: "revision", mine: false
           });
@@ -450,6 +576,18 @@ const Timetable = (function () {
       s.prefs.windows[weekday] = Object.assign({}, s.prefs.windows[weekday], patch);
     });
   }
+  function addFlex(rec) {
+    return mutate(function (s) {
+      if (!s.prefs.flex) s.prefs.flex = [];
+      s.prefs.flex.push(Object.assign({ id: uid(), colour: "#64748b", mins: 60 }, rec));
+    });
+  }
+  function removeFlex(id) {
+    return mutate(function (s) {
+      s.prefs.flex = (s.prefs.flex || []).filter(function (b) { return b.id !== id; });
+    });
+  }
+
   function addBusy(rec) {
     return mutate(function (s) {
       s.prefs.busy.push(Object.assign({ id: uid(), colour: "#64748b" }, rec));
@@ -532,6 +670,8 @@ const Timetable = (function () {
     addBlock: addBlock, updateBlock: updateBlock, removeBlock: removeBlock, moveBlock: moveBlock,
     setSubject: setSubject, setWindow: setWindow,
     addBusy: addBusy, updateBusy: updateBusy, removeBusy: removeBusy, setPrefs: setPrefs,
+    addFlex: addFlex, removeFlex: removeFlex,
+    stepsFor: stepsFor, rankChapters: rankChapters, chapterQueues: chapterQueues,
     exportData: exportData, importData: importData, describe: describe, clearAll: clearAll
   };
 })();

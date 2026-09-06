@@ -23,6 +23,7 @@ const TimetableView = (function () {
   let openIso = null;
   let span = 14;              // how many days the grid shows
   let drag = null;
+  let openBlock = null;       // the block whose detail panel is showing
 
   const PX_PER_MIN = 1.1;     // the timeline's scale
 
@@ -148,7 +149,9 @@ const TimetableView = (function () {
         'style="top:' + ((f - lo) * PX_PER_MIN) + 'px;height:' + ((t - f) * PX_PER_MIN) +
           'px;--c:' + b.colour + '">' +
         '<span class="tt-block-main"><b>' + UI.esc(b.label) + '</b>' +
-          '<small>' + b.from + '–' + b.to + '</small></span>' +
+          '<small>' + b.from + '–' + b.to +
+            (b.subjectName ? ' · ' + UI.esc(b.subjectName) : '') +
+            (b.eta ? ' · ' + fmt(b.eta) + ' left on it' : '') + '</small></span>' +
         (b.kind === "busy"
           ? '<span class="tt-lock" title="A recurring commitment. Edit it in Set up.">▦</span>'
           : '<button class="tt-x" data-action="tt-del" data-id="' + b.id + '" data-iso="' + iso +
@@ -178,8 +181,51 @@ const TimetableView = (function () {
         '<div class="tt-timeline" style="height:' + height + 'px" data-lo="' + lo + '" data-iso="' + iso + '">' +
           hours + free + items +
         '</div>' +
-        '<div class="tiny faint" style="margin-top:10px">Drag a block to move it, double-click to ' +
-          'edit it. The shaded stretches are when you said you are free.</div>' +
+        '<div class="tiny faint" style="margin-top:10px">Click a block to see what it is for, drag ' +
+          'to move it, double-click to edit. The shaded stretches are when you said you are free.</div>' +
+      '</div>' +
+      detailPanel(iso);
+  }
+
+  /* What a block is actually asking you to do.
+
+     A block that says "A-Level Maths" is a budget; one that says "Y1 Ch 12,
+     watch the playlist then the topic questions" is an instruction. The
+     chapter and the order come from the daily planner, so the timetable and
+     the plan cannot disagree about what matters. */
+  function detailPanel(iso) {
+    if (!openBlock) return "";
+    const b = Timetable.blocksOn(iso).filter(function (x) { return x.id === openBlock; })[0];
+    if (!b) return "";
+    if (b.kind !== "revision") {
+      return '<div class="card tt-detail"><b>' + UI.esc(b.label) + '</b>' +
+        '<div class="tiny muted">' + b.from + '–' + b.to + ' · not revision, so nothing is planned for it.</div></div>';
+    }
+    const steps = b.steps || [];
+    return '<div class="card tt-detail">' +
+        '<div class="row wrap" style="gap:10px;align-items:center">' +
+          '<span class="tt-node" style="background:' + b.colour + ';width:14px;height:14px"></span>' +
+          '<div style="flex:1;min-width:160px">' +
+            '<b>' + UI.esc(b.label) + '</b>' +
+            '<div class="tiny muted">' + UI.esc(b.subjectName || "") + ' · ' + b.from + '–' + b.to +
+              (b.eta ? ' · about ' + fmt(b.eta) + ' of work left on this chapter' : '') + '</div>' +
+          '</div>' +
+          (b.rag ? UI.ragDot(b.rag) : "") +
+          (b.chapterId
+            ? '<button class="btn btn-sm btn-primary" data-action="tt-open-chapter" data-id="' +
+              b.chapterId + '" data-sub="' + UI.esc(b.subjectId || "") + '">Open the chapter</button>'
+            : "") +
+        '</div>' +
+        (b.why ? '<div class="tiny muted" style="margin-top:8px">Scheduled because ' + UI.esc(b.why) + '.</div>' : "") +
+        (steps.length
+          ? '<div class="tt-steps">' + steps.map(function (x, i) {
+              return '<div class="tt-step"><span class="tt-step-n">' + (i + 1) + '</span>' +
+                '<span class="tt-step-main"><b>' + UI.esc(x.label) + '</b>' +
+                  '<small>' + UI.esc(x.detail) + '</small></span>' +
+                '<span class="pill">' + fmt(x.mins) + '</span></div>';
+            }).join("") + '</div>'
+          : '<div class="tiny faint" style="margin-top:10px">Nothing outstanding on this chapter — ' +
+            'it is here to keep it fresh.</div>') +
       '</div>';
   }
 
@@ -251,6 +297,17 @@ const TimetableView = (function () {
       '</div>';
     }).join("") || '<div class="tiny faint">Nothing yet. Add school, work, a lesson — anything that owns part of your day.</div>';
 
+    const flexRows = (t.prefs.flex || []).map(function (f) {
+      return '<div class="tt-busy">' +
+        '<i class="tt-node" style="background:' + (f.colour || "#64748b") + '"></i>' +
+        '<div class="tt-sub-main"><b>' + UI.esc(f.label) + '</b>' +
+          '<small>' + fmt(f.mins) + ' · ' +
+            (f.days || []).map(function (d) { return Timetable.SHORT_DAYS[d]; }).join(", ") +
+            ' · placed for you</small></div>' +
+        '<button class="btn btn-sm btn-ghost" data-action="tt-flex-del" data-id="' + f.id + '">✕</button>' +
+      '</div>';
+    }).join("");
+
     return '<div class="card" style="margin-bottom:14px">' +
         '<div class="card-title" style="margin-bottom:4px">Your subjects</div>' +
         '<div class="tiny muted">Rank them, say where you are and where you want to be, and the ' +
@@ -278,6 +335,16 @@ const TimetableView = (function () {
         '<div class="tiny muted" style="margin-bottom:10px">Recurring commitments. These are scheduled ' +
           'around, never over, and editing one changes every week.</div>' +
         '<div class="tt-busies">' + busyRows + '</div>' +
+      '</div>' +
+
+      '<div class="card" style="margin-top:14px">' +
+        '<div class="card-head"><div class="card-title">Things you know the length of, but not the time</div>' +
+          '<div class="right"><button class="btn btn-sm btn-primary" data-action="tt-flex-add">+ Add</button></div></div>' +
+        '<div class="tiny muted" style="margin-bottom:10px">Two hours at the gym on Monday, some time. ' +
+          'Say how long and which days and it is placed for you — at the end of a free stretch, so it ' +
+          'does not cut an evening in half — and revision is built around it.</div>' +
+        '<div class="tt-busies">' + (flexRows ||
+          '<div class="tiny faint">Nothing yet.</div>') + '</div>' +
       '</div>';
   }
 
@@ -354,14 +421,15 @@ const TimetableView = (function () {
         e.preventDefault();
         const lo = +line.dataset.lo;
         drag = { el: el, id: el.dataset.id, iso: el.dataset.iso, lo: lo,
-                 startY: e.clientY, top: parseFloat(el.style.top) };
+                 startY: e.clientY, top: parseFloat(el.style.top), moved: false };
         el.setPointerCapture(e.pointerId);
         el.classList.add("dragging");
       };
       el.onpointermove = function (e) {
         if (!drag || drag.el !== el) return;
-        const top = Math.max(0, drag.top + (e.clientY - drag.startY));
-        el.style.top = top + "px";
+        const dy = e.clientY - drag.startY;
+        if (Math.abs(dy) > 3) drag.moved = true;
+        el.style.top = Math.max(0, drag.top + dy) + "px";
       };
       el.ondblclick = function (e) {
         if (e.target.closest("[data-action]")) return;
@@ -370,6 +438,14 @@ const TimetableView = (function () {
       el.onpointerup = function (e) {
         if (!drag || drag.el !== el) return;
         el.classList.remove("dragging");
+        /* A press that did not travel is a click, and a click opens the block
+           rather than dropping it back where it already was. */
+        if (!drag.moved) {
+          openBlock = (openBlock === drag.id) ? null : drag.id;
+          drag = null;
+          App.render();
+          return;
+        }
         const mins = drag.lo + parseFloat(el.style.top) / PX_PER_MIN;
         const ok = Timetable.moveBlock(drag.iso, drag.id, mins);
         drag = null;
@@ -440,6 +516,42 @@ const TimetableView = (function () {
           };
           if (existing) Timetable.updateBlock(iso, existing.id, patch);
           else Timetable.addBlock(iso, patch);
+          UI.closeModal(); App.render();
+        };
+      }
+    });
+  }
+
+  /* Length known, time not. */
+  function flexModal() {
+    UI.modal({
+      title: "Something that takes a set amount of time",
+      body: '<div class="field"><label class="label">What is it</label>' +
+          '<input class="input" id="tfLabel" placeholder="e.g. Gym"></div>' +
+        '<div class="field"><label class="label">How long</label>' +
+          '<span class="tt-hm"><input class="input" type="number" min="0" max="12" value="2" id="tfH"><em>h</em>' +
+          '<input class="input" type="number" min="0" max="59" step="5" value="0" id="tfM"><em>m</em></span></div>' +
+        '<div class="field"><label class="label">Which days</label>' +
+          '<div class="chips" id="tfDays">' + [1,2,3,4,5,6,0].map(function (d) {
+            return '<button type="button" class="chip" data-d="' + d + '">' + Timetable.SHORT_DAYS[d] + '</button>';
+          }).join("") + '</div></div>' +
+        '<div class="tiny faint">It is placed at the end of the longest free stretch on each of those ' +
+          'days, and revision is built around it.</div>',
+      footer: '<button class="btn" data-modal-close>Cancel</button>' +
+              '<button class="btn btn-primary" id="tfSave">Add it</button>',
+      onMount: function (box) {
+        const days = {};
+        box.querySelectorAll("[data-d]").forEach(function (b) {
+          b.onclick = function () { const d = +b.dataset.d; days[d] = !days[d]; b.classList.toggle("on", !!days[d]); };
+        });
+        box.querySelector("#tfSave").onclick = function () {
+          const picked = Object.keys(days).filter(function (k) { return days[k]; }).map(Number);
+          const label = box.querySelector("#tfLabel").value.trim();
+          const mins = (+box.querySelector("#tfH").value || 0) * 60 + (+box.querySelector("#tfM").value || 0);
+          if (!label) { UI.toast("Give it a name", "bad"); return; }
+          if (!picked.length) { UI.toast("Pick at least one day", "bad"); return; }
+          if (mins < 15) { UI.toast("Give it at least 15 minutes", "bad"); return; }
+          Timetable.addFlex({ label: label, days: picked, mins: mins });
           UI.closeModal(); App.render();
         };
       }
@@ -559,6 +671,16 @@ const TimetableView = (function () {
       case "tt-add": blockModal(el.dataset.iso); return true;
       case "tt-del": Timetable.removeBlock(el.dataset.iso, el.dataset.id); App.render(); return true;
       case "tt-busy-add": busyModal(); return true;
+      case "tt-flex-add": flexModal(); return true;
+      case "tt-flex-del": Timetable.removeFlex(el.dataset.id); App.render(); return true;
+      case "tt-open-chapter": {
+        /* the chapter lives in its own subject, so go there first */
+        if (el.dataset.sub && el.dataset.sub !== Subjects.currentId()) {
+          Subjects.switchTo(el.dataset.sub);
+        }
+        App.go("chapter", { id: el.dataset.id });
+        return true;
+      }
       case "tt-busy-del": Timetable.removeBusy(el.dataset.id); App.render(); return true;
       case "tt-sub-off": {
         const s = Timetable.subjects().filter(function (x) { return x.id === el.dataset.id; })[0];
