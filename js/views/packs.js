@@ -48,6 +48,7 @@ const PacksView = (function () {
   let todoOnly = false;
   let query = "";
   const figOpen = {};            // which case-study figures are expanded
+  const modelOpen = {};          // which model answers are unfolded
 
   function minutesFor(marks) { return Math.round(marks * ECO_MINUTES_PER_MARK); }
   function byId(id) { return ECO_QUESTIONS.filter(function (q) { return q.id === id; })[0]; }
@@ -155,9 +156,32 @@ const PacksView = (function () {
      "demanded", "per month", "(000)" and then "25 5 9 8 10". Joined into
      prose it is unreadable, and it is the answer. Pulled out as a grid it
      is the answer laid out the way the paper lays it out. */
+  /* A line of table-header cells read across instead of down: no sentence
+     punctuation, and repeating the same few column words. */
+  function isScrambledHead(l) {
+    if (typeof l !== "string") return false;
+    const words = l.split(/\s+/).filter(Boolean);
+    if (words.length < 6 || /[.:;?]$/.test(l)) return false;
+    const key = /^(price|quantity|demanded|supplied|new|per|month|year|week|total|cost|revenue|output|£|\(000\)|\(m\)|units?)$/i;
+    const hits = words.filter(function (w) { return key.test(w); }).length;
+    return hits / words.length >= 0.7;
+  }
+
+  /* The extractor rebuilds a reprinted answer table from the column positions
+     in the PDF and hands it over as one line, because reading it back off the
+     rendered text is what put the numbers under the wrong headings. */
+  const TABLE_LINE = /^\[\[TABLE\]\]\s*/;
+
   function liftGrid(lines) {
     const out = [];
     for (let i = 0; i < lines.length; i++) {
+      if (TABLE_LINE.test(lines[i])) {
+        try {
+          const t = JSON.parse(lines[i].replace(TABLE_LINE, ""));
+          out.push({ table: t });
+        } catch (e) { /* leave it out rather than print the marker */ }
+        continue;
+      }
       if (!isGridRow(lines[i])) { out.push(lines[i]); continue; }
       let end = i;
       while (end + 1 < lines.length && isGridRow(lines[end + 1])) end++;
@@ -165,11 +189,33 @@ const PacksView = (function () {
       /* the wrapped header cells sit immediately above the first row */
       let head = [];
       while (out.length && isGridHead(out[out.length - 1])) head.unshift(out.pop());
+      /* Those cells now arrive as one run of words - "Price Quantity Quantity
+         New New £ demanded supplied ..." - because the extractor rejoins
+         wrapped lines. It is the same header the table below prints properly,
+         so reading it twice, once scrambled, helps nobody. */
+      if (out.length && isScrambledHead(out[out.length - 1])) out.pop();
       out.push({ grid: lines.slice(i, end + 1).map(function (r) { return r.trim().split(/\s+/); }),
                  headCells: head });
       i = end;
     }
     return out;
+  }
+
+  /* The completed table, rebuilt column by column. The question's own column
+     names win where they fit, since this is that same table filled in. */
+  function tableHtml(t, id) {
+    const spec = (typeof ECO_QUESTION_TABLES !== "undefined") ? ECO_QUESTION_TABLES[id] : null;
+    const cols = t.rows[0].length;
+    const head = (spec && spec.head && spec.head.length === cols) ? spec.head
+               : (t.head && t.head.length === cols && t.head.some(Boolean)) ? t.head : null;
+    return '<div class="qtbl-wrap"><table class="qtbl ms2-grid">' +
+      (head ? '<thead><tr>' + head.map(function (h) {
+        return '<th>' + UI.esc(h) + '</th>'; }).join("") + '</tr></thead>' : "") +
+      '<tbody>' + t.rows.map(function (r) {
+        return '<tr>' + r.map(function (c, i) {
+          return '<td' + (i ? ' class="num"' : '') + '>' + UI.esc(c) + '</td>';
+        }).join("") + '</tr>';
+      }).join("") + '</tbody></table></div>';
   }
 
   function gridHtml(node, id) {
@@ -192,22 +238,13 @@ const PacksView = (function () {
     const raw = String(text || "").split("\n").map(function (l) { return l.trim(); })
                   .filter(function (l) { return l.length; });
 
-    /* A lone letter is the answer to a multiple choice, so it starts its own
-       line rather than being glued onto the part marker above it as "(b) C". */
-    /* A row of the answer grid has to survive the paragraph joining below,
-       or it is glued onto the sentence above it and there is no grid left
-       to lift out. */
-    const GRID_ROW = /^[-\d][\d.,]*(?:\s+[-\d][\d.,]*){2,}$/;
-    const STARTS = /^(•|[A-D]\s|[A-E]$|Level\s*\d|\(?[a-e]\)|Knowledge|KAA|Application|Analysis|Evaluation|Effects|NB\b|\(\d+\)|\d+\s+[A-Z])/;
-    const joined = [];
-    raw.forEach(function (l) {
-      const isNew = STARTS.test(l) || GRID_ROW.test(l) ||
-                    (/^[A-Z]/.test(l) && joined.length &&
-                     /[.:;?]$/.test(joined[joined.length - 1]));
-      if (!joined.length || isNew) joined.push(l);
-      else joined[joined.length - 1] += " " + l;
-    });
-    const lines = liftGrid(joined);
+    /* The lines arrive whole. They used to arrive as PDF text-layer fragments
+       wrapped at the column width, so this rejoined them by guessing where a
+       sentence restarted - and guessed wrong often enough to weld the mark
+       allocation onto the first heading and headings onto the bullet above.
+       The extractor now reads the column positions instead and emits one
+       logical line per point, so there is nothing left to guess at. */
+    const lines = liftGrid(raw);
 
     let html = "", inList = false, inLevel = false;
     const closeList = function () { if (inList) { html += "</ul>"; inList = false; } };
@@ -218,6 +255,11 @@ const PacksView = (function () {
     let started = false;
 
     lines.forEach(function (line) {
+      if (line && line.table) {
+        closeLevel(); closeList();
+        html += tableHtml(line.table, id);
+        return;
+      }
       if (line && line.grid) {
         closeLevel(); closeList();
         html += gridHtml(line, id);
@@ -590,20 +632,91 @@ const PacksView = (function () {
       }).join("");
   }
 
-  /* The diagram the answer is supposed to contain. Shown with the mark
-     scheme rather than with the question, because on these questions the
-     diagram is something you draw, not something you are given. Drawn from
-     the economics, so the curves are real lines and the labelled points are
-     solved for rather than placed by eye. */
-  function diagramBlock(q) {
-    if (typeof ECO_DIAGRAM === "undefined") return "";
-    const key = ECO_DIAGRAM.forQuestion(q);
-    if (!key) return "";
-    return '<div class="section-label" style="margin:18px 0 8px">The diagram</div>' +
-      '<div class="qdiag">' + ECO_DIAGRAM.render(key) +
-        '<div class="qdiag-note">Drawn from the economics, not copied from the paper. ' +
-        'Label the axes and both curves, and mark every point you refer to.</div>' +
-      '</div>';
+  /* ---------- the model answer ----------
+
+     Not an essay someone wrote out. What a full-mark answer contains, in the
+     mark scheme's own points, laid out as the paragraphs you would write and
+     timed at the 1.2 minutes a mark the paper allows, with the examiner's own
+     account of where the marks went sitting beside it.
+
+     It opens folded. Reading the model before writing your own is revision,
+     not practice, and the whole panel only exists after you have revealed. */
+  function modelBlock(q, er) {
+    if (typeof EcoModel === "undefined") return "";
+    const m = EcoModel.build(q, er);
+    if (!m || (!m.kaa.length && !m.ev.length)) return "";
+    const open = !!modelOpen[q.id];
+
+    const group = function (points) {
+      /* the scheme's own headings survive, because "Effects on consumers"
+         and "Effects on suppliers" are the two halves of the answer */
+      const out = [];
+      let last = null;
+      points.forEach(function (p) {
+        if (p.heading !== last) { out.push('<div class="ma-sub">' + UI.esc(p.heading || "") + '</div>'); last = p.heading; }
+        out.push('<li>' + UI.esc(p.text) + '</li>');
+      });
+      return out.join("").replace(/<div class="ma-sub"><\/div>/g, "");
+    };
+
+    const list = function (title, hint, points) {
+      if (!points.length) return "";
+      return '<div class="ma-col">' +
+        '<div class="ma-col-head"><b>' + UI.esc(title) + '</b><span>' + UI.esc(hint) + '</span></div>' +
+        '<ul class="ma-points">' + group(points) + '</ul></div>';
+    };
+
+    const says = function (cls, title, items) {
+      if (!items || !items.length) return "";
+      return '<div class="ma-says ' + cls + '"><b>' + UI.esc(title) + '</b><ul>' +
+        items.map(function (s) { return '<li>' + UI.esc(s) + '</li>'; }).join("") + '</ul></div>';
+    };
+
+    return '<div class="ma' + (open ? " open" : "") + '">' +
+      '<button class="ma-head" data-action="pack-model" data-id="' + q.id + '">' +
+        UI.icon("cap") +
+        '<span class="ma-title">Model answer</span>' +
+        '<span class="ma-sum">' + m.minutes + ' min · ' +
+          (m.split.ev ? 'KAA ' + m.split.kaa + ' · Evaluation ' + m.split.ev : m.marks + ' marks, no evaluation') +
+          (m.best ? ' · examiner scored ' + m.best.got + '/' + m.best.outOf : '') + '</span>' +
+        '<span class="ma-chev">' + (open ? "−" : "+") + '</span>' +
+      '</button>' +
+      (open ? '<div class="ma-body">' +
+
+        '<div class="ma-plan">' + m.steps.map(function (s) {
+          return '<div class="ma-step"><span class="ma-step-m">' + s.marks + '</span>' +
+                 '<span class="ma-step-l">' + UI.esc(s.label) + '</span>' +
+                 '<span class="ma-step-t">' + s.minutes + ' min</span></div>';
+        }).join("") + '</div>' +
+
+        (m.diagram ? '<div class="ma-flag">' + UI.icon("alert") +
+          '<span>The mark scheme credits a diagram here. Draw it, label both axes and both curves, ' +
+          'and refer to the labelled points in the writing.</span></div>' : "") +
+
+        '<div class="ma-cols">' +
+          list(m.fromProse ? "What earns the marks" : "Knowledge, application and analysis",
+               m.fromProse ? "the mark scheme's own wording" : "pick two or three, and develop them",
+               m.kaa) +
+          list("Evaluation", "worth " + m.split.ev + " of the " + m.marks, m.ev) +
+        '</div>' +
+
+        (m.conditions.length
+          ? '<div class="ma-cond"><b>The scheme also says</b><ul>' +
+            m.conditions.map(function (c) { return '<li>' + UI.esc(c.text) + '</li>'; }).join("") +
+            '</ul></div>' : "") +
+
+        says("good", "What the examiner rewarded", m.gained) +
+        says("bad", "Where the marks went", m.lost) +
+        says("", "What the examiner said", m.notes) +
+        says("tip", "Examiner tips", m.tips) +
+
+        (m.best ? '<div class="ma-best"><b>The examiner on a ' + m.best.got + '/' + m.best.outOf +
+          ' answer</b><p>' + UI.esc(m.best.text) + '</p></div>' : "") +
+
+        '<div class="ma-foot">Assembled from Pearson’s mark scheme and examiner report for this ' +
+          'question. Nothing here is written for you: the points are the ones the scheme lists.</div>' +
+      '</div>' : "") +
+    '</div>';
   }
 
   /* ---------- list ---------- */
@@ -708,17 +821,13 @@ const PacksView = (function () {
 
           '<div class="qfocus-scroll">' +
             '<div class="qtext">' + questionHtml(q.text, q.id) + '</div>' +
-            /* The diagram is part of the question. It used to appear with the
-               mark scheme, which meant every question that turns on reading a
-               diagram was unanswerable until you had given up and revealed
-               the answer. */
-            diagramBlock(q) +
             (g.split ? '<div class="qfocus-guide"><b>' + UI.esc(g.name) + '</b>' +
                        '<span class="pill acc">' + UI.esc(g.split) + '</span>' +
                        '<p>' + UI.esc(g.how) + '</p></div>' : "") +
 
             (show
-              ? (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' + msSheet(q.ms, q.id)
+              ? modelBlock(q, er) +
+                (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' + msSheet(q.ms, q.id)
                       : '<div class="tiny faint">No mark scheme was found for this one.</div>') +
                 (er ? UI.examinerReport(er, { series: q.series, paper: q.paper,
                                               question: q.q + (q.part ? "(" + q.part + ")" : "") }) : "") +
@@ -969,6 +1078,12 @@ const PacksView = (function () {
       case "pack-case":   caseOpen = !caseOpen; App.render(); return true;
       case "pack-reveal": revealed[el.dataset.id] = true; App.render(); return true;
       case "pack-hide":   delete revealed[el.dataset.id]; App.render(); return true;
+      case "pack-model": {
+        const k = el.dataset.id;
+        modelOpen[k] = !modelOpen[k];
+        App.render();
+        return true;
+      }
       case "pack-time": {
         const q = byId(el.dataset.id);
         if (q) App.startQuestionTimer(q);
@@ -994,6 +1109,6 @@ const PacksView = (function () {
      are documented; exporting it beats a second, drifting copy. */
   return { render: render, setSearch: setSearch, handle: handle, minutesFor: minutesFor,
            questionHtml: questionHtml, msSheet: msSheet, caseFor: caseFor, caseHtml: caseHtml,
-           diagramBlock: diagramBlock, reportFor: reportFor,
+           reportFor: reportFor,
            guideFor: function (marks) { return GUIDE[marks] || null; } };
 })();

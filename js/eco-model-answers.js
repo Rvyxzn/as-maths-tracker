@@ -1,0 +1,235 @@
+/* ============================================================
+   Model answers - Edexcel A level Economics A (9EC0)
+   ------------------------------------------------------------
+   Nothing here is invented. A model answer is assembled at read
+   time out of two things Pearson published about that exact
+   question: the mark scheme's indicative content, and the
+   examiner's report on what the marks actually went to.
+
+   That is deliberate. A written-out essay would be one person's
+   answer, and the thing worth learning is not one person's
+   wording but the shape a full-mark answer has: how many chains,
+   how long each one runs, where the diagram goes, and how much of
+   the paper's time belongs to the evaluation. So what you get is
+   the plan, in Pearson's own points, timed by the 1.2 minutes a
+   mark the paper allows, with the examiner's stated reasons that
+   answers gained or lost marks sitting beside it.
+
+   The report is one long run of text per question, but it is
+   written to a fixed shape: general commentary first, then one
+   block per exemplar script, each of which ends with "Examiner
+   Comments" or "Examiner Tip". Those markers are what make it
+   splittable, and they are Pearson's, not ours.
+   ============================================================ */
+
+const EcoModel = (function () {
+
+  /* The shape of a full-mark answer at each tariff, from the real KAA and
+     evaluation split in the mark schemes. Paragraph counts are what the
+     examiner reports repeatedly ask for: depth over breadth. */
+  const SHAPE = {
+    5:  { kaa: 5,  ev: 0,
+          steps: [["Define or calculate", 1], ["Explain the one reason, as a chain", 2],
+                  ["Apply it to the data in front of you", 2]] },
+    8:  { kaa: 6,  ev: 2,
+          steps: [["Point one: define, apply, then analyse", 3],
+                  ["Point two: define, apply, then analyse", 3],
+                  ["One evaluative comment, developed", 2]] },
+    10: { kaa: 6,  ev: 4,
+          steps: [["Define the term in context", 1],
+                  ["One or two chains, applied to the extract", 5],
+                  ["Evaluation running alongside, not bolted on", 4]] },
+    12: { kaa: 8,  ev: 4,
+          steps: [["Define the term in context", 1],
+                  ["Chain one, fully developed", 4],
+                  ["Chain two, fully developed", 3],
+                  ["Evaluate both, then decide", 4]] },
+    15: { kaa: 9,  ev: 6,
+          steps: [["Define and set up the context", 1],
+                  ["Chain one, with the diagram if one applies", 4],
+                  ["Chain two, fully developed", 4],
+                  ["Evaluation, then a judgement that decides", 6]] },
+    25: { kaa: 16, ev: 9,
+          steps: [["Define the terms the question uses", 2],
+                  ["Chain one, with a labelled diagram", 6],
+                  ["Chain two, fully developed", 5],
+                  ["Third chain or the diagram's welfare analysis", 3],
+                  ["Evaluation: what it depends on, and how much", 6],
+                  ["Judgement: answer the question you were asked", 3]] }
+  };
+
+  /* Pearson's own section markers inside a report. */
+  const MARKERS = /(Examiner Comments|Examiner Tip)/g;
+  const EXEMPLAR = /This answer achieves (?:a mark of )?(\d+)\s*\/\s*(\d+)/i;
+
+  /* Sentences in the general commentary that say what cost marks. The
+     wording is stable across fifteen series because the reports are written
+     to a house style. */
+  const LOST = /(failed to|did not|lost a mark|common error|weaker response|weak response|low scoring|struggled|confused|a lack of|too many candidates|not always|unfortunately|mistake|were unable)/i;
+  const GAINED = /(high scoring|full marks|stronger candidates|candidates who|well[- ]structured|effectively|impressive|best practice|top level|were able to)/i;
+
+  function sentences(text) {
+    return String(text || "")
+      .split(/(?<=[.!?])\s+(?=[A-Z“'(])/)
+      .map(function (s) { return s.trim(); })
+      .filter(function (s) { return s.length > 25; });
+  }
+
+  /* Split the report into the general commentary and the exemplar blocks.
+     Everything before the first "This answer achieves..." is the examiner
+     talking about the cohort; after it, about one script at a time. */
+  function parts(report) {
+    const text = String(report || "").trim();
+    if (!text) return { general: "", exemplars: [], tips: [] };
+
+    const first = text.search(/This answer achieves/i);
+    const general = first > 0 ? text.slice(0, first).trim() : (first < 0 ? text : "");
+    const rest = first >= 0 ? text.slice(first) : "";
+
+    /* One block per script: each starts at "This answer achieves". */
+    const exemplars = rest.split(/(?=This answer achieves)/i)
+      .map(function (b) { return b.trim(); })
+      .filter(Boolean)
+      .map(function (b) {
+        const m = b.match(EXEMPLAR);
+        /* The block runs "...script commentary... Examiner Comments ...tip...
+           Examiner Tip". The tip is already listed on its own, and the
+           trailing "Paper Summary" belongs to the whole paper rather than
+           this question, so what is left is the commentary itself. */
+        const body = b.split(/Paper Summary/)[0].split(/Examiner Comments/)[0].trim();
+        return { got: m ? +m[1] : null, outOf: m ? +m[2] : null, text: body };
+      });
+
+    /* A tip is the sentence immediately before Pearson's "Examiner Tip"
+       marker, which is how the reports label their own advice. */
+    const tips = [];
+    String(report).split(MARKERS).forEach(function (chunk, i, all) {
+      if (all[i] !== "Examiner Tip") return;
+      const prev = all[i - 1] || "";
+      const ss = sentences(prev);
+      const take = ss.slice(-2).join(" ");
+      if (take) tips.push(take);
+    });
+
+    return { general: general, exemplars: exemplars, tips: unique(tips) };
+  }
+
+  function unique(list) {
+    const seen = {};
+    return list.filter(function (s) {
+      const k = s.toLowerCase().replace(/\W+/g, " ").trim();
+      if (seen[k]) return false;
+      seen[k] = true;
+      return true;
+    });
+  }
+
+  /* The mark scheme, split into the points you would actually write. A
+     heading ending in a colon owns the bullets beneath it, and the
+     "Evaluation" allocation is where the second half of the answer starts.
+
+     Most schemes are bulleted, but the short calculation questions are
+     written as prose - "1 mark for applying the formula and 1 mark for the
+     correct answer" - and a plan with nothing in it is worse than no plan,
+     so those lines are kept too and used when there are no bullets. */
+  function scheme(ms) {
+    const lines = String(ms || "").split("\n").map(function (l) { return l.trim(); })
+                    .filter(Boolean);
+    const kaa = [], ev = [], prose = [];
+    let inEval = false, heading = "";
+
+    lines.forEach(function (line) {
+      /* "Evaluation 9" is where the second half of the answer starts - unless
+         the allocation wrapped onto two lines, in which case it is still the
+         tail of "Knowledge 4, Application 4, Analysis 8," and nothing has
+         been written yet. Which one it is depends on whether any point has
+         been read, not on the words. */
+      if (/^Evaluation\s*\d+\s*$/i.test(line)) {
+        if (kaa.length || ev.length || prose.length) { inEval = true; heading = ""; }
+        return;
+      }
+      if (/^Evaluation\b/i.test(line)) {
+        inEval = true;
+        /* the heading above belonged to the knowledge half; carrying it over
+           put "Economic effects include" on top of the evaluation points */
+        heading = /:$/.test(line) ? line.replace(/:$/, "") : "";
+        return;
+      }
+      if (/^(Knowledge|Application|Analysis|KAA)\b/i.test(line) && /^\S+\s*\d+\s*[,;]?/.test(line) &&
+          !/:/.test(line)) { inEval = false; return; }
+      if (/^\([a-e]\)$/.test(line)) { heading = "Part (" + line.replace(/[()]/g, "") + ")"; return; }
+      if (/:$/.test(line)) { heading = line.replace(/:$/, ""); return; }
+
+      if (line.indexOf("•") === 0) {
+        const point = line.replace(/^•\s*/, "").replace(/\s*\(\d+(\+\d+)*\)\s*$/, "").trim();
+        if (point) (inEval ? ev : kaa).push({ heading: heading, text: point });
+        return;
+      }
+
+      /* prose: the sentence has to be saying something, not be a stray total */
+      if (line.length > 12 && !/^\(?\d+\)?$/.test(line)) {
+        prose.push({ heading: heading, text: line.replace(/\s*\(\d+\)\s*$/, "").trim() });
+      }
+    });
+
+    if (!kaa.length && !ev.length) return { kaa: prose, ev: [], notes: [], fromProse: true };
+    /* The prose around the bullets is where the scheme puts its conditions:
+       "NB for a Level 3 response, candidates must consider both", "Negative
+       consequences can be seen as KAA and positive as evaluation". Those are
+       instructions for how to score, so they belong in the plan. */
+    return { kaa: kaa, ev: ev, notes: prose, fromProse: false };
+  }
+
+  /* Does this question want a diagram? The mark scheme says so outright
+     whenever it does, so there is no need to guess from the topic. */
+  function wantsDiagram(ms) {
+    return /\bdiagram\b/i.test(String(ms || ""));
+  }
+
+  function minutes(marks) {
+    return Math.round(marks * (typeof ECO_MINUTES_PER_MARK === "number" ? ECO_MINUTES_PER_MARK : 1.2));
+  }
+
+  /* Everything the model-answer panel needs for one question. */
+  function build(q, report) {
+    if (!q) return null;
+    const sh = SHAPE[q.marks] || SHAPE[25];
+    const sc = scheme(q.ms);
+    const pr = parts(report);
+    const general = sentences(pr.general);
+
+    /* The highest-scoring exemplar is the one worth reading: it is the
+       examiner describing an answer that got the marks. */
+    const best = pr.exemplars.slice().sort(function (a, b) {
+      return (b.got || 0) - (a.got || 0);
+    })[0] || null;
+
+    const gained = general.filter(function (s) { return GAINED.test(s) && !LOST.test(s); }).slice(0, 4);
+    const lost = general.filter(function (s) { return LOST.test(s); }).slice(0, 4);
+
+    return {
+      marks: q.marks,
+      minutes: minutes(q.marks),
+      split: { kaa: sh.kaa, ev: sh.ev },
+      steps: sh.steps.map(function (s) {
+        return { label: s[0], marks: s[1], minutes: minutes(s[1]) };
+      }),
+      diagram: wantsDiagram(q.ms),
+      kaa: sc.kaa,
+      ev: sc.ev,
+      conditions: sc.notes || [],
+      fromProse: sc.fromProse,
+      gained: gained,
+      lost: lost,
+      /* A report whose wording matched neither filter still said something
+         about this question, and the first few sentences are where the
+         examiner says how the cohort did. Better than an empty panel. */
+      notes: (gained.length || lost.length) ? [] : general.slice(0, 3),
+      tips: pr.tips.slice(0, 4),
+      best: best && best.got !== null ? best : null,
+      hasReport: !!String(report || "").trim()
+    };
+  }
+
+  return { build: build, scheme: scheme, parts: parts, SHAPE: SHAPE };
+})();

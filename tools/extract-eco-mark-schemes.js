@@ -18,6 +18,16 @@ const BULLET = /^[•●∞➢]\s*/;
 function hasBullet(t) { return BULLET.test(t.trim()); }
 
 const GRID_ROW = /^[-£\d][\d.,£\s]*$/;
+
+/* One cell of a reprinted answer table: a word or two, no sentence
+   punctuation, and not the start of anything. */
+const CELL_WORD = /^(£|\(?000\)?|\(m\)|per|month|year|week|price|quantity|quantities|demanded|supplied|new|total|cost|costs|revenue|output|units?|s)$/i;
+function isCell(t) {
+  if (t.length > 22 || /[.:;?!]$/.test(t)) return false;
+  const words = t.split(/\s+/).filter(Boolean);
+  if (!words.length || words.length > 2) return false;
+  return words.every(function (w) { return CELL_WORD.test(w); });
+}
 const AO_ONLY = /^(?:(?:Knowledge(?:\/understanding)?|Application|Analysis|Evaluation|KAA)\s*\d+\s*[,;]?\s*)+(?:\(\d+\))?\s*$/i;
 
 /* A question marker owns the left margin. Questions run 1 to 8, which keeps
@@ -60,9 +70,12 @@ function pdfText(file) {
    it lands in the middle of a mark scheme. */
 function isMojibake(t) {
   if (t.length < 30) return false;
-  const letters = (t.match(/[A-Za-z]/g) || []).length;
+  /* Digits count as content: a row of the answer table is "£35 (000s) (000s)",
+     which is mostly brackets and was being thrown away as a broken footer.
+     A real footer carries dozens of punctuation marks, not four. */
+  const content = (t.match(/[A-Za-z0-9]/g) || []).length;
   const punct = (t.match(PUNCT) || []).length;
-  return punct > letters;
+  return punct >= 8 && punct > content * 0.5;
 }
 
 /* Furniture: the repeated table header, the "6(b) continued" that starts a
@@ -129,10 +142,134 @@ function questionsIn(text) {
       /* drop the level column's stray cell, keep the line it was sitting on */
       const cleaned = t.replace(LEVEL_CELL, "").replace(QUESTION_CELL, "");
       if (!cleaned) return;
-      cur.lines.push({ col: indent + (t.length - cleaned.length), text: cleaned });
+      /* The spaced line is kept as well as the trimmed one: a reprinted
+         answer table is only recoverable from where its columns sit. */
+      cur.lines.push({ col: indent + (t.length - cleaned.length), text: cleaned, raw: line });
     });
   });
   return out;
+}
+
+/* ---------- the reprinted answer table ----------
+
+   A question that asks you to complete a table has the completed one as its
+   mark scheme, and a PDF hands that back as scattered words: the header cells
+   wrap down the page one word per line, and a value whose row is taller than
+   the others is printed on the line below its own row. Read line by line the
+   numbers end up under the wrong headings, which on a question about reading
+   a table is the one mistake that matters.
+
+   Columns are recoverable, though, because pdftotext keeps the x position of
+   every token. So the block is read column by column rather than row by row:
+   tokens are bucketed by where they start, and a column's values in printed
+   order are that column's values in row order. When every column comes back
+   with the same number of values, the table is exactly reconstructed. When
+   they do not, nothing is claimed and the block is left as printed. */
+
+const NUM = /^[£$]?-?\d[\d.,]*%?$/;
+const TABLE_MARK = "[[TABLE]]";
+
+function isNumberRow(raw) {
+  const toks = String(raw).trim().split(/\s{2,}/).filter(Boolean);
+  if (!toks.length) return false;
+  return toks.every(function (t) { return NUM.test(t.trim()); });
+}
+
+/* A line that could be part of a table: nothing on it but numbers and the
+   short words a column heading is made of. A sentence ends in punctuation and
+   a heading ends in a colon, so both are excluded and the block stops there. */
+function isCellRow(raw) {
+  const t = String(raw).trim();
+  if (!t || /[.:;?!]$/.test(t)) return false;
+  if (hasBullet(t)) return false;
+  const toks = t.split(/\s{2,}/).filter(Boolean);
+  if (!toks.length) return false;
+  return toks.every(function (tok) {
+    return tok.length <= 22 && tok.split(/\s+/).every(function (w) {
+      return NUM.test(w) || /^[A-Za-z£$(][\w()£$%.,'/-]{0,15}$/.test(w);
+    });
+  });
+}
+
+/* every token on a line, with the column it starts in */
+function tokens(raw) {
+  const out = [];
+  const re = /\S+(?:[ ](?!\s)\S+)*/g;
+  let m;
+  while ((m = re.exec(raw))) out.push({ col: m.index, text: m[0] });
+  return out;
+}
+
+/* Start columns that sit within a few characters of each other are the same
+   column: a right-aligned number and its heading rarely begin in the same
+   place, and a wrapped header word can be indented under its own cell. */
+function columnsOf(all, tolerance) {
+  const starts = all.map(function (t) { return t.col; }).sort(function (a, b) { return a - b; });
+  const cols = [];
+  starts.forEach(function (s) {
+    if (!cols.length || s - cols[cols.length - 1] > tolerance) cols.push(s);
+  });
+  return cols;
+}
+
+function nearest(cols, x) {
+  let best = 0;
+  for (let i = 1; i < cols.length; i++) {
+    if (Math.abs(cols[i] - x) < Math.abs(cols[best] - x)) best = i;
+  }
+  return best;
+}
+
+/* Read one run of lines as a table. Header words and data cells share the same
+   lines in some papers - the price column is printed alongside the wrapped
+   headings - so the split is not "these lines are the header and those are the
+   body". It is per column: a column's words are its heading, and the numbers
+   after them are its values, in the order they were printed.
+
+   Returns null unless every column comes back with the same number of values.
+   Anything else means the columns were not read correctly, and a table that
+   reads cleanly while saying the wrong thing is worse than no table at all. */
+function readTable(blockLines) {
+  const all = [];
+  blockLines.forEach(function (raw) {
+    tokens(raw).forEach(function (t) { all.push(t); });
+  });
+  if (all.length < 8) return null;
+
+  /* The columns are read off the numbers, not off every token. Numbers in a
+     printed table line up exactly; a heading is centred over its column and
+     wraps, so "New" and "quantity supplied" start in different places and
+     would otherwise be counted as two columns. */
+  const cols = columnsOf(all.filter(function (t) { return NUM.test(t.text); }), 4);
+  if (cols.length < 2 || cols.length > 8) return null;
+
+  const words = cols.map(function () { return []; });
+  const nums = cols.map(function () { return []; });
+  let broken = false;
+
+  all.forEach(function (t) {
+    const c = nearest(cols, t.col);
+    if (NUM.test(t.text)) { nums[c].push(t.text); return; }
+    /* a heading word after the numbers have started means this is not a
+       column of a table, it is prose that happens to line up */
+    if (nums[c].length) broken = true;
+    words[c].push(t.text);
+  });
+  if (broken) return null;
+
+  const n = nums[0].length;
+  if (n < 3 || !nums.every(function (c) { return c.length === n; })) return null;
+
+  const head = words.map(function (w) {
+    /* the mark award printed beside the table is not a column name */
+    return w.join(" ").replace(/^\(\d+(?:\+\d+)*\s*marks?\)\s*/i, "").trim();
+  });
+
+  const rows = [];
+  for (let r = 0; r < n; r++) {
+    rows.push(nums.map(function (c) { return c[r]; }));
+  }
+  return { head: head.some(Boolean) ? head : null, rows: rows };
 }
 
 /* Turn the positioned lines back into logical ones. A bullet opens an item, a
@@ -142,6 +279,28 @@ function toText(lines) {
   const cols = lines.filter(function (l) { return hasBullet(l.text); })
                     .map(function (l) { return l.col; });
   const bulletCol = cols.length ? Math.min.apply(null, cols) : -1;
+
+  /* Which lines belong to a reprinted answer table, and what that table is.
+     Done first so the walk below can skip the whole run in one go. */
+  const table = {};        // index of the block's first line -> the table
+  const inTable = {};
+  for (let i = 0; i < lines.length; i++) {
+    if (!lines[i].raw || !isCellRow(lines[i].raw)) continue;
+    let end = i;
+    while (end + 1 < lines.length && lines[end + 1].raw && isCellRow(lines[end + 1].raw)) end++;
+
+    /* a table needs rows, and rows are the lines carrying numbers */
+    const numbered = lines.slice(i, end + 1)
+      .filter(function (l) { return /\d/.test(l.raw); }).length;
+    if (numbered >= 3) {
+      const built = readTable(lines.slice(i, end + 1).map(function (l) { return l.raw; }));
+      if (built) {
+        table[i] = built;
+        for (let k = i; k <= end; k++) inTable[k] = i;
+      }
+    }
+    i = end;
+  }
 
   const out = [];
   let open = null;   // the bullet still being wrapped
@@ -166,7 +325,15 @@ function toText(lines) {
   }
   function flush() { flushBullet(); flushPara(); }
 
-  lines.forEach(function (l) {
+  lines.forEach(function (l, i) {
+    if (inTable[i] !== undefined) {
+      if (inTable[i] === i) {
+        flush();
+        out.push(TABLE_MARK + " " + JSON.stringify(table[i]));
+      }
+      return;                       // the rest of the run is inside that table
+    }
+
     const bulleted = hasBullet(l.text);
     const text = l.text.trim().replace(BULLET, "").replace(/\s+/g, " ").trim();
     if (!text) return;
@@ -183,6 +350,12 @@ function toText(lines) {
     if (heading || ao || GRID_ROW.test(text) || /^\([a-e]\)$/.test(text)) {
       flushPara(); out.push(text); return;
     }
+
+    /* A cell of the answer table, which a PDF gives back one word per line:
+       "Price", "£", "Quantity", "demanded", "per month", "(000)". Swept into
+       the paragraph above they become a run of nonsense in the middle of a
+       sentence; kept separate, the view stacks them back into the table. */
+    if (isCell(text)) { flushPara(); out.push(text); return; }
 
     /* Prose outside the bullets wraps too, and a mark scheme's "NB ..." note
        read as three orphan lines is how a sentence stops making sense. */
@@ -210,7 +383,7 @@ function build(file) {
   return out;
 }
 
-module.exports = { build, pdfText, questionsIn, toText };
+module.exports = { build, pdfText, questionsIn, toText, isCellRow, readTable, tokens, columnsOf };
 
 if (require.main === module) {
   const res = build(process.argv[2]);
