@@ -754,11 +754,23 @@ const PacksView = (function () {
       '">Y' + q.year + ' · ' + UI.esc(q.topicCode || ("T" + q.theme)) + '</span>';
   }
 
+  /* Summer 2020 and 2021 were cancelled and those papers were sat in the
+     autumn. The bank files them under June, following the past-paper site,
+     but Pearson published the reports under the series they were actually
+     sat in, so the two names have to be tried. */
+  const REPORT_SERIES = { "june2020": "october2020", "june2021": "november2021" };
+
   function reportFor(q) {
-    const key = "p" + q.paper + "-" + q.series.toLowerCase().replace(/ /g, "");
-    const set = typeof ECO_EXAMINER_REPORTS !== "undefined" ? ECO_EXAMINER_REPORTS[key] : null;
+    if (typeof ECO_EXAMINER_REPORTS === "undefined") return null;
+    const name = q.series.toLowerCase().replace(/ /g, "");
+    const set = ECO_EXAMINER_REPORTS["p" + q.paper + "-" + name] ||
+                (REPORT_SERIES[name] ? ECO_EXAMINER_REPORTS["p" + q.paper + "-" + REPORT_SERIES[name]] : null);
     if (!set) return null;
-    return set.questions[q.erKey] || set.questions[q.q + (q.part || "")] || null;
+    /* Some reports write up the whole of question 6 in one go rather than
+       part by part, so a part with no entry of its own falls back to it. */
+    return set.questions[q.erKey] ||
+           set.questions[q.q + (q.part || "")] ||
+           set.questions[q.q] || null;
   }
 
   function preview(t) {
