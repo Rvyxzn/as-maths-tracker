@@ -247,6 +247,20 @@ const Store = (function () {
   /* Switching profile swaps the save file underneath a live app. Any pending
      debounced write belongs to the profile that just left, so it is dropped
      rather than flushed into the new profile's key. */
+  /* Write any pending save NOW, to the key that is current at this moment.
+
+     Saves are debounced by 180ms, and switching subject used to throw the
+     pending one away: edit Economics, click Maths within a fifth of a second,
+     and the edit was gone. It has to be flushed BEFORE the subject changes,
+     because storageKey() follows the active subject and flushing afterwards
+     would file Economics' state under Maths. */
+  function flush() {
+    if (!saveTimer) return false;
+    clearTimeout(saveTimer); saveTimer = null;
+    try { localStorage.setItem(storageKey(), JSON.stringify(state)); return true; }
+    catch (e) { return false; }
+  }
+
   function reloadForUser() {
     if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
     load();
@@ -277,7 +291,7 @@ const Store = (function () {
     blankTopic: blankTopic,
 
     init: function () { load(); return state; },
-    reloadForUser: reloadForUser,
+    reloadForUser: reloadForUser, flush: flush,
     replaceState: replaceState,
     get: function () { return state; },
     settings: function () { return state.settings; },

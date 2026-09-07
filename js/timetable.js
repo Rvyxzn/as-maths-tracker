@@ -132,6 +132,19 @@ const Timetable = (function () {
 
   function reloadForUser() { state = null; return load(); }
 
+  /* Take a whole timetable from elsewhere — the cloud, or an import. Merged
+     onto a blank so a document written by an older build still gets every
+     field this one expects. */
+  function replaceAll(doc) {
+    if (!doc) return get();
+    const fresh = blank();
+    state = Object.assign(fresh, doc);
+    state.prefs = Object.assign(fresh.prefs, doc.prefs || {});
+    state.prefs.windows = Object.assign(defaultWindows(), state.prefs.windows || {});
+    save();
+    return state;
+  }
+
   /* ------------------------------------------------------------
      time helpers — minutes from midnight, which is the only sane
      unit once blocks start being dragged about
@@ -946,7 +959,7 @@ const Timetable = (function () {
 
   return {
     DAY_NAMES: DAY_NAMES, SHORT_DAYS: SHORT_DAYS, PALETTE: PALETTE, GRADES: GRADES,
-    load: load, get: get, save: save, reloadForUser: reloadForUser,
+    load: load, get: get, save: save, reloadForUser: reloadForUser, replaceAll: replaceAll,
     toMins: toMins, toClock: toClock,
     subjects: subjects, readSubject: readSubject,
     recommend: recommend, weeklyCapacity: weeklyCapacity,

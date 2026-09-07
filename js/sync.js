@@ -124,13 +124,28 @@ const Sync = (function () {
     catch (e) { return null; }
   }
 
+  /* The timetable is the one piece of real work that is not a subject.
+
+     It deliberately lives outside the per-subject saves, because it is the
+     only thing in the app that spans all three at once — and that put it
+     outside this bundle too, which walks Subjects.ids(). So everything else
+     followed you to another machine and your week did not: you would sign in
+     on the laptop, find your ratings and scores intact, and an empty
+     calendar. It travels with the rest now. */
   function collectBundle() {
     const subjects = {};
     Subjects.ids().forEach(function (id) {
       const doc = readSubject(id);
       if (doc && doc.topics) subjects[id] = doc;
     });
-    return { __bundle: BUNDLE_VERSION, subjects: subjects };
+    const out = { __bundle: BUNDLE_VERSION, subjects: subjects };
+    try {
+      if (typeof Timetable !== "undefined") {
+        const tt = Timetable.get();
+        if (tt && (tt.generatedAt || (tt.prefs && (tt.prefs.busy || []).length))) out.timetable = tt;
+      }
+    } catch (e) {}
+    return out;
   }
 
   /* Accept either shape, so a row written before subjects existed still
@@ -139,6 +154,16 @@ const Sync = (function () {
     if (!remote) return { __bundle: BUNDLE_VERSION, subjects: {} };
     if (remote.__bundle && remote.subjects) return remote;
     return { __bundle: 1, subjects: { maths: remote } };
+  }
+
+  /* Blocks count as work, so a device holding only a timetable is not read
+     as empty and quietly overwritten by one that has nothing at all. */
+  function timetableWork(remote) {
+    const tt = remote && remote.timetable;
+    if (!tt || !tt.days) return 0;
+    return Object.keys(tt.days).reduce(function (n, d) {
+      return n + (tt.days[d] || []).length;
+    }, 0);
   }
 
   /* Write every subject in the bundle to its own key, then reopen the one on
@@ -154,6 +179,11 @@ const Sync = (function () {
         try { localStorage.setItem(keyFor(id), JSON.stringify(doc)); } catch (e) {}
       }
     });
+    /* An older row has no timetable in it, which is not the same as an empty
+       one, so a missing field leaves whatever is on this device alone. */
+    if (b.timetable && typeof Timetable !== "undefined") {
+      try { Timetable.replaceAll(b.timetable); } catch (e) {}
+    }
   }
 
   /* Work across every subject in a bundle, for deciding whether a side is
@@ -162,7 +192,7 @@ const Sync = (function () {
     const b = asBundle(remote);
     return Object.keys(b.subjects).reduce(function (n, id) {
       return n + countWork(b.subjects[id]);
-    }, 0);
+    }, 0) + timetableWork(b);
   }
 
   function describeBundle(remote) {

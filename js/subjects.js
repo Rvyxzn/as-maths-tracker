@@ -173,6 +173,9 @@ const Subjects = (function () {
      save file for that subject, and let the app redraw. */
   function switchTo(id) {
     if (id === currentId) return current();
+    /* Anything still waiting on the save debounce belongs to the subject we
+       are leaving, and has to reach disk before the key underneath changes. */
+    if (typeof Store !== "undefined" && Store.flush) Store.flush();
     const s = activate(id);
     Store.reloadForUser();
     listeners.forEach(function (fn) { fn(s); });
