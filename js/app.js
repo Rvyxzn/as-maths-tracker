@@ -445,6 +445,14 @@ function setSidebar(open) {
     if (typeof PracticeView !== "undefined" && PracticeView.handle(action, el)) return;
     if (typeof PacksView !== "undefined" && PacksView.handle(action, el)) return;
     if (action === "anki-export") { ankiExport(el.dataset.id); return; }
+    /* Straight from a chapter's graph practice to the question that wants
+       that diagram, opened where its mark scheme and model answer live. */
+    if (action === "graph-q") {
+      go("packs");
+      const id = el.dataset.id;
+      setTimeout(function () { PacksView.handle("pack-open", { dataset: { id: id } }); }, 0);
+      return;
+    }
     if (action === "switch-subject") { subjectMenu(); return; }
     if (action === "sync-now") {
       UI.toast("Syncing…", "info", 1500);

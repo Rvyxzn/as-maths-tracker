@@ -10,6 +10,7 @@ const ProgressView = (function () {
     const feas = Metrics.feasibility();
 
     root.innerHTML =
+      sectionsCard() +
       '<div class="grid g4" style="margin-bottom:18px">' +
         stat("Specification covered", c.coveredPct + "%", c.covered + " of " + c.total + " subtopics") +
         stat("Questions attempted", totalAttempted() + "", totalSets() + " question sets logged") +
@@ -71,6 +72,40 @@ const ProgressView = (function () {
       '</div>' +
 
       activityCard();
+  }
+
+  /* Section by section, because a paper is three different exams and one
+     average across them cannot say which one is costing you. */
+  function sectionsCard() {
+    if (typeof EcoSections === "undefined" || Subjects.currentId() !== "economics") return "";
+    const t = EcoSections.tally();
+    const any = EcoSections.SECTIONS.some(function (s) { return t[s.key].n > 0; });
+    if (!any) return "";
+    const adv = EcoSections.advice();
+
+    const tone = function (pct) { return pct == null ? "" : pct < 50 ? " red" : pct < 65 ? " amber" : " green"; };
+
+    return '<div class="card" style="margin-bottom:18px">' +
+      '<div class="card-head"><div class="card-title">How each section is going</div>' +
+        '<div class="right"><span class="tiny faint">from every question you have marked</span></div></div>' +
+      '<div class="secs">' + EcoSections.SECTIONS.map(function (s) {
+        const d = t[s.key];
+        return '<div class="sec' + (adv.section === s.key ? " focus" : "") + '">' +
+          '<div class="sec-h"><b>' + UI.esc(s.name) + '</b>' +
+            '<span class="sec-pct' + tone(d.pct) + '">' + (d.pct == null ? "—" : d.pct + "%") + '</span></div>' +
+          '<div class="sec-what">' + UI.esc(s.what) + '</div>' +
+          UI.bar(d.pct || 0) +
+          '<div class="sec-f">' +
+            '<span>' + (d.n ? d.n + " question" + (d.n === 1 ? "" : "s") + " marked" : "nothing marked yet") + '</span>' +
+            (d.trend != null && Math.abs(d.trend) >= 3
+              ? '<span class="sec-trend ' + (d.trend > 0 ? "up" : "down") + '">' +
+                (d.trend > 0 ? "▲ " : "▼ ") + Math.abs(d.trend) + ' on your last five</span>'
+              : "") +
+          '</div>' +
+        '</div>';
+      }).join("") + '</div>' +
+      '<div class="sec-advice">' + UI.icon("info") + '<span>' + UI.esc(adv.text) + '</span></div>' +
+    '</div>';
   }
 
   function stat(k, v, sub) {

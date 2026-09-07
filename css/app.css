@@ -2950,3 +2950,36 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .ttp-rows span{flex:1 1 auto;color:var(--muted)}
 .ttp-said{margin:9px 0 0;padding-left:18px}
 .ttp-said li{margin:4px 0;font-size:12.5px;line-height:1.5}
+
+/* ---------- graph skills ---------- */
+.graph-q{
+  margin-top:13px;padding:12px 14px;border-radius:10px;
+  background:var(--surface-2);border:1px solid var(--border);
+}
+.graph-q-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.graph-q-marks{
+  flex:0 0 auto;min-width:26px;height:24px;padding:0 7px;border-radius:7px;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:12px;
+}
+.graph-q-h b{font-size:13px}
+.graph-q-h small{width:100%;color:var(--faint);font-size:11.5px}
+.graph-q p{margin:9px 0 11px;font-size:12.5px;line-height:1.6;color:var(--text)}
+
+/* ---------- section by section ---------- */
+.secs{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:6px}
+.sec{padding:12px 13px;border-radius:11px;background:var(--surface-2);border:1px solid var(--border)}
+.sec.focus{border-color:var(--accent);background:var(--accent-soft)}
+.sec-h{display:flex;align-items:baseline;gap:8px}
+.sec-h b{font-size:13.5px}
+.sec-pct{margin-left:auto;font-size:17px;font-weight:800;font-family:var(--font-display);color:var(--muted)}
+.sec-pct.red{color:var(--red)} .sec-pct.amber{color:var(--amber)} .sec-pct.green{color:var(--green)}
+.sec-what{margin:2px 0 9px;font-size:11.5px;color:var(--muted)}
+.sec-f{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;font-size:11px;color:var(--faint)}
+.sec-trend{margin-left:auto;font-weight:700}
+.sec-trend.up{color:var(--green)} .sec-trend.down{color:var(--red)}
+.sec-advice{
+  display:flex;gap:9px;align-items:flex-start;margin-top:13px;padding:10px 12px;
+  border-radius:9px;background:var(--surface-2);font-size:12.5px;line-height:1.6;color:var(--text);
+}
+.sec-advice .ico{flex:0 0 auto;margin:0;color:var(--accent)}

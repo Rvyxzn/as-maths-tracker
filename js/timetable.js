@@ -569,6 +569,30 @@ const Timetable = (function () {
       weave(items, gap, 1, makePaper);
     }
 
+    /* A worked 25-marker: one video, one essay written out in front of you.
+
+       The thing a 25-marker actually costs marks on is not knowing the
+       economics, it is the shape of the answer, and nothing else shows that.
+       So it earns its own sitting - watch one, then plan one yourself while
+       it is fresh - and it is only offered where the subject has essays and
+       somebody has published walkthroughs of them. */
+    if (typeof EPD_WALKTHROUGH !== "undefined" && Subjects.currentId() === "economics") {
+      const sec = (typeof EcoSections !== "undefined") ? EcoSections.trouble() : null;
+      weave(items, sec && sec.section === "C" ? 5 : 9, 3, function () {
+        return { kind: "worked", cid: null,
+          label: "Worked 25 marker",
+          name: "Worked 25 marker", score: 9995, rag: null,
+          why: sec && sec.section === "C"
+            ? "you are averaging " + sec.pct + "% on the essays, which is the section this fixes"
+            : "the shape of a 25-mark answer, written out one step at a time",
+          minutes: 40,
+          link: EPD_PLAYLIST + EPD_WALKTHROUGH.id,
+          steps: [{ label: "Watch one walkthrough", detail: EPD_WALKTHROUGH.name, mins: 18 },
+                  { label: "Plan the same question yourself", detail: "two chains, a diagram, a judgement", mins: 12 },
+                  { label: "Compare your plan with his", detail: "the gap is what to practise", mins: 10 }] };
+      });
+    }
+
     const lastTest = lastPracticeTest();
     if (reds >= 3 && (lastTest === null || lastTest <= -7)) {
       items.splice(Math.min(4, items.length), 0, {

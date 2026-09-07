@@ -106,6 +106,7 @@ const ChapterView = (function () {
       header(cid, inf, t, eff, st) +
       practiceNote(cid, inf, eff) +
       methodCard(cid, inf) +
+      graphCard(cid) +
       notesCard(cid) +
       stepper(st) +
       '<div class="stack" style="gap:16px;margin-top:16px">' +
@@ -218,6 +219,52 @@ const ChapterView = (function () {
         'you can import straight into <a href="' + UI.esc(method.anki.url) + '" target="_blank" rel="noopener">Anki</a>, ' +
         'as a starting deck. Rewrite them in your own words as you go, that is where the understanding comes from.</div>' +
       '</div>';
+  }
+
+  /* Graph skills.
+
+     Drawing the diagram and knowing the economics are separate skills, and
+     the exam pays for both. The channel has a series per family of diagrams;
+     they used to be listed as though they taught the topic, which put a set
+     of drawing tutorials on Government intervention as its content.
+
+     Watching someone draw a graph is not the same as being able to draw it,
+     so the section ends with a real question that wants that diagram. */
+  function graphCard(cid) {
+    if (typeof econGraphSkills !== "function" || Subjects.currentId() !== "economics") return "";
+    const g = econGraphSkills(cid);
+    if (!g) return "";
+    const q = g.question;
+
+    return '<div class="card graph-card" style="margin-bottom:16px">' +
+      '<div class="card-head"><div class="card-title">Graph skills</div>' +
+        '<div class="right"><span class="tiny faint">drawing it, not what it means</span></div></div>' +
+      '<div class="tiny muted" style="margin-bottom:11px">The diagram is worth marks on its own, and it is ' +
+        'the fastest thing to fix: there are only so many graphs and each one is drawn the same way every ' +
+        'time. Watch the ones you cannot draw from memory, then answer the question underneath with the ' +
+        'video closed.</div>' +
+      '<div class="row wrap" style="gap:8px">' +
+        g.playlists.map(function (p) {
+          return '<a class="btn btn-sm" href="' + UI.esc(p.url) + '" target="_blank" rel="noopener">' +
+            UI.esc(p.name) + ' ↗</a>';
+        }).join("") +
+      '</div>' +
+      (q
+        ? '<div class="graph-q">' +
+            '<div class="graph-q-h"><span class="graph-q-marks">' + q.marks + '</span>' +
+              '<b>Then draw it under exam conditions</b>' +
+              '<small>' + UI.esc(q.series) + ' · Paper ' + q.paper + ' · Q' + q.q + (q.part ? "(" + q.part + ")" : "") +
+                ' · ' + Math.round(q.marks * (typeof ECO_MINUTES_PER_MARK === "number" ? ECO_MINUTES_PER_MARK : 1.2)) +
+                ' min</small></div>' +
+            '<p>' + UI.esc(String(q.text).replace(/\s+/g, " ").slice(0, 320)) +
+              (String(q.text).length > 320 ? "…" : "") + '</p>' +
+            '<button class="btn btn-sm btn-primary" data-action="graph-q" data-id="' + UI.esc(q.id) + '">' +
+              'Open it with the mark scheme</button>' +
+          '</div>'
+        : '<div class="tiny faint" style="margin-top:10px">No past-paper question on this topic asks for a ' +
+          'diagram outright, so there is nothing to pair the series with here. The question packs still ' +
+          'have plenty that reward one.</div>') +
+    '</div>';
   }
 
   /* The written notes for this topic, one block per subtopic in specification

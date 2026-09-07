@@ -30,41 +30,105 @@ const ECONPLUSDAL = "https://www.youtube.com/@EconplusDal";
 const TUTOR2U_ECO = "https://www.tutor2u.net/economics";
 
 /* ------------------------------------------------------------
-   EconPlusDal playlists, checked rather than guessed
+   EconPlusDal playlists
 
-   The video link used to be a channel-scoped SEARCH, on the
-   reasoning that a search cannot rot the way a hardcoded
-   playlist id can. Reasonable, and it meant every topic sent you
-   to a results page to pick from rather than to the series.
+   Every id below was read back from YouTube's own feed for that
+   playlist, and the NAME is the playlist's real title rather
+   than a description of it. That distinction matters: the last
+   set of names here were paraphrases, and two chapters ended up
+   pointing at the same id under two different invented titles,
+   which is how "Government intervention" came to offer a series
+   of diagram tutorials as its content.
 
-   These ids were read off the channel's own playlists page and
-   each one's title was checked against what it is mapped to
-   here, so they are not guesses. The four course playlists line
-   up with the Edexcel themes exactly, because the channel is
-   organised the same way the specification is:
+   CONTENT, DIAGRAMS AND WALKTHROUGHS ARE THREE DIFFERENT THINGS.
 
-     Theme 1  Microeconomics, Year 1        43 videos
-     Theme 2  Macroeconomics, Year 1        43 videos
-     Theme 3  Microeconomics, Year 2        40 videos
-     Theme 4  Macroeconomics, Year 2        44 videos
+   The channel has course playlists that teach a theme, "…
+   Diagrams" playlists that show you how to draw one thing after
+   another, and a series of worked 25-mark answers. They are not
+   interchangeable. A diagrams playlist is the right thing to
+   watch when you cannot draw the graph and the wrong thing to
+   watch when you do not know the content, so they are kept apart
+   and offered for what they are.
 
-   WHY THESE ARE LINKS AND NOT AN EMBEDDED PLAYLIST. Maths sets
-   `playlist` per chapter, which drives the watch-every-video
-   step and counts your progress through it. That works there
-   because a playlist IS a chapter. Here one playlist covers a
-   whole theme, so attaching it to 1.2 would tell you that
-   "How markets work" needs 43 videos watched and hold the
-   chapter open until you had. A link is honest about what it
-   is; a progress bar over the wrong denominator is not.
+   WHY THE COURSE PLAYLISTS ARE LINKS AND NOT AN EMBEDDED SERIES.
+   Maths sets `playlist` per chapter, which drives the
+   watch-every-video step and counts progress through it. That
+   works there because a playlist IS a chapter. Here one course
+   playlist covers a whole theme, so attaching it to 1.2 would
+   claim "How markets work" needs every video in it watched.
 
-   The diagram and topic series are narrower than a theme, so
-   where one genuinely belongs to a chapter it is listed too.
+   No video counts are recorded. The feed returns only the most
+   recent fifteen entries of a playlist, so a count taken from it
+   would be wrong for every series longer than that, and a number
+   that is wrong is worse than no number.
    ------------------------------------------------------------ */
 
 const EPD_PLAYLIST = "https://www.youtube.com/playlist?list=";
 
-/* Which playlist to put in the player for a chapter: the one written for
-   that chapter if it exists, the theme series if not. */
+/* theme number -> the course playlist that teaches it */
+const EPD_THEME = {
+  1: { id: "PLWeicFreBUYCOFC2A0SlKrpEYgwaSF63t", name: "Microeconomics - Year 1 A Level and IB" },
+  2: { id: "PLWeicFreBUYDlaLppnRTZpwgBASflf4lU", name: "Macroeconomics - Year 1 A Level and IB" },
+  3: { id: "PLWeicFreBUYDwmBZ0AiJwhCNSCb0di9eI", name: "Microeconomics - Year 2 A Level and IB" },
+  4: { id: "PLWeicFreBUYBW3kSFnfBC8MSvPdH6DbqQ", name: "Macroeconomics - Year 2 A Level & IB Global Economy" },
+  5: { id: "PLWeicFreBUYCuUesTjG3RLfnYynR_6AsM", name: "Edexcel Exam Technique, Tips & Guidance" }
+};
+
+/* chapter id -> a narrower series that TEACHES that chapter. Only where the
+   channel has one; a chapter with nothing here uses its theme's course
+   playlist, which is the honest answer rather than the nearest diagram set. */
+const EPD_TOPIC = {
+  "eco1-2": [["PLWeicFreBUYDiPDqmdQafZ3eSxVUEdOPX", "Behavioural Economics & Utility Theory - Year 2 A Level"]],
+  "eco2-6": [["PLWeicFreBUYABzU6C6coJdjCBOrMTIvVw", "AS/AD, Phillips Curve, Macro Policy & Performance - Year 2 A Level & IB"]],
+  "eco3-5": [["PLWeicFreBUYCs7NjXgFhQpoEDvnryFip2", "Labour Market, Income/Wealth Inequality and Poverty - Year 2 A Level"]],
+  "eco4-1": [["PLWeicFreBUYCKmmqatYfaiBoNjc_3INk5", "Balance of Payments, Trade & Protectionism - Year 2 A Level & IB"],
+             ["PLWeicFreBUYCJJOkgx6l4bpi3aoT6E28z", "Exchange Rates, Globalisation, Economic Integration - Year 2 A Level & IB"]],
+  "eco4-2": [["PLWeicFreBUYCs7NjXgFhQpoEDvnryFip2", "Labour Market, Income/Wealth Inequality and Poverty - Year 2 A Level"]],
+  "eco4-3": [["PLWeicFreBUYBmtPeoW8MOMudTm6OaCgjF", "Development Economics - Year 2 A Level and IB"]],
+  "eco4-4": [["PLWeicFreBUYCU4IjUPrKMzP5XIt-5idCu", "Financial Markets - Year 2 A Level"]],
+  "eco4-5": [["PLWeicFreBUYABzU6C6coJdjCBOrMTIvVw", "AS/AD, Phillips Curve, Macro Policy & Performance - Year 2 A Level & IB"]],
+  "eco5-1": [["PLWeicFreBUYD-AhJtDQ8q-hO7U5Bwd1J4", "Writing Skills in Economics (Analysis, Evaluation and Judgement)"]],
+  "eco5-2": [["PLWeicFreBUYD-AhJtDQ8q-hO7U5Bwd1J4", "Writing Skills in Economics (Analysis, Evaluation and Judgement)"]]
+};
+
+/* The diagram series, and which chapters each one is actually about.
+
+   Placed by their contents, not by their titles. "Market Failure Diagrams"
+   runs externalities first and then eight ways of intervening - indirect
+   tax, subsidy, state provision, information provision, tradable permits,
+   buffer stocks - so it belongs to Government intervention as much as to
+   Market failure, and the price control diagrams in the demand and supply
+   set belong there too. */
+const EPD_GRAPHS = {
+  "eco1-2": [["PLWeicFreBUYCuNX9eIFvxSXfvqmQZ56GV", "Demand/Supply, Elasticity & Price Control Diagrams"]],
+  "eco1-3": [["PLWeicFreBUYBRcEEeVbCYFxKqrYEBT4WK", "Market Failure Diagrams"]],
+  "eco1-4": [["PLWeicFreBUYBRcEEeVbCYFxKqrYEBT4WK", "Market Failure Diagrams"],
+             ["PLWeicFreBUYCuNX9eIFvxSXfvqmQZ56GV", "Demand/Supply, Elasticity & Price Control Diagrams"]],
+  "eco2-1": [["PLWeicFreBUYBrW52KNuBPAAq4YuTHqQQo", "Growth, Inflation, Unemployment, Inequality Diagrams"]],
+  "eco2-2": [["PLWeicFreBUYAFmz0NbEJkb1Lk6T6lY_a3", "AS/AD Diagrams"]],
+  "eco2-3": [["PLWeicFreBUYAFmz0NbEJkb1Lk6T6lY_a3", "AS/AD Diagrams"]],
+  "eco2-4": [["PLWeicFreBUYAFmz0NbEJkb1Lk6T6lY_a3", "AS/AD Diagrams"]],
+  "eco2-5": [["PLWeicFreBUYBrW52KNuBPAAq4YuTHqQQo", "Growth, Inflation, Unemployment, Inequality Diagrams"]],
+  "eco2-6": [["PLWeicFreBUYAFmz0NbEJkb1Lk6T6lY_a3", "AS/AD Diagrams"]],
+  "eco3-3": [["PLWeicFreBUYAkFuVvehYzvo6oZnRCcHUc", "Market Structure Diagrams"]],
+  "eco3-4": [["PLWeicFreBUYAkFuVvehYzvo6oZnRCcHUc", "Market Structure Diagrams"]],
+  "eco3-5": [["PLWeicFreBUYDmQmlnMnDDYU5ifAqlTkGF", "Labour Market Diagrams"]],
+  "eco3-6": [["PLWeicFreBUYAkFuVvehYzvo6oZnRCcHUc", "Market Structure Diagrams"]],
+  "eco4-1": [["PLWeicFreBUYDtdp2JwDmZIYH3ROWG5wDM", "International Trade Diagrams"]],
+  "eco4-2": [["PLWeicFreBUYBrW52KNuBPAAq4YuTHqQQo", "Growth, Inflation, Unemployment, Inequality Diagrams"]]
+};
+
+/* Worked 25-mark answers, one at a time. Its own thing entirely: not content
+   and not a diagram, but somebody writing the essay in front of you, which is
+   the one part of a 25-marker that nothing else shows. */
+const EPD_WALKTHROUGH = {
+  id: "PLp8BSCLLWBUBtulbMZmJX04KW9sjU6Kf0",
+  name: "Edexcel A-Level Economics 25 Markers | Answer Walkthroughs"
+};
+
+/* Which playlist to put in the player for a chapter: the series that teaches
+   it where the channel has one, and the theme course otherwise. Never a
+   diagram set - those are offered as graph practice instead. */
 function epdEmbed(secId, theme) {
   const own = (typeof EPD_TOPIC !== "undefined" && EPD_TOPIC[secId]) ? EPD_TOPIC[secId][0] : null;
   if (own) return { id: own[0], title: own[1] };
@@ -72,41 +136,41 @@ function epdEmbed(secId, theme) {
   return t ? { id: t.id, title: t.name } : null;
 }
 
-/* theme number -> the course playlist for it */
-const EPD_THEME = {
-  1: { id: "PLWeicFreBUYCOFC2A0SlKrpEYgwaSF63t", name: "Microeconomics, Year 1", count: 43 },
-  2: { id: "PLWeicFreBUYDlaLppnRTZpwgBASflf4lU", name: "Macroeconomics, Year 1", count: 43 },
-  3: { id: "PLWeicFreBUYDwmBZ0AiJwhCNSCb0di9eI", name: "Microeconomics, Year 2", count: 40 },
-  4: { id: "PLWeicFreBUYBW3kSFnfBC8MSvPdH6DbqQ", name: "Macroeconomics, Year 2", count: 44 },
-  5: { id: "PLWeicFreBUYCuUesTjG3RLfnYynR_6AsM", name: "Edexcel exam technique", count: 18 }
-};
+/* Graph practice for a chapter: the diagram series that covers it, and one
+   real exam question that wants that diagram drawn, so the section finishes
+   with using the graph rather than only watching it. */
+function econGraphSkills(chapterId) {
+  const secId = String(chapterId || "").replace(/^ch:/, "");
+  const lists = (typeof EPD_GRAPHS !== "undefined" && EPD_GRAPHS[secId]) || [];
+  if (!lists.length) return null;
+  return {
+    playlists: lists.map(function (t) {
+      return { id: t[0], name: t[1], url: EPD_PLAYLIST + t[0] };
+    }),
+    question: econDiagramQuestion(secId)
+  };
+}
 
-/* chapter id -> the narrower series that actually covers it */
-const EPD_TOPIC = {
-  "eco1-2": [["PLWeicFreBUYCuNX9eIFvxSXfvqmQZ56GV", "Demand, supply, elasticity and price controls, drawn"],
-             ["PLWeicFreBUYDiPDqmdQafZ3eSxVUEdOPX", "Behavioural economics and utility theory"]],
-  "eco1-3": [["PLWeicFreBUYBRcEEeVbCYFxKqrYEBT4WK", "Market failure, drawn"]],
-  "eco1-4": [["PLWeicFreBUYBRcEEeVbCYFxKqrYEBT4WK", "Market failure and intervention, drawn"]],
-  "eco2-1": [["PLWeicFreBUYBrW52KNuBPAAq4YuTHqQQo", "Growth, inflation, unemployment and inequality, drawn"]],
-  "eco2-2": [["PLWeicFreBUYAFmz0NbEJkb1Lk6T6lY_a3", "AD/AS, drawn"]],
-  "eco2-3": [["PLWeicFreBUYAFmz0NbEJkb1Lk6T6lY_a3", "AD/AS, drawn"]],
-  "eco2-4": [["PLWeicFreBUYAFmz0NbEJkb1Lk6T6lY_a3", "AD/AS, drawn"]],
-  "eco2-5": [["PLWeicFreBUYBrW52KNuBPAAq4YuTHqQQo", "Growth, inflation, unemployment and inequality, drawn"]],
-  "eco2-6": [["PLWeicFreBUYABzU6C6coJdjCBOrMTIvVw", "AD/AS, Phillips curve and macro policy"]],
-  "eco3-4": [["PLWeicFreBUYAkFuVvehYzvo6oZnRCcHUc", "Market structures, drawn"]],
-  "eco3-5": [["PLWeicFreBUYDmQmlnMnDDYU5ifAqlTkGF", "The labour market, drawn"],
-             ["PLWeicFreBUYCs7NjXgFhQpoEDvnryFip2", "Labour market, inequality and poverty"]],
-  "eco3-6": [["PLWeicFreBUYAkFuVvehYzvo6oZnRCcHUc", "Market structures and regulation, drawn"]],
-  "eco4-1": [["PLWeicFreBUYDtdp2JwDmZIYH3ROWG5wDM", "International trade, drawn"],
-             ["PLWeicFreBUYCKmmqatYfaiBoNjc_3INk5", "Balance of payments, trade and protectionism"],
-             ["PLWeicFreBUYCJJOkgx6l4bpi3aoT6E28z", "Exchange rates, globalisation and integration"]],
-  "eco4-2": [["PLWeicFreBUYCs7NjXgFhQpoEDvnryFip2", "Inequality and poverty"]],
-  "eco4-3": [["PLWeicFreBUYBmtPeoW8MOMudTm6OaCgjF", "Development economics"]],
-  "eco4-4": [["PLWeicFreBUYCU4IjUPrKMzP5XIt-5idCu", "Financial markets"]],
-  "eco4-5": [["PLWeicFreBUYABzU6C6coJdjCBOrMTIvVw", "Macro policy and performance"]],
-  "eco5-1": [["PLWeicFreBUYD-AhJtDQ8q-hO7U5Bwd1J4", "Writing analysis, evaluation and judgement"]],
-  "eco5-2": [["PLWeicFreBUYD-AhJtDQ8q-hO7U5Bwd1J4", "Writing analysis, evaluation and judgement"]]
-};
+/* A past-paper question on this topic whose mark scheme credits a diagram.
+   Chosen from the bank rather than written, and null when there is not one,
+   because inventing a question to round the section off would defeat it. */
+function econDiagramQuestion(secId) {
+  if (typeof ECO_QUESTIONS === "undefined") return null;
+  const m = /^eco(\d)-(\d)$/.exec(secId);
+  if (!m) return null;
+  const prefix = m[1] + "." + m[2] + ".";
+  const wants = /\bdiagram\b/i;
+  const pool = ECO_QUESTIONS.filter(function (q) {
+    return String(q.topicCode || "").indexOf(prefix) === 0 &&
+           (wants.test(q.text || "") || wants.test(q.ms || ""));
+  });
+  if (!pool.length) return null;
+  /* the smallest tariff that still wants the diagram: graph practice is
+     about the graph, not about finding forty minutes for an essay */
+  pool.sort(function (a, b) { return a.marks - b.marks; });
+  return pool[0];
+}
+
 
 /* Kept as the fallback for anything not covered above: a channel-scoped
    search always resolves to that creator's videos on the topic. */
@@ -234,11 +298,18 @@ function buildLinks(sec, r) {
   const theme = EPD_THEME[r.theme || 1];
   if (theme) {
     links.push({ label: "EconPlusDal: " + theme.name, url: EPD_PLAYLIST + theme.id, kind: "video",
-                 note: theme.count + " videos across the theme. Watch after making your flashcards" });
+                 note: "The course series for this theme. Watch after making your flashcards" });
   }
   (EPD_TOPIC[sec.id] || []).forEach(function (t) {
     links.push({ label: "EconPlusDal: " + t[1], url: EPD_PLAYLIST + t[0], kind: "video",
                  note: "The series on this chapter specifically" });
+  });
+  /* The diagram sets are listed as what they are. Offering "Market Failure
+     Diagrams" as the way to learn Government intervention is how the wrong
+     playlist ended up on 1.4 in the first place. */
+  (EPD_GRAPHS[sec.id] || []).forEach(function (t) {
+    links.push({ label: "EconPlusDal: " + t[1], url: EPD_PLAYLIST + t[0], kind: "video",
+                 note: "How to draw them, not what they mean" });
   });
   if (!theme) {
     links.push({ label: "EconPlusDal on this topic", url: econVideoSearch(sec.name), kind: "video",
