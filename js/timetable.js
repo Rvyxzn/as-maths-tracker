@@ -89,7 +89,8 @@ const Timetable = (function () {
       paperRamp: true,       // past papers get denser as the exam nears
       examQuestions: true,   // exam-question sittings appear in their own right
       examQuestionEvery: 4,  // one every this many blocks of that subject
-      alternate: {}          // id -> true, to swap sides of the spec each time
+      alternate: {},         // id -> true, to swap sides of the spec each time
+      focus: null            // { id, until } - a subject to put first until a date
     };
   }
 
@@ -631,7 +632,15 @@ const Timetable = (function () {
     subjectIds().forEach(function (id) {
       try {
         Subjects.switchTo(id);
-        out[id] = rankWork().slice(0, 40);
+        /* Each entry gets an identity of its own. Two exam-question sittings
+           woven into the same queue are two pieces of work, and keying the
+           carry by kind made them one: the first finished, the second was
+           then read as having nothing left to do, and a zero-length item
+           stops the day dead. */
+        out[id] = rankWork().slice(0, 40).map(function (it, i) {
+          it.qid = (it.cid || it.kind) + "#" + i;
+          return it;
+        });
       } catch (e) { out[id] = []; }
     });
     Subjects.switchTo(back);
@@ -731,6 +740,14 @@ const Timetable = (function () {
       if (d != null && d <= (r.urgentDays || 10)) urgent[x.id] = d;
     });
 
+    /* "Focus on Economics until Friday" is the same instruction as an exam on
+       Friday, so it uses the same machinery rather than a second one: a
+       guaranteed first block every day, up to the date named. Ranked ahead of
+       a real exam only if it is sooner, so asking to focus on one subject
+       cannot push the paper you sit tomorrow down the list. */
+    const focus = !r.focus ? [] : (Array.isArray(r.focus) ? r.focus : [r.focus])
+      .filter(function (f) { return f && f.id; });
+
     const rec = recommend();
     /* minutes owed to each subject this week, drained as blocks are placed */
     const owed = {};
@@ -768,6 +785,16 @@ const Timetable = (function () {
 
       /* ---- what today's rules allow ---- */
       const cap = (r.dayCaps && r.dayCaps[weekday] != null) ? r.dayCaps[weekday] : r.dailyCapMins;
+
+      /* Today's guaranteed subjects: the ones with an exam in sight, plus the
+         focused one while its date is still ahead. */
+      const first = Object.assign({}, urgent);
+      focus.forEach(function (f) {
+        if (f.until && iso > f.until) return;                       // the date has passed
+        if (f.days && f.days.length && f.days.indexOf(weekday) < 0) return;
+        if (first[f.id] != null) return;                            // an exam already claims it
+        first[f.id] = f.until ? Metrics.diffDays(iso, f.until) : 0;
+      });
       let dayUsed = keep.reduce(function (a, b) {
         return a + (b.kind === "revision" ? toMins(b.to) - toMins(b.from) : 0);
       }, 0);
@@ -778,14 +805,14 @@ const Timetable = (function () {
          Economics sitting does not use up "one subject a day" and leave the
          rest of the evening unschedulable. */
       function countedToday() {
-        return Object.keys(seenToday).filter(function (id) { return urgent[id] == null; }).length;
+        return Object.keys(seenToday).filter(function (id) { return first[id] == null; }).length;
       }
 
       /* A subject can be pinned to particular days: "Maths on Monday and
          Thursday". An urgent one ignores that, because a rule you wrote in
          March should not keep you off Economics the day before the paper. */
       function allowedToday(x) {
-        if (urgent[x.id] != null) return true;
+        if (first[x.id] != null) return true;
         const days = (r.subjectDays || {})[x.id];
         if (days && days.length && days.indexOf(weekday) < 0) return false;
         const limit = r.subjectsPerDay || 0;
@@ -845,6 +872,9 @@ const Timetable = (function () {
       });
       runs.forEach(function (run) {
         let at = run[0];
+        /* queue entries skipped without placing anything, so a queue that is
+           entirely finished cannot spin for ever */
+        let spun = 0;
         while (at + Math.min(blk, 20) <= run[1]) {
           const clash = placed.some(function (b) {
             return overlaps(at, at + blk, toMins(b.from), toMins(b.to));
@@ -861,8 +891,8 @@ const Timetable = (function () {
           if (!open.length) { at = run[1]; break; }
           let best = null, guaranteed = false;
           open.forEach(function (x) {
-            if (urgent[x.id] == null || seenToday[x.id]) return;
-            if (!best || urgent[x.id] < urgent[best.id]) best = x;
+            if (first[x.id] == null || seenToday[x.id]) return;
+            if (!best || first[x.id] < first[best.id]) best = x;
           });
           if (best) guaranteed = true;
           else open.forEach(function (x) {
@@ -882,7 +912,7 @@ const Timetable = (function () {
              room left in the evening and by how long anyone can usefully
              sit at one thing, and carried into another sitting if it does
              not fit. */
-          const key = ch ? (best.id + "|" + (ch.cid || ch.kind)) : best.id;
+          const key = ch ? (best.id + "|" + (ch.qid || ch.cid || ch.kind)) : best.id;
           let need = ch ? (carry[key] != null ? carry[key] : ch.minutes) : blk;
 
           /* A leftover too small to sit is finished, not carried. Carrying it
@@ -892,6 +922,16 @@ const Timetable = (function () {
           if (ch && need > 0 && need < 20) {
             carry[key] = 0;
             cursor[best.id]++;
+            continue;
+          }
+          /* Nothing left on this one at all: move on rather than falling
+             through to the length arithmetic, which computes zero, fails the
+             minimum, and breaks out of the day without ever advancing the
+             cursor - so every following day comes out empty too. */
+          if (ch && need <= 0) {
+            cursor[best.id]++;
+            spun++;
+            if (spun > q.length + 4) { at = run[1]; break; }
             continue;
           }
           /* The guaranteed sitting is one block, not the whole evening: it is
@@ -972,6 +1012,7 @@ const Timetable = (function () {
             from: toClock(at), to: toClock(at + len),
             colour: best.colour, kind: "revision", mine: false
           });
+          spun = 0;
           owed[best.id] -= len;
           dayUsed += len;
           seenToday[best.id] = true;

@@ -68,6 +68,11 @@ const TimetableAdopt = (function () {
     }
     m = /^(\d{2})(\d{2})$/.exec(t);
     if (m && +m[1] < 24) return (+m[1]) * 60 + (+m[2]);
+    /* A bare hour, last so "0930" is still half past nine rather than nine.
+       "10 to 6" is written without a colon or an am far more often than with
+       one, and neither end of it was a time at all until now. */
+    m = /^(\d{1,2})$/.exec(t);
+    if (m && +m[1] <= 24) return (+m[1]) * 60;
     return null;
   }
 
@@ -362,13 +367,34 @@ const TimetableAdopt = (function () {
     /* "and" splits only in front of a number, so "four hours of maths and
        three of economics" becomes two clauses while "an hour and a half"
        stays one - "half" is a number word, "a" is not. */
-    "|\\s+and\\s+(?=(?:\\d|one|two|three|four|five|six|seven|eight|nine|ten|twelve)\\b)" +
+    "|\\s+and\\s+(?=(?:\\d+|one|two|three|four|five|six|seven|eight|nine|ten|twelve)\\b)" +
     "|\\s*,\\s*(?=(?:and\\s+|then\\s+|also\\s+)?(?:" +
       "i\\b|my\\b|no\\b|not\\b|never\\b|nothing\\b|only\\b|just\\b|do\\b|don'?t\\b|dont\\b|" +
       "keep\\b|make\\b|start\\b|finish\\b|end\\b|stop\\b|alternate\\b|swap\\b|switch\\b|leave\\b|" +
       "free\\b|available\\b|more\\b|less\\b|fewer\\b|prefer\\b|want\\b|need\\b|put\\b|give\\b|" +
       "one\\b|two\\b|three\\b|four\\b|five\\b|six\\b|seven\\b|eight\\b|nine\\b|ten\\b|an?\\s|\\d" +
     "))", "g");
+
+  /* A day named after one of these is when something is DUE, not a day it is
+     allowed to happen on. */
+  const DEADLINE = new RegExp("\\b(until|untill|til|till|up to|by|before|ahead of|in time for)\\s+" +
+    "(?:the\\s+)?(" + Object.keys(DAY_WORDS).join("|") + ")\\b");
+
+  /* Asking for more of something, which is the opposite of restricting it. */
+  const FOCUS = /\b(focus|focusing|focussing|prioriti[sz]e|prioriti[sz]ing|concentrate|concentrating|mainly|mostly|heavy|heavily|lots of|loads of|more)\b/;
+
+  /* The next date that falls on a named weekday, so a deadline is a real day
+     rather than a weekday number the generator cannot compare against. */
+  function nextDayNamed(word) {
+    const d = DAY_WORDS[String(word).toLowerCase()];
+    if (d == null || typeof Metrics === "undefined") return null;
+    let iso = Metrics.today();
+    for (let i = 0; i < 8; i++) {
+      if (new Date(iso + "T00:00:00").getDay() === d && i > 0) return iso;
+      iso = Metrics.addDays(iso, 1);
+    }
+    return null;
+  }
 
   /* Words that make a clause a limit rather than a plan. */
   const CAPPY = /\b(a|per|each|every|max|maximum|cap|capped|limit|limited|only|just|no more than|at most|up to|can|could|able|do|doing|revis|study|studying|work|working)\b/;
@@ -489,8 +515,49 @@ const TimetableAdopt = (function () {
         }
       }
 
-      /* ---- which days a subject may take ---- */
-      if (subs.length && days.length && !mins) {
+      /* ---- a deadline, and what to put in front of it ----
+
+         "Focus on economics until Friday" was read as "only do economics on
+         Friday", which is not a near miss - it is the opposite instruction,
+         and it was stated back with the same confidence as everything else.
+         A day after "until", "by" or "before" is a DEADLINE. A day after
+         "on" is a restriction. They are different sentences and the wrong
+         one silently emptied five days of the week.
+
+         Focus is a real setting rather than a note: up to that date the
+         subject takes the first block of every day, which is the machinery
+         an imminent exam already uses. */
+      const deadline = DEADLINE.exec(p);
+      const wantsFocus = FOCUS.test(p);
+      if (subs.length && (deadline || wantsFocus)) {
+        const until = deadline ? nextDayNamed(deadline[2]) : null;
+        /* The days named alongside a deadline belong to the deadline, not to
+           the work: "focus on economics until Friday" is not a Friday
+           instruction. Days only narrow the focus when no deadline was
+           given - "heavy maths at the weekend". */
+        const on = deadline ? [] : days.slice();
+        subs.forEach(function (s) {
+          /* A list, not a slot. Two sentences can each name a focus, and the
+             second silently replacing the first is how "focus on economics"
+             disappeared the moment maths was mentioned. */
+          rules.focus = (rules.focus || []).filter(function (f) { return f.id !== s.id; });
+          rules.focus.push({ id: s.id, until: until, days: on });
+          said.push(s.name + " comes first" +
+                    (on.length ? " on " + on.map(dayName).join(", ") : "") +
+                    (until ? " until " + dayName(dayOf(deadline[2])) : "") +
+                    ", with a session on every one of those days.");
+        });
+        hit = true;
+      }
+
+      /* ---- which days a subject may take ----
+
+         Only where the sentence is actually restricting. "Only maths on
+         Mondays" restricts; "heavy maths at the weekend" asks for more of
+         it and would have been turned into a ban on the other five days. */
+      const restrictive = /\b(only|just|nothing but)\b/.test(p) || negative;
+      if (subs.length && days.length && !mins && !deadline && !wantsFocus &&
+          (restrictive || /\bon\b/.test(p))) {
         rules.subjectDays = rules.subjectDays || {};
         subs.forEach(function (s) {
           if (negative) {
@@ -503,6 +570,24 @@ const TimetableAdopt = (function () {
             said.push(s.name + ": only on " + days.map(dayName).join(", ") + ".");
           }
         });
+        hit = true;
+      }
+
+      /* ---- a target: "eight 25 markers by Friday" ----
+
+         Not something the generator can schedule directly, but it is a real
+         intention and reading it as anything else is worse than saying so.
+         It turns on the exam-question sittings and tightens their spacing,
+         which is the nearest thing the timetable has to "do more of these". */
+      const target = /\b(\d{1,3})\s*(?:x\s*)?(\d{1,2})[\s-]*mark(?:er)?s?\b/.exec(p);
+      if (target) {
+        const n = +target[1], tariff = +target[2];
+        rules.examQuestions = true;
+        rules.examQuestionEvery = n >= 6 ? 2 : 3;
+        said.push(n + " " + tariff + "-markers" +
+                  (deadline ? " by " + dayName(dayOf(deadline[2])) : "") +
+                  ": exam-question sittings turned up to one every " +
+                  rules.examQuestionEvery + " blocks.");
         hit = true;
       }
 
@@ -553,9 +638,21 @@ const TimetableAdopt = (function () {
         hit = true;
       }
 
-      /* ---- when the day is free ---- */
+      /* ---- when the day is free ----
+
+         No keyword is required. "Free 4pm to 9pm on weekdays and 10 to 6 at
+         weekends" splits into two clauses and only the first one says
+         "free"; the second is plainly the same kind of statement, and
+         demanding the word again threw it away. */
       if (range && !own && !hit) {
-        const f = timeOf(range[1]), t2 = timeOf(range[2]);
+        const f = timeOf(range[1]);
+        let t2 = timeOf(range[2]);
+        /* "10 to 6" is ten in the morning until six in the evening. Nobody
+           means a window that ends before it starts, and where neither end
+           said am or pm the later reading is the only sensible one. */
+        if (f != null && t2 != null && t2 <= f && !/[ap]m/i.test(range[2]) && t2 + 720 > f) {
+          t2 += 720;
+        }
         if (f != null && t2 != null && t2 > f) {
           const list = days.length ? days : [0, 1, 2, 3, 4, 5, 6];
           list.forEach(function (d) {
@@ -639,7 +736,18 @@ const TimetableAdopt = (function () {
     /* the marker used to decide which statement wins is not a setting */
     Object.keys(windows).forEach(function (d) { delete windows[d].byName; });
 
-    return { rules: rules, windows: windows, flex: flex, busy: busy, said: said, missed: missed };
+    /* The same statement can be reached from two clauses - "focus on econ
+       until friday" and "my econ test ... by friday" are both about
+       Economics - and saying it twice makes the list look like two settings
+       when it is one. */
+    const seen = {};
+    const once = said.filter(function (x) {
+      if (seen[x]) return false;
+      seen[x] = true;
+      return true;
+    });
+
+    return { rules: rules, windows: windows, flex: flex, busy: busy, said: once, missed: missed };
   }
 
 
@@ -670,6 +778,13 @@ const TimetableAdopt = (function () {
       if (r.subjectDays) r.subjectDays = Object.assign({}, Timetable.rules().subjectDays || {}, r.subjectDays);
       if (r.dayCaps) r.dayCaps = Object.assign({}, Timetable.rules().dayCaps || {}, r.dayCaps);
       if (r.alternate) r.alternate = Object.assign({}, Timetable.rules().alternate || {}, r.alternate);
+      if (r.focus) {
+        const had = Timetable.rules().focus;
+        const old = !had ? [] : (Array.isArray(had) ? had : [had]);
+        const ids = {};
+        r.focus.forEach(function (f) { ids[f.id] = true; });
+        r.focus = old.filter(function (f) { return f && f.id && !ids[f.id]; }).concat(r.focus);
+      }
       if (Object.keys(r).length) Timetable.setRules(r);
       if (blockMins) Timetable.setPrefs({ blockMins: blockMins });
       if (breakMins != null) Timetable.setPrefs({ breakMins: breakMins });
