@@ -644,6 +644,13 @@ const Timetable = (function () {
 
   function uid() { return "b" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 
+  /* Which week a date falls in, counted from the start of the run rather than
+     from the calendar, so "once a week" means seven days apart wherever the
+     timetable happens to begin. */
+  function weekOf(iso) {
+    return Math.floor(Metrics.diffDays("1970-01-05", iso) / 7);   // a Monday
+  }
+
   /* The steps are done in order, so a sitting covers a stretch of that
      order rather than all of it. A block from 60 to 130 minutes into a
      chapter gets the tail of the playlist and the start of the questions,
@@ -741,6 +748,9 @@ const Timetable = (function () {
     const partNo = opts.partNo || (opts.partNo = {});      // key -> sittings so far
     const partsOf = opts.partsOf || (opts.partsOf = {});   // key -> sittings in total
 
+    /* which weeks an either-day commitment has already been placed in */
+    const placedEither = {};
+
     let made = 0, touched = 0;
     for (let i = 0; i < days; i++) {
       const iso = Metrics.addDays(startIso, i);
@@ -789,6 +799,14 @@ const Timetable = (function () {
          middle, because splitting an evening in half wastes both halves. */
       (s.prefs.flex || []).forEach(function (f) {
         if ((f.days || []).indexOf(weekday) < 0) return;
+        /* "Saturday or Sunday" is one session a week on whichever of them
+           has room, not one on each. Placed on the first of the listed days
+           that can take it, and not again until the week turns over. */
+        if (f.either) {
+          const wk = weekOf(iso);
+          if (!placedEither[f.id]) placedEither[f.id] = {};
+          if (placedEither[f.id][wk]) return;
+        }
         const want = f.mins || 60;
         let best = null;
         /* A time you asked for is honoured where the day has room for it,
@@ -813,6 +831,7 @@ const Timetable = (function () {
           }
         });
         if (best === null) return;
+        if (f.either) placedEither[f.id][weekOf(iso)] = true;
         placed.push({ id: uid(), subjectId: null, label: f.label,
                       from: toClock(best.at), to: toClock(best.at + want),
                       colour: f.colour || "#64748b", kind: "flex", mine: false });

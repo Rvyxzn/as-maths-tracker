@@ -119,7 +119,9 @@ const TimetableAdopt = (function () {
     return total;
   }
 
-  /* Every weekday named in a phrase, including "weekends" and "every day". */
+  /* Every weekday named in a phrase, including "weekends", "every day", and
+     whatever somebody meant by "saterday". A word that is not a day and is
+     not close to one is left alone. */
   function daysIn(text) {
     const t = String(text || "").toLowerCase();
     const out = {};
@@ -129,7 +131,22 @@ const TimetableAdopt = (function () {
     Object.keys(DAY_WORDS).forEach(function (w) {
       if (new RegExp("\\b" + w + "\\b").test(t)) out[DAY_WORDS[w]] = true;
     });
+    /* only worth the fuzzy pass if nothing was spelled correctly */
+    if (!Object.keys(out).length && typeof Tolerant !== "undefined") {
+      (t.match(/[a-z]{4,}/g) || []).forEach(function (w) {
+        const hit = Tolerant.nearest(w, DAY_WORDS);
+        if (hit && hit.distance > 0) out[hit.value] = true;
+      });
+    }
     return Object.keys(out).map(Number).sort();
+  }
+
+  /* "Saturday or Sunday" is one session on whichever of them has room, not a
+     session on each. The distinction matters: read as "and" it doubles the
+     commitment, which is the opposite of what was asked. */
+  function daysAreEither(text) {
+    return /\b(?:or|either)\b/.test(String(text || "")) &&
+           !/\b(and|both)\b/.test(String(text || ""));
   }
 
   /* ------------------------------------------------------------
@@ -370,19 +387,39 @@ const TimetableAdopt = (function () {
   function subjectsNamed(text) {
     const t = String(text || "");
     const out = [];
+    const vocab = {};
     (typeof Subjects !== "undefined" ? Subjects.list() : []).forEach(function (s) {
       const names = [s.name, s.short, s.id].filter(Boolean)
         .map(function (x) { return String(x).toLowerCase().replace(/^a-?level\s*/, ""); });
+      names.forEach(function (n) { if (n.length >= 4) vocab[n] = s.id; });
       const hit = names.some(function (n) {
         return n.length >= 3 && new RegExp("\\b" + n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).test(t);
       });
       if (hit) out.push(s);
     });
+    /* "geogrpahy" is a subject; only worth looking once the exact pass has
+       found nothing, so a correctly spelled sentence never goes near it */
+    if (!out.length && typeof Tolerant !== "undefined") {
+      const seen = {};
+      (t.match(/[a-z]{5,}/gi) || []).forEach(function (w) {
+        const hit = Tolerant.nearest(w.toLowerCase(), vocab);
+        if (!hit || hit.distance === 0 || seen[hit.value]) return;
+        seen[hit.value] = true;
+        (typeof Subjects !== "undefined" ? Subjects.list() : []).forEach(function (s) {
+          if (s.id === hit.value) out.push(s);
+        });
+      });
+    }
     return out;
   }
 
   function describe(text) {
-    const src = String(text || "").toLowerCase().replace(/[‘’]/g, "'");
+    const raw = String(text || "");
+    /* Typos, shorthand and filler are dealt with once, up front, so every
+       rule below reads the same tidy sentence. What was typed is kept, so
+       anything reported as unreadable is reported in the words used. */
+    const src = (typeof Tolerant !== "undefined" ? Tolerant.clean(raw) : raw.toLowerCase())
+      .replace(/[‘’]/g, "'");
     if (!src.trim()) return { rules: {}, windows: {}, flex: [], busy: [], said: [], missed: [] };
 
     const rules = {};
@@ -403,7 +440,9 @@ const TimetableAdopt = (function () {
       const days = daysIn(p);
       const subs = subjectsNamed(p);
       const own = OWN.exec(p);
-      const negative = /\b(no|not|never|nothing|don'?t|dont|avoid|skip)\b/.test(p);
+      /* "cannot" and "busy" are refusals too, and neither contains a word
+         the plain list would catch. */
+      const negative = /\b(no|not|never|nothing|none|cannot|can't|busy|unavailable|avoid|skip)\b/.test(p);
       const range = /(?:^|\s|from\s)(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm)?)\s*(?:-|–|—|to|until|till)\s*(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm)?)/.exec(p);
       const at = /\bat\s*(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm)?)/.exec(p);
 
@@ -412,7 +451,8 @@ const TimetableAdopt = (function () {
          A clause that OPENS with the refusal is about the day whatever else
          it mentions: "nothing on Saturdays, they are for work" names a
          commitment but is not scheduling one. */
-      const opensNegative = /^(no|nothing|never|not)\b/.test(p);
+      const opensNegative = /^(no|nothing|never|not|cannot|can't)\b/.test(p) ||
+                            /^i (cannot|can't|am busy)\b/.test(p);
       if (days.length && negative && !subs.length && (opensNegative || !own) &&
           (/\b(revis|study|work|anything|nothing)\b/.test(p) || opensNegative)) {
         days.forEach(function (d) { windows[d] = Object.assign({}, windows[d], { off: true, byName: true }); });
@@ -438,9 +478,12 @@ const TimetableAdopt = (function () {
             hit = true;
           }
         } else if (mins && days.length) {
-          flex.push({ label: label, mins: mins, days: days,
+          const either = days.length > 1 && daysAreEither(p);
+          flex.push({ label: label, mins: mins, days: days, either: either,
                       prefer: at ? "at" : "end", at: at ? clock(timeOf(at[1])) : null });
-          said.push(fmt(mins) + " of " + label + " on " + days.map(dayName).join(", ") +
+          said.push(fmt(mins) + " of " + label + " on " +
+                    days.map(dayName).join(either ? " or " : ", ") +
+                    (either ? ", whichever has room" : "") +
                     (at ? " at " + clock(timeOf(at[1])) : "") + ".");
           hit = true;
         }
@@ -463,12 +506,22 @@ const TimetableAdopt = (function () {
         hit = true;
       }
 
-      /* ---- how long a subject gets in a week ---- */
-      if (subs.length && mins && /\b(a|per|each|every)\s*week\b/.test(p)) {
+      /* ---- how long a subject gets ----
+
+         Weekly hours are what the timetable actually budgets with, so a
+         daily figure is multiplied out and the arithmetic is shown rather
+         than done quietly: "two hours of Economics a day" is fourteen hours
+         a week, and seeing that written down is how you notice it is more
+         than you have. */
+      if (subs.length && mins && /\b(a|per|each|every)\s*(week|day)\b/.test(p)) {
+        const daily = /\b(a|per|each|every)\s*day\b/.test(p) || days.length === 7;
+        const perWeek = daily ? mins * 7 : mins;
         rules.subjectMins = rules.subjectMins || {};
         subs.forEach(function (s) {
-          rules.subjectMins[s.id] = mins;
-          said.push(s.name + ": " + fmt(mins) + " a week.");
+          rules.subjectMins[s.id] = perWeek;
+          said.push(s.name + ": " + (daily
+            ? fmt(mins) + " a day, which is " + fmt(perWeek) + " a week"
+            : fmt(perWeek) + " a week") + ".");
         });
         hit = true;
       }

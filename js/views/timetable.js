@@ -95,12 +95,20 @@ const TimetableView = (function () {
           '<b>' + d.getDate() + '</b>' +
           '<small>' + Timetable.SHORT_DAYS[d.getDay()] + '</small>' +
         '</span>' +
-        '<span class="tt-nodes">' + revision.slice(0, 6).map(function (b) {
-          return '<i class="tt-node" style="background:' + b.colour + '" title="' +
+        /* Everything on the day, not only the revision. The legend has always
+           promised a grey node for a commitment and never drew one, so a
+           Saturday with three hours of work on it read as an empty day. */
+        '<span class="tt-nodes">' + blocks.slice(0, 6).map(function (b) {
+          return '<i class="tt-node' + (b.kind === "revision" ? "" : " other") +
+            '" style="background:' + b.colour + '" title="' +
             UI.esc(b.label + " " + b.from + "–" + b.to) + '"></i>';
-        }).join("") + (revision.length > 6 ? '<i class="tt-more">+' + (revision.length - 6) + '</i>' : "") +
+        }).join("") + (blocks.length > 6 ? '<i class="tt-more">+' + (blocks.length - 6) + '</i>' : "") +
         '</span>' +
-        '<span class="tt-day-f">' + (off ? "off" : mins ? fmt(mins) : "—") + '</span>' +
+        /* The figure stays revision-only, because that is the question the
+           number answers, but a day made entirely of commitments says so
+           rather than showing a dash. */
+        '<span class="tt-day-f">' +
+          (off ? "off" : mins ? fmt(mins) : blocks.length ? "booked" : "—") + '</span>' +
       '</button>';
     }
     return out + '</div>' + legend();
