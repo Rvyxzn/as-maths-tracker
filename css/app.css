@@ -2983,3 +2983,21 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
   border-radius:9px;background:var(--surface-2);font-size:12.5px;line-height:1.6;color:var(--text);
 }
 .sec-advice .ico{flex:0 0 auto;margin:0;color:var(--accent)}
+
+/* ---------- describing your week ---------- */
+.say-card{border:1px solid var(--accent);background:var(--accent-soft)}
+.say-in{width:100%;resize:vertical;min-height:74px;line-height:1.6}
+.say-eg{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:11px}
+.say-eg .chip{font-size:11.5px;padding:5px 10px}
+.say-eg .tiny{margin-right:2px}
+.say-out{margin-top:12px;padding:11px 13px;border-radius:10px;background:var(--surface)}
+.say-out-h{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--green)}
+.say-out-h .ico{margin:0}
+.say-out ul{margin:8px 0 0;padding-left:18px}
+.say-out li{margin:4px 0;font-size:12.5px;line-height:1.55}
+.say-miss{margin-top:10px;padding-top:9px;border-top:1px solid var(--border)}
+.say-miss b{display:block;font-size:11.5px;color:var(--amber);margin-bottom:5px}
+.say-miss span{
+  display:inline-block;margin:0 5px 5px 0;padding:3px 8px;border-radius:6px;
+  background:var(--amber-soft);color:var(--amber);font-size:11.5px;
+}

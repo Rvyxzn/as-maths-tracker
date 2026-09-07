@@ -91,16 +91,31 @@ const TimetableAdopt = (function () {
     return NUM_WORDS[t] != null ? NUM_WORDS[t] : parseFloat(t);
   }
 
-  /* "3 hours", "90 minutes", "1h30", "45 min", "three hours" -> minutes. */
+  /* "3 hours", "90 minutes", "1h30", "45 min", "three hours",
+     "two and a half hours", "half an hour" -> minutes.
+
+     The halves come first. Searching for a number in front of "hours" finds
+     "half" in "two and a half hours", which is how two and a half hours came
+     out as one. */
+  const HOUR = "(?:h\\b|hr|hrs|hour|hours)";
+  const MIN = "(?:m\\b|min|mins|minute|minutes)";
+
   function durationOf(raw) {
     const t = String(raw || "").toLowerCase();
+
+    if (/\bhalf an hour\b/.test(t)) return 30;
+    if (/\b(?:a |an )?quarter of an hour\b/.test(t)) return 15;
+
+    const andHalf = new RegExp(NUM + "\\s*(?:and )?a half\\s*" + HOUR).exec(t);
+    if (andHalf && amount(andHalf[1]) !== 0.5) return Math.round(amount(andHalf[1]) * 60) + 30;
+
     let total = null;
-    const h = new RegExp(NUM + "\\s*(?:h\\b|hr|hrs|hour|hours)").exec(t);
-    const m = new RegExp(NUM + "\\s*(?:m\\b|min|mins|minute|minutes)").exec(t);
+    const h = new RegExp(NUM + "\\s*" + HOUR).exec(t);
+    const m = new RegExp(NUM + "\\s*" + MIN).exec(t);
     if (h) total = Math.round(amount(h[1]) * 60);
     if (m) total = (total || 0) + Math.round(amount(m[1]));
-    /* "an hour and a half" */
-    if (h && /\band a half\b/.test(t)) total += 30;
+    /* "an hour and a half", where the number is the "an" */
+    if (h && total != null && /\band a half\b/.test(t) && !andHalf) total += 30;
     return total;
   }
 

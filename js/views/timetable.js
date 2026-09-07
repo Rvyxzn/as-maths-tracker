@@ -24,6 +24,8 @@ const TimetableView = (function () {
   let span = 14;              // how many days the grid shows
   let drag = null;
   let openBlock = null;       // the block whose detail panel is showing
+  let sayText = "";           // what is typed into the describe box
+  let sayParsed = null;       // and what was read out of it, once read
 
   const PX_PER_MIN = 1.1;     // the timeline's scale
 
@@ -59,8 +61,9 @@ const TimetableView = (function () {
         '<button class="btn" data-action="tt-undo"' +
           (Timetable.canUndo() ? "" : " disabled") + '>Undo</button>' +
         '<button class="btn" data-action="tt-reset">Reset</button>' +
+        '<button class="btn btn-primary" data-action="tt-describe">Describe your week</button>' +
         '<button class="btn" data-action="tt-export">Export</button>' +
-        '<button class="btn" data-action="tt-import">Import</button>' +
+        '<button class="btn" data-action="tt-import">Import a file</button>' +
         '<div class="spacer"></div>' +
         '<button class="btn btn-sm" data-action="tt-span" data-val="7">1 week</button>' +
         '<button class="btn btn-sm" data-action="tt-span" data-val="14">2 weeks</button>' +
@@ -354,7 +357,8 @@ const TimetableView = (function () {
       '</div>';
     }).join("");
 
-    return '<div class="card" style="margin-bottom:14px">' +
+    return describePanel() +
+      '<div class="card" style="margin-bottom:14px">' +
         '<div class="card-title" style="margin-bottom:4px">Your subjects</div>' +
         '<div class="tiny muted">Rank them, say where you are and where you want to be, and the ' +
           'suggestion follows: a subject you ranked first, two grades short, with an exam close and ' +
@@ -394,6 +398,82 @@ const TimetableView = (function () {
         '<div class="tt-busies">' + (flexRows ||
           '<div class="tiny faint">Nothing yet.</div>') + '</div>' +
       '</div>';
+  }
+
+  /* ------------------------------------------------------------
+     Say it in words
+
+     This was a second tab inside the import dialog, which is the
+     wrong place twice over: nobody opens "Import" to type a
+     sentence, and importing a file and describing a week are not
+     two versions of the same task. It is the fastest way to set
+     the whole thing up, so it sits at the top of Set up where the
+     setting-up happens, in the page rather than in a modal.
+     ------------------------------------------------------------ */
+
+  const EXAMPLES = [
+    "Three hours a day, one subject a day",
+    "Nothing on Fridays",
+    "Free 4pm to 9pm on weekdays, 10 to 5 at weekends",
+    "45 minutes of UCAS personal statement every Sunday at 10am",
+    "Only do maths on Mondays and Thursdays",
+    "90 minute blocks with 10 minute breaks",
+    "Alternate physical and human geography",
+    "I work Saturday 9am to 5pm"
+  ];
+
+  function describePanel() {
+    return '<div class="card say-card" style="margin-bottom:14px">' +
+      '<div class="card-head"><div class="card-title">Say how you want to work</div>' +
+        '<div class="right"><span class="tiny faint">the fastest way to set all of this up</span></div></div>' +
+      '<div class="tiny muted" style="margin-bottom:10px">Write it the way you would say it out loud. ' +
+        'Each sentence is read on its own, you see exactly what it understood before anything changes, ' +
+        'and anything it could not read is listed rather than quietly dropped.</div>' +
+
+      '<textarea class="input say-in" id="ttSay" rows="3" placeholder="' +
+        UI.esc("Three hours a day, one subject a day. Nothing on Fridays. Free 4pm to 9pm on weekdays. " +
+               "45 minutes of UCAS personal statement every Sunday at 10am.") + '">' +
+        UI.esc(sayText) + '</textarea>' +
+
+      '<div class="row wrap" style="gap:7px;margin-top:9px">' +
+        '<button class="btn btn-primary" data-action="tt-say-read">Read it</button>' +
+        (sayParsed && sayParsed.said.length
+          ? '<button class="btn btn-primary" data-action="tt-say-apply">Apply ' + sayParsed.said.length +
+            ' setting' + (sayParsed.said.length === 1 ? "" : "s") + '</button>'
+          : "") +
+        '<div class="spacer"></div>' +
+        '<span class="tiny faint">Nothing changes until you apply.</span>' +
+      '</div>' +
+
+      (sayParsed ? sayResult() : '<div class="say-eg">' +
+        '<span class="tiny faint">Try:</span>' +
+        EXAMPLES.map(function (e) {
+          return '<button class="chip" data-action="tt-say-eg" data-eg="' + UI.esc(e) + '">' +
+            UI.esc(e) + '</button>';
+        }).join("") + '</div>') +
+    '</div>';
+  }
+
+  function sayResult() {
+    const p = sayParsed;
+    if (!p.said.length) {
+      return '<div class="ttp bad" style="margin-top:11px"><b>None of that turned into a setting</b>' +
+        '<span>It reads phrasings rather than meaning, so it needs something close to the examples. ' +
+        'Tap one below to see the shape it wants.</span></div>' +
+        '<div class="say-eg">' + EXAMPLES.map(function (e) {
+          return '<button class="chip" data-action="tt-say-eg" data-eg="' + UI.esc(e) + '">' +
+            UI.esc(e) + '</button>';
+        }).join("") + '</div>';
+    }
+    return '<div class="say-out">' +
+      '<div class="say-out-h">' + UI.icon("check") + '<b>Understood</b></div>' +
+      '<ul>' + p.said.map(function (s) { return '<li>' + UI.esc(s) + '</li>'; }).join("") + '</ul>' +
+      (p.missed.length
+        ? '<div class="say-miss"><b>Not understood</b>' +
+          p.missed.map(function (s) { return '<span>' + UI.esc(s) + '</span>'; }).join("") +
+          '</div>'
+        : "") +
+    '</div>';
   }
 
   /* ------------------------------------------------------------
@@ -582,6 +662,15 @@ const TimetableView = (function () {
     document.querySelectorAll("[data-tt-cap-m]").forEach(function (el) {
       el.onchange = function () { setCap(el.dataset.ttCapM); };
     });
+    /* What is typed survives a re-render, and the reading stops claiming to
+       describe text that has since been edited. */
+    const say = document.querySelector("#ttSay");
+    if (say) {
+      say.oninput = function () {
+        sayText = say.value;
+        if (sayParsed) { sayParsed = null; App.render(); }
+      };
+    }
     const perDay = document.querySelector("[data-tt-perday]");
     if (perDay) perDay.onchange = function () {
       Timetable.setRules({ subjectsPerDay: +perDay.value }); App.render();
@@ -877,71 +966,47 @@ const TimetableView = (function () {
   }
 
   function doImport() {
-    let tab = "grid";
-
-    const body = function () {
-      return '<div class="chips" id="ttTabs" style="margin-bottom:12px">' +
-          '<button type="button" class="chip' + (tab === "grid" ? " on" : "") + '" data-t="grid">A timetable I already have</button>' +
-          '<button type="button" class="chip' + (tab === "words" ? " on" : "") + '" data-t="words">Describe what I want</button>' +
-        '</div>' +
-
-        '<div id="ttGrid"' + (tab === "grid" ? "" : ' hidden') + '>' +
-          '<div class="tiny muted" style="margin-bottom:9px">Paste it, or choose a file. JSON from ' +
-            'anywhere, a spreadsheet saved as CSV, plain text like ' +
-            '<b>Monday 16:30-18:00 Maths</b>, a PDF, or a photo of one. Imported blocks ' +
-            'count as yours, so Generate schedules around them rather than over them.</div>' +
-          '<textarea class="input" id="ttIn" style="height:150px;font-family:var(--font-mono,monospace);font-size:11px" ' +
-            'placeholder="Paste it here"></textarea>' +
-          '<input type="file" accept=".json,.txt,.csv,.md,.pdf,image/*,application/json,text/plain,text/csv,application/pdf" ' +
-            'id="ttFileIn" class="input" style="margin-top:9px">' +
-          '<div class="tiny faint" style="margin-top:7px">A photo, a screenshot or a scanned PDF works ' +
-            'too: they are read by eye. A straight-on shot in good light reads far better than one at ' +
-            'an angle, and whatever it reads is shown here to correct before anything is saved.</div>' +
-
-        '<div id="ttWords"' + (tab === "words" ? "" : ' hidden') + '>' +
-          '<div class="tiny muted" style="margin-bottom:9px">Say it however you would say it out loud. ' +
-            'Each sentence is read on its own, and anything not understood is listed back rather ' +
-            'than quietly ignored.</div>' +
-          '<textarea class="input" id="ttWordsIn" style="height:130px" placeholder="' +
-            UI.esc("Three hours a day, one subject a day. Nothing on Fridays. " +
-                   "Free 4pm to 9pm on weekdays. 45 minutes of UCAS personal statement " +
-                   "every Sunday at 10am. Alternate human and physical geography.") + '"></textarea>' +
-          '<div class="row wrap" style="gap:7px;margin-top:9px">' +
-            '<button class="btn btn-sm" id="ttWordsRead">Read it</button>' +
-            '<span class="tiny faint">Nothing changes until you press Apply.</span>' +
-          '</div>' +
-        '</div>' +
-
+    const body =
+        '<div class="tiny muted" style="margin-bottom:9px">Paste it, or choose a file. JSON from ' +
+          'anywhere, a spreadsheet saved as CSV, plain text like ' +
+          '<b>Monday 16:30-18:00 Maths</b>, a PDF, or a photo of one. Imported blocks ' +
+          'count as yours, so Generate schedules around them rather than over them.</div>' +
+        '<textarea class="input" id="ttIn" style="height:150px;font-family:var(--font-mono,monospace);font-size:11px" ' +
+          'placeholder="Paste it here"></textarea>' +
+        '<input type="file" accept=".json,.txt,.csv,.md,.pdf,image/*,application/json,text/plain,text/csv,application/pdf" ' +
+          'id="ttFileIn" class="input" style="margin-top:9px">' +
+        '<div class="tiny faint" style="margin-top:7px">A photo, a screenshot or a scanned PDF works ' +
+          'too: they are read by eye. A straight-on shot in good light reads far better than one at ' +
+          'an angle, and whatever it reads is shown here to correct before anything is saved.</div>' +
+        /* Describing a week is not importing a file, and it used to be a
+           second tab in here where nobody would look for it. It lives on
+           Set up now, and this points at it rather than duplicating it. */
+        '<div class="tiny faint" style="margin-top:11px">Nothing to import? ' +
+          '<button class="btn btn-sm" id="ttToSay">Describe your week ' +
+          'in words</button> instead.</div>' +
         '<div id="ttPreview" style="margin-top:12px"></div>';
-    };
 
     UI.modal({
-      title: "Bring a timetable in",
+      title: "Import a timetable",
       wide: true,
-      body: body(),
+      body: body,
       footer: '<button class="btn" data-modal-close>Cancel</button>' +
               '<button class="btn btn-primary" id="ttDo" disabled>Apply</button>',
       onMount: function (box) {
         const ta = box.querySelector("#ttIn");
-        const words = box.querySelector("#ttWordsIn");
         const preview = box.querySelector("#ttPreview");
         const go = box.querySelector("#ttDo");
+
+        /* A click inside a modal never reaches the app's delegated handler -
+           ui.js stops it at the box - so anything in here is wired directly. */
+        const toSay = box.querySelector("#ttToSay");
+        if (toSay) toSay.onclick = function () { UI.closeModal(); handle("tt-describe", { dataset: {} }); };
         let pending = null;             // { apply: fn, label: string }
 
         const show = function (html, ready) {
           preview.innerHTML = html;
           go.disabled = !ready;
         };
-
-        box.querySelectorAll("#ttTabs [data-t]").forEach(function (b) {
-          b.onclick = function () {
-            tab = b.dataset.t;
-            box.querySelectorAll("#ttTabs [data-t]").forEach(function (o) { o.classList.toggle("on", o === b); });
-            box.querySelector("#ttGrid").hidden = tab !== "grid";
-            box.querySelector("#ttWords").hidden = tab !== "words";
-            pending = null; show("", false);
-          };
-        });
 
         /* ---- a timetable someone already has ---- */
         const readGrid = function () {
@@ -1034,32 +1099,6 @@ const TimetableView = (function () {
           });
         };
 
-        /* ---- a description ---- */
-        const readWords = function () {
-          const parsed = TimetableAdopt.describe(words.value);
-          if (!parsed.said.length) {
-            pending = null;
-            show('<div class="ttp bad"><b>None of that turned into a setting</b>' +
-                 '<span>Try things like "three hours a day", "one subject a day", ' +
-                 '"nothing on Fridays", "free 4pm to 9pm on weekdays", ' +
-                 '"45 minutes of UCAS on Sunday".</span></div>', false);
-            return;
-          }
-          pending = { apply: function () {
-            TimetableAdopt.apply(parsed);
-            return { blocks: 0, days: 0, settings: parsed.said.length };
-          } };
-          show('<div class="ttp ok"><b>' + parsed.said.length + ' settings understood</b></div>' +
-               '<ul class="ttp-said">' + parsed.said.map(function (s) {
-                 return '<li>' + UI.esc(s) + '</li>'; }).join("") + '</ul>' +
-               (parsed.missed.length
-                 ? '<div class="ttp bad" style="margin-top:9px"><b>Not understood</b><span>' +
-                   parsed.missed.map(function (s) { return '“' + UI.esc(s) + '”'; }).join(", ") +
-                   '</span></div>'
-                 : ""), true);
-        };
-        box.querySelector("#ttWordsRead").onclick = readWords;
-        words.oninput = function () { pending = null; go.disabled = true; };
 
         go.onclick = function () {
           if (!pending) return;
@@ -1119,6 +1158,61 @@ const TimetableView = (function () {
         const map = Object.assign({}, Timetable.rules().alternate || {});
         if (map[id]) delete map[id]; else map[id] = true;
         Timetable.setRules({ alternate: map }); App.render(); return true;
+      }
+      /* From anywhere, including the calendar: go to Set up and put the
+         cursor in the box, rather than making people find it. */
+      case "tt-describe": {
+        /* Reached from the import dialog too, where the modal swallows the
+           close attribute, so it is closed here rather than left sitting
+           open in front of the panel it just sent you to. */
+        if (typeof UI !== "undefined" && UI.closeModal) UI.closeModal();
+        mode = "setup";
+        App.render();
+        setTimeout(function () {
+          const el = document.querySelector("#ttSay");
+          if (!el) return;
+          el.scrollIntoView({ block: "center", behavior: "smooth" });
+          el.focus();
+        }, 30);
+        return true;
+      }
+      case "tt-say-read": {
+        const el = document.querySelector("#ttSay");
+        sayText = el ? el.value : sayText;
+        sayParsed = TimetableAdopt.describe(sayText);
+        App.render();
+        return true;
+      }
+      /* An example is added to what is already there rather than replacing
+         it, so tapping three of them builds a description. */
+      case "tt-say-eg": {
+        const eg = el.dataset.eg || "";
+        const box = document.querySelector("#ttSay");
+        const had = (box ? box.value : sayText).trim().replace(/\.$/, "");
+        sayText = (had ? had + ". " : "") + eg + ".";
+        sayParsed = null;
+        App.render();
+        setTimeout(function () {
+          const b = document.querySelector("#ttSay");
+          if (b) { b.focus(); b.setSelectionRange(b.value.length, b.value.length); }
+        }, 20);
+        return true;
+      }
+      case "tt-say-apply": {
+        if (!sayParsed || !sayParsed.said.length) return true;
+        const n = sayParsed.said.length;
+        TimetableAdopt.apply(sayParsed);
+        sayParsed = null;
+        sayText = "";
+        /* The morph reuses the textarea and will not overwrite what someone
+           typed into it, which is right everywhere except here: the text has
+           been acted on and leaving it there invites applying it twice. */
+        const box = document.querySelector("#ttSay");
+        if (box) box.value = "";
+        UI.toast("Applied " + n + " setting" + (n === 1 ? "" : "s") + ". Build the timetable to see it.",
+                 "ok", 4500);
+        App.render();
+        return true;
       }
       case "tt-rec-rules": {
         Timetable.setRules(Timetable.recommendRules());
