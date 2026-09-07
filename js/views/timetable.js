@@ -348,7 +348,8 @@ const TimetableView = (function () {
         '<div class="tt-sub-main"><b>' + UI.esc(f.label) + '</b>' +
           '<small>' + fmt(f.mins) + ' · ' +
             (f.days || []).map(function (d) { return Timetable.SHORT_DAYS[d]; }).join(", ") +
-            ' · placed for you</small></div>' +
+            ' · ' + (f.at ? "at " + f.at : f.prefer === "start" ? "first thing" : "last thing") +
+            '</small></div>' +
         '<button class="btn btn-sm btn-ghost" data-action="tt-flex-del" data-id="' + f.id + '">✕</button>' +
       '</div>';
     }).join("");
@@ -367,6 +368,8 @@ const TimetableView = (function () {
           '<span class="tiny faint">' + fmt(Timetable.weeklyCapacity()) + ' free a week in total</span>' +
         '</div>' +
       '</div>' +
+
+      rulesPanel() +
 
       '<div class="card" style="margin-bottom:14px">' +
         '<div class="card-title" style="margin-bottom:4px">When you are free</div>' +
@@ -391,6 +394,109 @@ const TimetableView = (function () {
         '<div class="tt-busies">' + (flexRows ||
           '<div class="tiny faint">Nothing yet.</div>') + '</div>' +
       '</div>';
+  }
+
+  /* ------------------------------------------------------------
+     How you want to work, as opposed to when you are free.
+
+     Everything here is off by default and everything can be set
+     in one click from Recommended, because the people most likely
+     to need a timetable are the least likely to want to configure
+     one.
+     ------------------------------------------------------------ */
+  function rulesPanel() {
+    const r = Timetable.rules();
+    const subs = Timetable.subjects();
+
+    const hm = function (id, mins, placeholder) {
+      const v = mins == null ? "" : mins;
+      return '<span class="tt-hm">' +
+        '<input class="input" type="number" min="0" max="16" ' + (v === "" ? '' : 'value="' + Math.floor(v / 60) + '"') +
+          ' placeholder="' + (placeholder || "") + '" data-tt-cap-h="' + id + '"><em>h</em>' +
+        '<input class="input" type="number" min="0" max="59" step="15" ' + (v === "" ? '' : 'value="' + (v % 60) + '"') +
+          ' placeholder="00" data-tt-cap-m="' + id + '"><em>m</em></span>';
+    };
+
+    const dayCapRows = [1, 2, 3, 4, 5, 6, 0].map(function (d) {
+      const set = r.dayCaps && r.dayCaps[d] != null;
+      return '<div class="tt-cap">' +
+        '<b>' + Timetable.SHORT_DAYS[d] + '</b>' +
+        hm("d" + d, set ? r.dayCaps[d] : null, "—") +
+        '<span class="tiny faint">' + (set ? "set" : "default") + '</span>' +
+      '</div>';
+    }).join("");
+
+    const subjectRows = subs.map(function (s) {
+      const days = (r.subjectDays || {})[s.id] || [];
+      const groups = Timetable.groupsOf(s.id);
+      return '<div class="tt-rule-sub">' +
+        '<i class="tt-node" style="background:' + s.colour + '"></i>' +
+        '<div class="tt-sub-main"><b>' + UI.esc(s.name) + '</b>' +
+          '<small>' + (days.length
+            ? "only on " + days.map(function (d) { return Timetable.SHORT_DAYS[d]; }).join(", ")
+            : "any day it is owed time") + '</small></div>' +
+        '<div class="chips tt-daypick">' + [1, 2, 3, 4, 5, 6, 0].map(function (d) {
+          return '<button type="button" class="chip' + (days.indexOf(d) >= 0 ? " on" : "") + '" ' +
+            'data-action="tt-subday" data-id="' + s.id + '" data-d="' + d + '">' +
+            Timetable.SHORT_DAYS[d] + '</button>';
+        }).join("") + '</div>' +
+        (groups.length >= 2
+          ? '<button class="btn btn-sm' + ((r.alternate || {})[s.id] ? " btn-primary" : "") + '" ' +
+            'data-action="tt-alt" data-id="' + s.id + '" title="' +
+            UI.esc("Follow " + groups[0] + " with " + groups[1]) + '">Alternate ' +
+            UI.esc(groups.join(" / ")) + '</button>'
+          : '') +
+      '</div>';
+    }).join("");
+
+    return '<div class="card" style="margin-bottom:14px">' +
+      '<div class="card-head"><div class="card-title">How you want to work</div>' +
+        '<div class="right"><button class="btn btn-sm btn-primary" data-action="tt-rec-rules">' +
+          'Recommended</button></div></div>' +
+      '<div class="tiny muted" style="margin-bottom:12px">None of this is on unless you turn it on. ' +
+        'Recommended fills the lot in from your week and your exam dates.</div>' +
+
+      '<div class="tt-rule">' +
+        '<div class="tt-rule-main"><b>Most in one day</b>' +
+          '<small>Leave it blank and the evening is the only limit.</small></div>' +
+        hm("all", r.dailyCapMins, "—") +
+      '</div>' +
+
+      '<div class="tt-rule">' +
+        '<div class="tt-rule-main"><b>Subjects in one day</b>' +
+          '<small>One a day means three hours of Maths, then a day of Geography. ' +
+            'A subject with an exam inside ' + r.urgentDays + ' days ignores this.</small></div>' +
+        '<select class="input" data-tt-perday>' +
+          [0, 1, 2, 3, 4].map(function (n) {
+            return '<option value="' + n + '"' + (r.subjectsPerDay === n ? " selected" : "") + '>' +
+              (n === 0 ? "As many as fit" : n === 1 ? "One a day" : n + " a day") + '</option>';
+          }).join("") + '</select>' +
+      '</div>' +
+
+      '<div class="tt-rule">' +
+        '<div class="tt-rule-main"><b>Past papers as the exam nears</b>' +
+          '<small>A whole paper a week from two months out, rising to four in the last week. ' +
+            'Your own weekly target still applies if it is higher.</small></div>' +
+        '<button class="btn btn-sm' + (r.paperRamp ? " btn-primary" : "") + '" data-action="tt-rule-toggle" ' +
+          'data-k="paperRamp">' + (r.paperRamp ? "On" : "Off") + '</button>' +
+      '</div>' +
+
+      '<div class="tt-rule">' +
+        '<div class="tt-rule-main"><b>Exam-question sittings</b>' +
+          '<small>Questions on their own, not as the third step of a chapter. ' +
+            'One every ' + (r.examQuestionEvery || 4) + ' blocks of that subject.</small></div>' +
+        '<input class="input tt-num" type="number" min="2" max="12" value="' + (r.examQuestionEvery || 4) +
+          '" data-tt-eqevery' + (r.examQuestions ? "" : " disabled") + '>' +
+        '<button class="btn btn-sm' + (r.examQuestions ? " btn-primary" : "") + '" data-action="tt-rule-toggle" ' +
+          'data-k="examQuestions">' + (r.examQuestions ? "On" : "Off") + '</button>' +
+      '</div>' +
+
+      '<div class="tt-rule-head">A cap for particular days</div>' +
+      '<div class="tt-caps">' + dayCapRows + '</div>' +
+
+      '<div class="tt-rule-head">Which days each subject may take</div>' +
+      '<div class="tt-rule-subs">' + subjectRows + '</div>' +
+    '</div>';
   }
 
   function gradeSelect(id, field, value) {
@@ -451,6 +557,39 @@ const TimetableView = (function () {
     if (blk) blk.onchange = function () { Timetable.setPrefs({ blockMins: +blk.value }); App.render(); };
     const brk = document.querySelector("[data-tt-brk]");
     if (brk) brk.onchange = function () { Timetable.setPrefs({ breakMins: +brk.value }); App.render(); };
+
+    /* A cap is two boxes and can be cleared. Both boxes empty means no cap
+       at all, which is not the same as a cap of zero minutes: a cap of zero
+       would silently empty the day. */
+    const setCap = function (which) {
+      const h = document.querySelector('[data-tt-cap-h="' + which + '"]');
+      const m = document.querySelector('[data-tt-cap-m="' + which + '"]');
+      const blankBoth = (!h || h.value === "") && (!m || m.value === "");
+      const mins = blankBoth ? null : (+(h && h.value) || 0) * 60 + (+(m && m.value) || 0);
+      if (which === "all") {
+        Timetable.setRules({ dailyCapMins: mins });
+      } else {
+        const d = +which.slice(1);
+        const caps = Object.assign({}, Timetable.rules().dayCaps || {});
+        if (mins == null) delete caps[d]; else caps[d] = mins;
+        Timetable.setRules({ dayCaps: caps });
+      }
+      App.render();
+    };
+    document.querySelectorAll("[data-tt-cap-h]").forEach(function (el) {
+      el.onchange = function () { setCap(el.dataset.ttCapH); };
+    });
+    document.querySelectorAll("[data-tt-cap-m]").forEach(function (el) {
+      el.onchange = function () { setCap(el.dataset.ttCapM); };
+    });
+    const perDay = document.querySelector("[data-tt-perday]");
+    if (perDay) perDay.onchange = function () {
+      Timetable.setRules({ subjectsPerDay: +perDay.value }); App.render();
+    };
+    const eqEvery = document.querySelector("[data-tt-eqevery]");
+    if (eqEvery) eqEvery.onchange = function () {
+      Timetable.setRules({ examQuestionEvery: Math.max(2, +eqEvery.value || 4) }); App.render();
+    };
     wireDrag();
   }
 
@@ -564,26 +703,49 @@ const TimetableView = (function () {
   }
 
   /* Length known, time not. */
+  /* A recurring thing of your own: forty-five minutes on the personal
+     statement every Sunday. The time is optional, because most of these are
+     "some time that day" and forcing a clock on them is how a timetable
+     starts being wrong. */
   function flexModal() {
     UI.modal({
-      title: "Something that takes a set amount of time",
+      title: "Something of your own, every week",
       body: '<div class="field"><label class="label">What is it</label>' +
-          '<input class="input" id="tfLabel" placeholder="e.g. Gym"></div>' +
+          '<input class="input" id="tfLabel" placeholder="e.g. UCAS personal statement"></div>' +
         '<div class="field"><label class="label">How long</label>' +
-          '<span class="tt-hm"><input class="input" type="number" min="0" max="12" value="2" id="tfH"><em>h</em>' +
-          '<input class="input" type="number" min="0" max="59" step="5" value="0" id="tfM"><em>m</em></span></div>' +
+          '<span class="tt-hm"><input class="input" type="number" min="0" max="12" value="0" id="tfH"><em>h</em>' +
+          '<input class="input" type="number" min="0" max="59" step="5" value="45" id="tfM"><em>m</em></span></div>' +
         '<div class="field"><label class="label">Which days</label>' +
           '<div class="chips" id="tfDays">' + [1,2,3,4,5,6,0].map(function (d) {
             return '<button type="button" class="chip" data-d="' + d + '">' + Timetable.SHORT_DAYS[d] + '</button>';
           }).join("") + '</div></div>' +
-        '<div class="tiny faint">It is placed at the end of the longest free stretch on each of those ' +
-          'days, and revision is built around it.</div>',
+        '<div class="field"><label class="label">When on those days</label>' +
+          '<div class="chips" id="tfWhen">' +
+            '<button type="button" class="chip on" data-w="end">Last thing</button>' +
+            '<button type="button" class="chip" data-w="start">First thing</button>' +
+            '<button type="button" class="chip" data-w="at">At a set time</button>' +
+          '</div>' +
+          '<input class="input" type="time" id="tfAt" value="10:00" style="margin-top:8px;display:none">' +
+        '</div>' +
+        '<div class="field"><label class="label">Colour</label>' +
+          '<input type="color" class="tt-colour" id="tfColour" value="#64748b"></div>' +
+        '<div class="tiny faint">Revision is built around it, and it repeats every week until you ' +
+          'remove it.</div>',
       footer: '<button class="btn" data-modal-close>Cancel</button>' +
               '<button class="btn btn-primary" id="tfSave">Add it</button>',
       onMount: function (box) {
         const days = {};
-        box.querySelectorAll("[data-d]").forEach(function (b) {
+        let when = "end";
+        box.querySelectorAll("#tfDays [data-d]").forEach(function (b) {
           b.onclick = function () { const d = +b.dataset.d; days[d] = !days[d]; b.classList.toggle("on", !!days[d]); };
+        });
+        const at = box.querySelector("#tfAt");
+        box.querySelectorAll("#tfWhen [data-w]").forEach(function (b) {
+          b.onclick = function () {
+            when = b.dataset.w;
+            box.querySelectorAll("#tfWhen [data-w]").forEach(function (o) { o.classList.toggle("on", o === b); });
+            at.style.display = when === "at" ? "" : "none";
+          };
         });
         box.querySelector("#tfSave").onclick = function () {
           const picked = Object.keys(days).filter(function (k) { return days[k]; }).map(Number);
@@ -592,7 +754,9 @@ const TimetableView = (function () {
           if (!label) { UI.toast("Give it a name", "bad"); return; }
           if (!picked.length) { UI.toast("Pick at least one day", "bad"); return; }
           if (mins < 15) { UI.toast("Give it at least 15 minutes", "bad"); return; }
-          Timetable.addFlex({ label: label, days: picked, mins: mins });
+          Timetable.addFlex({ label: label, days: picked, mins: mins,
+                              prefer: when, at: when === "at" ? at.value : null,
+                              colour: box.querySelector("#tfColour").value });
           UI.closeModal(); App.render();
         };
       }
@@ -666,35 +830,185 @@ const TimetableView = (function () {
     });
   }
 
+  /* Reading a PDF's text with the viewer's own pdf.js, so a timetable that
+     arrives as a document can be read like a pasted one. A scan has no text
+     layer at all and there is nothing to be done about that here; the dialog
+     says so rather than failing silently. */
+  function pdfText(file) {
+    return new Promise(function (resolve, reject) {
+      if (typeof PdfViewer === "undefined" || !PdfViewer.textOf) {
+        reject(new Error("PDF reading is not available"));
+        return;
+      }
+      const url = URL.createObjectURL(file);
+      PdfViewer.textOf(url).then(function (t) { URL.revokeObjectURL(url); resolve(t); },
+                                 function (e) { URL.revokeObjectURL(url); reject(e); });
+    });
+  }
+
   function doImport() {
+    let tab = "grid";
+
+    const body = function () {
+      return '<div class="chips" id="ttTabs" style="margin-bottom:12px">' +
+          '<button type="button" class="chip' + (tab === "grid" ? " on" : "") + '" data-t="grid">A timetable I already have</button>' +
+          '<button type="button" class="chip' + (tab === "words" ? " on" : "") + '" data-t="words">Describe what I want</button>' +
+        '</div>' +
+
+        '<div id="ttGrid"' + (tab === "grid" ? "" : ' hidden') + '>' +
+          '<div class="tiny muted" style="margin-bottom:9px">Paste it, or choose a file. JSON from ' +
+            'anywhere, a spreadsheet saved as CSV, plain text like ' +
+            '<b>Monday 16:30-18:00 Maths</b>, or a PDF with real text in it. Imported blocks ' +
+            'count as yours, so Generate schedules around them rather than over them.</div>' +
+          '<textarea class="input" id="ttIn" style="height:150px;font-family:var(--font-mono,monospace);font-size:11px" ' +
+            'placeholder="Paste it here"></textarea>' +
+          '<input type="file" accept=".json,.txt,.csv,.md,.pdf,application/json,text/plain,text/csv,application/pdf" ' +
+            'id="ttFileIn" class="input" style="margin-top:9px">' +
+          '<div class="tiny faint" style="margin-top:7px">A photo or a scan has no text in it, so ' +
+            'there is nothing to read. Type it into the other tab instead.</div>' +
+        '</div>' +
+
+        '<div id="ttWords"' + (tab === "words" ? "" : ' hidden') + '>' +
+          '<div class="tiny muted" style="margin-bottom:9px">Say it however you would say it out loud. ' +
+            'Each sentence is read on its own, and anything not understood is listed back rather ' +
+            'than quietly ignored.</div>' +
+          '<textarea class="input" id="ttWordsIn" style="height:130px" placeholder="' +
+            UI.esc("Three hours a day, one subject a day. Nothing on Fridays. " +
+                   "Free 4pm to 9pm on weekdays. 45 minutes of UCAS personal statement " +
+                   "every Sunday at 10am. Alternate human and physical geography.") + '"></textarea>' +
+          '<div class="row wrap" style="gap:7px;margin-top:9px">' +
+            '<button class="btn btn-sm" id="ttWordsRead">Read it</button>' +
+            '<span class="tiny faint">Nothing changes until you press Apply.</span>' +
+          '</div>' +
+        '</div>' +
+
+        '<div id="ttPreview" style="margin-top:12px"></div>';
+    };
+
     UI.modal({
-      title: "Import a timetable",
+      title: "Bring a timetable in",
       wide: true,
-      body: '<div class="warnbox"><b>This replaces your timetable</b>Your subject progress, ' +
-          'ratings and plans are untouched — only the timetable is swapped.</div>' +
-        '<div class="field"><label class="label">Paste the file, or choose it below</label>' +
-          '<textarea class="input" id="ttIn" style="height:180px;font-family:var(--font-mono,monospace);font-size:11px" ' +
-            'placeholder="Paste the exported JSON here"></textarea></div>' +
-        '<input type="file" accept="application/json,.json" id="ttFileIn" class="input">',
+      body: body(),
       footer: '<button class="btn" data-modal-close>Cancel</button>' +
-              '<button class="btn btn-primary" id="ttDo">Import</button>',
+              '<button class="btn btn-primary" id="ttDo" disabled>Apply</button>',
       onMount: function (box) {
         const ta = box.querySelector("#ttIn");
+        const words = box.querySelector("#ttWordsIn");
+        const preview = box.querySelector("#ttPreview");
+        const go = box.querySelector("#ttDo");
+        let pending = null;             // { apply: fn, label: string }
+
+        const show = function (html, ready) {
+          preview.innerHTML = html;
+          go.disabled = !ready;
+        };
+
+        box.querySelectorAll("#ttTabs [data-t]").forEach(function (b) {
+          b.onclick = function () {
+            tab = b.dataset.t;
+            box.querySelectorAll("#ttTabs [data-t]").forEach(function (o) { o.classList.toggle("on", o === b); });
+            box.querySelector("#ttGrid").hidden = tab !== "grid";
+            box.querySelector("#ttWords").hidden = tab !== "words";
+            pending = null; show("", false);
+          };
+        });
+
+        /* ---- a timetable someone already has ---- */
+        const readGrid = function () {
+          const raw = ta.value.trim();
+          if (!raw) { pending = null; show("", false); return; }
+          const r = TimetableAdopt.read(raw, { span: span });
+
+          if (r.kind === "native") {
+            const d = Timetable.describe(r.data);
+            pending = { apply: function () { return Timetable.importData(r.data); } };
+            show('<div class="ttp ok"><b>A timetable exported from here</b>' +
+                 '<span>' + d.blocks + ' blocks across ' + d.days + ' days. ' +
+                 'This replaces your timetable; your ratings and plans are untouched.</span></div>', true);
+            return;
+          }
+          if (r.kind === "none") {
+            pending = null;
+            show('<div class="ttp bad"><b>Nothing readable in that</b><span>' +
+                 r.notes.map(UI.esc).join(" ") + ' A line needs a day, a start and an end: ' +
+                 '"Monday 16:30-18:00 Maths".</span></div>', false);
+            return;
+          }
+          const total = Object.keys(r.days).reduce(function (a, k) { return a + r.days[k].length; }, 0);
+          pending = { apply: function () {
+            Timetable.mergeDays(r.days);
+            return { blocks: total, days: Object.keys(r.days).length };
+          } };
+          show('<div class="ttp ok"><b>' + r.rows.length + ' recurring blocks read</b>' +
+               '<span>' + total + ' sittings across the next ' + span + ' days. ' +
+               (r.notes.length ? r.notes.map(UI.esc).join(" ") + " " : "") +
+               'They are added as yours, so Generate works around them.</span></div>' +
+               '<div class="ttp-rows">' + r.rows.slice(0, 12).map(function (x) {
+                 return '<div><b>' + (typeof x.day === "number" ? Timetable.DAY_NAMES[x.day] : UI.esc(x.day)) + '</b>' +
+                   Timetable.toClock(x.from) + '–' + Timetable.toClock(x.to) +
+                   '<span>' + UI.esc(x.label) + '</span></div>';
+               }).join("") + (r.rows.length > 12 ? '<div class="tiny faint">and ' + (r.rows.length - 12) + ' more</div>' : "") +
+               '</div>', true);
+        };
+
+        ta.oninput = readGrid;
         box.querySelector("#ttFileIn").onchange = function (e) {
           const f = e.target.files[0];
           if (!f) return;
-          const r = new FileReader();
-          r.onload = function () { ta.value = r.result; };
-          r.readAsText(f);
+          if (/\.pdf$/i.test(f.name)) {
+            show('<div class="ttp"><b>Reading the PDF…</b></div>', false);
+            pdfText(f).then(function (t) {
+              ta.value = t;
+              if (!t.trim()) {
+                show('<div class="ttp bad"><b>That PDF has no text in it</b><span>It is a picture of a ' +
+                     'timetable rather than a document, so there is nothing to read. Type it into ' +
+                     'the other tab instead.</span></div>', false);
+              } else readGrid();
+            }, function () {
+              show('<div class="ttp bad"><b>Could not read that PDF</b></div>', false);
+            });
+            return;
+          }
+          const rd = new FileReader();
+          rd.onload = function () { ta.value = rd.result; readGrid(); };
+          rd.readAsText(f);
         };
-        box.querySelector("#ttDo").onclick = function () {
-          let data;
-          try { data = JSON.parse(ta.value); }
-          catch (err) { UI.toast("That is not valid JSON", "bad"); return; }
+
+        /* ---- a description ---- */
+        const readWords = function () {
+          const parsed = TimetableAdopt.describe(words.value);
+          if (!parsed.said.length) {
+            pending = null;
+            show('<div class="ttp bad"><b>None of that turned into a setting</b>' +
+                 '<span>Try things like "three hours a day", "one subject a day", ' +
+                 '"nothing on Fridays", "free 4pm to 9pm on weekdays", ' +
+                 '"45 minutes of UCAS on Sunday".</span></div>', false);
+            return;
+          }
+          pending = { apply: function () {
+            TimetableAdopt.apply(parsed);
+            return { blocks: 0, days: 0, settings: parsed.said.length };
+          } };
+          show('<div class="ttp ok"><b>' + parsed.said.length + ' settings understood</b></div>' +
+               '<ul class="ttp-said">' + parsed.said.map(function (s) {
+                 return '<li>' + UI.esc(s) + '</li>'; }).join("") + '</ul>' +
+               (parsed.missed.length
+                 ? '<div class="ttp bad" style="margin-top:9px"><b>Not understood</b><span>' +
+                   parsed.missed.map(function (s) { return '“' + UI.esc(s) + '”'; }).join(", ") +
+                   '</span></div>'
+                 : ""), true);
+        };
+        box.querySelector("#ttWordsRead").onclick = readWords;
+        words.oninput = function () { pending = null; go.disabled = true; };
+
+        go.onclick = function () {
+          if (!pending) return;
           try {
-            const d = Timetable.importData(data);
+            const d = pending.apply() || {};
             UI.closeModal();
-            UI.toast("Imported " + d.blocks + " blocks across " + d.days + " days", "ok", 4000);
+            UI.toast(d.settings != null
+              ? "Applied " + d.settings + " setting" + (d.settings === 1 ? "" : "s") + ". Generate to rebuild."
+              : "Brought in " + d.blocks + " blocks across " + d.days + " days", "ok", 4500);
             mode = "grid"; App.render();
           } catch (err) { UI.toast(err.message, "bad"); }
         };
@@ -724,6 +1038,33 @@ const TimetableView = (function () {
         return true;
       }
       case "tt-busy-del": Timetable.removeBusy(el.dataset.id); App.render(); return true;
+      case "tt-rule-toggle": {
+        const k = el.dataset.k;
+        const p = {}; p[k] = !Timetable.rules()[k];
+        Timetable.setRules(p); App.render(); return true;
+      }
+      case "tt-subday": {
+        const id = el.dataset.id, d = +el.dataset.d;
+        const map = Object.assign({}, Timetable.rules().subjectDays || {});
+        const list = (map[id] || []).slice();
+        const at = list.indexOf(d);
+        if (at >= 0) list.splice(at, 1); else list.push(d);
+        /* every day picked is the same as no restriction, and saying so is
+           clearer than a row of seven lit chips */
+        if (list.length === 7 || !list.length) delete map[id]; else map[id] = list.sort();
+        Timetable.setRules({ subjectDays: map }); App.render(); return true;
+      }
+      case "tt-alt": {
+        const id = el.dataset.id;
+        const map = Object.assign({}, Timetable.rules().alternate || {});
+        if (map[id]) delete map[id]; else map[id] = true;
+        Timetable.setRules({ alternate: map }); App.render(); return true;
+      }
+      case "tt-rec-rules": {
+        Timetable.setRules(Timetable.recommendRules());
+        UI.toast("Filled in from your week and your exam dates", "ok");
+        App.render(); return true;
+      }
       case "tt-sub-off": {
         const s = Timetable.subjects().filter(function (x) { return x.id === el.dataset.id; })[0];
         Timetable.setSubject(el.dataset.id, { off: !(s && s.off) });

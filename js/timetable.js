@@ -70,6 +70,34 @@ const Timetable = (function () {
     return w;
   }
 
+  /* ------------------------------------------------------------
+     the rules
+
+     The window says when you COULD work. These say how you want
+     to. They are all off or unlimited by default, because a rule
+     nobody asked for is just a way of quietly dropping work, and
+     every one of them can be filled in at once from Recommended.
+     ------------------------------------------------------------ */
+  function defaultRules() {
+    return {
+      dailyCapMins: null,    // most you want to do on any day
+      dayCaps: {},           // 0-6 -> minutes, overriding the cap for that day
+      subjectsPerDay: 0,     // 0 = as many as fit; 1 = one subject a day
+      subjectDays: {},       // id -> [weekday], the days that subject is allowed
+      minPerDay: {},         // id -> minutes that subject must get every day
+      urgentDays: 10,        // an exam this close makes a subject unmissable
+      paperRamp: true,       // past papers get denser as the exam nears
+      examQuestions: true,   // exam-question sittings appear in their own right
+      examQuestionEvery: 4,  // one every this many blocks of that subject
+      alternate: {}          // id -> true, to swap sides of the spec each time
+    };
+  }
+
+  function rules() {
+    const r = get().prefs.rules || {};
+    return Object.assign(defaultRules(), r);
+  }
+
   function blank() {
     return {
       version: 1,
@@ -80,7 +108,8 @@ const Timetable = (function () {
         busy: [],               // [{ id, label, days:[0-6], from, to, colour }] fixed times
         flex: [],               // [{ id, label, days:[0-6], mins }] length known, time not
         blockMins: 45,
-        breakMins: 15
+        breakMins: 15,
+        rules: defaultRules()
       },
       days: {},                 // iso -> [block]
       generatedAt: null
@@ -97,6 +126,7 @@ const Timetable = (function () {
     } catch (e) { state = blank(); }
     /* a save written before a day existed still gets that day */
     state.prefs.windows = Object.assign(defaultWindows(), state.prefs.windows || {});
+    state.prefs.rules = Object.assign(defaultRules(), state.prefs.rules || {});
     return state;
   }
 
@@ -141,6 +171,7 @@ const Timetable = (function () {
     state = Object.assign(fresh, doc);
     state.prefs = Object.assign(fresh.prefs, doc.prefs || {});
     state.prefs.windows = Object.assign(defaultWindows(), state.prefs.windows || {});
+    state.prefs.rules = Object.assign(defaultRules(), state.prefs.rules || {});
     save();
     return state;
   }
@@ -376,6 +407,11 @@ const Timetable = (function () {
       const left = steps.filter(function (x) { return !x.done; });
       return {
         cid: cid,
+        /* Which half of the specification this sits in, where the subject has
+           halves. Geography's papers are grouped Physical and Human, and
+           following one with the other is a real revision technique rather
+           than a preference, so the group has to survive into the queue. */
+        group: (inf && inf.paper && inf.paper.group) || null,
         label: inf ? inf.chapterLabel : cid,
         name: inf ? inf.chapter.name : cid,
         score: pr.score,
@@ -433,10 +469,37 @@ const Timetable = (function () {
     }).length;
   }
 
+  /* Days until the open subject's next exam, from its own settings, so this
+     works while the subject is switched in rather than needing readSubject. */
+  function daysToExamFor() {
+    const d = Store.settings().examDate;
+    if (!d) return null;
+    const n = Metrics.diffDays(Metrics.today(), d);
+    return n >= 0 ? n : null;
+  }
+
   function lastPracticeTest() {
     const done = (Store.get().practiceTests || []).filter(function (t) { return t.finishedAt; })
       .sort(function (a, b) { return String(b.finishedAt).localeCompare(String(a.finishedAt)); })[0];
     return done ? Metrics.diffDays(String(done.finishedAt).slice(0, 10), Metrics.today()) : null;
+  }
+
+  /* Put one of these in after every `gap` chapters, starting at `first`, all
+     the way down the queue. Mutates the list, and never inserts two of the
+     same kind next to each other. */
+  function weave(items, gap, first, make) {
+    let seen = 0, at = 0, put = 0;
+    while (at < items.length) {
+      if (items[at].kind === "chapter") seen++;
+      at++;
+      if (seen >= (put === 0 ? first : gap)) {
+        items.splice(at, 0, make());
+        at++; seen = 0; put++;
+      }
+    }
+    /* a subject with fewer chapters than the spacing still gets one */
+    if (!put) items.push(make());
+    return put;
   }
 
   /* The open subject's work, best first: its chapters, plus whatever else it
@@ -445,24 +508,65 @@ const Timetable = (function () {
     const items = rankChapters().map(function (c) {
       return { kind: "chapter", cid: c.cid, label: c.label, name: c.name,
                score: c.score, why: c.why, rag: c.rag, steps: c.steps,
-               minutes: c.minutes };
+               group: c.group, minutes: c.minutes };
     });
 
     const reds = items.filter(function (i) { return i.rag === "red"; }).length;
     const papers = (Subjects.current().papers || [])[0];
-    const target = Store.settings().pastPaperTargetPerWeek || 0;
+    const r = rules();
+
+    /* How close the exam is decides how much of the week is whole papers.
+       Learning the content is what a term is for; the fortnight before the
+       paper is for sitting papers, and a timetable that keeps offering
+       chapter three in that fortnight is planning the wrong thing. */
+    const dte = daysToExamFor();
+    let target = Store.settings().pastPaperTargetPerWeek || 0;
+    if (r.paperRamp && dte != null) {
+      const ramped = dte <= 7 ? 4 : dte <= 14 ? 3 : dte <= 28 ? 2 : dte <= 56 ? 1 : 0;
+      target = Math.max(target, ramped);
+    }
+
+    /* Exam questions in their own right, not as the third step of a chapter.
+       Doing them on their own is the thing that moves a grade, and it is the
+       step people skip when it is buried at the bottom of a chapter. */
+    if (r.examQuestions) {
+      const every = Math.max(2, r.examQuestionEvery || 4);
+      const why = dte != null && dte <= 21
+        ? "the exam is " + dte + " day" + (dte === 1 ? "" : "s") + " away and this is what it is made of"
+        : "past-paper questions on what you have covered, marked against the scheme";
+      const make = function () {
+        return { kind: "examq", cid: null, label: "Exam questions",
+          name: "Exam questions", score: 9996, rag: null, why: why, minutes: 45,
+          steps: [{ label: "Pick a tariff you are weak at", detail: "Question Packs, then the score summary", mins: 3 },
+                  { label: "Answer them under time", detail: "the paper's own rate, no notes", mins: 32 },
+                  { label: "Mark against the scheme", detail: "and read the examiner report underneath", mins: 10 }] };
+      };
+      /* Woven through the queue, not spliced in once.
+
+         A fortnight rarely gets a subject past its first few chapters, and a
+         chapter can take three sittings, so anything placed at index four is
+         a month away and anything placed once is a gesture. Every few
+         chapters, all the way down, is what makes it a habit. */
+      weave(items, every, 2, make);
+    }
 
     if (target && papersThisWeek() < target) {
-      items.splice(Math.min(2, items.length), 0, {
-        kind: "paper", cid: null,
-        label: "Past paper" + (papers ? " \u00b7 " + papers.name : ""),
-        name: "Past paper", score: 9999, rag: null,
-        why: "you are short of your " + target + " past paper" + (target === 1 ? "" : "s") + " this week",
-        minutes: papers ? (papers.section || 45) : 60,
-        steps: [{ label: "Sit it timed", detail: "no notes, no pausing", mins: papers ? (papers.section || 45) : 60 },
-                { label: "Mark it", detail: "against the real scheme", mins: 20 },
-                { label: "Log every lost mark", detail: "the error log is what makes it worth doing", mins: 10 }]
-      });
+      const why = (r.paperRamp && dte != null && dte <= 56)
+        ? "the exam is " + dte + " day" + (dte === 1 ? "" : "s") + " away, so the week wants " +
+          target + " whole paper" + (target === 1 ? "" : "s")
+        : "you are short of your " + target + " past paper" + (target === 1 ? "" : "s") + " this week";
+      const mins = papers ? (papers.section || 45) : 60;
+      const makePaper = function () {
+        return { kind: "paper", cid: null,
+          label: "Past paper" + (papers ? " \u00b7 " + papers.name : ""),
+          name: "Past paper", score: 9999, rag: null, why: why, minutes: mins,
+          steps: [{ label: "Sit it timed", detail: "no notes, no pausing", mins: mins },
+                  { label: "Mark it", detail: "against the real scheme", mins: 20 },
+                  { label: "Log every lost mark", detail: "the error log is what makes it worth doing", mins: 10 }] };
+      };
+      /* The nearer the exam, the fewer chapters between papers. */
+      const gap = dte == null ? 8 : dte <= 7 ? 2 : dte <= 14 ? 3 : dte <= 28 ? 5 : 8;
+      weave(items, gap, 1, makePaper);
     }
 
     const lastTest = lastPracticeTest();
@@ -521,6 +625,28 @@ const Timetable = (function () {
      chapter gets the tail of the playlist and the start of the questions,
      and says so — showing every step on every part told you what the
      chapter needs, which you already knew, and not what to do now. */
+  /* The next item for a subject. Normally that is simply the next one in the
+     ranking, but a subject can be set to alternate the two halves of its
+     specification - Geography's Physical and Human - in which case the queue
+     is scanned forward for the first item on the other side. Scanned, not
+     reordered: if there is nothing left on the other side the ranking wins
+     rather than the rule blocking the subject. */
+  function pickNext(q, subjectId, cursor, lastGroup, r) {
+    const at = cursor[subjectId] % q.length;
+    if (!(r.alternate || {})[subjectId]) return q[at];
+    const last = lastGroup[subjectId];
+    if (!last) return q[at];
+    for (let i = 0; i < q.length; i++) {
+      const cand = q[(at + i) % q.length];
+      if (cand.group && cand.group !== last) {
+        /* move the cursor to it so the carry bookkeeping stays on this item */
+        cursor[subjectId] = (at + i) % q.length;
+        return cand;
+      }
+    }
+    return q[at];
+  }
+
   function sliceSteps(steps, fromMin, toMin) {
     const out = [];
     let at = 0;
@@ -553,6 +679,27 @@ const Timetable = (function () {
     const list = subjects().filter(function (x) { return !x.off; });
     if (!list.length) return { made: 0, days: 0 };
 
+    const r = rules();
+
+    /* A subject with an exam this close is not one of several things you
+       could do today; it is a thing you do EVERY day. It takes the first
+       block of the day before anything else is considered, and it does not
+       count against the one-subject-a-day rule, which is about how you like
+       to work rather than about the week of the exam.
+
+       One block, though, not the day. "At least one session of Economics a
+       day" and "Economics is the only thing I do until Friday" are different
+       instructions, and only the first one was asked for. After its
+       guaranteed sitting it competes for the rest of the evening like
+       anything else - and with an exam that close it usually wins anyway,
+       because being days from the paper is most of what its share is built
+       from. */
+    const urgent = {};
+    list.forEach(function (x) {
+      const d = x.stats.daysToExam;
+      if (d != null && d <= (r.urgentDays || 10)) urgent[x.id] = d;
+    });
+
     const rec = recommend();
     /* minutes owed to each subject this week, drained as blocks are placed */
     const owed = {};
@@ -565,6 +712,7 @@ const Timetable = (function () {
     /* what each subject should be working on, best first */
     const queues = opts.queues || chapterQueues();
     const cursor = {};
+    const lastGroup = {};        // subject -> the half of the spec it last sat
     list.forEach(function (x) { cursor[x.id] = 0; });
     const partNo = opts.partNo || (opts.partNo = {});      // key -> sittings so far
     const partsOf = opts.partsOf || (opts.partsOf = {});   // key -> sittings in total
@@ -584,6 +732,33 @@ const Timetable = (function () {
          over two sittings instead of being cut to fit one */
       const carry = opts.carry || (opts.carry = {});
 
+      /* ---- what today's rules allow ---- */
+      const cap = (r.dayCaps && r.dayCaps[weekday] != null) ? r.dayCaps[weekday] : r.dailyCapMins;
+      let dayUsed = keep.reduce(function (a, b) {
+        return a + (b.kind === "revision" ? toMins(b.to) - toMins(b.from) : 0);
+      }, 0);
+      const seenToday = {};
+      keep.forEach(function (b) { if (b.subjectId) seenToday[b.subjectId] = true; });
+
+      /* The subjects-per-day count ignores the urgent ones, so a guaranteed
+         Economics sitting does not use up "one subject a day" and leave the
+         rest of the evening unschedulable. */
+      function countedToday() {
+        return Object.keys(seenToday).filter(function (id) { return urgent[id] == null; }).length;
+      }
+
+      /* A subject can be pinned to particular days: "Maths on Monday and
+         Thursday". An urgent one ignores that, because a rule you wrote in
+         March should not keep you off Economics the day before the paper. */
+      function allowedToday(x) {
+        if (urgent[x.id] != null) return true;
+        const days = (r.subjectDays || {})[x.id];
+        if (days && days.length && days.indexOf(weekday) < 0) return false;
+        const limit = r.subjectsPerDay || 0;
+        if (limit && !seenToday[x.id] && countedToday() >= limit) return false;
+        return true;
+      }
+
       /* Commitments whose length you know but not their time — the gym for
          two hours on Monday, some time. They go in before revision so they
          get the room, and they take the end of a stretch rather than the
@@ -592,7 +767,19 @@ const Timetable = (function () {
         if ((f.days || []).indexOf(weekday) < 0) return;
         const want = f.mins || 60;
         let best = null;
-        runs.forEach(function (r) {
+        /* A time you asked for is honoured where the day has room for it,
+           and ignored rather than refused where it does not: an hour that
+           will not fit at ten still wants to happen that day. */
+        if (f.at) {
+          const want0 = toMins(f.at);
+          runs.forEach(function (r) {
+            if (want0 < r[0] || want0 + want > r[1]) return;
+            const clash = placed.some(function (b) {
+              return overlaps(want0, want0 + want, toMins(b.from), toMins(b.to)); });
+            if (!clash && best === null) best = { at: want0, span: r[1] - r[0] };
+          });
+        }
+        if (best === null) runs.forEach(function (r) {
           if (r[1] - r[0] < want) return;
           const at = f.prefer === "start" ? r[0] : r[1] - want;
           const clash = placed.some(function (b) {
@@ -620,14 +807,31 @@ const Timetable = (function () {
             return overlaps(at, at + blk, toMins(b.from), toMins(b.to));
           });
           if (clash) { at += 15; continue; }
-          /* whoever is owed the most goes next, so the week evens out */
-          let best = null;
-          list.forEach(function (x) { if (!best || owed[x.id] > owed[best.id]) best = x; });
-          if (!best || owed[best.id] <= 0) { at = run[1]; break; }
+
+          /* the day is full even though the evening is not */
+          if (cap != null && dayUsed >= cap) { at = run[1]; break; }
+
+          /* An urgent subject with nothing today yet takes the next block,
+             whatever it is owed; after that the most-owed subject goes next
+             so the week evens out. */
+          const open = list.filter(allowedToday);
+          if (!open.length) { at = run[1]; break; }
+          let best = null, guaranteed = false;
+          open.forEach(function (x) {
+            if (urgent[x.id] == null || seenToday[x.id]) return;
+            if (!best || urgent[x.id] < urgent[best.id]) best = x;
+          });
+          if (best) guaranteed = true;
+          else open.forEach(function (x) {
+            if (owed[x.id] <= 0) return;
+            if (!best || owed[x.id] > owed[best.id]) best = x;
+          });
+          if (!best) { at = run[1]; break; }
+
           /* the next chapter that subject owes work to, cycling round once
              the ranking runs out rather than leaving a block unnamed */
           const q = queues[best.id] || [];
-          const ch = q.length ? q[cursor[best.id] % q.length] : null;
+          const ch = q.length ? pickNext(q, best.id, cursor, lastGroup, r) : null;
 
           /* A block is as long as the work is, not a fixed 45 minutes. You
              will not finish Quadratics between two and quarter to three, so
@@ -647,7 +851,12 @@ const Timetable = (function () {
             cursor[best.id]++;
             continue;
           }
-          const room = Math.min(run[1] - at, owed[best.id] > 0 ? owed[best.id] : blk);
+          /* The guaranteed sitting is one block, not the whole evening: it is
+             there so the day cannot pass without touching the subject. */
+          let room = guaranteed
+            ? Math.min(run[1] - at, Math.max(blk, owed[best.id] > 0 ? Math.min(owed[best.id], blk) : blk))
+            : Math.min(run[1] - at, owed[best.id]);
+          if (cap != null) room = Math.min(room, cap - dayUsed);
           const maxSit = Math.max(blk, s.prefs.maxSitting || 90);
           const MIN_SIT = 20;
 
@@ -678,6 +887,11 @@ const Timetable = (function () {
 
           if (at + len > run[1]) len = run[1] - at;
           len = Math.round(len / 5) * 5;
+          /* Rounding is the last thing that happens, so the cap is checked
+             after it: rounding 178 up to 180 is fine, rounding past a cap of
+             180 to 185 is the cap not meaning anything. */
+          if (cap != null) len = Math.min(len, cap - dayUsed);
+          if (at + len > run[1]) len = run[1] - at;
           if (len < MIN_SIT) { at = run[1]; break; }
 
           const partOf = ch && need > len;
@@ -716,6 +930,9 @@ const Timetable = (function () {
             colour: best.colour, kind: "revision", mine: false
           });
           owed[best.id] -= len;
+          dayUsed += len;
+          seenToday[best.id] = true;
+          if (ch && ch.group) lastGroup[best.id] = ch.group;
           made++;
           at += len + brk;
         }
@@ -901,6 +1118,63 @@ const Timetable = (function () {
       s.prefs.busy = s.prefs.busy.filter(function (b) { return b.id !== id; });
     });
   }
+  function setRules(patch) {
+    return mutate(function (s) {
+      s.prefs.rules = Object.assign(defaultRules(), s.prefs.rules || {}, patch || {});
+    });
+  }
+
+  /* ------------------------------------------------------------
+     Recommended, for everything at once
+
+     Someone who does not want to think about any of this should
+     still get a timetable that is better than nothing, and the
+     answers are not mysterious: cap the day a little under what
+     the evening holds so it survives a bad day, do not force one
+     subject a day because most people are sitting several papers,
+     let past papers ramp, and alternate the halves of any subject
+     that has halves.
+     ------------------------------------------------------------ */
+  function recommendRules() {
+    const list = subjects().filter(function (x) { return !x.off; });
+
+    /* the busiest day the week actually has, rounded down to a half hour */
+    let mostFree = 0;
+    for (let d = 0; d < 7; d++) mostFree = Math.max(mostFree, placeableOn(d));
+    const cap = mostFree ? Math.max(60, Math.floor((mostFree * 0.85) / 30) * 30) : 180;
+
+    const alternate = {};
+    list.forEach(function (x) {
+      /* only where the specification really is in two halves */
+      if (groupsOf(x.id).length >= 2) alternate[x.id] = true;
+    });
+
+    return Object.assign(defaultRules(), {
+      dailyCapMins: cap,
+      dayCaps: {},
+      subjectsPerDay: 0,
+      subjectDays: {},
+      urgentDays: 10,
+      paperRamp: true,
+      examQuestions: true,
+      examQuestionEvery: 4,
+      alternate: alternate
+    });
+  }
+
+  /* The named halves of a subject's specification, if it has any. Geography's
+     papers carry Physical and Human; Maths and Economics carry nothing, and
+     alternating is meaningless for them. */
+  function groupsOf(id) {
+    try {
+      const s = Subjects.get(id);
+      if (!s || typeof s.spec !== "function") return [];
+      const seen = {};
+      (s.spec() || []).forEach(function (p) { if (p.group) seen[p.group] = true; });
+      return Object.keys(seen);
+    } catch (e) { return []; }
+  }
+
   function setPrefs(patch) {
     return mutate(function (s) { Object.assign(s.prefs, patch); });
   }
@@ -951,6 +1225,27 @@ const Timetable = (function () {
     return describe(data);
   }
 
+  /* Blocks brought in from elsewhere, added to the days rather than replacing
+     them. They arrive marked as yours, so the next Generate builds revision
+     around them; anything already sitting at the same time is cleared out of
+     the way, because two blocks at eight o'clock is not a timetable. */
+  function mergeDays(days) {
+    snapshot();
+    return mutate(function (s) {
+      Object.keys(days || {}).forEach(function (iso) {
+        const incoming = days[iso] || [];
+        const existing = (s.days[iso] || []).filter(function (b) {
+          return !incoming.some(function (n) {
+            return overlaps(toMins(b.from), toMins(b.to), toMins(n.from), toMins(n.to));
+          });
+        });
+        s.days[iso] = existing.concat(incoming)
+          .sort(function (a, b) { return toMins(a.from) - toMins(b.from); });
+      });
+      s.setUp = true;
+    });
+  }
+
   function clearAll() {
     state = blank();
     save();
@@ -969,10 +1264,13 @@ const Timetable = (function () {
     rankWork: rankWork, tariffTrouble: tariffTrouble,
     addBlock: addBlock, updateBlock: updateBlock, removeBlock: removeBlock, moveBlock: moveBlock,
     slotsFor: slotsFor, slotsToday: slotsToday,
+    rules: rules, setRules: setRules, defaultRules: defaultRules,
+    recommendRules: recommendRules, groupsOf: groupsOf,
     setSubject: setSubject, setWindow: setWindow,
     addBusy: addBusy, updateBusy: updateBusy, removeBusy: removeBusy, setPrefs: setPrefs,
     addFlex: addFlex, removeFlex: removeFlex,
     stepsFor: stepsFor, rankChapters: rankChapters, chapterQueues: chapterQueues,
-    exportData: exportData, importData: importData, describe: describe, clearAll: clearAll
+    exportData: exportData, importData: importData, mergeDays: mergeDays,
+    describe: describe, clearAll: clearAll
   };
 })();

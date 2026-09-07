@@ -174,12 +174,35 @@ const Scheduler = (function () {
     return out.charAt(0).toUpperCase() + out.slice(1) + ".";
   }
 
-  /* ---------- daily budget ---------- */
+  /* ---------- daily budget ----------
+
+     Once a timetable exists it is the answer to "how long am I doing this
+     subject today", and the plan asking a different question is how the two
+     screens end up disagreeing in front of you. So the timetable wins where
+     it has an opinion: what it gave THIS subject on that day.
+
+     A day the timetable gave this subject nothing is a real answer too - it
+     is another subject's day - but only when the timetable has something to
+     say about that day at all. An empty day beyond the generated span falls
+     back to the setting, or every date past the fortnight would read zero. */
   function budgetFor(dateIso) {
     const s = Store.settings();
     if (s.dailyOverrides[dateIso] != null) return s.dailyOverrides[dateIso];
     const wd = Metrics.parseISO(dateIso).getDay();
     if (s.restDays.indexOf(wd) >= 0) return 0;
+
+    if (typeof Timetable !== "undefined" && typeof Subjects !== "undefined") {
+      try {
+        const tt = Timetable.get();
+        if (tt && tt.setUp && tt.days && tt.days[dateIso]) {
+          const totals = Timetable.dayTotals(dateIso);
+          const mine = totals[Subjects.currentId()] || 0;
+          /* a day with blocks on it, none of them this subject's, is a zero
+             this subject should honour */
+          if (Object.keys(totals).length) return mine;
+        }
+      } catch (e) { /* fall through to the setting */ }
+    }
     return s.dailyMinutes;
   }
 

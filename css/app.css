@@ -2896,3 +2896,57 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 /* the synoptic paper's stimulus, rendered from the paper itself */
 .cs-pages{display:flex;flex-direction:column;gap:10px;margin-top:10px}
 .cs-pages canvas{width:100%;height:auto;border-radius:8px;border:1px solid var(--border);background:#fff}
+
+/* ---------- the timetable's rules ---------- */
+.tt-rule{
+  display:flex;align-items:center;gap:12px;padding:11px 0;
+  border-top:1px solid var(--border);
+}
+.tt-rule:first-of-type{border-top:0}
+.tt-rule-main{flex:1 1 auto;min-width:0}
+.tt-rule-main b{display:block;font-size:13.5px}
+.tt-rule-main small{display:block;color:var(--muted);font-size:11.5px;line-height:1.5;margin-top:2px}
+.tt-rule .input{max-width:170px}
+.tt-num{max-width:66px;text-align:center}
+
+.tt-rule-head{
+  margin:16px 0 8px;font-size:11px;font-weight:700;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--faint);
+}
+.tt-caps{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:8px}
+.tt-cap{
+  display:flex;align-items:center;gap:8px;padding:8px 10px;
+  background:var(--surface-2);border-radius:9px;
+}
+.tt-cap b{flex:0 0 34px;font-size:12.5px}
+.tt-cap .tt-hm .input{width:52px}
+.tt-cap span{flex:0 0 auto;margin-left:auto;text-align:right;white-space:nowrap}
+
+.tt-rule-subs{display:flex;flex-direction:column;gap:8px}
+.tt-rule-sub{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:9px 11px;background:var(--surface-2);border-radius:10px;
+}
+.tt-daypick{gap:4px}
+.tt-daypick .chip{padding:4px 8px;font-size:11.5px}
+
+/* ---------- bringing a timetable in ---------- */
+.ttp{
+  padding:10px 12px;border-radius:9px;background:var(--surface-2);
+  border:1px solid var(--border);font-size:12.5px;line-height:1.55;
+}
+.ttp b{display:block;margin-bottom:3px}
+.ttp span{color:var(--muted)}
+.ttp.ok{background:var(--green-soft);border-color:transparent}
+.ttp.ok b{color:var(--green)}
+.ttp.bad{background:var(--amber-soft);border-color:transparent}
+.ttp.bad b{color:var(--amber)}
+.ttp-rows{margin-top:9px;display:flex;flex-direction:column;gap:3px}
+.ttp-rows > div{
+  display:flex;gap:10px;align-items:baseline;font-size:12px;
+  padding:5px 9px;background:var(--surface-2);border-radius:7px;
+}
+.ttp-rows b{flex:0 0 82px;margin:0}
+.ttp-rows span{flex:1 1 auto;color:var(--muted)}
+.ttp-said{margin:9px 0 0;padding-left:18px}
+.ttp-said li{margin:4px 0;font-size:12.5px;line-height:1.5}

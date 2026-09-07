@@ -936,5 +936,45 @@ const PdfViewer = (function () {
     });
   }
 
-  return { mount: mount, mountAll: mountAll, renderPages: renderPages };
+  /* The text of a whole PDF, line by line. Used when a document is the thing
+     being read rather than shown — a timetable someone was given as a PDF.
+     A scan has no text layer, so this comes back empty rather than wrong,
+     and the caller is expected to say so. */
+  function textOf(src, maxPages) {
+    return ensureLib().then(function () {
+      return window.pdfjsLib.getDocument(src).promise;
+    }).then(function (pdf) {
+      const last = Math.min(pdf.numPages, maxPages || 20);
+      let chain = Promise.resolve(), out = [];
+      for (let p = 1; p <= last; p++) {
+        (function (n) {
+          chain = chain.then(function () {
+            return pdf.getPage(n).then(function (page) {
+              return page.getTextContent().then(function (tc) {
+                /* items carry their own position, and a timetable read as one
+                   run of words is unusable, so a drop down the page starts a
+                   new line */
+                let line = [], lastY = null;
+                tc.items.forEach(function (it) {
+                  const y = it.transform ? Math.round(it.transform[5]) : null;
+                  if (lastY !== null && y !== null && Math.abs(y - lastY) > 3) {
+                    out.push(line.join(" ").replace(/\s+/g, " ").trim());
+                    line = [];
+                  }
+                  if (it.str && it.str.trim()) line.push(it.str.trim());
+                  lastY = y;
+                });
+                if (line.length) out.push(line.join(" ").replace(/\s+/g, " ").trim());
+              });
+            });
+          });
+        })(p);
+      }
+      return chain.then(function () {
+        return out.filter(Boolean).join("\n");
+      });
+    });
+  }
+
+  return { mount: mount, mountAll: mountAll, renderPages: renderPages, textOf: textOf };
 })();
