@@ -51,6 +51,14 @@ const PacksView = (function () {
   const modelOpen = {};          // which model answers are unfolded
 
   function minutesFor(marks) { return Math.round(marks * ECO_MINUTES_PER_MARK); }
+
+  /* Counted rather than written down, so adding a series does not leave the
+     heading claiming a number that stopped being true. */
+  function paperCount() {
+    const seen = {};
+    ECO_QUESTIONS.forEach(function (q) { seen[q.paper + "|" + q.series] = true; });
+    return Object.keys(seen).length;
+  }
   function byId(id) { return ECO_QUESTIONS.filter(function (q) { return q.id === id; })[0]; }
 
   /* What you might type looking for a question: a word from it, the topic it
@@ -504,6 +512,15 @@ const PacksView = (function () {
 
   /* ---------- the case study ---------- */
   function caseFor(q) {
+    /* Paper 3's case studies are not transcribed. Their figures are charts
+       and their extracts run to pages, and a retyped copy that drifts from
+       the paper would be worse than none, so the panel shows the paper's own
+       stimulus pages instead. */
+    if (!q.caseKey && q.stimFrom) {
+      return { pages: true, title: "Section " + q.section + " of the paper",
+               figures: [], extracts: [],
+               source: { pdf: q.pdf, from: q.stimFrom, to: q.stimTo } };
+    }
     if (!q.caseKey || typeof ECO_CASE_STUDIES === "undefined") return null;
     const study = ECO_CASE_STUDIES[q.caseKey];
     if (!study) return null;
@@ -617,6 +634,16 @@ const PacksView = (function () {
   }
 
   function caseHtml(cs, key) {
+    /* Rendered from the paper itself: the figures and extracts exactly as
+       they are printed, which on the synoptic paper is the only honest way
+       to show them. */
+    if (cs.pages) {
+      return '<div class="cs-head">' + UI.icon("info") + '<span>Case Study</span></div>' +
+        (cs.title ? '<h4 class="cs-title">' + UI.esc(cs.title) + '</h4>' : "") +
+        /* the paths carry spaces and brackets, so they are encoded once here */
+        '<div class="cs-pages" data-question-pdf="' + UI.esc(encodeURI(cs.source.pdf)) + '" ' +
+          'data-question-from="' + cs.source.from + '" data-question-to="' + cs.source.to + '"></div>';
+    }
     const drawn = (typeof ECO_FIGURE !== "undefined") ? ECO_FIGURE.forCase(key) : [];
     const byLabel = {};
     drawn.forEach(function (d) { byLabel[d.label] = d; });
@@ -872,7 +899,8 @@ const PacksView = (function () {
     root.innerHTML =
       '<div class="card">' +
         '<div class="card-head"><div class="card-title">Question packs</div>' +
-          '<div class="right"><span class="tiny faint">' + ECO_QUESTIONS.length + ' questions from 18 past papers</span></div>' +
+          '<div class="right"><span class="tiny faint">' + ECO_QUESTIONS.length +
+            ' questions from ' + paperCount() + ' past papers</span></div>' +
         '</div>' +
         '<div class="tiny muted">Every question, mark scheme and examiner report is Pearson’s own, from the ' +
           'Edexcel 9EC0 papers. Pick a tariff and drill it.</div>' +
@@ -889,7 +917,8 @@ const PacksView = (function () {
           }).join("") +
         '</div>' +
         '<div class="row wrap" style="gap:7px;margin-top:9px">' +
-          [["all", "Both papers"], ["1", "Paper 1 · micro"], ["2", "Paper 2 · macro"]].map(function (p) {
+          [["all", "All papers"], ["1", "Paper 1 · micro"], ["2", "Paper 2 · macro"],
+           ["3", "Paper 3 · synoptic"]].map(function (p) {
             return '<button class="btn btn-sm' + (paperFilter === p[0] ? " btn-primary" : "") + '" ' +
               'data-action="pack-paper" data-val="' + p[0] + '">' + p[1] + '</button>';
           }).join("") +

@@ -2892,3 +2892,7 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 
 .ma-foot{margin-top:11px;font-size:11px;color:var(--faint);font-style:italic;line-height:1.55}
 
+
+/* the synoptic paper's stimulus, rendered from the paper itself */
+.cs-pages{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.cs-pages canvas{width:100%;height:auto;border-radius:8px;border:1px solid var(--border);background:#fff}

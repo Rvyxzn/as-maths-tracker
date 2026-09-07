@@ -120,7 +120,13 @@ function questionsIn(text) {
          couple indent the whole table a few characters. The answer column
          sits further in than that, so a small indent is still the margin. */
       const indent = line.search(/\S/);
-      const start = indent >= 0 && indent <= 6 ? t.match(MARKER) : null;
+      /* One paper prints a part of question 2 as a bare "(d)", having stated
+         the question number only in the header row above it. At the margin
+         that is still a part marker, and it is the only place in twenty-seven
+         mark schemes where a bare marker appears there. */
+      const bare = indent >= 0 && indent <= 6 && cur ? t.match(/^\(([a-e])\)(?:\s+(.*))?$/) : null;
+      const start = bare ? [t, cur.q, bare[1], bare[2] || ""]
+                  : indent >= 0 && indent <= 6 ? t.match(MARKER) : null;
       if (start) {
         cur = { q: start[1], part: start[2] || "", lines: [] };
         out.push(cur);
