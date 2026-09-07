@@ -19,11 +19,15 @@
    becomes settings, and the settings are shown before anything is
    changed rather than applied silently.
 
-   WHAT THIS IS NOT. It is not a language model. It matches a list
-   of phrasings, and it tells you what it did not understand
-   instead of guessing. A scanned image of a timetable has no text
-   in it at all and there is nothing here that can help with that;
-   the honest answer is to say so.
+   WHAT THIS IS NOT. It is not a language model. It reads a clause
+   at a time and offers each one to every rule, and whatever
+   matched nothing comes back in a list. That last part is the
+   important one: a reader that quietly drops the sentence it did
+   not understand is worse than one that cannot read it at all,
+   because you carry on believing it was set up.
+
+   A photo has no text in it, so it goes through Ocr first and
+   arrives here as text like anything else.
    ============================================================ */
 
 const TimetableAdopt = (function () {
@@ -305,128 +309,230 @@ const TimetableAdopt = (function () {
   /* ------------------------------------------------------------
      reading a description
 
-     Each rule is one phrasing test. A sentence that matches
-     nothing is reported back rather than swallowed, because
-     "I set it up" when it did not is the failure that matters.
+     A clause at a time, and each clause is offered to every rule
+     rather than to the first one that half-matches. One clause
+     can legitimately say two things - "no maths on fridays" is
+     both a subject and a day - and the rule that fires is the one
+     whose evidence is actually present.
+
+     Whatever matched nothing is handed back. That is the part
+     that matters: a reader which quietly drops the sentence it
+     did not understand is worse than one that cannot read it,
+     because you carry on believing it was set up.
      ------------------------------------------------------------ */
 
+  /* Everything that can end a clause. "but" and "however" always start a new
+     one; a comma only does when what follows begins a fresh statement, so
+     "Monday, Wednesday and Friday" survives intact. */
+  const CLAUSE = new RegExp(
+    "[.;!?\\n]+" +
+    "|\\s+(?:but|however|although|though|whereas)\\s+" +
+    /* "and" splits only in front of a number, so "four hours of maths and
+       three of economics" becomes two clauses while "an hour and a half"
+       stays one - "half" is a number word, "a" is not. */
+    "|\\s+and\\s+(?=(?:\\d|one|two|three|four|five|six|seven|eight|nine|ten|twelve)\\b)" +
+    "|\\s*,\\s*(?=(?:and\\s+|then\\s+|also\\s+)?(?:" +
+      "i\\b|my\\b|no\\b|not\\b|never\\b|nothing\\b|only\\b|just\\b|do\\b|don'?t\\b|dont\\b|" +
+      "keep\\b|make\\b|start\\b|finish\\b|end\\b|stop\\b|alternate\\b|swap\\b|switch\\b|leave\\b|" +
+      "free\\b|available\\b|more\\b|less\\b|fewer\\b|prefer\\b|want\\b|need\\b|put\\b|give\\b|" +
+      "one\\b|two\\b|three\\b|four\\b|five\\b|six\\b|seven\\b|eight\\b|nine\\b|ten\\b|an?\\s|\\d" +
+    "))", "g");
+
+  /* Words that make a clause a limit rather than a plan. */
+  const CAPPY = /\b(a|per|each|every|max|maximum|cap|capped|limit|limited|only|just|no more than|at most|up to|can|could|able|do|doing|revis|study|studying|work|working)\b/;
+
+  /* A named commitment. Longest first, so "UCAS personal statement" does not
+     come back as "UCAS". */
+  const OWN = new RegExp("\\b(" + [
+    "ucas personal statement", "personal statement", "extended project", "coursework",
+    "epq", "ucas", "nea", "essay", "reading", "piano", "guitar", "violin", "drums",
+    "gym", "football", "rugby", "netball", "swimming", "athletics", "training",
+    "driving lesson", "driving", "tutoring", "tutor", "work", "job", "shift",
+    "club", "society", "volunteering", "church", "mosque", "temple"
+  ].join("|") + ")\\b");
+
+  /* Things that own a fixed slot rather than a length: "work Saturday 9 to 5". */
+  function subjectsNamed(text) {
+    const t = String(text || "");
+    const out = [];
+    (typeof Subjects !== "undefined" ? Subjects.list() : []).forEach(function (s) {
+      const names = [s.name, s.short, s.id].filter(Boolean)
+        .map(function (x) { return String(x).toLowerCase().replace(/^a-?level\s*/, ""); });
+      const hit = names.some(function (n) {
+        return n.length >= 3 && new RegExp("\\b" + n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).test(t);
+      });
+      if (hit) out.push(s);
+    });
+    return out;
+  }
+
   function describe(text) {
-    const src = String(text || "").toLowerCase();
-    if (!src.trim()) return { rules: {}, windows: {}, flex: [], said: [], missed: [] };
+    const src = String(text || "").toLowerCase().replace(/[‘’]/g, "'");
+    if (!src.trim()) return { rules: {}, windows: {}, flex: [], busy: [], said: [], missed: [] };
 
     const rules = {};
     const windows = {};
     const flex = [];
+    const busy = [];
     const said = [];
     const missed = [];
 
-    /* sentences, so "3 hours a day" and "one subject a day" do not fight */
-    /* Sentences, then the joins people use instead of a full stop. "but" is
-       always a new clause; "and a half" is not, so "and" only splits when a
-       number follows it. */
-    const parts = src
-      .split(/[.;\n]+|\s+but\s+|,\s*(?=(?:and\s+|then\s+)?(?:i\b|my\b|no\b|nothing\b|only\b|one\b|two\b|three\b|do\b|keep\b|start\b|finish\b|alternate\b|leave\b|free\b|more\b|less\b|\d))/)
-                     .map(function (s) { return s.trim(); })
-                     .filter(function (s) { return s.length > 2; });
+    const parts = src.split(CLAUSE)
+      .map(function (s) { return String(s || "").replace(/^\s*(and|then|also|plus)\s+/, "").trim(); })
+      .filter(function (s) { return s.length > 2; });
 
     parts.forEach(function (p) {
       let hit = false;
 
-      /* a cap, either for the whole week or for named days */
-      const cap = durationOf(p);
-      /* A length attached to a named activity is that activity's length, not
-         a limit on the day: "45 minutes of UCAS" is handled further down. */
-      const isActivity = /\b(ucas|statement|essay|coursework|nea|reading|piano|guitar|gym|driving|club|training)\b/.test(p);
-      const capish = /\b(a|per|each|every|max|maximum|cap|limit|only|no more than|up to|can|could|do|doing|revis|study|work)\b/.test(p);
-      const capDays = daysIn(p);
-      /* A length with days on it and no activity attached is a limit for
-         those days: "five hours at weekends" needs no further keyword. */
-      if (cap && !isActivity && (capish || capDays.length)) {
-        const on = capDays;
-        if (on.length) {
-          rules.dayCaps = rules.dayCaps || {};
-          on.forEach(function (d) { rules.dayCaps[d] = cap; });
-          said.push(fmt(cap) + " on " + on.map(dayName).join(", ") + ".");
-          hit = true;
-        } else if (/\bday\b/.test(p) || /\b(a|per|each|every|max|maximum|cap|limit|only)\b/.test(p)) {
-          rules.dailyCapMins = cap;
-          said.push("At most " + fmt(cap) + " on any day.");
-          hit = true;
-        }
-      }
+      const mins = durationOf(p);
+      const days = daysIn(p);
+      const subs = subjectsNamed(p);
+      const own = OWN.exec(p);
+      const negative = /\b(no|not|never|nothing|don'?t|dont|avoid|skip)\b/.test(p);
+      const range = /(?:^|\s|from\s)(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm)?)\s*(?:-|–|—|to|until|till)\s*(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm)?)/.exec(p);
+      const at = /\bat\s*(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm)?)/.exec(p);
 
-      /* one subject a day */
-      const per = /\b(one|1|two|2|three|3)\s+subjects?\s+(?:a|per|each)\s+day\b/.exec(p);
-      if (per) {
-        const n = { one: 1, "1": 1, two: 2, "2": 2, three: 3, "3": 3 }[per[1]];
-        rules.subjectsPerDay = n;
-        said.push(n === 1 ? "One subject a day." : n + " subjects a day.");
+      /* ---- a day off ----
+
+         A clause that OPENS with the refusal is about the day whatever else
+         it mentions: "nothing on Saturdays, they are for work" names a
+         commitment but is not scheduling one. */
+      const opensNegative = /^(no|nothing|never|not)\b/.test(p);
+      if (days.length && negative && !subs.length && (opensNegative || !own) &&
+          (/\b(revis|study|work|anything|nothing)\b/.test(p) || opensNegative)) {
+        days.forEach(function (d) { windows[d] = Object.assign({}, windows[d], { off: true, byName: true }); });
+        said.push("Nothing on " + days.map(dayName).join(", ") + ".");
         hit = true;
-      } else if (/\bonly (?:do )?one subject\b/.test(p)) {
-        rules.subjectsPerDay = 1;
-        said.push("One subject a day.");
+      }
+      if (days.length && /\b(day off|days off|rest day|free day|day free)\b/.test(p)) {
+        days.forEach(function (d) { windows[d] = Object.assign({}, windows[d], { off: true, byName: true }); });
+        said.push(days.map(dayName).join(", ") + " off.");
         hit = true;
       }
 
-      /* days off. "Nothing on Fridays" says it without ever using the word
-         revision, and that is how most people write it. */
-      if (/\b(no|nothing|not?|never)\b.*\b(revis|work|study)/.test(p) ||
-          /^\s*(no|nothing|never)\b/.test(p) ||
-          /\b(day|days)? ?off\b/.test(p) || /\brest\b/.test(p) || /\bfree day\b/.test(p)) {
-        const on = daysIn(p);
-        if (on.length) {
-          on.forEach(function (d) { windows[d] = Object.assign({}, windows[d], { off: true }); });
-          said.push("Nothing on " + on.map(dayName).join(", ") + ".");
-          hit = true;
-        }
-      }
-
-      /* the window itself: "free from 4pm to 9pm on weekdays" */
-      const win = /(?:from\s*)?(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm)?)\s*(?:-|–|—|to|until|till)\s*(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm)?)/.exec(p);
-      if (win && /\b(free|available|can|revise|study|work|from)\b/.test(p) && !cap) {
-        const f = timeOf(win[1]), t = timeOf(win[2]);
-        if (f != null && t != null && t > f) {
-          const on = daysIn(p);
-          const list = on.length ? on : [0, 1, 2, 3, 4, 5, 6];
-          list.forEach(function (d) {
-            /* "nothing on Friday" is a statement about Friday; "free 4 to 9
-               on weekdays" is a statement about weekdays that happens to
-               include it. The specific one holds. */
-            const wasOff = windows[d] && windows[d].off;
-            windows[d] = Object.assign({}, windows[d], { from: clock(f), to: clock(t) });
-            if (!wasOff) windows[d].off = false;
-          });
-          said.push("Free " + clock(f) + " to " + clock(t) + " on " +
-                    (on.length ? on.map(dayName).join(", ") : "every day") + ".");
-          hit = true;
-        }
-      }
-
-      /* something of your own, every week */
-      /* Longest phrasing first, so "UCAS personal statement" does not come
-         back as "Ucas". */
-      const own = /\b(ucas personal statement|personal statement|coursework|ucas|nea|essay|reading|piano|guitar|gym|driving|work|job|club|training)\b/.exec(p);
-      if (own) {
-        const mins = durationOf(p);
-        const on = daysIn(p);
-        if (mins && on.length) {
-          const at = /\bat\s*(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm)?)/.exec(p);
-          let label = own[1];
-          if (label === "ucas" && /personal statement/.test(p)) label = "ucas personal statement";
-          label = title(label);
-          flex.push({ label: label, mins: mins, days: on,
+      /* ---- a named commitment with a length, or with a fixed slot ---- */
+      if (own && !hit) {
+        let label = own[1];
+        if (label === "ucas" && /personal statement/.test(p)) label = "ucas personal statement";
+        label = title(label);
+        if (range && days.length) {
+          const f = timeOf(range[1]), t2 = timeOf(range[2]);
+          if (f != null && t2 != null && t2 > f) {
+            busy.push({ label: label, days: days, from: clock(f), to: clock(t2) });
+            said.push(label + " on " + days.map(dayName).join(", ") + ", " + clock(f) + " to " + clock(t2) + ".");
+            hit = true;
+          }
+        } else if (mins && days.length) {
+          flex.push({ label: label, mins: mins, days: days,
                       prefer: at ? "at" : "end", at: at ? clock(timeOf(at[1])) : null });
-          said.push(fmt(mins) + " of " + label + " on " + on.map(dayName).join(", ") +
+          said.push(fmt(mins) + " of " + label + " on " + days.map(dayName).join(", ") +
                     (at ? " at " + clock(timeOf(at[1])) : "") + ".");
           hit = true;
         }
       }
 
-      /* alternating the halves of a subject */
-      if (/\balternat|\bswap\b|\bswitch between\b|\bthen the other\b/.test(p) ||
+      /* ---- which days a subject may take ---- */
+      if (subs.length && days.length && !mins) {
+        rules.subjectDays = rules.subjectDays || {};
+        subs.forEach(function (s) {
+          if (negative) {
+            /* "no maths on fridays" is every day except those */
+            const all = [0, 1, 2, 3, 4, 5, 6].filter(function (d) { return days.indexOf(d) < 0; });
+            rules.subjectDays[s.id] = all;
+            said.push(s.name + ": not on " + days.map(dayName).join(", ") + ".");
+          } else {
+            rules.subjectDays[s.id] = days.slice();
+            said.push(s.name + ": only on " + days.map(dayName).join(", ") + ".");
+          }
+        });
+        hit = true;
+      }
+
+      /* ---- how long a subject gets in a week ---- */
+      if (subs.length && mins && /\b(a|per|each|every)\s*week\b/.test(p)) {
+        rules.subjectMins = rules.subjectMins || {};
+        subs.forEach(function (s) {
+          rules.subjectMins[s.id] = mins;
+          said.push(s.name + ": " + fmt(mins) + " a week.");
+        });
+        hit = true;
+      }
+
+      /* ---- a cap on the day ---- */
+      if (mins && !own && !hit && (CAPPY.test(p) || days.length)) {
+        if (days.length) {
+          rules.dayCaps = rules.dayCaps || {};
+          days.forEach(function (d) { rules.dayCaps[d] = mins; });
+          said.push("At most " + fmt(mins) + " on " + days.map(dayName).join(", ") + ".");
+          hit = true;
+        } else if (/\bday\b/.test(p) || CAPPY.test(p)) {
+          rules.dailyCapMins = mins;
+          said.push("At most " + fmt(mins) + " on any day.");
+          hit = true;
+        }
+      }
+
+      /* ---- how many subjects in a day ---- */
+      const per = new RegExp("\\b(one|1|two|2|three|3|four|4)\\s+subjects?\\s+(?:a|per|each)\\s+day\\b").exec(p);
+      if (per) {
+        const n = { one: 1, "1": 1, two: 2, "2": 2, three: 3, "3": 3, four: 4, "4": 4 }[per[1]];
+        rules.subjectsPerDay = n;
+        said.push(n === 1 ? "One subject a day." : n + " subjects a day.");
+        hit = true;
+      } else if (/\b(only|just)\s+(?:do\s+)?one subject\b/.test(p) || /\bone subject (?:a|per|each) day\b/.test(p)) {
+        rules.subjectsPerDay = 1;
+        said.push("One subject a day.");
+        hit = true;
+      }
+
+      /* ---- when the day is free ---- */
+      if (range && !own && !hit) {
+        const f = timeOf(range[1]), t2 = timeOf(range[2]);
+        if (f != null && t2 != null && t2 > f) {
+          const list = days.length ? days : [0, 1, 2, 3, 4, 5, 6];
+          list.forEach(function (d) {
+            /* "nothing on Friday" is about Friday; "free 4 to 9 on weekdays"
+               is about weekdays and happens to include it, so the one that
+               named the day holds */
+            const named = windows[d] && windows[d].byName;
+            windows[d] = Object.assign({}, windows[d], { from: clock(f), to: clock(t2) });
+            if (!named) windows[d].off = false;
+          });
+          said.push("Free " + clock(f) + " to " + clock(t2) + " on " +
+                    (days.length ? days.map(dayName).join(", ") : "every day") + ".");
+          hit = true;
+        }
+      }
+
+      /* ---- one end of the day only ---- */
+      const startAt = /\b(?:start|begin|from|after)\b[^\d]{0,12}(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm)?)/.exec(p);
+      const endAt = /\b(?:finish|end|stop|until|till|by|before)\b[^\d]{0,12}(\d{1,2}(?:[:.]\d{2})?\s*(?:am|pm)?)/.exec(p);
+      if (!hit && (startAt || endAt)) {
+        const list = days.length ? days : [0, 1, 2, 3, 4, 5, 6];
+        const f = startAt ? timeOf(startAt[1]) : null;
+        const t2 = endAt ? timeOf(endAt[1]) : null;
+        if (f != null || t2 != null) {
+          list.forEach(function (d) {
+            const cur = windows[d] || {};
+            windows[d] = Object.assign({}, cur);
+            if (f != null) windows[d].from = clock(f);
+            if (t2 != null) windows[d].to = clock(t2);
+            if (!cur.byName) windows[d].off = false;
+          });
+          said.push((f != null ? "Start at " + clock(f) : "") +
+                    (f != null && t2 != null ? ", " : "") +
+                    (t2 != null ? "finish by " + clock(t2) : "") + " on " +
+                    (days.length ? days.map(dayName).join(", ") : "every day") + ".");
+          hit = true;
+        }
+      }
+
+      /* ---- alternating the halves of a subject ---- */
+      if (/\balternat|\bswap\b|\bswitch between\b|\bthen the other\b|\bone then the\b/.test(p) ||
           (/\bhuman\b/.test(p) && /\bphysical\b/.test(p))) {
         const alt = {};
-        (typeof Subjects !== "undefined" ? Subjects.list() : []).forEach(function (s) {
+        const only = subs.length ? subs : (typeof Subjects !== "undefined" ? Subjects.list() : []);
+        only.forEach(function (s) {
           if (Timetable.groupsOf(s.id).length >= 2) alt[s.id] = true;
         });
         if (Object.keys(alt).length) {
@@ -436,29 +542,38 @@ const TimetableAdopt = (function () {
         }
       }
 
-      /* past papers and exam questions */
-      if (/\bpast papers?\b/.test(p)) {
-        rules.paperRamp = !/\b(no|don'?t|dont|never|fewer|less)\b/.test(p);
-        said.push(rules.paperRamp ? "More past papers as each exam nears."
-                                  : "No automatic past papers.");
+      /* ---- past papers, exam questions, block length, breaks ---- */
+      if (/\bpast papers?\b|\bwhole papers?\b|\bfull papers?\b/.test(p)) {
+        rules.paperRamp = !negative;
+        said.push(rules.paperRamp ? "More past papers as each exam nears." : "No automatic past papers.");
         hit = true;
       }
-      if (/\bexam questions?\b/.test(p)) {
-        rules.examQuestions = !/\b(no|don'?t|dont|never)\b/.test(p);
-        said.push(rules.examQuestions ? "Exam-question sittings of their own."
-                                      : "No separate exam-question sittings.");
+      if (/\bexam questions?\b|\bquestion practice\b/.test(p)) {
+        rules.examQuestions = !negative;
+        said.push(rules.examQuestions ? "Exam-question sittings of their own." : "No separate exam-question sittings.");
         hit = true;
       }
-
-      /* block length */
-      const blk = /\b(\d{2,3})\s*(?:min|mins|minute|minutes)\s*(?:blocks?|sessions?|sittings?)\b/.exec(p);
-      if (blk) { rules.blockMins = +blk[1]; said.push(blk[1] + "-minute blocks."); hit = true; }
+      const blk = new RegExp(NUM + "\\s*(?:min|mins|minute|minutes)?\\s*(?:long\\s*)?(?:blocks?|sessions?|sittings?|chunks?)\\b").exec(p);
+      if (blk && !/\bsubjects?\b/.test(p)) {
+        const n = Math.round(amount(blk[1]));
+        if (n >= 15 && n <= 240) { rules.blockMins = n; said.push(n + "-minute blocks."); hit = true; }
+      }
+      const brk = new RegExp("(?:break|rest)s?\\s*(?:of\\s*)?" + NUM + "\\s*(?:min|mins|minute|minutes)?" +
+                             "|" + NUM + "\\s*(?:min|mins|minute|minutes)\\s*breaks?").exec(p);
+      if (brk) {
+        const n = Math.round(amount(brk[1] || brk[2]));
+        if (n >= 0 && n <= 60) { rules.breakMins = n; said.push(n + "-minute breaks."); hit = true; }
+      }
 
       if (!hit) missed.push(p);
     });
 
-    return { rules: rules, windows: windows, flex: flex, said: said, missed: missed };
+    /* the marker used to decide which statement wins is not a setting */
+    Object.keys(windows).forEach(function (d) { delete windows[d].byName; });
+
+    return { rules: rules, windows: windows, flex: flex, busy: busy, said: said, missed: missed };
   }
+
 
   function dayName(d) { return Timetable.DAY_NAMES[d]; }
   /* Sentence case, except for the initialisms, which look wrong any other
@@ -482,10 +597,14 @@ const TimetableAdopt = (function () {
     if (parsed.rules && Object.keys(parsed.rules).length) {
       const r = Object.assign({}, parsed.rules);
       const blockMins = r.blockMins; delete r.blockMins;
+      const breakMins = r.breakMins; delete r.breakMins;
+      delete r.subjectMins;
+      if (r.subjectDays) r.subjectDays = Object.assign({}, Timetable.rules().subjectDays || {}, r.subjectDays);
       if (r.dayCaps) r.dayCaps = Object.assign({}, Timetable.rules().dayCaps || {}, r.dayCaps);
       if (r.alternate) r.alternate = Object.assign({}, Timetable.rules().alternate || {}, r.alternate);
       if (Object.keys(r).length) Timetable.setRules(r);
       if (blockMins) Timetable.setPrefs({ blockMins: blockMins });
+      if (breakMins != null) Timetable.setPrefs({ breakMins: breakMins });
       done.push("rules");
     }
     Object.keys(parsed.windows || {}).forEach(function (d) {
@@ -493,6 +612,14 @@ const TimetableAdopt = (function () {
       done.push("window");
     });
     (parsed.flex || []).forEach(function (f) { Timetable.addFlex(f); done.push("commitment"); });
+    (parsed.busy || []).forEach(function (b) { Timetable.addBusy(b); done.push("commitment"); });
+    /* a subject's own weekly hours are a subject setting, not a rule */
+    if (parsed.rules && parsed.rules.subjectMins) {
+      Object.keys(parsed.rules.subjectMins).forEach(function (id) {
+        Timetable.setSubject(id, { mins: parsed.rules.subjectMins[id] });
+        done.push("subject");
+      });
+    }
     return done;
   }
 

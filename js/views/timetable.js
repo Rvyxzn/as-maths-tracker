@@ -834,15 +834,45 @@ const TimetableView = (function () {
      arrives as a document can be read like a pasted one. A scan has no text
      layer at all and there is nothing to be done about that here; the dialog
      says so rather than failing silently. */
-  function pdfText(file) {
-    return new Promise(function (resolve, reject) {
+  /* The text of a dropped file, whatever kind it is.
+
+     A PDF is tried as a document first and only read by eye if it has no text
+     layer, because reading the text layer is exact and recognition is not. A
+     picture has no other option. `onStage` reports which of those is
+     happening, since fetching the recogniser the first time takes long enough
+     that silence looks like a hang. */
+  function fileText(file, onStage) {
+    const url = URL.createObjectURL(file);
+    const done = function (t) { URL.revokeObjectURL(url); return t; };
+    const failed = function (e) { URL.revokeObjectURL(url); throw e; };
+
+    if (typeof Ocr !== "undefined" && Ocr.isImage(file)) {
+      URL.revokeObjectURL(url);
+      onStage({ kind: "ocr" });
+      return Ocr.readImage(file, onStage);
+    }
+
+    if (/\.pdf$/i.test(file.name) || file.type === "application/pdf") {
       if (typeof PdfViewer === "undefined" || !PdfViewer.textOf) {
-        reject(new Error("PDF reading is not available"));
-        return;
+        return Promise.reject(new Error("PDF reading is not available"));
       }
-      const url = URL.createObjectURL(file);
-      PdfViewer.textOf(url).then(function (t) { URL.revokeObjectURL(url); resolve(t); },
-                                 function (e) { URL.revokeObjectURL(url); reject(e); });
+      onStage({ kind: "pdf" });
+      return PdfViewer.textOf(url).then(function (t) {
+        if (t && t.trim().length > 20) return done(t);
+        if (typeof Ocr === "undefined") return done(t || "");
+        /* a scan: nothing to read off the page, so read the page itself */
+        onStage({ kind: "ocr", scanned: true });
+        return Ocr.readPdf(url, onStage).then(done, failed);
+      }, failed);
+    }
+
+    onStage({ kind: "text" });
+    return new Promise(function (resolve, reject) {
+      URL.revokeObjectURL(url);
+      const rd = new FileReader();
+      rd.onload = function () { resolve(rd.result); };
+      rd.onerror = function () { reject(new Error("Could not read that file")); };
+      rd.readAsText(file);
     });
   }
 
@@ -858,15 +888,15 @@ const TimetableView = (function () {
         '<div id="ttGrid"' + (tab === "grid" ? "" : ' hidden') + '>' +
           '<div class="tiny muted" style="margin-bottom:9px">Paste it, or choose a file. JSON from ' +
             'anywhere, a spreadsheet saved as CSV, plain text like ' +
-            '<b>Monday 16:30-18:00 Maths</b>, or a PDF with real text in it. Imported blocks ' +
+            '<b>Monday 16:30-18:00 Maths</b>, a PDF, or a photo of one. Imported blocks ' +
             'count as yours, so Generate schedules around them rather than over them.</div>' +
           '<textarea class="input" id="ttIn" style="height:150px;font-family:var(--font-mono,monospace);font-size:11px" ' +
             'placeholder="Paste it here"></textarea>' +
-          '<input type="file" accept=".json,.txt,.csv,.md,.pdf,application/json,text/plain,text/csv,application/pdf" ' +
+          '<input type="file" accept=".json,.txt,.csv,.md,.pdf,image/*,application/json,text/plain,text/csv,application/pdf" ' +
             'id="ttFileIn" class="input" style="margin-top:9px">' +
-          '<div class="tiny faint" style="margin-top:7px">A photo or a scan has no text in it, so ' +
-            'there is nothing to read. Type it into the other tab instead.</div>' +
-        '</div>' +
+          '<div class="tiny faint" style="margin-top:7px">A photo, a screenshot or a scanned PDF works ' +
+            'too: they are read by eye. A straight-on shot in good light reads far better than one at ' +
+            'an angle, and whatever it reads is shown here to correct before anything is saved.</div>' +
 
         '<div id="ttWords"' + (tab === "words" ? "" : ' hidden') + '>' +
           '<div class="tiny muted" style="margin-bottom:9px">Say it however you would say it out loud. ' +
@@ -955,23 +985,53 @@ const TimetableView = (function () {
         box.querySelector("#ttFileIn").onchange = function (e) {
           const f = e.target.files[0];
           if (!f) return;
-          if (/\.pdf$/i.test(f.name)) {
-            show('<div class="ttp"><b>Reading the PDF…</b></div>', false);
-            pdfText(f).then(function (t) {
-              ta.value = t;
-              if (!t.trim()) {
-                show('<div class="ttp bad"><b>That PDF has no text in it</b><span>It is a picture of a ' +
-                     'timetable rather than a document, so there is nothing to read. Type it into ' +
-                     'the other tab instead.</span></div>', false);
-              } else readGrid();
-            }, function () {
-              show('<div class="ttp bad"><b>Could not read that PDF</b></div>', false);
-            });
-            return;
-          }
-          const rd = new FileReader();
-          rd.onload = function () { ta.value = rd.result; readGrid(); };
-          rd.readAsText(f);
+          let read = false;
+
+          /* The first read downloads the recogniser and its English model,
+             which is several megabytes, so it says which part it is on. */
+          const stage = function (s) {
+            if (read) return;
+            if (s.kind === "pdf") { show('<div class="ttp"><b>Reading the PDF…</b></div>', false); return; }
+            if (s.kind === "ocr") {
+              show('<div class="ttp"><b>' + (s.scanned ? "That PDF is a scan, so it is being read by eye" :
+                   "Reading the picture") + '…</b><span>The reader is fetched the first time and then ' +
+                   'stays. This takes a few seconds.</span></div>', false);
+              return;
+            }
+            if (s.stage === "loading") {
+              show('<div class="ttp"><b>Fetching the text reader… ' + (s.pct || 0) + '%</b>' +
+                   '<span>One-off download.</span></div>', false);
+            } else if (s.stage === "reading") {
+              show('<div class="ttp"><b>Reading… ' + (s.pct || 0) + '%</b></div>', false);
+            } else if (s.stage === "page") {
+              show('<div class="ttp"><b>Reading page ' + s.page + ' of ' + s.of + '…</b></div>', false);
+            }
+          };
+
+          fileText(f, stage).then(function (t) {
+            read = true;
+            ta.value = t || "";
+            if (!String(t || "").trim()) {
+              show('<div class="ttp bad"><b>Nothing came back from that file</b><span>If it is a photo, ' +
+                   'a straight-on shot in good light reads far better than one at an angle. You can also ' +
+                   'type it into the box above, or describe it in the other tab.</span></div>', false);
+              return;
+            }
+            readGrid();
+            /* Recognition guesses, so what it read is shown and can be edited
+               before anything is saved. */
+            if (typeof Ocr !== "undefined" && (Ocr.isImage(f) || !/\d/.test(t.slice(0, 200)))) {
+              const box2 = box.querySelector("#ttPreview");
+              box2.insertAdjacentHTML("afterbegin",
+                '<div class="ttp" style="margin-bottom:9px"><b>Read from the picture</b>' +
+                '<span>Check it above before applying. Recognition guesses, and a 1 that should be a 7 ' +
+                'is the kind of mistake it makes.</span></div>');
+            }
+          }, function (err) {
+            read = true;
+            show('<div class="ttp bad"><b>Could not read that file</b><span>' +
+                 UI.esc(err && err.message ? err.message : "Unknown error") + '</span></div>', false);
+          });
         };
 
         /* ---- a description ---- */

@@ -820,7 +820,7 @@ const PdfViewer = (function () {
         pagesEl.appendChild(canvas);
 
         const ctx = canvas.getContext("2d");
-        page.render({ canvasContext: ctx, viewport: vp }).promise.then(function () {
+        renderNow(page, ctx, vp).then(function () {
           p++; next();
         }).catch(function () { p++; next(); });
       }).catch(function () { p++; next(); });
@@ -886,6 +886,22 @@ const PdfViewer = (function () {
      text extraction -- a production possibility frontier comes out as
      "X Y Z W V U 80 100 120 140 1700 50 100" -- and no amount of tidying
      will bring it back. The page itself always will. */
+  /* Render a page without waiting on the animation frame.
+
+     PDF.js renders in slices and asks for the next one from
+     requestAnimationFrame, which a browser stops delivering entirely while
+     the tab is in the background. So a render begun and then backgrounded -
+     switching tabs, or an embedded pane that reports itself hidden - never
+     finishes and never fails: the promise simply never settles, which is the
+     worst of the three outcomes. Continuing the moment we are asked keeps it
+     on the main thread rather than in the frame loop, and it completes
+     whether anybody is looking at it or not. */
+  function renderNow(page, ctx, viewport) {
+    const task = page.render({ canvasContext: ctx, viewport: viewport });
+    task.onContinue = function (cont) { cont(); };
+    return task.promise;
+  }
+
   const docCache = {};
   function renderPages(host, src, from, to) {
     if (!host) return Promise.resolve();
@@ -924,7 +940,7 @@ const PdfViewer = (function () {
               canvas.width = vp.width; canvas.height = vp.height;
               canvas.style.width = "100%"; canvas.style.height = "auto";
               host.appendChild(canvas);
-              return page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+              return renderNow(page, canvas.getContext("2d"), vp);
             });
           });
         })(p);
@@ -976,5 +992,41 @@ const PdfViewer = (function () {
     });
   }
 
-  return { mount: mount, mountAll: mountAll, renderPages: renderPages, textOf: textOf };
+  /* Pages rendered to detached canvases and handed back, for something other
+     than the screen to look at. Used when a PDF turns out to be a scan and
+     has to be read by eye rather than off its text layer, so the scale is
+     what recognition wants rather than what fits a column. */
+  function renderTo(src, maxPages, targetWidth) {
+    return ensureLib().then(function () {
+      return window.pdfjsLib.getDocument(src).promise;
+    }).then(function (pdf) {
+      const last = Math.min(pdf.numPages, maxPages || 3);
+      const out = [];
+      let chain = Promise.resolve();
+      for (let p = 1; p <= last; p++) {
+        (function (n) {
+          chain = chain.then(function () {
+            return pdf.getPage(n).then(function (page) {
+              const base = page.getViewport({ scale: 1 });
+              const scale = Math.min(4, Math.max(1, (targetWidth || 2000) / base.width));
+              const vp = page.getViewport({ scale: scale });
+              const canvas = document.createElement("canvas");
+              canvas.width = Math.round(vp.width);
+              canvas.height = Math.round(vp.height);
+              const ctx = canvas.getContext("2d", { willReadFrequently: true });
+              /* a scan is ink on paper, and paper is white; without this the
+                 transparent background reads as black once it is greyscaled */
+              ctx.fillStyle = "#fff";
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+              return renderNow(page, ctx, vp).then(function () { out.push(canvas); });
+            });
+          });
+        })(p);
+      }
+      return chain.then(function () { return out; });
+    });
+  }
+
+  return { mount: mount, mountAll: mountAll, renderPages: renderPages,
+           textOf: textOf, renderTo: renderTo };
 })();
