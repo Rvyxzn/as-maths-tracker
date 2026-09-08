@@ -108,6 +108,26 @@ const PracticeTest = (function () {
       const cid = cids[0];
       if (!cid) return;
       const inf = CHAPTER_INDEX[cid];
+
+      /* WHICH YEAR A TOPIC QUESTION IS FROM.
+
+         The PDFs are one file per topic, and a topic runs across both years:
+         the Integration set covers Year 1 Integration and Year 2
+         Integration, Trigonometry covers four chapters over both. Taking the
+         year from the FIRST chapter claimed a year for 134 of these 407
+         questions on no evidence, and that is exactly how picking Year 1
+         Integration served Year 2 work.
+
+         So a question whose set spans both years has no year. It is offered
+         when you pick its chapter, and left out when you filter by year,
+         because showing a Year 2 question to somebody who asked for Year 1
+         is worse than showing them one question fewer. Guessing from the
+         wording was tried and is not good enough to bet a revision session
+         on: half the splits it made were arbitrary. */
+      const years = {};
+      cids.forEach(function (c) { years[CHAPTER_INDEX[c].year || 1] = true; });
+      const spread = Object.keys(years);
+
       out.push({
         key: "mex:" + q.id,
         marks: q.marks,
@@ -116,7 +136,8 @@ const PracticeTest = (function () {
         subId: null,
         source: "exam",
         group: inf.paper.short,
-        year: inf.year || 1,
+        year: spread.length === 1 ? +spread[0] : null,
+        years: spread.map(Number),
         label: q.topic + " · Q" + q.num,
         topic: inf.chapter.name,
         where: inf.chapter.name,
@@ -332,8 +353,17 @@ const PracticeTest = (function () {
       if (o.minMarks && m.marks < o.minMarks) return false;
       if (o.maxMarks && m.marks > o.maxMarks) return false;
       if (o.group && o.group !== "all" && m.group !== o.group) return false;
-      if (o.year && o.year !== "all" && String(m.year) !== String(o.year)) return false;
-      if (o.chapters && o.chapters.length) {
+
+      /* Naming chapters IS the filter, and it is the more specific one. A
+         year chip left on from an earlier build should not then remove half
+         of what was just picked by hand. */
+      const byChapter = o.chapters && o.chapters.length;
+      if (!byChapter && o.year && o.year !== "all") {
+        /* null means the question could be either year, so it is not this
+           one either */
+        if (m.year == null || String(m.year) !== String(o.year)) return false;
+      }
+      if (byChapter) {
         const mine = m.cids && m.cids.length ? m.cids : [m.cid];
         const hit = mine.some(function (c) { return o.chapters.indexOf(c) >= 0; });
         if (!hit) return false;

@@ -90,6 +90,7 @@ const Timetable = (function () {
       examQuestions: true,   // exam-question sittings appear in their own right
       examQuestionEvery: 4,  // one every this many blocks of that subject
       alternate: {},         // id -> true, to swap sides of the spec each time
+      wholeChapters: false,  // finish a chapter in one sitting where the evening allows
       focus: null            // { id, until } - a subject to put first until a date
     };
   }
@@ -408,11 +409,14 @@ const Timetable = (function () {
       const left = steps.filter(function (x) { return !x.done; });
       return {
         cid: cid,
-        /* Which half of the specification this sits in, where the subject has
-           halves. Geography's papers are grouped Physical and Human, and
-           following one with the other is a real revision technique rather
-           than a preference, so the group has to survive into the queue. */
-        group: (inf && inf.paper && inf.paper.group) || null,
+        /* Which side of the specification this sits in.
+
+           Some subjects name their halves - Geography's Physical and Human,
+           Economics' Micro and Macro - and where they do not, the paper is
+           the natural division: Pure, Statistics and Mechanics are three
+           different kinds of work and following one with another is the
+           same technique under a different name. */
+        group: (inf && inf.paper && (inf.paper.group || inf.paper.short)) || null,
         label: inf ? inf.chapterLabel : cid,
         name: inf ? inf.chapter.name : cid,
         score: pr.score,
@@ -940,7 +944,15 @@ const Timetable = (function () {
             ? Math.min(run[1] - at, Math.max(blk, owed[best.id] > 0 ? Math.min(owed[best.id], blk) : blk))
             : Math.min(run[1] - at, owed[best.id]);
           if (cap != null) room = Math.min(room, cap - dayUsed);
-          const maxSit = Math.max(blk, s.prefs.maxSitting || 90);
+          /* How long you are willing to sit at one thing. Ninety minutes by
+             default, because a chapter split over three evenings is easier
+             to keep going than one three-hour block - but that is a
+             preference, not a fact, and somebody who would rather finish
+             Quadratics in one go should be able to. "Whole chapters" lifts
+             the cap to whatever the evening can hold. */
+          const maxSit = r.wholeChapters
+            ? Math.max(blk, run[1] - at)
+            : Math.max(blk, s.prefs.maxSitting || 90);
           const MIN_SIT = 20;
 
           /* Work that will not fit one sitting is divided into equal ones
@@ -1253,9 +1265,15 @@ const Timetable = (function () {
     try {
       const s = Subjects.get(id);
       if (!s || typeof s.spec !== "function") return [];
-      const seen = {};
-      (s.spec() || []).forEach(function (p) { if (p.group) seen[p.group] = true; });
-      return Object.keys(seen);
+      const spec = s.spec() || [];
+      const named = {};
+      spec.forEach(function (p) { if (p.group) named[p.group] = true; });
+      if (Object.keys(named).length >= 2) return Object.keys(named);
+      /* No named halves, so the papers are the sides: Pure, Stats, Mech. */
+      const papers = {};
+      spec.forEach(function (p) { if (p.short) papers[p.short] = true; });
+      const list = Object.keys(papers);
+      return list.length >= 2 ? list : [];
     } catch (e) { return []; }
   }
 

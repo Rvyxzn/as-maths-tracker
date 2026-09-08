@@ -581,6 +581,14 @@ const TimetableView = (function () {
       '</div>' +
 
       '<div class="tt-rule">' +
+        '<div class="tt-rule-main"><b>Finish a chapter in one sitting</b>' +
+          '<small>Off, a long chapter is split across evenings, which is easier to keep going. ' +
+          'On, it runs as long as the evening allows.</small></div>' +
+        '<button class="btn btn-sm' + (r.wholeChapters ? " btn-primary" : "") + '" data-action="tt-rule-toggle" ' +
+          'data-k="wholeChapters">' + (r.wholeChapters ? "On" : "Off") + '</button>' +
+      '</div>' +
+
+      '<div class="tt-rule">' +
         '<div class="tt-rule-main"><b>Past papers as the exam nears</b>' +
           '<small>A whole paper a week from two months out, rising to four in the last week. ' +
             'Your own weekly target still applies if it is higher.</small></div>' +

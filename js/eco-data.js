@@ -30,7 +30,7 @@
 
 const ECO_SPEC = [
 {
-  id: "eco-t1", paper: "Theme 1", short: "T1",
+  id: "eco-t1", paper: "Theme 1", short: "T1", group: "Micro",
   name: "Theme 1: Introduction to markets and market failure",
   code: "9EC0/01 and 9EC0/03",
   book: "Microeconomics, assessed on Papers 1 and 3",
@@ -156,7 +156,7 @@ const ECO_SPEC = [
   ]
 },
 {
-  id: "eco-t2", paper: "Theme 2", short: "T2",
+  id: "eco-t2", paper: "Theme 2", short: "T2", group: "Macro",
   name: "Theme 2: The UK economy, performance and policies",
   code: "9EC0/02 and 9EC0/03",
   book: "Macroeconomics, assessed on Papers 2 and 3",
@@ -283,7 +283,7 @@ const ECO_SPEC = [
   ]
 },
 {
-  id: "eco-t3", paper: "Theme 3", short: "T3",
+  id: "eco-t3", paper: "Theme 3", short: "T3", group: "Micro",
   name: "Theme 3: Business behaviour and the labour market",
   code: "9EC0/01 and 9EC0/03",
   book: "Microeconomics, assessed on Papers 1 and 3",
@@ -405,7 +405,7 @@ const ECO_SPEC = [
   ]
 },
 {
-  id: "eco-t4", paper: "Theme 4", short: "T4",
+  id: "eco-t4", paper: "Theme 4", short: "T4", group: "Macro",
   name: "Theme 4: A global perspective",
   code: "9EC0/02 and 9EC0/03",
   book: "Macroeconomics, assessed on Papers 2 and 3",
@@ -527,7 +527,7 @@ const ECO_SPEC = [
   ]
 },
 {
-  id: "eco-skills", paper: "Skills", short: "Skills",
+  id: "eco-skills", paper: "Skills", short: "Skills", group: "Skills",
   name: "Exam skills and quantitative methods",
   code: "9EC0 all papers",
   book: "Assessed across every paper",

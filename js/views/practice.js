@@ -76,7 +76,13 @@ const PracticeView = (function () {
                bankOnly: !exam[cid],
                name: inf ? inf.chapter.name : cid,
                label: inf ? inf.chapterLabel : "", rag: eff ? eff.rag : null };
-    }).sort(function (a, b) { return String(a.label).localeCompare(String(b.label)); });
+    /* "Y1 Ch 10" sorts before "Y1 Ch 2" as text, because "1" is less than
+       "2", so the chapter list ran 1, 10, 11, 12, 2, 3. Compared with the
+       numbers read as numbers it runs the way the book does. */
+    }).sort(function (a, b) {
+      return String(a.label).localeCompare(String(b.label), undefined,
+                                           { numeric: true, sensitivity: "base" });
+    });
   }
 
   /* Picking a chapter that has no exam questions has to bring the bank with
@@ -112,6 +118,32 @@ const PracticeView = (function () {
     { id: "full",   label: "Full paper",  sub: "100 marks, 2 hr", marks: 100 },
     { id: "weak",   label: "Weak spots",  sub: "40 marks, worst first", marks: 40, weak: true }
   ];
+
+  /* Why a year filter offers fewer questions than the bank holds.
+
+     The topic PDFs are one file per topic and a topic runs across both
+     years, so a third of them cannot be said to belong to one. They used to
+     be filed under whichever chapter came first, which is how asking for
+     Year 1 Integration served Year 2 work. They are held back now, and
+     saying so is the difference between a filter and a mystery. */
+  function spanNote() {
+    if (picked.year === "all") return "";
+    const on = Object.keys(picked.chapters).filter(function (k) { return picked.chapters[k]; });
+    if (on.length) {
+      return '<div class="tiny faint" style="margin-top:7px">You have picked chapters, so the ' +
+        'Year ' + picked.year + ' filter is not also applied: the chapters are the more specific ' +
+        'choice.</div>';
+    }
+    const held = PracticeTest.pool(true).filter(function (m) {
+      return m.source === "exam" && m.year == null &&
+             (picked.group === "all" || m.group === picked.group);
+    }).length;
+    if (!held) return "";
+    return '<div class="tiny faint" style="margin-top:7px">' + held + ' question' +
+      (held === 1 ? " comes" : "s come") + ' from topic sets that cover both years, so ' +
+      (held === 1 ? "it is" : "they are") + ' left out while a year is selected. Pick the chapters ' +
+      'instead to include ' + (held === 1 ? "it" : "them") + '.</div>';
+  }
 
   function builder() {
     const avail = PracticeTest.eligible(currentOpts());
@@ -206,6 +238,7 @@ const PracticeView = (function () {
           '<b>' + avail.length + '</b> question' + (avail.length === 1 ? "" : "s") +
           ' match, worth <b>' + availMarks + '</b> marks in total' +
         '</div>' +
+        spanNote() +
 
         '<button class="btn btn-primary btn-block" style="margin-top:14px" data-action="pt-generate">' +
           'Generate the test</button>' +

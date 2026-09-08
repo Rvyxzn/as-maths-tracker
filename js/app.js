@@ -51,8 +51,13 @@ function setSidebar(open) {
   document.getElementById("sidebarScrim").classList.toggle("on", open);
 }
 
+  /* Set when a navigation was a deliberate choice - a nav item, a link, a
+     button - rather than a re-render. Onboarding defers to it. */
+  let asked = false;
+
   function go(view, p) {
     current = view; params = p || {};
+    asked = view !== "onboarding";
     window.scrollTo({ top: 0, behavior: "smooth" });
     setSidebar(false);
     render();
@@ -82,7 +87,14 @@ function setSidebar(open) {
     const loginHost = document.getElementById("loginRoot");
     if (loginHost) loginHost.style.display = "none";
 
-    if (!st.onboarded && current !== "settings") current = "onboarding";
+    /* A subject that has not been set up starts on Getting Started, but it
+       does not hold you there. Every subject has its own save, so switching
+       to one you have not set up used to send you to onboarding no matter
+       what you had clicked - and from the outside that reads as the button
+       doing nothing. Ask once; after that, go where you asked to go and
+       leave the prompt on the dashboard. */
+    if (!st.onboarded && !asked && current !== "settings") current = "onboarding";
+    asked = false;
 
     /* Only play the entrance animation when the view actually changes.
        Re-rendering in place (ticking a task, saving a rating) must not
