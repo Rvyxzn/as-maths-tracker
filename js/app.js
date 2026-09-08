@@ -491,6 +491,15 @@ function setSidebar(open) {
     switch (action) {
       case "go": go(el.dataset.view); return;
 
+      /* The planner works out which chapters the next exam covers; this
+         hands them to the builder rather than making you find them. */
+      case "build-practice": {
+        const cids = (el.dataset.chapters || "").split(",").filter(Boolean);
+        if (typeof PracticeView !== "undefined" && PracticeView.preset) PracticeView.preset(cids);
+        go("practice");
+        return;
+      }
+
       case "open-topic": go("topic", { id: el.dataset.id }); return;
 
       /* put something on today, or take it off again, without leaving the

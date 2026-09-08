@@ -381,6 +381,11 @@ chapter numbering, so this badge is what keeps them apart at a glance. */
           (t.topicId ? '<button class="btn btn-sm btn-primary" data-action="open-session" data-id="' + esc(t.topicId) + '" data-task="' + esc(t.id) + '">Start session</button>' : "") +
           (t.kind === "paper" ? '<button class="btn btn-sm btn-primary" data-action="log-paper">Log this paper</button>' : "") +
           (t.kind === "errors" ? '<button class="btn btn-sm btn-primary" data-action="go" data-view="weaknesses">Open error log</button>' : "") +
+          /* Straight into the builder with this test's chapters already
+             ticked, because "go and pick these four yourself" is a step
+             nobody takes. */
+          (t.kind === "practice" ? '<button class="btn btn-sm btn-primary" data-action="build-practice" ' +
+            'data-chapters="' + esc((t.chapterIds || []).join(",")) + '">Build this test</button>' : "") +
           '<button class="btn btn-sm" data-action="task-skip" data-id="' + esc(t.id) + '">Skip</button>' +
           '<button class="btn btn-sm" data-action="task-move" data-id="' + esc(t.id) + '">Reschedule</button>' +
           '<button class="btn btn-sm btn-danger" data-action="task-delete" data-id="' + esc(t.id) + '" ' +

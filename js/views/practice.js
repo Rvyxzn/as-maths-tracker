@@ -1060,5 +1060,19 @@ const PracticeView = (function () {
     return false;
   }
 
-  return { render: render, handle: handle };
+  /* Open the builder with a set of chapters already ticked. Used by the
+     planner's practice-test task, which knows what the next exam covers
+     and would otherwise be asking you to remember four chapter names and
+     find them in a list of forty-five. */
+  function preset(cids) {
+    picked.chapters = {};
+    (cids || []).forEach(function (c) { if (CHAPTER_INDEX[c]) picked.chapters[c] = true; });
+    /* The chapters ARE the filter now; leaving a year or paper chip on
+       would quietly drop half of them. */
+    picked.group = "all";
+    picked.year = "all";
+    idx = 0; revealed = {}; resultId = null;
+  }
+
+  return { render: render, handle: handle, preset: preset };
 })();

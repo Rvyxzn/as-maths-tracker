@@ -25,7 +25,8 @@ const Scheduler = (function () {
     retrieval:{ label: "Retrieval practice", svg: "refresh" },
     paper: { label: "Past paper", svg: "paper" },
     errors: { label: "Error analysis", svg: "alert" },
-    formula: { label: "Formula & recall drill", svg: "star" }
+    formula: { label: "Formula & recall drill", svg: "star" },
+    practice: { label: "Practice test", svg: "pencil" }
   };
 
   /* ---------- priority scoring ---------- */
@@ -207,6 +208,51 @@ const Scheduler = (function () {
   }
 
   /* ---------- past paper cadence ---------- */
+
+  /* A PAST PAPER IS THE WRONG THING TO SET FOR A TEST ON FOUR CHAPTERS.
+
+     The exam you are actually walking into next is often a class test or
+     a mock covering a named part of the specification. A whole past
+     paper spends most of its marks outside that, so the practice is
+     mostly not practice for the thing you are sitting.
+
+     When the next exam names its chapters, this builds a practice test
+     on exactly those instead: same timed, marked, exam-question work,
+     aimed at what is being examined. Past papers come back as soon as
+     the next exam is the real one, which covers everything, or once
+     that named scope is most of the specification anyway. */
+  /* The exam a PARTICULAR DAY is working towards, not the one nearest
+     today. Read from today, every day after the mock would still be
+     planning practice for a mock already sat. */
+  function examScope(n) {
+    if (!n || n.kind === "spec") return null;
+    const ids = (n.chapterIds || []).filter(function (c) {
+      return typeof CHAPTER_INDEX !== "undefined" && CHAPTER_INDEX[c];
+    });
+    if (!ids.length) return null;
+    const whole = typeof ALL_CHAPTER_IDS !== "undefined" ? ALL_CHAPTER_IDS.length : 0;
+    /* If it covers nearly everything, a past paper IS the right practice. */
+    if (whole && ids.length >= whole * 0.7) return null;
+    return { exam: n, chapterIds: ids };
+  }
+
+  function practiceTaskFor(scope, daysToExam) {
+    const n = scope.chapterIds.length;
+    const mins = Math.min(70, 25 + n * 8);
+    return {
+      kind: "practice",
+      minutes: mins,
+      chapterIds: scope.chapterIds,
+      title: "Practice test on " + scope.exam.title,
+      why: "The next thing you sit is " + scope.exam.title + ", and it covers " + n +
+        (n === 1 ? " chapter" : " chapters") + ", not the whole specification. A past paper " +
+        "would spend most of its marks somewhere else, so this is a timed test built from " +
+        "real exam questions on exactly what that test covers." +
+        (daysToExam <= 7 ? " Mark it and log every lost mark: there is time to fix them." : ""),
+      note: "Timed, marked, and every lost mark logged."
+    };
+  }
+
   function paperTaskFor(dateIso, daysToExam, coveredPct, idx) {
     const s = Store.settings();
     const papersEnabled = s.papers;
@@ -409,8 +455,21 @@ const Scheduler = (function () {
                         Math.floor(dayN / paperEveryNDays) > Math.floor((dayN - 1) / paperEveryNDays);
       const forcePaper = finalWeek && !underCovered && dayN % 2 === 0;
       if (!skippedToday("paper") && (wantPaper || forcePaper) && budget >= 55) {
-        const pt = paperTaskFor(date, daysToSpec, coveredPct, paperCounter);
-        if (pt.minutes <= budget + 20) {
+        /* What the next exam actually covers decides which of the two this
+           slot is: a practice test on its chapters, or a whole past paper. */
+        const scope = examScope(aim.exam);
+        if (scope) {
+          const ct = practiceTaskFor(scope, daysToExam);
+          const cmins = Math.min(ct.minutes, budget);
+          tasks.push(mk(date, {
+            kind: "practice", title: ct.title, minutes: cmins,
+            chapterIds: ct.chapterIds, why: ct.why
+          }));
+          budget -= cmins;
+          paperCounter++;
+        }
+        const pt = scope ? null : paperTaskFor(date, daysToSpec, coveredPct, paperCounter);
+        if (pt && pt.minutes <= budget + 20) {
           const mins = Math.min(pt.minutes, budget);
           tasks.push(mk(date, {
             kind: "paper", title: pt.title, minutes: mins, paperTarget: pt.paperTarget, full: pt.full,
