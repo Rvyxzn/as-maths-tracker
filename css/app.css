@@ -3021,3 +3021,45 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .pt-thin-list{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:7px}
 .pt-thin-list li{padding:8px 10px;border-radius:9px;background:var(--surface);border:1px solid var(--border)}
 .pt-thin-list b{font-size:13px}
+
+
+/* ============================================================
+   Hover, on things that do not hover
+   ============================================================ */
+
+/* A touch screen has no hover, so the browser fakes one: tapping a card
+   fires :hover and LEAVES IT ON until you tap something else. Every card
+   you had touched stayed lifted and outlined behind you, which reads as
+   the app failing to let go of what you tapped rather than as a hover
+   state at all.
+
+   Only the movement is switched off. Colour and border changes are
+   useful feedback on a tap and they settle on their own; the shadow is
+   left alone too, because several of these carry one when they are not
+   hovered and clearing it here would make them flicker. Generated from
+   the rules above -- add a hover that transforms something and it wants
+   a line here as well. */
+@media (hover: none) {
+  .btn:hover{transform:none}
+  .rag-btn:hover{transform:none}
+  .topic-card:hover{transform:none}
+  .big-rag button:hover{transform:none}
+  .focus-toggle:hover{transform:none}
+  .retake-opt:hover:not(:disabled){transform:none}
+  #themeToggle:hover .theme-ico{transform:none}
+  .nav-item:hover{transform:none}
+  .focus-info:hover{transform:none}
+  .chip:hover::before,.chip:focus-visible::before, .btn:hover::before,.btn:focus-visible::before, .rag-btn:hover::before,.rag-btn:focus-visible::before, .retake-opt:hover:not(:disabled)::before, .focus-info:hover::before,.timer-btn:hover::before, .cal-cell:hover::before{transform:none}
+  .sub-row:hover::before,.timelog-row:hover::before{transform:none}
+  .cal-cell:hover{transform:none}
+  .vid-tick:hover{transform:none}
+  .likely-row:hover{transform:none}
+  .fc-chapter:hover{transform:none}
+  .today-btn:hover{transform:none}
+  .profile-row:hover{transform:none}
+  .subject-row:hover{transform:none}
+  .cd-peek:hover{transform:none}
+  .hero-peek:hover{transform:none}
+  .pt-preset:hover{transform:none}
+  .pt-chip:hover{transform:none}
+}
