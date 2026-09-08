@@ -877,6 +877,12 @@ const PacksView = (function () {
                   minutesFor(q.marks) + ' minutes is what it is worth.</div>') +
             (show ? '<div class="qscore"><label>Score</label><input class="input" id="packScore" type="number" min="0" max="' + q.marks + '" placeholder="out of ' + q.marks + '">' +
               '<button class="btn btn-primary" data-action="pack-mark" data-id="' + q.id + '">Save score</button></div>' : '') +
+            /* Reported from where it was noticed, with the question already
+               identified. See js/reports.js. */
+            '<div class="row" style="justify-content:flex-end;margin-top:10px">' +
+              '<button class="btn btn-sm btn-ghost" data-action="rep-question" data-id="' + q.id +
+                '" data-where="Question packs">Report a problem</button>' +
+            '</div>' +
           '</div>' +
         '</div>' +
       '</div>' +

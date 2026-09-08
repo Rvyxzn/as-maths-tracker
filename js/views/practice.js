@@ -555,6 +555,15 @@ const PracticeView = (function () {
             '<div class="qtext">' + UI.math(q.text) + '</div></details>'
         : "") +
 
+      /* Reporting it from where you noticed it, with the question, its
+         pages and its scheme filled in — none of which anybody would
+         type out by hand, and without which a report is unactionable. */
+      '<div class="row" style="justify-content:flex-end;margin-top:8px">' +
+        '<button class="btn btn-sm btn-ghost" data-action="rep-question" data-id="' + q.id +
+          '" data-where="Practice test" title="Something wrong with this question or its scheme?">' +
+          'Report a problem</button>' +
+      '</div>' +
+
       (show
         ? '<div class="qz-ms" style="margin-top:16px">' +
             '<div class="qz-ms-h">' + UI.icon("check") + 'Mark scheme' +

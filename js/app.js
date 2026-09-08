@@ -29,6 +29,10 @@ const App = (function () {
     { id: "flashcards", label: "Flashcards", icon: "◈" },
     { id: "weaknesses", label: "Weaknesses", icon: "⚠" },
     { id: "progress", label: "Progress", icon: "◔" },
+    /* Where a broken question or an idea goes. Across subjects, like the
+       timetable: a bad question in Economics and a layout bug in Maths
+       are the same pile of work. */
+    { id: "reports", label: "Reports & Ideas", icon: "!" },
     { id: "settings", label: "Settings", icon: "⚙" }
   ];
 
@@ -37,7 +41,8 @@ const App = (function () {
     calendar: "Calendar", examq: "Exam Questions", papers: "Past Papers", weaknesses: "Weaknesses",
     assessments: "School Tests", flashcards: "Formula Flashcards", packs: "Question Packs",
     practice: "Practice Test", timetable: "Timetable",
-    progress: "Progress", settings: "Settings", session: "Revision Session", onboarding: "Getting Started"
+    progress: "Progress", settings: "Settings", session: "Revision Session", onboarding: "Getting Started",
+    reports: "Reports & Ideas"
   };
 
   function applyTheme() {
@@ -142,6 +147,7 @@ function setSidebar(open) {
       case "flashcards": FlashcardsView.render(buf); break;
       case "weaknesses": WeaknessesView.render(buf); break;
       case "progress": ProgressView.render(buf); break;
+      case "reports": ReportsView.render(buf); break;
       case "settings": SettingsView.render(buf); break;
       default: DashboardView.render(buf);
     }
@@ -485,6 +491,7 @@ function setSidebar(open) {
     if (SettingsView.handle(action, el)) return;
     if (WeaknessesView.handle(action, el)) return;
     if (PaperView.handle(action, el)) return;
+    if (ReportsView.handle(action, el)) return;
     if (ExamQView.handle(action, el)) return;
     if (FlashcardsView.handle(action, el)) return;
 

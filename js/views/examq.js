@@ -141,6 +141,9 @@ const ExamQView = (function () {
               '</div></div>' +
             '<div class="row wrap" style="gap:8px;margin-top:10px">' +
               '<button class="btn" data-action="eq-ms-hide" data-key="' + s.key + '">Hide the mark scheme</button>' +
+              '<div class="spacer"></div>' +
+              '<button class="btn btn-ghost" data-action="rep-new" data-kind="scheme" ' +
+                'data-where="Exam questions · ' + UI.esc(s.name) + '">Report a problem</button>' +
             '</div>'
           : '<div class="ms-lock" style="margin-top:12px">' +
               '<div class="ms-lock-ico">' + UI.icon("alert") + '</div>' +

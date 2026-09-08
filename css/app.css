@@ -3063,3 +3063,22 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
   .pt-preset:hover{transform:none}
   .pt-chip:hover{transform:none}
 }
+
+/* ============================================================
+   Reports & ideas
+   ============================================================ */
+.rep-list{display:grid;gap:11px;margin-top:14px}
+.rep{
+  padding:14px 16px;border-radius:var(--r);
+  background:var(--surface);border:1px solid var(--border);
+}
+.rep.done{opacity:.6}
+.rep.done .rep-head b{text-decoration:line-through}
+.rep-head{display:flex;gap:10px;align-items:flex-start}
+.rep-detail{margin-top:9px;white-space:pre-wrap;color:var(--muted);font-size:13px}
+.rep-ref{
+  margin-top:9px;padding:7px 9px;border-radius:8px;
+  background:var(--surface-2);border:1px solid var(--border);
+  color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  overflow-wrap:anywhere;
+}
