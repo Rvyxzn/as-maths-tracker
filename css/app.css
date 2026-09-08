@@ -3010,3 +3010,14 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
   overflow:hidden;text-overflow:ellipsis;max-width:58%;
 }
 .say-by.ok{background:var(--green-soft);color:var(--green)}
+
+/* Where to get more questions, under the chapter picker. Only appears
+   when a chapter in front of you is actually short. */
+.pt-thin{
+  margin-top:12px;padding:12px 13px;border-radius:11px;
+  background:var(--surface-2);border:1px solid var(--border);
+}
+.pt-thin > b{font-size:13px;color:var(--text)}
+.pt-thin-list{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:7px}
+.pt-thin-list li{padding:8px 10px;border-radius:9px;background:var(--surface);border:1px solid var(--border)}
+.pt-thin-list b{font-size:13px}

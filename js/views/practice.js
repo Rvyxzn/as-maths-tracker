@@ -250,6 +250,55 @@ const PracticeView = (function () {
       '</div>';
   }
 
+  /* Where to go when this app has run out.
+
+     Every one of these is a real, free, whole-topic source for this
+     specification, and they are named rather than linked to a search:
+     "look it up" is not a recommendation. Shown only when something in
+     the list in front of you is actually short, so it does not sit there
+     as permanent clutter. */
+  const MORE_QUESTIONS = {
+    maths: [
+      ["Physics &amp; Maths Tutor", "physicsandmathstutor.com", "Edexcel A level Maths, filed by topic and by paper — the closest thing to more of what is already here."],
+      ["Maths Genie", "mathsgenie.co.uk", "A level topic questions with worked video solutions for each one."],
+      ["Dr Frost Maths", "drfrostmaths.com", "Free account. Practises a skill until you have it rather than setting whole questions."],
+      ["Pearson qualifications", "qualifications.pearson.com", "The real papers and schemes, 9MA0, straight from the exam board."]
+    ],
+    economics: [
+      ["Pearson qualifications", "qualifications.pearson.com", "Every 9EC0 paper and mark scheme, plus the examiner reports."],
+      ["EconPlusDal", "youtube.com/@EconplusDal", "Worked 25 markers and the diagrams, which is what the long questions turn on."],
+      ["tutor2u", "tutor2u.net/economics", "Topic questions and model answers written to the Edexcel A tariffs."]
+    ],
+    geography: [
+      ["Pearson qualifications", "qualifications.pearson.com", "The 9GE0 papers, schemes and examiner reports."],
+      ["A Level Geography (Seneca / PMT)", "physicsandmathstutor.com/geography-revision", "Topic questions and case-study material by unit."]
+    ]
+  };
+
+  function moreQuestionsNote(list) {
+    const thin = list.filter(function (c) { return !c.bankOnly && c.n > 0 && c.n < 8; });
+    if (!thin.length) return "";
+    const sub = (typeof Subjects !== "undefined" && Subjects.currentId) ? Subjects.currentId() : "maths";
+    const where = MORE_QUESTIONS[sub] || MORE_QUESTIONS.maths;
+    return '<div class="pt-thin">' +
+      '<b>' + thin.length + (thin.length === 1 ? " chapter here has" : " chapters here have") +
+        ' fewer than eight questions</b>' +
+      '<div class="tiny muted" style="margin:3px 0 8px">' +
+        thin.map(function (c) { return UI.esc(c.label || c.name) + " (" + c.n + ")"; }).join(" · ") +
+        '. That is everything the PDFs in this folder hold for them, not a ' +
+        'filter hiding the rest. To top them up:' +
+      '</div>' +
+      '<ul class="pt-thin-list">' +
+        where.map(function (w) {
+          return '<li><b>' + w[0] + '</b> <span class="tiny faint">' + w[1] + '</span>' +
+            '<div class="tiny muted">' + w[2] + '</div></li>';
+        }).join("") +
+      '</ul>' +
+      '<div class="tiny faint">Drop new PDFs into <code>Exam questions PDFs</code> and they ' +
+        'show up here — the folder is the bank.</div>' +
+    '</div>';
+  }
+
   function chapterPicker() {
     const list = chaptersAvailable();
     return '<div class="pt-chaps">' +
@@ -269,6 +318,7 @@ const PracticeView = (function () {
             : '<span class="pill">' + c.n + '</span>') +
         '</button>';
       }).join("") +
+      moreQuestionsNote(list) +
     '</div>';
   }
 
@@ -338,6 +388,32 @@ const PracticeView = (function () {
     }).join("") + '</div>';
   }
 
+  /* A test saved before the question bank was rebuilt.
+
+     The bank is regenerated from the PDFs by tools/extract-as-maths.js,
+     and when it is, the questions renumber: alBinomial-04 is a different
+     question than it was. A saved test holds ids, so it still opens, and
+     every question in it is real -- it is simply not the paper you were
+     given. The tariffs are what give it away, and saying so beats letting
+     somebody sit a paper whose marks no longer add up. */
+  function staleItems(t) {
+    return (t.items || []).filter(function (it) {
+      const q = PracticeTest.question(it.key);
+      return !q || (q.marks && it.marks && q.marks !== it.marks);
+    });
+  }
+
+  function staleWarning(t) {
+    const n = staleItems(t).length;
+    if (!n) return "";
+    return '<div class="pt-warn"><div>' +
+      '<b>This paper was built against an older question bank</b>' +
+      '<div class="tiny">' + n + ' of its ' + t.items.length + ' questions have moved since, so what ' +
+        'is on screen is not what it was set at. Build a new one — the bank is bigger now.</div>' +
+      '<button class="btn btn-sm" data-action="pt-discard" data-id="' + t.id + '" ' +
+        'style="margin-top:8px">Discard this one</button></div></div>';
+  }
+
   function sitting(t) {
     /* Clamped rather than read raw: a test opened while the position from a
        previous one is still in hand would otherwise say "Question 2 of 1". */
@@ -350,7 +426,8 @@ const PracticeView = (function () {
     const show = !!revealed[it.key];
     const s = PracticeTest.scoreOf(t, it.key);
 
-    return '<div class="card pt-bar">' +
+    return staleWarning(t) +
+      '<div class="card pt-bar">' +
         '<div class="row wrap" style="gap:12px;align-items:center">' +
           '<div style="flex:1;min-width:200px">' +
             '<b>' + UI.esc(t.name) + '</b>' +
