@@ -26,6 +26,7 @@ const TimetableView = (function () {
   let openBlock = null;       // the block whose detail panel is showing
   let sayText = "";           // what is typed into the describe box
   let sayParsed = null;       // and what was read out of it, once read
+  let sayReading = false;     // a read is in flight
 
   const PX_PER_MIN = 1.1;     // the timeline's scale
 
@@ -444,7 +445,8 @@ const TimetableView = (function () {
         UI.esc(sayText) + '</textarea>' +
 
       '<div class="row wrap" style="gap:7px;margin-top:9px">' +
-        '<button class="btn btn-primary" data-action="tt-say-read">Read it</button>' +
+        '<button class="btn btn-primary" data-action="tt-say-read"' + (sayReading ? " disabled" : "") + '>' +
+          (sayReading ? "Reading…" : "Read it") + '</button>' +
         (sayParsed && sayParsed.said.length
           ? '<button class="btn btn-primary" data-action="tt-say-apply">Apply ' + sayParsed.said.length +
             ' setting' + (sayParsed.said.length === 1 ? "" : "s") + '</button>'
@@ -462,19 +464,36 @@ const TimetableView = (function () {
     '</div>';
   }
 
+  /* Which of the two read it, and where the rules answered instead, why.
+     A worse answer arriving silently is how people stop trusting a tool. */
+  function sayWho() {
+    const p = sayParsed;
+    if (!p) return "";
+    if (p.source === "assistant") {
+      return '<span class="say-by ok" title="Read by the assistant">assistant</span>';
+    }
+    const why = p.why ? p.why
+      : !Assistant.configured() ? "no assistant is set up for this app"
+      : "you are not signed in, so the assistant was not asked";
+    return '<span class="say-by" title="' + UI.esc(why) + '">phrase matching · ' + UI.esc(why) + '</span>';
+  }
+
   function sayResult() {
     const p = sayParsed;
     if (!p.said.length) {
       return '<div class="ttp bad" style="margin-top:11px"><b>None of that turned into a setting</b>' +
-        '<span>It reads phrasings rather than meaning, so it needs something close to the examples. ' +
-        'Tap one below to see the shape it wants.</span></div>' +
+        '<span>' + (p.source === "assistant"
+          ? "The assistant read it and found nothing it could turn into a timetable setting."
+          : "This is phrase matching rather than understanding, so it needs something close to " +
+            "the examples. Signing in gets you the assistant, which does not.") +
+        '</span></div>' +
         '<div class="say-eg">' + EXAMPLES.map(function (e) {
           return '<button class="chip" data-action="tt-say-eg" data-eg="' + UI.esc(e) + '">' +
             UI.esc(e) + '</button>';
         }).join("") + '</div>';
     }
     return '<div class="say-out">' +
-      '<div class="say-out-h">' + UI.icon("check") + '<b>Understood</b></div>' +
+      '<div class="say-out-h">' + UI.icon("check") + '<b>Understood</b>' + sayWho() + '</div>' +
       '<ul>' + p.said.map(function (s) { return '<li>' + UI.esc(s) + '</li>'; }).join("") + '</ul>' +
       (p.missed.length
         ? '<div class="say-miss"><b>Not understood</b>' +
@@ -1187,8 +1206,23 @@ const TimetableView = (function () {
       case "tt-say-read": {
         const el = document.querySelector("#ttSay");
         sayText = el ? el.value : sayText;
-        sayParsed = TimetableAdopt.describe(sayText);
+        if (!sayText.trim()) return true;
+        /* The assistant where it can answer, the rules where it cannot, and
+           the panel says which one did. Reading takes a second or two over
+           the network, so the button says so rather than looking dead. */
+        sayReading = true;
+        sayParsed = null;
         App.render();
+        Assistant.read(sayText).then(function (r) {
+          sayReading = false;
+          sayParsed = r;
+          App.render();
+        }, function () {
+          sayReading = false;
+          sayParsed = TimetableAdopt.describe(sayText);
+          sayParsed.source = "rules";
+          App.render();
+        });
         return true;
       }
       /* An example is added to what is already there rather than replacing

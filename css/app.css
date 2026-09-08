@@ -3004,3 +3004,11 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 
 /* a commitment in the calendar reads as an outline, not a filled block */
 .tt-node.other{opacity:.55;box-shadow:inset 0 0 0 1px rgba(0,0,0,.35)}
+
+/* which reader answered */
+.say-by{
+  margin-left:auto;padding:2px 8px;border-radius:20px;font-size:10.5px;
+  background:var(--surface);color:var(--faint);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;max-width:58%;
+}
+.say-by.ok{background:var(--green-soft);color:var(--green)}

@@ -46,7 +46,23 @@ const AUTH_CONFIG = {
      "Moving to Supabase" note at the bottom of js/auth.js for
      what has to change. */
   SUPABASE_URL: "https://hgbyenbvsdlnixmtzmwx.supabase.co",
-  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhnYnllbmJ2c2Rsbml4bXR6bXd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0Njc4NjYsImV4cCI6MjEwNDA0Mzg2Nn0.ouf_6w6T8Qy48ftQOvSup5Zt0b-T9zNV0wZ3Q-zdE1M"
+  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhnYnllbmJ2c2Rsbml4bXR6bXd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg0Njc4NjYsImV4cCI6MjEwNDA0Mzg2Nn0.ouf_6w6T8Qy48ftQOvSup5Zt0b-T9zNV0wZ3Q-zdE1M",
+
+  /* ---------- the assistant ----------
+     Reads a description of your week into timetable settings, and
+     later marks answers and writes flashcards.
+
+     There is no key here on purpose. It lives in a Supabase Edge
+     Function, which checks you are signed in before spending
+     anything; a key in this file would be a key anybody could
+     spend. Deploying that function is four commands, in
+     ASSISTANT.md.
+
+     Nothing breaks while it is undeployed. The app asks, the call
+     fails, and the phrase matcher answers instead - and the panel
+     says which one did, rather than quietly giving you the worse
+     answer. Set this to false to stop it asking at all. */
+  ASSISTANT: true
 };
 
 function googleConfigured() {
