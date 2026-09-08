@@ -438,6 +438,19 @@ const PracticeView = (function () {
         : revealButton(it));
   }
 
+  /* The question's own pages, in the full viewer.
+
+     They used to be a bare stack of canvases: no zoom, no pen. The one
+     screen where you actually want to magnify a diagram or scribble a
+     working was the one screen without either, while the exam-question
+     panel next door had both. It is the same viewer, given a page range. */
+  function paperPanel(url, from, to, tall) {
+    return '<div class="pdf-frame pt-paper-frame" style="height:' +
+      (tall ? "min(78vh,900px)" : "min(62vh,720px)") + '">' +
+      '<div class="pdfv" data-src="' + url + '" data-from="' + from +
+      '" data-to="' + to + '"></div></div>';
+  }
+
   /* A real exam question.
 
      The page is the question. Text extraction cannot carry a diagram, a
@@ -453,8 +466,7 @@ const PracticeView = (function () {
     const clean = !(q.flags || []).length;
 
     return (qUrl
-        ? '<div class="pt-paper" data-pdf-src="' + qUrl + '" data-pdf-from="' + q.pageFrom +
-          '" data-pdf-to="' + q.pageTo + '"></div>'
+        ? paperPanel(qUrl, q.pageFrom, q.pageTo, true)
         : '<div class="qtext">' + UI.math(q.text) + '</div>') +
 
       /* Where the text survived, it is worth having: it reflows on a phone
@@ -476,8 +488,7 @@ const PracticeView = (function () {
                 : "") +
             '</div>' +
             (msUrl && q.msFrom
-              ? '<div class="pt-paper" data-pdf-src="' + msUrl + '" data-pdf-from="' + q.msFrom +
-                '" data-pdf-to="' + q.msTo + '"></div>'
+              ? paperPanel(msUrl, q.msFrom, q.msTo, false)
               : msUrl
                 ? '<div class="tiny muted" style="padding:0 2px 10px">This one could not be placed in ' +
                     'the scheme, so here is the whole ' + UI.esc(set ? set.name : q.topic) + ' document. ' +
@@ -510,8 +521,7 @@ const PracticeView = (function () {
           : 'Topic unclear — a past paper is not filed by topic') +
         '. Either way it does not count towards any chapter’s rating; whole papers are ' +
         'tracked in Past Papers, where you assign the topic of each lost mark yourself.</div>' +
-      '<div class="pt-paper" data-pdf-src="' + qUrl + '" data-pdf-from="' + q.pageFrom +
-        '" data-pdf-to="' + q.pageTo + '"></div>' +
+      paperPanel(qUrl, q.pageFrom, q.pageTo, true) +
       (clean
         ? '<details class="pt-astext"><summary>Show it as text</summary>' +
             '<div class="qtext">' + UI.math(q.text) + '</div></details>'
@@ -520,8 +530,7 @@ const PracticeView = (function () {
         ? '<div class="qz-ms" style="margin-top:16px">' +
             '<div class="qz-ms-h">' + UI.icon("check") + 'Mark scheme</div>' +
             (q.msFrom
-              ? '<div class="pt-paper" data-pdf-src="' + msUrl + '" data-pdf-from="' + q.msFrom +
-                '" data-pdf-to="' + q.msTo + '"></div>'
+              ? paperPanel(msUrl, q.msFrom, q.msTo, false)
               : '<div class="tiny muted">Could not place this one in the scheme — look for ' +
                 '<b>question ' + q.num + '</b>.</div>' +
                 '<div class="pdf-frame" style="height:min(62vh,720px)">' +
@@ -759,23 +768,12 @@ const PracticeView = (function () {
     }
 
     const t = PracticeTest.live();
-    if (t && t.startedAt) { root.innerHTML = sitting(t); mountPages(); return; }
+    if (t && t.startedAt) { root.innerHTML = sitting(t); return; }
     if (t) { root.innerHTML = preview(t); return; }
 
     root.innerHTML = builder() + history();
   }
 
-  /* The printed question is a page range out of the topic PDF, which is a
-     different job from showing a whole document and has its own renderer. */
-  function mountPages() {
-    if (typeof PdfViewer === "undefined") return;
-    setTimeout(function () {
-      document.querySelectorAll("[data-pdf-src]").forEach(function (host) {
-        PdfViewer.renderPages(host, host.dataset.pdfSrc,
-                              +host.dataset.pdfFrom, +host.dataset.pdfTo);
-      });
-    }, 0);
-  }
 
   /* ------------------------------------------------------------
      actions

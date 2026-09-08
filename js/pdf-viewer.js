@@ -111,7 +111,12 @@ const PdfViewer = (function () {
   function mount(container) {
     if (!container) return;
     const src = container.dataset.src;
+    /* A page range makes this the same viewer the practice test needs.
+       It used to get a plain canvas with no toolbar, so the one place
+       you actually want to zoom into a diagram or scribble a working
+       was the one place you could not. */
     const sess = { src: src, scale: 1, pen: false, annot: null,
+      from: +container.dataset.from || 0, to: +container.dataset.to || 0,
       color: penDefault.color, lineWidth: penDefault.size, tool: penDefault.tool };
     sessions.set(container, sess);
     container.classList.add("pdfv-shell");
@@ -133,7 +138,11 @@ const PdfViewer = (function () {
 
     ensureLib().then(function () {
       if (sessions.get(container) !== sess) return; // superseded
-      return window.pdfjsLib.getDocument(src).promise;
+      /* Shared with renderPages. A practice test can put the same topic
+         PDF on screen twice, question and scheme, and fetching and
+         parsing it twice is the slowest thing on the page. */
+      if (!docCache[src]) docCache[src] = window.pdfjsLib.getDocument(src).promise;
+      return docCache[src];
     }).then(function (pdf) {
       if (!pdf || sessions.get(container) !== sess) return;
       sess.pdf = pdf;
@@ -793,9 +802,10 @@ const PdfViewer = (function () {
     const width = viewport.clientWidth || 700;
     sess.renderedWidth = width;
     sess.carriedAnnot = carried;
-    const n = pdf.numPages;
+    /* Only the pages this question occupies, when a range was given. */
+    const n = sess.to ? Math.min(sess.to, pdf.numPages) : pdf.numPages;
 
-    let p = 1;
+    let p = sess.from ? Math.max(1, Math.min(sess.from, pdf.numPages)) : 1;
     function next() {
       if (stale()) return;
       if (p > n) { finish(); return; }
@@ -874,7 +884,9 @@ const PdfViewer = (function () {
   function mountAll(root) {
     (root || document).querySelectorAll(".pdfv").forEach(function (el) {
       const existing = sessions.get(el);
-      if (existing && existing.src === el.dataset.src) { refitIfNeeded(el, existing); return; }
+      const same = existing && existing.src === el.dataset.src &&
+        existing.from === (+el.dataset.from || 0) && existing.to === (+el.dataset.to || 0);
+      if (same) { refitIfNeeded(el, existing); return; }
       if (ghostFor(el)) return; // placeholder for a panel that is full screen
       mount(el);
     });

@@ -2648,12 +2648,10 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .pt-warn b{display:block;font-size:13px;color:var(--amber)}
 .pt-warn .tiny{color:var(--muted);margin-top:2px}
 .pt-warn .ico{flex:0 0 auto;color:var(--amber);margin-top:1px}
-.pt-paper{
-  margin-top:12px;padding:10px;border-radius:12px;
-  background:var(--surface-2);border:1px solid var(--border);
-  max-height:min(72vh,860px);overflow:auto;
-}
-.pt-paper canvas{max-width:100%;height:auto;display:block;margin:0 auto 10px;border-radius:6px}
+/* The question's pages, in the full viewer with its zoom and pen. The
+   frame gives it a height to scroll inside; everything else is the
+   viewer's own. */
+.pt-paper-frame{margin-top:12px}
 
 /* ============================================================
    Timetable

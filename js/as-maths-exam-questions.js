@@ -1,15 +1,13 @@
 /* ============================================================
    AS (Year 1) exam questions, from the AS topic PDFs.
 
-   Built by tools/extract-as-maths.js -- do not hand edit, run
-   the tool. The reasoning behind the extraction, and what
-   `flags` and `msCheck` mean, is documented there.
+   244 real Edexcel questions carrying 1892 marks, at
+   the tariffs the paper sets.
 
-   These are the Year 1 half of the question bank. The A level
-   topic sets in maths-exam-questions.js span both years, so a
-   question from those has no year and is left out when you
-   filter for Year 1; these carry year 1 by construction,
-   because the AS paper only examines Year 1 content.
+   Built by tools/extract-as-maths.js -- do not hand edit, run the
+   tool. Why the page and not the text is the question, how the
+   shifted font is decoded, and what `flags` and `msCheck` mean are
+   all documented there.
    ============================================================ */
 
 const AS_MATHS_EXAM_QUESTIONS = [

@@ -1,14 +1,20 @@
 #!/usr/bin/env node
 /* ============================================================
-   Extract the AS (Year 1) topic question sets.
+   Extract the maths topic question sets -- both collections.
 
-   The A level topic PDFs were extracted a while back and became
-   the 407 questions in js/maths-exam-questions.js. The 21 AS
-   sets sitting beside them were never touched, which is why
+   The 21 AS sets had never been extracted at all, which is why
    filtering the practice test to Year 1 served almost nothing:
    Binomial Expansion offered three questions out of a PDF with
-   fourteen, and the A level set it fell back on spans both
-   years so it is excluded from a Year 1 filter by design.
+   fourteen, and the A level set it fell back on spans both years
+   so it is excluded from a Year 1 filter by design.
+
+   The 35 A level sets had been extracted, by splitting the whole
+   document on form feeds -- which -layout emits between text
+   flows as well as between pages. So their page numbers drifted:
+   158 of the 407 questions pointed past the end of their own PDF
+   and 248 mark schemes did, and the rest were quietly off by
+   however many extra feeds came before them. Both collections are
+   read here, the same way, so that cannot happen twice.
 
    The approach is the one the questions file already documents
    and is repeated here so this file stands on its own:
@@ -439,7 +445,7 @@ function idOf(key, n) {
 
 const MISMATCH = [], UNPAIRED = [], DROPPED = [];
 
-function buildSet(key) {
+function buildSet(key, year) {
   const s = EXAM_SETS[key];
   const qs = readQuestions(setPath(key, "q"));
   let blocks = [];
@@ -472,7 +478,7 @@ function buildSet(key) {
          place it, so it is used rather than showing the question as
          worth nothing. */
       marks: q.marks != null ? q.marks : (b && b.total) || 0,
-      year: 1,
+      year: year || null,
       pageFrom: q.pageFrom,
       pageTo: q.pageTo,
       msFrom: b && check !== "none" ? b.msFrom : null,
@@ -513,31 +519,71 @@ const HEADER = `/* ============================================================
 
 /* ---------- run ---------- */
 
-const AS_KEYS = Object.keys(EXAM_SETS).filter(function (k) { return !EXAM_SETS[k].root; });
+/* Both collections, same reader. The A level sets were extracted once
+   before by splitting the whole document on form feeds, which -layout
+   also emits between text flows, so their page numbers drifted: 158 of
+   the 407 questions pointed past the end of their own PDF, and 248 mark
+   schemes did. On a bank whose whole design is "the page is the
+   question" that is the worst kind of wrong, because it shows you a
+   page with every appearance of being the right one. */
+const BANKS = [
+  {
+    keys: Object.keys(EXAM_SETS).filter(function (k) { return !EXAM_SETS[k].root; }),
+    /* The AS paper only examines Year 1 content, so these are Year 1
+       whatever chapters the set happens to cover. */
+    year: 1,
+    file: "as-maths-exam-questions.js",
+    name: "AS_MATHS_EXAM_QUESTIONS",
+    title: "AS (Year 1) exam questions, from the AS topic PDFs."
+  },
+  {
+    keys: Object.keys(EXAM_SETS).filter(function (k) { return EXAM_SETS[k].root === "al"; }),
+    /* A topic set runs across both years, so there is no year to give.
+       The practice test leaves these out of a year filter rather than
+       claiming one; see mathsExamPool. */
+    year: 0,
+    file: "maths-exam-questions.js",
+    name: "MATHS_EXAM_QUESTIONS",
+    title: "A level exam questions, from the A level topic PDFs."
+  }
+];
 
-const all = [];
-const report = [];
-AS_KEYS.forEach(function (k) {
-  let qs;
-  try { qs = buildSet(k); }
-  catch (e) { report.push([k, "FAILED: " + e.message]); return; }
-  all.push.apply(all, qs);
-  const byCheck = {};
-  qs.forEach(function (q) { byCheck[q.msCheck] = (byCheck[q.msCheck] || 0) + 1; });
-  const noMarks = qs.filter(function (q) { return !q.marks; }).length;
-  const noChap = (setChapters[k] || []).length === 0;
-  report.push([k, qs.length + " q, " + qs.reduce(function (a, q) { return a + q.marks; }, 0) + " marks, " +
-    Object.keys(byCheck).map(function (c) { return c + " " + byCheck[c]; }).join(" / ") +
-    (noMarks ? ", " + noMarks + " WITHOUT A TARIFF" : "") +
-    (noChap ? ", NO CHAPTERS" : "")]);
+function header(bank, n, marks) {
+  return "/* ============================================================\n" +
+    "   " + bank.title + "\n\n" +
+    "   " + n + " real Edexcel questions carrying " + marks + " marks, at\n" +
+    "   the tariffs the paper sets.\n\n" +
+    "   Built by tools/extract-as-maths.js -- do not hand edit, run the\n" +
+    "   tool. Why the page and not the text is the question, how the\n" +
+    "   shifted font is decoded, and what `flags` and `msCheck` mean are\n" +
+    "   all documented there.\n" +
+    "   ============================================================ */\n\n";
+}
+
+BANKS.forEach(function (bank) {
+  const all = [];
+  console.log("== " + bank.name);
+  bank.keys.forEach(function (k) {
+    let qs;
+    try { qs = buildSet(k, bank.year); }
+    catch (e) { console.log(k.padEnd(16), "FAILED: " + e.message); return; }
+    all.push.apply(all, qs);
+    const byCheck = {};
+    qs.forEach(function (q) { byCheck[q.msCheck] = (byCheck[q.msCheck] || 0) + 1; });
+    const noChap = (setChapters[k] || []).length === 0;
+    console.log(k.padEnd(16), qs.length + " q, " +
+      qs.reduce(function (a, q) { return a + q.marks; }, 0) + " marks, " +
+      Object.keys(byCheck).map(function (c) { return c + " " + byCheck[c]; }).join(" / ") +
+      (noChap ? ", NO CHAPTERS" : ""));
+  });
+  const marks = all.reduce(function (a, q) { return a + q.marks; }, 0);
+  console.log("   total " + all.length + " questions, " + marks + " marks");
+  console.log("");
+  bank.built = all;
+  bank.marks = marks;
 });
 
-report.forEach(function (r) { console.log(r[0].padEnd(14), r[1]); });
-console.log("");
-console.log("total", all.length, "questions,", all.reduce(function (a, q) { return a + q.marks; }, 0), "marks");
-
 if (process.argv.indexOf("--why") >= 0) {
-  console.log("");
   console.log("-- paired but the totals disagree (" + MISMATCH.length + ")");
   MISMATCH.forEach(function (m) { console.log("   " + m); });
   console.log("-- dropped (" + DROPPED.length + ")");
@@ -547,8 +593,11 @@ if (process.argv.indexOf("--why") >= 0) {
 }
 
 if (process.argv.indexOf("--write") >= 0) {
-  const out = path.join(ROOT, "js", "as-maths-exam-questions.js");
-  const body = all.map(function (q) { return "  " + JSON.stringify(q); }).join(",\n");
-  fs.writeFileSync(out, HEADER + "const AS_MATHS_EXAM_QUESTIONS = [\n" + body + "\n];\n", "utf8");
-  console.log("wrote", out);
+  BANKS.forEach(function (bank) {
+    const out = path.join(ROOT, "js", bank.file);
+    const body = bank.built.map(function (q) { return "  " + JSON.stringify(q); }).join(",\n");
+    fs.writeFileSync(out, header(bank, bank.built.length, bank.marks) +
+      "const " + bank.name + " = [\n" + body + "\n];\n", "utf8");
+    console.log("wrote", out);
+  });
 }
