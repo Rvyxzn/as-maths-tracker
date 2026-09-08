@@ -94,10 +94,21 @@ const PracticeTest = (function () {
      what a practice test should be made of: the built-in chapter bank is
      there to check you followed the video, and a "test" made of 2-mark
      recall questions measures nothing the exam will ask. */
+  /* Two topic banks, one list. The A level sets run across both years;
+     the AS sets are Year 1 only and were extracted later, which is why
+     they live in their own file. Nothing downstream needs to know which
+     file a question came from, so they are joined here once. */
+  function examBank() {
+    const al = typeof MATHS_EXAM_QUESTIONS !== "undefined" ? MATHS_EXAM_QUESTIONS : [];
+    const as = typeof AS_MATHS_EXAM_QUESTIONS !== "undefined" ? AS_MATHS_EXAM_QUESTIONS : [];
+    return al.concat(as);
+  }
+
   function mathsExamPool() {
-    if (typeof MATHS_EXAM_QUESTIONS === "undefined") return [];
+    const bank = examBank();
+    if (!bank.length) return [];
     const out = [];
-    MATHS_EXAM_QUESTIONS.forEach(function (q) {
+    bank.forEach(function (q) {
       /* A topic set usually serves several chapters — the Trigonometry set
          covers four of them. The question is COUNTED under the first, so a
          pool of 407 is 407 questions and a test cannot draw the same one
@@ -136,8 +147,13 @@ const PracticeTest = (function () {
         subId: null,
         source: "exam",
         group: inf.paper.short,
-        year: spread.length === 1 ? +spread[0] : null,
-        years: spread.map(Number),
+        /* An AS question carries its own year, and it is not a guess:
+           the AS paper only examines Year 1 content, so every question
+           in those sets is Year 1 whatever chapters the set covers.
+           The A level sets have no such guarantee and fall back to the
+           chapters, which is why a set spanning both years has none. */
+        year: q.year || (spread.length === 1 ? +spread[0] : null),
+        years: q.year ? [q.year] : spread.map(Number),
         label: q.topic + " · Q" + q.num,
         topic: inf.chapter.name,
         where: inf.chapter.name,
@@ -243,9 +259,8 @@ const PracticeTest = (function () {
       return MATHS_PAPER_QUESTIONS.filter(function (q) { return q.id === pid; })[0] || null;
     }
     if (bits[0] === "mex") {
-      if (typeof MATHS_EXAM_QUESTIONS === "undefined") return null;
       const id = bits.slice(1).join(":");
-      return MATHS_EXAM_QUESTIONS.filter(function (q) { return q.id === id; })[0] || null;
+      return examBank().filter(function (q) { return q.id === id; })[0] || null;
     }
     if (bits[0] === "maths") {
       /* the chapter id itself contains a colon, so the index is the last part */
@@ -726,12 +741,39 @@ const PracticeTest = (function () {
     });
   }
 
+  /* Take a finished test back out.
+
+     Finishing writes a question-set record to every chapter the test
+     touched, and those records are what move a rating and what the planner
+     reads. Deleting the test without them would leave a score behind with
+     nothing to explain it - a chapter marked down by a test that no longer
+     exists - so they go too. They are found by the note finish() writes,
+     which names the test, so nothing else a chapter has recorded is
+     disturbed. */
+  function unlog(id) {
+    const t = get(id);
+    if (!t) return false;
+    const note = "Practice test: " + t.name;
+    Store.mutate(function (st) {
+      const topics = st.topics || {};
+      Object.keys(topics).forEach(function (cid) {
+        const sets = topics[cid] && topics[cid].questionSets;
+        if (!sets || !sets.length) return;
+        topics[cid].questionSets = sets.filter(function (r) {
+          return !(r.source === "practice-test" && r.notes === note);
+        });
+      });
+      st.practiceTests = (st.practiceTests || []).filter(function (x) { return x.id !== id; });
+    });
+    return true;
+  }
+
   return {
     supported: supported, minutesFor: minutesFor, MINS_PER_MARK: MINS_PER_MARK,
     pool: pool, eligible: eligible, choose: choose, question: question, meta: meta,
     examPool: mathsExamPool,
     kindOf: kindOf, lastAttempt: lastAttempt,
-    all: all, get: get, live: live, history: history,
+    all: all, get: get, live: live, history: history, unlog: unlog,
     create: create, swap: swap, drop: drop, start: start,
     score: score, scoreOf: scoreOf, totals: totals, byChapter: byChapter,
     finish: finish, discard: discard

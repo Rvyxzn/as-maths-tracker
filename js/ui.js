@@ -41,7 +41,17 @@ const UI = (function () {
     box.addEventListener("click", function (e) { e.stopPropagation(); });
     root.onclick = closeModal;
     ov.onclick = closeModal;
-    root.querySelector("[data-modal-close]").onclick = closeModal;
+    /* ALL of them, not the first.
+
+       This wired only the ✕ in the header, so every "Cancel" in a footer was
+       a button that did nothing — and it could not fall through to the app's
+       delegated handler either, because the line above stops the click at the
+       box. Thirteen of them across the app, and one screen had already
+       worked around it with a second attribute of its own rather than
+       fixing it here. */
+    root.querySelectorAll("[data-modal-close]").forEach(function (b) {
+      b.onclick = closeModal;
+    });
     modalCloser = opts.onClose || null;
     if (opts.onMount) opts.onMount(box);
     return box;

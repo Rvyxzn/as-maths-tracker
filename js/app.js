@@ -51,13 +51,17 @@ function setSidebar(open) {
   document.getElementById("sidebarScrim").classList.toggle("on", open);
 }
 
-  /* Set when a navigation was a deliberate choice - a nav item, a link, a
-     button - rather than a re-render. Onboarding defers to it. */
-  let asked = false;
+  /* The view the user last chose deliberately - a nav item, a link, a
+     button - as opposed to one a re-render landed on. Onboarding defers
+     to it. It has to be the view and not a flag: a flag cleared on the
+     first render, so the Practice Test appeared, and then the first
+     filter chip clicked inside it re-rendered straight back out to
+     Getting Started. */
+  let askedFor = null;
 
   function go(view, p) {
     current = view; params = p || {};
-    asked = view !== "onboarding";
+    if (view !== "onboarding") askedFor = view;
     window.scrollTo({ top: 0, behavior: "smooth" });
     setSidebar(false);
     render();
@@ -93,8 +97,7 @@ function setSidebar(open) {
        what you had clicked - and from the outside that reads as the button
        doing nothing. Ask once; after that, go where you asked to go and
        leave the prompt on the dashboard. */
-    if (!st.onboarded && !asked && current !== "settings") current = "onboarding";
-    asked = false;
+    if (!st.onboarded && current !== "settings" && current !== askedFor) current = "onboarding";
 
     /* Only play the entrance animation when the view actually changes.
        Re-rendering in place (ticking a task, saving a rating) must not
@@ -332,6 +335,10 @@ function setSidebar(open) {
             if (id === Subjects.currentId()) return;
             const s = Subjects.switchTo(id);
             renderBrand();
+            /* A different subject has its own save, so nothing has been
+               asked for in it yet: one that has not been set up gets the
+               Getting Started prompt again. */
+            askedFor = null;
             current = "dashboard";
             render();
             UI.toast("Switched to " + s.name, "ok");

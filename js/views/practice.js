@@ -21,6 +21,9 @@ const PracticeView = (function () {
   let idx = 0;                 // which question is open while sitting
   let revealed = {};           // keys whose mark scheme is showing
   let caseOpen = {};           // keys whose case study is expanded
+  let hinted = {};             // keys whose hint has been asked for
+  let msOpen = {};             // keys whose scheme is unfolded on the results page
+  let msAllOpen = false;
   let resultId = null;         // a finished test being read
   let chaptersOpen = false;    // the chapter picker in the builder
   let picked = { tariffs: {}, chapters: {}, group: "all", year: "all",
@@ -59,7 +62,7 @@ const PracticeView = (function () {
          scrolling past forty chapters that Year 1 cannot use is not a list,
          it is a haystack. */
       if (picked.group !== "all" && m.group !== picked.group) return;
-      if (picked.year !== "all" && String(m.year) !== String(picked.year)) return;
+      if (picked.year !== "all" && m.year != null && String(m.year) !== String(picked.year)) return;
       const mine = m.cids && m.cids.length ? m.cids : (m.cid ? [m.cid] : []);
       mine.forEach(function (cid) {
         const box = m.source === "bank" ? bank : exam;
@@ -407,8 +410,6 @@ const PracticeView = (function () {
             '</div>'
           : "") +
         '<div class="qtext">' + PacksView.questionHtml(q.text, q.id) + '</div>' +
-        /* with the question, because it is part of it */
-        PacksView.diagramBlock(q) +
         (g ? '<div class="qfocus-guide"><b>' + UI.esc(g.name) + '</b>' +
              '<span class="pill acc">' + UI.esc(g.split) + '</span><p>' + UI.esc(g.how) + '</p></div>' : "") +
         (show
@@ -529,11 +530,56 @@ const PracticeView = (function () {
         : revealButton(it));
   }
 
+  /* A nudge that is not the answer.
+
+     Revealing the scheme mid-test ends the question: you cannot unsee it,
+     and the mark you give yourself afterwards is not a mark. A hint says
+     what the examiner is looking for and how the marks are split, which is
+     what people actually want when they are stuck, and it leaves the
+     question still worth sitting. */
+  function hintFor(it) {
+    const q = PracticeTest.question(it.key);
+    const kind = PracticeTest.kindOf(it.key);
+    const mins = PracticeTest.minutesFor(it.marks);
+    const bits = [];
+
+    if (kind === "eco" && typeof PacksView !== "undefined") {
+      const g = PacksView.guideFor(it.marks);
+      if (g) bits.push("<b>" + UI.esc(g.name) + "</b> — " + UI.esc(g.split) + ". " + UI.esc(g.how));
+    }
+    if (q && /\bdiagram\b/i.test(String(q.text || "") + " " + String(q.ms || ""))) {
+      bits.push("This one wants a <b>diagram</b>. Draw it, label both axes and both curves, and " +
+                "refer to the labelled points in the writing.");
+    }
+    if (it.marks >= 8) {
+      bits.push("At " + it.marks + " marks it is looking for developed chains rather than a list: " +
+                "roughly " + Math.max(2, Math.round(it.marks / 6)) + " points, each taken to a consequence.");
+    } else {
+      bits.push("At " + it.marks + " marks it wants the answer and the working, not an essay.");
+    }
+    bits.push("Give it about <b>" + mins + " minutes</b>. Running long here is what costs the marks " +
+              "at the end of the paper.");
+    return bits;
+  }
+
   function revealButton(it) {
-    return '<button class="btn btn-primary btn-block" style="margin-top:18px" ' +
-        'data-action="pt-reveal" data-key="' + UI.esc(it.key) + '">Reveal the mark scheme</button>' +
+    const showHint = !!hinted[it.key];
+    const bits = hintFor(it);
+    return (showHint
+        ? '<div class="pt-hint">' + UI.icon("info") +
+            '<div><b>A hint, not the answer</b><ul>' +
+              bits.map(function (b) { return "<li>" + b + "</li>"; }).join("") +
+            '</ul></div></div>'
+        : "") +
+      '<div class="pt-reveal">' +
+        (showHint ? "" :
+          '<button class="btn" data-action="pt-hint" data-key="' + UI.esc(it.key) + '">Give me a hint</button>') +
+        '<button class="btn btn-primary" style="flex:1" ' +
+          'data-action="pt-reveal" data-key="' + UI.esc(it.key) + '">Reveal the mark scheme</button>' +
+      '</div>' +
       '<div class="tiny faint" style="text-align:center;margin-top:8px">' +
-        'Write the whole answer first — ' + PracticeTest.minutesFor(it.marks) + ' minutes is what it is worth.</div>';
+        'Write the whole answer first — ' + PracticeTest.minutesFor(it.marks) + ' minutes is what it is worth. ' +
+        'Every scheme is on the results page at the end too.</div>';
   }
 
   /* The score box only appears once the mark scheme is showing. Marking
@@ -619,10 +665,54 @@ const PracticeView = (function () {
             'to each chapter, so your ratings and plan already reflect this.</div>') +
       '</div>' +
 
+      marksSchemes(t) +
+
       '<div class="row wrap" style="gap:8px">' +
         '<button class="btn btn-primary" data-action="pt-again">Build another test</button>' +
         '<button class="btn" data-action="pt-history-close">Back to the tests</button>' +
+        '<div class="spacer"></div>' +
+        '<button class="btn btn-ghost" data-action="pt-unlog" data-id="' + t.id + '">Unlog this test</button>' +
       '</div>';
+  }
+
+  /* Every mark scheme, at the end, in the order you sat them.
+
+     Revealing one at a time mid-test is for checking a single answer. What
+     you want afterwards is to go through the lot, and having to reopen the
+     test and click through question by question is why people do not. Folded
+     shut so the results are still the first thing on the page. */
+  function marksSchemes(t) {
+    return '<div class="card">' +
+      '<div class="card-head"><div class="card-title">The mark schemes</div>' +
+        '<div class="right"><button class="btn btn-sm" data-action="pt-ms-all">' +
+          (msAllOpen ? "Fold them all away" : "Open all " + t.items.length) + '</button></div></div>' +
+      '<div class="tiny muted" style="margin-bottom:12px">Every question you sat, with its scheme. ' +
+        'Going through these is the part that moves a grade; the percentage above is just the ' +
+        'receipt.</div>' +
+      '<div class="stack">' + t.items.map(function (it, i) {
+        const q = PracticeTest.question(it.key);
+        const m = PracticeTest.meta(it.key);
+        const s = PracticeTest.scoreOf(t, it.key);
+        const pct = s ? Math.round(s.got / it.marks * 100) : null;
+        const open = msAllOpen || !!msOpen[it.key];
+        return '<div class="pt-ms' + (open ? " open" : "") + '">' +
+          '<button class="pt-ms-head" data-action="pt-ms" data-key="' + UI.esc(it.key) + '">' +
+            '<span class="pt-ms-n">' + (i + 1) + '</span>' +
+            '<span class="pt-ms-main"><b>' + UI.esc(m ? m.label : "Question " + (i + 1)) + '</b>' +
+              '<small>' + it.marks + ' marks' + (m && m.where ? " · " + UI.esc(m.where) : "") + '</small></span>' +
+            (s ? '<span class="pill ' + tone(pct) + '">' + s.got + '/' + it.marks + '</span>'
+               : '<span class="pill">not marked</span>') +
+            '<span class="pt-ms-chev">' + (open ? "−" : "+") + '</span>' +
+          '</button>' +
+          (open
+            ? '<div class="pt-ms-body">' +
+                (q ? questionBody(it, q, true)
+                   : '<div class="tiny faint">This question is no longer in the bank.</div>') +
+              '</div>'
+            : "") +
+        '</div>';
+      }).join("") + '</div>' +
+    '</div>';
   }
 
   /* ------------------------------------------------------------
@@ -738,13 +828,56 @@ const PracticeView = (function () {
         App.render(); return true;
       }
       case "pt-chap-none": readInputs(); picked.chapters = {}; App.render(); return true;
+      /* Adds to what is picked rather than replacing it. The list only shows
+         the chapters the paper and year chips let through, so "select all"
+         wiping the rest meant picking everything in Theme 1, switching to
+         Theme 2, picking everything there, and finding Theme 1 gone. */
       case "pt-chap-all": {
         readInputs();
-        picked.chapters = {};
         chaptersAvailable().forEach(function (c) { picked.chapters[c.cid] = true; });
         App.render(); return true;
       }
       case "pt-bank": readInputs(); picked.includeBank = !picked.includeBank; App.render(); return true;
+      case "pt-hint": hinted[el.dataset.key] = true; App.render(); return true;
+      case "pt-cancel": {
+        const id = el.dataset.id;
+        UI.confirm("Cancel this test?",
+          "It is thrown away and nothing is recorded — no score, no marks against any chapter. " +
+          "The questions go back in the pool.",
+          "Cancel the test", true).then(function (ok) {
+            if (!ok) return;
+            PracticeTest.discard(id);
+            idx = 0; revealed = {}; hinted = {};
+            UI.toast("Test cancelled, nothing recorded", "ok");
+            App.render();
+          });
+        return true;
+      }
+      case "pt-unlog": {
+        const id = el.dataset.id;
+        UI.confirm("Unlog this test?",
+          "It comes out of your history, and the marks it gave every chapter come out with it, so " +
+          "your ratings and plan go back to where they were. This cannot be undone.",
+          "Unlog it", true).then(function (ok) {
+            if (!ok) return;
+            PracticeTest.unlog(id);
+            resultId = null;
+            UI.toast("Test unlogged and its marks removed", "ok", 4000);
+            App.render();
+          });
+        return true;
+      }
+      case "pt-ms": {
+        const k = el.dataset.key;
+        /* opening one on its own turns off "all", or the toggle does nothing */
+        if (msAllOpen) {
+          msAllOpen = false;
+          (PracticeTest.get(resultId) || { items: [] }).items.forEach(function (i) { msOpen[i.key] = true; });
+        }
+        msOpen[k] = !msOpen[k];
+        App.render(); return true;
+      }
+      case "pt-ms-all": msAllOpen = !msAllOpen; msOpen = {}; App.render(); return true;
       case "pt-chap-weak": {
         readInputs();
         picked.chapters = {};
