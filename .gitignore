@@ -17,3 +17,11 @@ _*_tmp.*
 # Pearson URLs are recorded in that file's header if they are ever needed again.
 Exam questions PDFs/A-Level Economics/Examiner Reports/
 .tmpwork/
+
+# Supabase local state. `link` and `deploy` write a project ref and a
+# pooler URL in here; none of it belongs in a public repo, and an
+# .env holding the API key REALLY does not.
+supabase/.temp/
+supabase/.branches/
+.env
+.env.*

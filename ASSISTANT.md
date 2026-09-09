@@ -5,7 +5,9 @@ falls back to phrase matching, and says so when it does. This replaces that
 with a real model, which is the difference between reading *"only do economics
 on Friday"* and reading *"focus on economics until Friday"*.
 
-It takes about ten minutes and four commands.
+It takes about ten minutes and three commands. You have to run them
+yourself: two of the three involve credentials, and I am not going to type
+your API key or click through your sign-in for you.
 
 ---
 
@@ -35,48 +37,44 @@ with your name on the bill.
 
 ## 1. Install the Supabase CLI
 
+Already done on this machine — it is version 2.117.0. On a new machine:
+
 ```bash
 npm install -g supabase
 ```
 
-Check it worked:
-
-```bash
-supabase --version
-```
-
-## 2. Sign in and link the project
+## 2. Sign in
 
 ```bash
 supabase login
 ```
 
-That opens a browser and asks you to authorise. Then, from the
-`Revision Tracker` folder:
+That opens a browser and asks you to authorise. It is the only step that
+needs a browser.
 
-```bash
-supabase link --project-ref hgbyenbvsdlnixmtzmwx
-```
-
-It will ask for your **database password** — the one you set when you created
-the project. If you have lost it: Supabase dashboard → **Settings** →
-**Database** → **Reset database password**. Resetting it does not affect
-anything the app currently does.
+**There is no `link` step.** Both commands below take `--project-ref`, so
+the project is named where it is used. Linking would ask for the database
+password, which is a thing to lose for no benefit.
 
 ## 3. Give it the API key
 
 ```bash
-supabase secrets set ANTHROPIC_API_KEY=sk-ant-your-key-here
+supabase secrets set ANTHROPIC_API_KEY=sk-ant-your-key-here --project-ref hgbyenbvsdlnixmtzmwx
 ```
 
 This stores it on Supabase, not in the repo. Never paste this key into any
-file in this folder — everything here is public.
+file in this folder — everything here is public. It does land in your shell
+history; if that bothers you, put it in a `.env` file **outside this folder**
+and use `--env-file ../secrets.env` instead.
 
 ## 4. Deploy the function
 
 ```bash
-supabase functions deploy assistant
+supabase functions deploy assistant --project-ref hgbyenbvsdlnixmtzmwx --use-api
 ```
+
+`--use-api` bundles it on Supabase's side, so Docker does not have to be
+running locally.
 
 That is it. Reload the app, sign in, go to **Timetable → Describe your week**,
 type something and press **Read it**. The result now carries a green
@@ -87,7 +85,7 @@ type something and press **Read it**. The result now carries a green
 ## Checking it works
 
 ```bash
-supabase functions logs assistant
+supabase functions logs assistant --project-ref hgbyenbvsdlnixmtzmwx
 ```
 
 Every call appears there. If something is wrong, the app will have already
@@ -108,8 +106,8 @@ from somewhere else cannot spend your credits. The defaults are the GitHub
 Pages site and `localhost:8080` / `localhost:8777`. To add another:
 
 ```bash
-supabase secrets set ALLOWED_ORIGINS="https://rvyxzn.github.io,http://localhost:8080,http://localhost:5500"
-supabase functions deploy assistant
+supabase secrets set ALLOWED_ORIGINS="https://rvyxzn.github.io,http://localhost:8080,http://localhost:5500" --project-ref hgbyenbvsdlnixmtzmwx
+supabase functions deploy assistant --project-ref hgbyenbvsdlnixmtzmwx --use-api
 ```
 
 ---
