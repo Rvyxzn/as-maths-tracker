@@ -790,12 +790,68 @@ const PacksView = (function () {
           '<span>The mark scheme credits a diagram here. Draw it, label both axes and both curves, ' +
           'and refer to the labelled points in the writing.</span></div>' : "") +
 
-        '<div class="ma-cols">' +
-          list(m.fromProse ? "What earns the marks" : "Knowledge, application and analysis",
-               m.fromProse ? "the mark scheme's own wording" : "pick two or three, and develop them",
-               m.kaa) +
-          list("Evaluation", "worth " + m.split.ev + " of the " + m.marks, m.ev) +
-        '</div>' +
+        /* THE ANSWER, in the order it is written: define, then one
+           paragraph per chain with its own evaluation attached, then the
+           judgement. Not the scheme's whole list -- see the note in
+           eco-model-answers.js for why printing all nineteen points
+           teaches the opposite of what the tariff rewards. */
+        (m.chains && m.chains.length
+          ? '<div class="ma-answer">' +
+              '<div class="ma-answer-head"><b>The answer, paragraph by paragraph</b>' +
+                '<span>' + m.chains.length + (m.chains.length === 1 ? ' chain' : ' chains') +
+                (m.split.ev ? ', each with its own evaluation' : '') + '</span></div>' +
+
+              (m.define
+                ? '<div class="ma-para ma-para-def">' +
+                    '<div class="ma-para-tag">Open</div>' +
+                    '<div class="ma-para-body"><b>' + UI.esc(m.define) + '</b>' +
+                      '<div class="tiny muted">One sentence. The definition is marked, and it is ' +
+                      'the thing the rest of the answer leans on.</div></div>' +
+                  '</div>'
+                : "") +
+
+              m.chains.map(function (c) {
+                return '<div class="ma-para">' +
+                  '<div class="ma-para-tag">KAA ' + c.n + '</div>' +
+                  '<div class="ma-para-body">' +
+                    (c.heading ? '<div class="ma-para-ctx">' + UI.esc(c.heading) + '</div>' : "") +
+                    '<b>' + UI.esc(c.point) + '</b>' +
+                    '<ol class="ma-links">' + m.links.map(function (l) {
+                      return '<li>' + UI.esc(l) + '</li>';
+                    }).join("") + '</ol>' +
+                    (c.ev
+                      ? '<div class="ma-ev"><span>EV ' + c.n + '</span>' + UI.esc(c.ev) +
+                        '<div class="tiny muted">Attach it here, to this point, not in a heap at ' +
+                        'the end.</div></div>'
+                      : '<div class="ma-ev ma-ev-none"><span>EV ' + c.n + '</span>' +
+                        'The scheme lists no evaluation aimed at this point. Weigh it yourself: how ' +
+                        'big, how likely, how long it lasts, and what it depends on.</div>') +
+                  '</div>' +
+                '</div>';
+              }).join("") +
+
+              (m.judgement
+                ? '<div class="ma-para ma-para-jud">' +
+                    '<div class="ma-para-tag">Close</div>' +
+                    '<div class="ma-para-body"><b>Judgement</b>' +
+                      '<div class="tiny muted">Answer the question that was asked, and commit. Which ' +
+                      'chain matters most, and what would have to be true for the other one to win?' +
+                      '</div></div>' +
+                  '</div>'
+                : "") +
+            '</div>'
+          : "") +
+
+        /* Everything else the scheme would have taken. Folded away, because
+           it is the thing that used to be presented AS the answer. */
+        ((m.alsoKaa && m.alsoKaa.length) || (m.alsoEv && m.alsoEv.length)
+          ? '<details class="ma-also"><summary>The other points this scheme would also have ' +
+              'accepted (' + ((m.alsoKaa || []).length + (m.alsoEv || []).length) + ')</summary>' +
+              '<div class="ma-cols">' +
+                list("Other analysis it allows", "any of these would have scored", m.alsoKaa || []) +
+                list("Other evaluation it allows", "", m.alsoEv || []) +
+              '</div></details>'
+          : "") +
 
         (m.conditions.length
           ? '<div class="ma-cond"><b>The scheme also says</b><ul>' +
@@ -810,8 +866,9 @@ const PacksView = (function () {
         (m.best ? '<div class="ma-best"><b>The examiner on a ' + m.best.got + '/' + m.best.outOf +
           ' answer</b><p>' + UI.esc(m.best.text) + '</p></div>' : "") +
 
-        '<div class="ma-foot">Assembled from Pearson’s mark scheme and examiner report for this ' +
-          'question. Nothing here is written for you: the points are the ones the scheme lists.</div>' +
+        '<div class="ma-foot">The shape is what the tariff pays for; the points inside it are ' +
+          'Pearson’s own, from the mark scheme and examiner report for this question. The ' +
+          'sentences are still yours to write — that is the part being marked.</div>' +
       '</div>' : "") +
     '</div>';
   }

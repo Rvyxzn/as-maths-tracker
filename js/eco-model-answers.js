@@ -28,35 +28,58 @@ const EcoModel = (function () {
      evaluation split in the mark schemes. Paragraph counts are what the
      examiner reports repeatedly ask for: depth over breadth. */
   const SHAPE = {
-    5:  { kaa: 5,  ev: 0,
+    5:  { kaa: 5,  ev: 0, chains: 1, judgement: false,
           steps: [["Define or calculate", 1], ["Explain the one reason, as a chain", 2],
                   ["Apply it to the data in front of you", 2]] },
-    8:  { kaa: 6,  ev: 2,
+    8:  { kaa: 6,  ev: 2, chains: 2, judgement: false,
           steps: [["Point one: define, apply, then analyse", 3],
                   ["Point two: define, apply, then analyse", 3],
                   ["One evaluative comment, developed", 2]] },
-    10: { kaa: 6,  ev: 4,
+    10: { kaa: 6,  ev: 4, chains: 2, judgement: true,
           steps: [["Define the term in context", 1],
-                  ["One or two chains, applied to the extract", 5],
+                  ["Chain one, applied to the extract", 3],
+                  ["Chain two, applied to the extract", 2],
                   ["Evaluation running alongside, not bolted on", 4]] },
-    12: { kaa: 8,  ev: 4,
+    12: { kaa: 8,  ev: 4, chains: 2, judgement: true,
           steps: [["Define the term in context", 1],
                   ["Chain one, fully developed", 4],
                   ["Chain two, fully developed", 3],
                   ["Evaluate both, then decide", 4]] },
-    15: { kaa: 9,  ev: 6,
+    15: { kaa: 9,  ev: 6, chains: 3, judgement: true,
           steps: [["Define and set up the context", 1],
-                  ["Chain one, with the diagram if one applies", 4],
-                  ["Chain two, fully developed", 4],
+                  ["Chain one, with the diagram if one applies", 3],
+                  ["Chain two, fully developed", 3],
+                  ["Chain three, fully developed", 2],
                   ["Evaluation, then a judgement that decides", 6]] },
-    25: { kaa: 16, ev: 9,
+    25: { kaa: 16, ev: 9, chains: 3, judgement: true,
           steps: [["Define the terms the question uses", 2],
                   ["Chain one, with a labelled diagram", 6],
                   ["Chain two, fully developed", 5],
-                  ["Third chain or the diagram's welfare analysis", 3],
+                  ["Chain three, or the diagram's welfare analysis", 3],
                   ["Evaluation: what it depends on, and how much", 6],
                   ["Judgement: answer the question you were asked", 3]] }
   };
+
+  /* THE ANSWER IS PARAGRAPHS, NOT A LIST OF EVERYTHING ALLOWED.
+
+     A scheme lists every point an examiner may credit -- nineteen of them
+     on one 8-mark question -- because it has to cover whatever a candidate
+     writes. Printing all nineteen is not a model answer, it is the scheme
+     again, and it teaches the opposite of what the tariff rewards: an
+     8-mark Examine wants TWO points taken a long way, and a candidate who
+     writes nineteen lines scores level 1.
+
+     So the plan takes as many points as the tariff actually pays for,
+     pairs each with an evaluation of that same point, and lays them out in
+     the order they are written. `chains` is that count, and it rises with
+     the marks. The wording of each point stays Pearson's; the shape around
+     it is what the tariff dictates. */
+  const LINKS = [
+    "State the point and define the term it turns on.",
+    "Say why it happens — the mechanism, not the label.",
+    "Take it one step further: and therefore…",
+    "Land it on what the question asked about, in this context."
+  ];
 
   /* Pearson's own section markers inside a report. */
   const MARKERS = /(Examiner Comments|Examiner Tip)/g;
@@ -191,11 +214,41 @@ const EcoModel = (function () {
   }
 
   /* Everything the model-answer panel needs for one question. */
+  /* One chain per paragraph you are going to write: the point, and the
+     evaluation of that point sitting with it rather than in a heap at the
+     end. Where the scheme has fewer evaluation points than chains the
+     later chains carry no paired evaluation rather than borrowing one that
+     belongs to a different argument. */
+  /* A scheme usually opens by crediting the definition -- "Definition of
+     monopsony", "Identification of an ad valorem tax". That is the first
+     sentence of the answer, not one of its arguments, and letting it take
+     a chain slot cost a 25-marker one of its three chains. It is lifted
+     out and the chains start after it. */
+  const DEFN = /^(definition|identification|defining|recognition)\b|^\s*def\b/i;
+
+  function chainsFor(sh, sc) {
+    const points = sc.kaa.slice();
+    let define = null;
+    if (points.length && DEFN.test(points[0].text)) define = points.shift().text;
+
+    const out = [];
+    for (let i = 0; i < sh.chains && i < points.length; i++) {
+      out.push({
+        n: i + 1,
+        point: points[i].text,
+        heading: points[i].heading || "",
+        ev: sh.ev && sc.ev[i] ? sc.ev[i].text : null
+      });
+    }
+    return { define: define, chains: out, rest: points.slice(sh.chains) };
+  }
+
   function build(q, report) {
     if (!q) return null;
     const sh = SHAPE[q.marks] || SHAPE[25];
     const sc = scheme(q.ms);
     const pr = parts(report);
+    const plan = chainsFor(sh, sc);
     const general = sentences(pr.general);
 
     /* The highest-scoring exemplar is the one worth reading: it is the
@@ -215,6 +268,18 @@ const EcoModel = (function () {
         return { label: s[0], marks: s[1], minutes: minutes(s[1]) };
       }),
       diagram: wantsDiagram(q.ms),
+      /* The answer itself: as many chains as the tariff pays for, each one
+         a point paired with the evaluation of that point. */
+      define: plan.define,
+      chains: plan.chains,
+      chainCount: sh.chains,
+      links: LINKS,
+      judgement: sh.judgement,
+      /* Everything else the scheme would also have accepted, kept out of
+         the answer but available underneath it, because "these were the
+         other nineteen" is worth seeing once you have written yours. */
+      alsoKaa: plan.rest,
+      alsoEv: sc.ev.slice(sh.chains),
       kaa: sc.kaa,
       ev: sc.ev,
       conditions: sc.notes || [],

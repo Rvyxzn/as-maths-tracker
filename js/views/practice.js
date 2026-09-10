@@ -632,26 +632,102 @@ const PracticeView = (function () {
      what the examiner is looking for and how the marks are split, which is
      what people actually want when they are stuck, and it leaves the
      question still worth sitting. */
+  /* Edexcel's command words and what each is actually asking for. The
+     command word is the most useful single thing to say about a question,
+     because it fixes the shape of the answer before you know any of the
+     economics. */
+  const COMMANDS = [
+    [/\bto what extent\b/i, "To what extent",
+     "Both sides, then a judgement that commits. “It depends” with nothing after it scores nothing."],
+    [/\bevaluate\b/i, "Evaluate",
+     "Argue it, then weigh it. The evaluation is not a final paragraph, it runs alongside."],
+    [/\bdiscuss\b/i, "Discuss",
+     "Two sides, each analysed properly, then decide between them."],
+    [/\bassess\b/i, "Assess",
+     "Develop the case, then judge how strong it is and what it rests on."],
+    [/\bexamine\b/i, "Examine",
+     "Explain each point as a chain, then add a short evaluative comment. Depth beats breadth."],
+    [/\banalyse\b/i, "Analyse", "Chains of cause and effect. No judgement is being asked for."],
+    [/\bexplain\b/i, "Explain", "One reason, taken all the way to its consequence. Not a list."],
+    [/\bcalculate\b/i, "Calculate",
+     "Show the formula, substitute, then state the answer with its unit."],
+    [/\bdefine\b/i, "Define", "One precise sentence, using the technical term."],
+    [/\bdraw\b|\bsketch\b/i, "Draw", "The diagram is the answer. Label both axes and every curve."],
+    [/\bidentify\b|\bstate\b/i, "State", "Name it. No explanation is being paid for."]
+  ];
+
+  const HOW_MANY = /\b(one|two|three|four)\s+((?:[a-z-]+\s+){0,2}?(?:causes?|reasons?|factors?|effects?|benefits?|costs?|advantages?|disadvantages?|ways?|policies|methods?|examples?))/i;
+
+  /* How many separate points the scheme is willing to accept. "It allows
+     six and you need two" is a genuinely useful nudge: it says stop hunting
+     for the right one and develop the one you have. */
+  function schemePoints(q) {
+    if (!q || !q.ms) return 0;
+    return String(q.ms).split("\n").filter(function (l) {
+      return l.trim().indexOf("•") === 0;
+    }).length;
+  }
+
+  /* A hint about THIS question rather than about questions in general.
+
+     Everything here is read off the question and its own scheme - the
+     command word, what it asks for and how many, the topic it sits in,
+     whether a diagram is wanted, how many points the scheme allows, how
+     the marks split. None of it gives away the content, which is what
+     separates a hint from the answer. */
   function hintFor(it) {
     const q = PracticeTest.question(it.key);
     const kind = PracticeTest.kindOf(it.key);
     const mins = PracticeTest.minutesFor(it.marks);
+    const text = String((q && q.text) || "");
     const bits = [];
+
+    const cmd = COMMANDS.filter(function (c) { return c[0].test(text); })[0];
+    const many = HOW_MANY.exec(text);
+
+    if (cmd) bits.push("The command word is <b>" + UI.esc(cmd[1]) + "</b>. " + UI.esc(cmd[2]));
+
+    if (many) {
+      bits.push("It asks for <b>" + UI.esc(many[1].toLowerCase()) + " " +
+                UI.esc(many[2].trim()) + "</b>, and marks exactly that many. A third earns " +
+                "nothing and costs the time the evaluation needed.");
+    }
+
+    if (q && q.topicName) {
+      /* Stated as a fact, not as advice. The topic tag is where the question
+         is filed, which is not always what it wants: "apart from changes in
+         indirect taxes and subsidies, examine two causes of income
+         inequality" is filed under indirect taxes, and telling you to start
+         from that definition would walk you into the one thing the question
+         rules out. */
+      bits.push("Filed under <b>" + UI.esc((q.topicCode ? q.topicCode + " " : "") + q.topicName) + "</b>.");
+    } else if (it.cid && typeof CHAPTER_INDEX !== "undefined" && CHAPTER_INDEX[it.cid]) {
+      const inf = CHAPTER_INDEX[it.cid];
+      bits.push("This is <b>" + UI.esc(inf.chapterLabel || inf.chapter.name) + "</b>.");
+    }
+
+    if (q && /\bdiagram\b/i.test(text + " " + String(q.ms || ""))) {
+      bits.push("This one wants a <b>diagram</b>. Draw it, label both axes and both curves, and " +
+                "refer to the labelled points in the writing — an unreferenced diagram earns nothing.");
+    }
+
+    const n = schemePoints(q);
+    if (n >= 3 && many) {
+      bits.push("The scheme accepts <b>" + n + " different points</b> and you need " +
+                UI.esc(many[1].toLowerCase()) + ". Stop looking for the right one and develop the " +
+                "one you have already thought of.");
+    }
 
     if (kind === "eco" && typeof PacksView !== "undefined") {
       const g = PacksView.guideFor(it.marks);
-      if (g) bits.push("<b>" + UI.esc(g.name) + "</b> — " + UI.esc(g.split) + ". " + UI.esc(g.how));
-    }
-    if (q && /\bdiagram\b/i.test(String(q.text || "") + " " + String(q.ms || ""))) {
-      bits.push("This one wants a <b>diagram</b>. Draw it, label both axes and both curves, and " +
-                "refer to the labelled points in the writing.");
-    }
-    if (it.marks >= 8) {
-      bits.push("At " + it.marks + " marks it is looking for developed chains rather than a list: " +
-                "roughly " + Math.max(2, Math.round(it.marks / 6)) + " points, each taken to a consequence.");
+      if (g) bits.push("Marks split <b>" + UI.esc(g.split) + "</b>.");
+    } else if (it.marks >= 8) {
+      bits.push("At " + it.marks + " marks it wants developed chains, not a list: about " +
+                Math.max(2, Math.round(it.marks / 6)) + " points, each taken to a consequence.");
     } else {
       bits.push("At " + it.marks + " marks it wants the answer and the working, not an essay.");
     }
+
     bits.push("Give it about <b>" + mins + " minutes</b>. Running long here is what costs the marks " +
               "at the end of the paper.");
     return bits;

@@ -3096,3 +3096,35 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
   color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
   overflow-wrap:anywhere;
 }
+
+/* ============================================================
+   Model answer, written as paragraphs
+   ============================================================ */
+.ma-answer{margin:14px 0 4px}
+.ma-answer-head{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.ma-answer-head b{font-size:14px}
+.ma-answer-head span{font-size:12px;color:var(--muted)}
+.ma-para{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--border)}
+.ma-para:first-of-type{border-top:0}
+.ma-para-tag{
+  flex:0 0 58px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--accent);padding-top:2px;
+}
+.ma-para-def .ma-para-tag,.ma-para-jud .ma-para-tag{color:var(--muted)}
+.ma-para-body{flex:1;min-width:0}
+.ma-para-body>b{display:block;font-size:14px;line-height:1.45}
+.ma-para-ctx{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.ma-links{margin:8px 0 0;padding-left:20px;display:grid;gap:3px}
+.ma-links li{font-size:12.5px;color:var(--muted)}
+.ma-ev{
+  margin-top:10px;padding:9px 11px;border-radius:9px;font-size:13px;
+  background:var(--surface-2);border:1px solid var(--border);
+}
+.ma-ev>span{
+  display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted);margin-right:8px;
+}
+.ma-ev-none{color:var(--muted)}
+.ma-also{margin-top:14px}
+.ma-also summary{cursor:pointer;font-size:13px;color:var(--muted);padding:6px 0}
+.ma-also summary:hover{color:var(--text)}
