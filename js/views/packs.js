@@ -521,6 +521,29 @@ const PacksView = (function () {
                figures: [], extracts: [],
                source: { pdf: q.pdf, from: q.stimFrom, to: q.stimTo } };
     }
+    /* SECTION A CARRIES ITS OWN STIMULUS, and it was being lost.
+
+       These questions are not attached to a shared case study, so they had
+       no panel at all -- but each one prints its own small table or supply
+       and demand diagram directly above the question, and neither of those
+       survives text extraction. "Between 2016 and 2017 the average price of
+       new build houses rose by an estimated 5.4%. Year Qua" is a table that
+       came apart, and a stray "Quantity" in the middle of a sentence is the
+       axis label off a diagram. So the answer was in the question all along
+       and unreadable.
+
+       The page it is printed on is already recorded, so that is what the
+       panel shows. Nothing is transcribed and nothing is invented. */
+    if (!q.caseKey && q.pdf && q.pageFrom && q.section === "A") {
+      return { pages: true, own: true,
+               label: "As printed",
+               title: "Question " + q.q + (q.part ? "(" + q.part + ")" : "") + ", as it appears in the paper",
+               note: "This question's table or diagram is printed with it, and does not " +
+                     "survive being turned into text. This is the page itself.",
+               figures: [], extracts: [],
+               source: { pdf: q.pdf, from: q.pageFrom, to: q.pageTo || q.pageFrom } };
+    }
+
     if (!q.caseKey || typeof ECO_CASE_STUDIES === "undefined") return null;
     const study = ECO_CASE_STUDIES[q.caseKey];
     if (!study) return null;
@@ -603,6 +626,28 @@ const PacksView = (function () {
      needs one of its three figures, so opening all of them pushes the
      extracts off the screen; and the question stays visible either way
      because the figure expands inside the panel beside it. */
+  /* The drawing for one figure, found from its id alone.
+
+     Both the folded panel and the full-screen view need the same chart, and
+     the full-screen one is opened from a click that carries nothing but the
+     id, so it is rebuilt here rather than stashed on the element. */
+  function figureBody(fid) {
+    const cut = fid.indexOf("|");
+    const key = fid.slice(0, cut), label = fid.slice(cut + 1);
+    const study = (typeof ECO_CASE_STUDIES !== "undefined") ? ECO_CASE_STUDIES[key] : null;
+    const f = study && (study.figures || []).filter(function (x) { return x.label === label; })[0];
+    if (!f) return null;
+    const drawn = (typeof ECO_FIGURE !== "undefined")
+      ? (ECO_FIGURE.forCase(key) || []).filter(function (d) { return d.label === label; })[0]
+      : null;
+    const chart = drawn ? ECO_FIGURE.render(drawn) : "";
+    const rows = (f.data || []).map(function (d) {
+      return '<tr><td>' + UI.esc(d[0]) + '</td><td class="num">' + UI.esc(d[1]) + '</td></tr>';
+    }).join("");
+    return { f: f, drawn: drawn,
+             html: chart || (rows ? '<table class="cs-table"><tbody>' + rows + '</tbody></table>' : "") };
+  }
+
   function figureHtml(f, drawn, key) {
     const fid = key + "|" + f.label;
     const open = !!figOpen[fid];
@@ -623,6 +668,10 @@ const PacksView = (function () {
         '<span class="cs-fig-chev">' + (open ? "−" : "+") + '</span>' +
       '</button>' +
       (open ? '<div class="cs-fig-body">' +
+          /* A chart in a side panel is small by definition. This opens the
+             same drawing full width, where it can also be zoomed. */
+          (body ? '<button class="btn btn-sm cs-fig-zoom" data-action="pack-fig-zoom" ' +
+                    'data-fig="' + UI.esc(fid) + '">Open it bigger</button>' : "") +
           (drawn && drawn.note ? '<div class="cs-fig-note">' + UI.esc(drawn.note) + '</div>' : "") +
           (body || '<div class="tiny faint">This figure has not been redrawn yet, so only its ' +
                    'title is here. The extracts below still carry the case study.</div>') +
@@ -636,13 +685,34 @@ const PacksView = (function () {
   function caseHtml(cs, key) {
     /* Rendered from the paper itself: the figures and extracts exactly as
        they are printed, which on the synoptic paper is the only honest way
-       to show them. */
+       to show them.
+
+       THIS IS THE FULL VIEWER, not a bare stack of canvases, and all three
+       of the things wrong with the old one came from that:
+
+         it did not appear    the canvases were filled in by a mount step
+                              that only ran on the Question Packs screen,
+                              so in a practice test the panel was a heading
+                              with nothing under it;
+         it was blurry        the pages were rasterised at whatever width
+                              the panel happened to be when it was measured,
+                              and this panel starts folded, so that width
+                              was often wrong and the result was stretched;
+         it did not zoom      an extract set six to a page is unreadable
+                              in a side panel and there was no way in.
+
+       The viewer mounts itself after every render wherever it is, re-draws
+       when the panel changes width, and brings zoom, pan and full screen
+       with it. */
     if (cs.pages) {
-      return '<div class="cs-head">' + UI.icon("info") + '<span>Case Study</span></div>' +
+      return '<div class="cs-head">' + UI.icon("info") + '<span>' + UI.esc(cs.label || "Case Study") + '</span></div>' +
         (cs.title ? '<h4 class="cs-title">' + UI.esc(cs.title) + '</h4>' : "") +
+        (cs.note ? '<div class="tiny muted" style="margin:-2px 0 8px">' + UI.esc(cs.note) + '</div>' : "") +
         /* the paths carry spaces and brackets, so they are encoded once here */
-        '<div class="cs-pages" data-question-pdf="' + UI.esc(encodeURI(cs.source.pdf)) + '" ' +
-          'data-question-from="' + cs.source.from + '" data-question-to="' + cs.source.to + '"></div>';
+        '<div class="pdf-frame cs-pages" style="height:min(70vh,760px)">' +
+          '<div class="pdfv" data-src="' + UI.esc(encodeURI(cs.source.pdf)) + '" ' +
+            'data-from="' + cs.source.from + '" data-to="' + cs.source.to + '"></div>' +
+        '</div>';
     }
     const drawn = (typeof ECO_FIGURE !== "undefined") ? ECO_FIGURE.forCase(key) : [];
     const byLabel = {};
@@ -976,18 +1046,9 @@ const PacksView = (function () {
 
     document.body.classList.toggle("has-focus", !!focused);
     /* the divider only exists once the markup is in the document */
-    setTimeout(function () { mountSplit(); mountSourcePages(); }, 0);
+    setTimeout(function () { mountSplit(); }, 0);
   }
 
-  function mountSourcePages() {
-    if (typeof PdfViewer === "undefined") return;
-    document.querySelectorAll("[data-figure-pdf]").forEach(function (host) {
-      PdfViewer.renderPages(host, host.dataset.figurePdf, +host.dataset.figureFrom, +host.dataset.figureTo);
-    });
-    document.querySelectorAll("[data-question-pdf]").forEach(function (host) {
-      PdfViewer.renderPages(host, host.dataset.questionPdf, +host.dataset.questionFrom, +host.dataset.questionTo);
-    });
-  }
 
   function shuffled(list) {
     const out = list.slice();
@@ -1104,6 +1165,54 @@ const PacksView = (function () {
       case "pack-year":   yearFilter = el.dataset.val; App.render(); return true;
       case "pack-random": { const pool = questions(); if (!pool.length) return true; practiceQueue = []; focusId = pool[Math.floor(Math.random() * pool.length)].id; caseOpen = false; App.render(); return true; }
       case "pack-practice": openPractice(); return true;
+      /* One figure, as large as the screen allows, with zoom.
+
+         The charts are drawn as SVG, so magnifying one costs nothing in
+         sharpness -- it is redrawn at whatever size it is shown, however
+         far in you go. Wired in onMount because ui.js stops clicks inside
+         a modal from reaching the document. */
+      case "pack-fig-zoom": {
+        const got = figureBody(el.dataset.fig);
+        if (!got) { UI.toast("Could not find that figure", "bad"); return true; }
+        UI.modal({
+          wide: true,
+          title: got.f.label + (got.f.caption ? " — " + caption(got.f.caption) : ""),
+          body:
+            '<div class="figzoom-bar">' +
+              '<button class="btn btn-sm" data-z="-1">−</button>' +
+              '<span class="figzoom-pct">100%</span>' +
+              '<button class="btn btn-sm" data-z="1">+</button>' +
+              '<button class="btn btn-sm" data-z="0">Reset</button>' +
+              '<span class="tiny faint">Drag to pan when it is bigger than the box</span>' +
+            '</div>' +
+            '<div class="figzoom-box"><div class="figzoom-inner">' + got.html + '</div></div>' +
+            (got.drawn && got.drawn.note
+              ? '<div class="cs-fig-note" style="margin-top:10px">' + UI.esc(got.drawn.note) + '</div>' : "") +
+            (got.drawn && got.drawn.exact === false
+              ? '<div class="cs-fig-approx">Read off the printed chart, so these are close rather than exact.</div>'
+              : ""),
+          onMount: function (box) {
+            const inner = box.querySelector(".figzoom-inner");
+            const pct = box.querySelector(".figzoom-pct");
+            let z = 1;
+            const apply = function () {
+              z = Math.max(0.5, Math.min(4, z));
+              inner.style.transform = "scale(" + z + ")";
+              pct.textContent = Math.round(z * 100) + "%";
+            };
+            box.querySelectorAll("[data-z]").forEach(function (b) {
+              b.onclick = function () {
+                const d = +b.dataset.z;
+                z = d === 0 ? 1 : z + d * 0.25;
+                apply();
+              };
+            });
+            apply();
+          }
+        });
+        return true;
+      }
+
       case "pack-fig": {
         const k = el.dataset.fig;
         figOpen[k] = !figOpen[k];

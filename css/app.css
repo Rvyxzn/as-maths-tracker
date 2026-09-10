@@ -2892,8 +2892,22 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 
 
 /* the synoptic paper's stimulus, rendered from the paper itself */
-.cs-pages{display:flex;flex-direction:column;gap:10px;margin-top:10px}
-.cs-pages canvas{width:100%;height:auto;border-radius:8px;border:1px solid var(--border);background:#fff}
+/* The case study's pages are the full viewer now, so it brings its own
+   layout, zoom and full screen. This only gives it a height to scroll in. */
+.cs-pages{margin-top:10px}
+
+/* One figure, opened large. The chart is SVG, so scaling it keeps it
+   sharp however far in you go; the box is what it scrolls inside. */
+.figzoom-bar{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.figzoom-pct{min-width:52px;text-align:center;font-size:13px;color:var(--muted)}
+.figzoom-box{
+  overflow:auto;max-height:min(70vh,720px);
+  border:1px solid var(--border);border-radius:11px;
+  background:var(--surface-2);padding:14px;
+}
+.figzoom-inner{transform-origin:top left;transition:transform .12s ease-out}
+.figzoom-inner .ef{width:100%;height:auto;display:block}
+.cs-fig-zoom{margin-bottom:10px}
 
 /* ---------- the timetable's rules ---------- */
 .tt-rule{

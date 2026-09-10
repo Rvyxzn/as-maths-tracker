@@ -908,7 +908,30 @@ const PdfViewer = (function () {
      worst of the three outcomes. Continuing the moment we are asked keeps it
      on the main thread rather than in the frame loop, and it completes
      whether anybody is looking at it or not. */
+  /* PDF.js drives its render loop from requestAnimationFrame, and a browser
+     stops delivering those entirely when it considers the page hidden. This
+     app runs inside embedded panes that report themselves hidden while
+     plainly being on screen, and there the loop simply stops: the first
+     page of a range draws, nothing asks for the second, and the promise
+     neither resolves nor rejects. Never failing is the worst of the three,
+     because there is nothing to catch and nothing to show.
+
+     So while the document says it is hidden, frames are served from a timer
+     instead. It changes nothing when the page is really visible -- the real
+     requestAnimationFrame is used then, exactly as before. */
+  let rafPatched = false;
+  function keepFramesComing() {
+    if (rafPatched || typeof window === "undefined" || !window.requestAnimationFrame) return;
+    rafPatched = true;
+    const real = window.requestAnimationFrame.bind(window);
+    window.requestAnimationFrame = function (cb) {
+      if (document.visibilityState === "hidden") return setTimeout(function () { cb(performance.now()); }, 16);
+      return real(cb);
+    };
+  }
+
   function renderNow(page, ctx, viewport) {
+    keepFramesComing();
     const task = page.render({ canvasContext: ctx, viewport: viewport });
     task.onContinue = function (cont) { cont(); };
     return task.promise;
