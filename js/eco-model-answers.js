@@ -45,20 +45,28 @@ const EcoModel = (function () {
                   ["Chain one, fully developed", 4],
                   ["Chain two, fully developed", 3],
                   ["Evaluate both, then decide", 4]] },
-    15: { kaa: 9,  ev: 6, chains: 3, judgement: true,
+    15: { kaa: 9,  ev: 6, chains: 2, judgement: true,
           steps: [["Define and set up the context", 1],
-                  ["Chain one, with the diagram if one applies", 3],
-                  ["Chain two, fully developed", 3],
-                  ["Chain three, fully developed", 2],
+                  ["Chain one, with the diagram if one applies", 4],
+                  ["Chain two, fully developed", 4],
                   ["Evaluation, then a judgement that decides", 6]] },
-    25: { kaa: 16, ev: 9, chains: 3, judgement: true,
+    25: { kaa: 16, ev: 9, chains: 2, judgement: true,
           steps: [["Define the terms the question uses", 2],
-                  ["Chain one, with a labelled diagram", 6],
-                  ["Chain two, fully developed", 5],
-                  ["Chain three, or the diagram's welfare analysis", 3],
+                  ["Chain one, with a labelled diagram, taken to the fourth link", 8],
+                  ["Chain two, taken just as far", 6],
                   ["Evaluation: what it depends on, and how much", 6],
                   ["Judgement: answer the question you were asked", 3]] }
   };
+
+  /* TWO ANALYTICAL PARAGRAPHS, WHATEVER THE TARIFF.
+
+     A 25-marker is not a 12-marker with a third argument bolted on; it is
+     two arguments taken further. The examiner reports say this in almost
+     every series -- depth beats breadth, and the commonest way to lose an
+     A is to run out of time before the evaluation because a third chain
+     ate it. So the count is capped at two and the extra marks buy longer
+     chains and more evaluation, which is where they actually are. */
+  const MAX_CHAINS = 2;
 
   /* THE ANSWER IS PARAGRAPHS, NOT A LIST OF EVERYTHING ALLOWED.
 
@@ -232,7 +240,8 @@ const EcoModel = (function () {
     if (points.length && DEFN.test(points[0].text)) define = points.shift().text;
 
     const out = [];
-    for (let i = 0; i < sh.chains && i < points.length; i++) {
+    const want = Math.min(sh.chains, MAX_CHAINS);
+    for (let i = 0; i < want && i < points.length; i++) {
       out.push({
         n: i + 1,
         point: points[i].text,
@@ -240,7 +249,7 @@ const EcoModel = (function () {
         ev: sh.ev && sc.ev[i] ? sc.ev[i].text : null
       });
     }
-    return { define: define, chains: out, rest: points.slice(sh.chains) };
+    return { define: define, chains: out, rest: points.slice(want) };
   }
 
   function build(q, report) {

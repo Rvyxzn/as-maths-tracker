@@ -48,7 +48,9 @@ const PacksView = (function () {
   let todoOnly = false;
   let query = "";
   const figOpen = {};            // which case-study figures are expanded
-  const modelOpen = {};          // which model answers are unfolded
+  const modelOpen = {};          // which plans are unfolded
+  const writtenOpen = {};        // which written answers are unfolded
+  const writing = {};            // ids the assistant is writing right now
 
   function minutesFor(marks) { return Math.round(marks * ECO_MINUTES_PER_MARK); }
 
@@ -738,6 +740,92 @@ const PacksView = (function () {
 
      It opens folded. Reading the model before writing your own is revision,
      not practice, and the whole panel only exists after you have revealed. */
+  /* THE ANSWER, WRITTEN OUT.
+
+     Separate from the plan next door on purpose. The plan tells you how to
+     build one; this is one, in full, the way a candidate would write it in
+     the exam. Mixing the two taught neither: advice threaded through prose
+     reads as neither advice nor prose.
+
+     It has to be written rather than assembled, because a scheme
+     rearranged is still a scheme. See js/eco-written.js for where it comes
+     from and why nothing is generated until you ask. */
+  function writtenBlock(q) {
+    if (typeof EcoWritten === "undefined") return "";
+    const open = !!writtenOpen[q.id];
+    const a = EcoWritten.get(q.id);
+    const busy = !!writing[q.id];
+    const can = typeof Assistant !== "undefined" && Assistant.configured();
+
+    const head =
+      '<button class="ma-head" data-action="pack-written" data-id="' + q.id + '">' +
+        UI.icon("cap") +
+        '<span class="ma-title">Model answer</span>' +
+        '<span class="ma-sum">' +
+          (a ? a.words + " words · " + (a.source === "bundled" ? "written for this app" : "written by the assistant")
+             : busy ? "writing…" : "not written yet") +
+        '</span>' +
+        '<span class="ma-chev">' + (open ? "−" : "+") + '</span>' +
+      '</button>';
+
+    if (!open) return '<div class="ma ma-written">' + head + '</div>';
+
+    let body;
+    if (busy) {
+      body = '<div class="ma-writing"><span class="pdfv-spinner"></span>' +
+             '<div><b>Writing it</b><div class="tiny muted">A full answer takes a few seconds.</div></div></div>';
+    } else if (a) {
+      body =
+        '<div class="ma-essay">' +
+          (a.define ? '<p class="ma-essay-open">' + UI.esc(a.define) + '</p>' : "") +
+          (a.diagram
+            ? '<div class="ma-flag">' + UI.icon("alert") + '<span><b>Diagram:</b> ' +
+              UI.esc(a.diagram) + '</span></div>' : "") +
+          a.paragraphs.map(function (p) {
+            return '<div class="ma-essay-p ' + (p.role === "ev" ? "is-ev" : "is-kaa") + '">' +
+              '<span class="ma-essay-tag">' + (p.role === "ev" ? "EV " : "KAA ") + p.n + '</span>' +
+              '<p>' + UI.esc(p.text) + '</p></div>';
+          }).join("") +
+          (a.judgement
+            ? '<div class="ma-essay-p is-jud"><span class="ma-essay-tag">Judgement</span>' +
+              '<p>' + UI.esc(a.judgement) + '</p></div>' : "") +
+        '</div>' +
+        '<div class="row wrap" style="gap:8px;margin-top:12px">' +
+          (a.source === "bundled" ? "" :
+            '<button class="btn btn-sm" data-action="pack-rewrite" data-id="' + q.id + '">Write it again</button>') +
+          '<button class="btn btn-sm btn-ghost" data-action="rep-question" data-id="' + q.id +
+            '" data-kind="question" data-where="Model answer">Something wrong with it?</button>' +
+        '</div>' +
+        '<div class="ma-foot">' +
+          (a.source === "bundled"
+            ? 'Written for this app against Pearson’s mark scheme and examiner report. '
+            : 'Written by the assistant from the question, the extracts, Pearson’s mark scheme ' +
+              'and the examiner report for this question, and kept on this device. ') +
+          'It is <b>an</b> answer that would score full marks, not the only one — the scheme ' +
+          'credits points this one does not use.' +
+        '</div>';
+    } else if (can) {
+      body =
+        '<p class="muted" style="margin-top:0">No answer written for this one yet. The assistant ' +
+          'will write it from the question, the extracts, the mark scheme and the examiner report ' +
+          '— two analytical paragraphs, each with its own evaluation, at the length the tariff ' +
+          'allows. It is kept afterwards, so this only happens once.</p>' +
+        '<button class="btn btn-primary" data-action="pack-write" data-id="' + q.id + '">' +
+          'Write the answer</button>' +
+        '<div class="tiny faint" style="margin-top:8px">Costs a fraction of a penny and takes a ' +
+          'few seconds.</div>';
+    } else {
+      body =
+        '<p class="muted" style="margin-top:0">A written answer has to be written, and the thing ' +
+          'that writes it is not set up. Rearranging the mark scheme is what the panel below ' +
+          'already does, and it is not an answer.</p>' +
+        '<div class="tiny muted">Turning it on is three commands, in <b>ASSISTANT.md</b>. ' +
+          'Until then <b>The plan</b> below is the useful half: it is the shape of the answer ' +
+          'and Pearson’s own points, which is everything except the sentences.</div>';
+    }
+    return '<div class="ma ma-written open">' + head + '<div class="ma-body">' + body + '</div></div>';
+  }
+
   function modelBlock(q, er) {
     if (typeof EcoModel === "undefined") return "";
     const m = EcoModel.build(q, er);
@@ -772,7 +860,7 @@ const PacksView = (function () {
     return '<div class="ma' + (open ? " open" : "") + '">' +
       '<button class="ma-head" data-action="pack-model" data-id="' + q.id + '">' +
         UI.icon("cap") +
-        '<span class="ma-title">Model answer</span>' +
+        '<span class="ma-title">The plan</span>' +
         '<span class="ma-sum">' + m.minutes + ' min · ' +
           (m.split.ev ? 'KAA ' + m.split.kaa + ' · Evaluation ' + m.split.ev : m.marks + ' marks, no evaluation') +
           (m.best ? ' · examiner scored ' + m.best.got + '/' + m.best.outOf : '') + '</span>' +
@@ -992,7 +1080,7 @@ const PacksView = (function () {
                        '<p>' + UI.esc(g.how) + '</p></div>' : "") +
 
             (show
-              ? modelBlock(q, er) +
+              ? writtenBlock(q) + modelBlock(q, er) +
                 (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' + msSheet(q.ms, q.id)
                       : '<div class="tiny faint">No mark scheme was found for this one.</div>') +
                 (er ? UI.examinerReport(er, { series: q.series, paper: q.paper,
@@ -1291,6 +1379,38 @@ const PacksView = (function () {
       case "pack-case":   caseOpen = !caseOpen; App.render(); return true;
       case "pack-reveal": revealed[el.dataset.id] = true; App.render(); return true;
       case "pack-hide":   delete revealed[el.dataset.id]; App.render(); return true;
+      case "pack-written": {
+        const k = el.dataset.id;
+        writtenOpen[k] = !writtenOpen[k];
+        App.render();
+        return true;
+      }
+
+      /* Writing one costs money, so it never happens on its own — see the
+         note at the top of js/eco-written.js. `writing` is what stops a
+         second press starting a second one while the first is in flight. */
+      case "pack-write":
+      case "pack-rewrite": {
+        const k = el.dataset.id;
+        if (writing[k]) return true;
+        const q = byId(k);
+        if (!q) return true;
+        if (action === "pack-rewrite") EcoWritten.forget(k);
+        writing[k] = true;
+        writtenOpen[k] = true;
+        App.render();
+        EcoWritten.write(q).then(function () {
+          writing[k] = false;
+          App.render();
+          UI.toast("Written", "ok");
+        }, function (err) {
+          writing[k] = false;
+          App.render();
+          UI.toast(err && err.message ? err.message : "Could not write it", "bad");
+        });
+        return true;
+      }
+
       case "pack-model": {
         const k = el.dataset.id;
         modelOpen[k] = !modelOpen[k];

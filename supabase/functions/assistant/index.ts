@@ -95,6 +95,59 @@ How to read them:
 person, so the student can check it before applying. Put anything you could not act
 on into "missed", quoting their own words. Never leave a request out of both lists.`;
 
+/* ---------------- task two: write the answer ----------------
+
+   The mark scheme is not an answer. It is a list of everything an
+   examiner may credit, written so it covers whatever a candidate puts
+   down, and reading it teaches the shape of a checklist rather than the
+   shape of an essay. This writes the essay.
+
+   TWO ANALYTICAL PARAGRAPHS, ALWAYS. A 25-marker is not a 12-marker with
+   a third argument bolted on, it is two arguments taken further. The
+   examiner reports say so in almost every series, and the commonest way
+   to lose an A is running out of time before the evaluation because a
+   third chain ate it. */
+const ANSWER_SHAPE = `{
+  "define":     string|null,   // the opening sentence, defining what the question turns on
+  "diagram":    string|null,   // what to draw and label, only if the scheme credits one
+  "paragraphs": [              // EXACTLY two KAA, each followed by its own EV
+    { "role": "kaa", "n": 1, "text": string },
+    { "role": "ev",  "n": 1, "text": string },
+    { "role": "kaa", "n": 2, "text": string },
+    { "role": "ev",  "n": 2, "text": string }
+  ],
+  "judgement":  string|null    // only where the tariff carries evaluation marks
+}`;
+
+const ANSWER_RULES = `You are an experienced Edexcel A level Economics A (9EC0) examiner writing
+the answer you would award full marks to. Write it out in full, as a candidate would in
+the exam. Not a plan, not bullet points, not advice - the actual prose.
+
+Return ONLY a JSON object of this shape. No prose outside it, no markdown fence:
+${ANSWER_SHAPE}
+
+How to write it:
+- EXACTLY two "kaa" paragraphs. Never three, whatever the tariff. More marks mean each
+  chain runs further, not that there are more of them.
+- A kaa paragraph is one chain of reasoning, each link caused by the last: state the
+  point, say why it happens, then "which means...", then "and therefore...", landing on
+  exactly what the question asked about. At 25 marks take each chain four or five links;
+  at 8 marks, three.
+- Each "ev" paragraph evaluates the kaa paragraph it follows, and nothing else. Weigh
+  that specific argument: how large the effect is, how likely, how long it lasts, what
+  it depends on, who it falls on. Never a generic list of evaluation words.
+- Use the indicative content from the mark scheme as the substance - those are the points
+  Pearson credits. Use the examiner report where it says what full-mark answers did.
+- Where an extract or figure is given, quote a number or a phrase from it. Applied marks
+  are lost by writing in the abstract.
+- Use the technical vocabulary the specification uses, and define terms on first use.
+- "judgement" must actually decide, and say what would change the decision. Never
+  "it depends" with nothing after it.
+- Write in continuous prose. No headings inside a paragraph, no bullet points.
+
+Length: aim for about ${"${words}"} words in total, which is what a candidate writes in the
+time the tariff allows. Do not pad to reach it.`;
+
 Deno.serve(async (req) => {
   const origin = req.headers.get("origin");
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors(origin) });
@@ -119,15 +172,49 @@ Deno.serve(async (req) => {
   if (!key) return json({ error: "The assistant is not configured on the server." }, 503, origin);
 
   /* ---- what they asked ---- */
-  let body: { text?: string; subjects?: Array<{ id: string; name: string }>; today?: string };
+  let body: {
+    task?: string;
+    text?: string; subjects?: Array<{ id: string; name: string }>; today?: string;
+    question?: string; scheme?: string; report?: string; context?: string; marks?: number;
+  };
   try { body = await req.json(); } catch { return json({ error: "Bad request" }, 400, origin); }
 
-  const text = String(body.text || "").slice(0, 4000);
-  if (!text.trim()) return json({ error: "Nothing to read" }, 400, origin);
+  const task = body.task === "answer" ? "answer" : "timetable";
 
-  const subjects = (body.subjects || []).slice(0, 12)
-    .map((s) => `${s.id} = ${s.name}`).join("\n");
-  const today = /^\d{4}-\d{2}-\d{2}$/.test(String(body.today)) ? body.today : null;
+  /* Two jobs, one function. It is the same key, the same sign-in check and
+     the same allowed-origins list; a second Edge Function would repeat all
+     three and be a second thing to deploy. Only the instructions and what
+     gets sent differ. */
+  let system: string;
+  let userContent: string;
+  let maxTokens: number;
+
+  if (task === "answer") {
+    const question = String(body.question || "").slice(0, 6000);
+    if (!question.trim()) return json({ error: "No question to answer" }, 400, origin);
+    const marks = Math.max(1, Math.min(25, Number(body.marks) || 25));
+    /* Roughly what a candidate writes in the time the tariff allows. */
+    const words = marks * 25;
+    system = ANSWER_RULES.replace("${words}", String(words));
+    maxTokens = 4000;
+    userContent =
+      `The question, worth ${marks} marks:\n${question}\n\n` +
+      (body.context ? `The extracts and figures it refers to:\n${String(body.context).slice(0, 12000)}\n\n` : "") +
+      (body.scheme ? `Pearson's mark scheme, indicative content:\n${String(body.scheme).slice(0, 8000)}\n\n` : "") +
+      (body.report ? `Pearson's examiner report on this question:\n${String(body.report).slice(0, 6000)}\n` : "");
+  } else {
+    const text = String(body.text || "").slice(0, 4000);
+    if (!text.trim()) return json({ error: "Nothing to read" }, 400, origin);
+    const subjects = (body.subjects || []).slice(0, 12)
+      .map((s) => `${s.id} = ${s.name}`).join("\n");
+    const today = /^\d{4}-\d{2}-\d{2}$/.test(String(body.today)) ? body.today : null;
+    system = RULES;
+    maxTokens = 1600;
+    userContent =
+      `Their subjects, as id = name:\n${subjects || "(none set up yet)"}\n\n` +
+      (today ? `Today is ${today}. Weekday 0 is Sunday.\n\n` : "") +
+      `What they wrote:\n${text}`;
+  }
 
   const res = await fetch(ANTHROPIC, {
     method: "POST",
@@ -138,15 +225,9 @@ Deno.serve(async (req) => {
     },
     body: JSON.stringify({
       model: MODEL,
-      max_tokens: 1600,
-      system: RULES,
-      messages: [{
-        role: "user",
-        content:
-          `Their subjects, as id = name:\n${subjects || "(none set up yet)"}\n\n` +
-          (today ? `Today is ${today}. Weekday 0 is Sunday.\n\n` : "") +
-          `What they wrote:\n${text}`,
-      }],
+      max_tokens: maxTokens,
+      system: system,
+      messages: [{ role: "user", content: userContent }],
     }),
   });
 

@@ -114,10 +114,18 @@ supabase functions deploy assistant --project-ref hgbyenbvsdlnixmtzmwx --use-api
 
 ## What it costs
 
-One "Read it" is a small request — roughly a page of instructions plus your
-sentence, and a short JSON reply back. On Sonnet that is a fraction of a penny.
-The expensive things are the ones that read whole documents, which is worth
-remembering when the same function later marks essays.
+The function does two jobs, and they cost different amounts.
+
+**Reading your week** is a small request — roughly a page of instructions plus
+your sentence, and a short reply. On Sonnet 5 ($2 per million tokens in, $10
+out) that is about **half a penny**, and you press it a handful of times ever.
+
+**Writing a model answer** sends the question, the extracts, the mark scheme
+and the examiner report, and gets a full essay back. Call it **3 to 5p** for a
+25-marker. Each answer is stored on your device after it is written, so a
+question only ever costs that once.
+
+Anthropic's console is prepaid and has a hard spending limit. Set one.
 
 Anthropic's console has a hard spending limit. Set one.
 

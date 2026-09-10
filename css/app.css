@@ -3128,3 +3128,28 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .ma-also{margin-top:14px}
 .ma-also summary{cursor:pointer;font-size:13px;color:var(--muted);padding:6px 0}
 .ma-also summary:hover{color:var(--text)}
+
+/* ============================================================
+   The written model answer
+   ============================================================ */
+.ma-written .ma-title{color:var(--accent)}
+.ma-essay{margin-top:4px}
+.ma-essay-open{
+  font-size:14.5px;line-height:1.6;margin:0 0 14px;padding-bottom:12px;
+  border-bottom:1px solid var(--border);color:var(--text);
+}
+.ma-essay-p{display:flex;gap:12px;padding:10px 0}
+.ma-essay-p p{margin:0;font-size:14.5px;line-height:1.62}
+.ma-essay-tag{
+  flex:0 0 62px;font-size:11px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--accent);padding-top:4px;
+}
+.ma-essay-p.is-ev{
+  background:var(--surface-2);border-radius:10px;padding:11px 13px;margin:4px 0;
+  border:1px solid var(--border);
+}
+.ma-essay-p.is-ev .ma-essay-tag{color:var(--muted)}
+.ma-essay-p.is-jud{border-top:1px solid var(--border);margin-top:8px;padding-top:14px}
+.ma-essay-p.is-jud .ma-essay-tag{color:var(--muted)}
+.ma-writing{display:flex;gap:12px;align-items:center;padding:8px 0}
+.ma-writing b{font-size:14px}

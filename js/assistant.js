@@ -285,6 +285,48 @@ const Assistant = (function () {
     });
   }
 
+  /* The raw call, for the jobs that are not the timetable.
+
+     `describe` above validates its reply against the timetable whitelist,
+     which is the right thing for settings that get applied to your week
+     and the wrong thing for a task whose answer is prose. So this returns
+     the reply as it came and leaves the checking to the caller, which is
+     the only one that knows what the shape should be.
+
+     Writing a model answer is a longer job than reading a sentence, so it
+     gets a longer clock. */
+  function ask(payload, timeoutMs) {
+    if (!configured()) {
+      return Promise.reject(new Error("The assistant is not set up on this site."));
+    }
+    return token().then(function (t) {
+      if (!t) throw new Error("Sign in to use the assistant.");
+
+      const ctrl = new AbortController();
+      const timer = setTimeout(function () { ctrl.abort(); }, timeoutMs || 90000);
+
+      return fetch(endpoint(), {
+        method: "POST",
+        signal: ctrl.signal,
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + t },
+        body: JSON.stringify(payload || {})
+      }).then(function (res) {
+        clearTimeout(timer);
+        return res.json().catch(function () { return {}; }).then(function (body) {
+          if (!res.ok || body.error) {
+            throw new Error(body.error || ("The assistant returned " + res.status));
+          }
+          return body.result;
+        });
+      }, function (err) {
+        clearTimeout(timer);
+        throw new Error(err && err.name === "AbortError"
+          ? "The assistant took too long to answer."
+          : "Could not reach the assistant.");
+      });
+    });
+  }
+
   return { configured: configured, available: available, describe: describe,
-           read: read, clean: clean, endpoint: endpoint };
+           read: read, clean: clean, endpoint: endpoint, ask: ask };
 })();
