@@ -21,10 +21,10 @@ const App = (function () {
        them rather than showing them somebody else's papers. */
     { id: "examq", label: "Exam Questions", icon: "✎", subjects: ["maths"] },
     { id: "papers", label: "Past Papers", icon: "▤" },
-    { id: "packs", label: "Question Packs", icon: "≣", subjects: ["economics"] },
+    { id: "packs", label: "Question Packs", icon: "≣", subjects: ["economics", "geography"] },
     /* A test is assembled from whichever question bank the subject has, so
        it exists wherever there is one to assemble from. */
-    { id: "practice", label: "Practice Test", icon: "⏱", subjects: ["maths", "economics"] },
+    { id: "practice", label: "Practice Test", icon: "⏱", subjects: ["maths", "economics", "geography"] },
     { id: "assessments", label: "School Tests", icon: "✎" },
     { id: "flashcards", label: "Flashcards", icon: "◈" },
     { id: "weaknesses", label: "Weaknesses", icon: "⚠" },

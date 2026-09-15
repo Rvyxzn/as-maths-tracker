@@ -267,8 +267,24 @@ function readPaper(pdf, paper, series) {
      on its last printed page does not claim an empty one. */
   let booklet = null;
   if (paperEnd !== null) {
-    const to = (ackPage && ackPage > paperEnd) ? ackPage - 1 : pages.length;
-    if (to > paperEnd) booklet = { from: paperEnd + 1, to: to };
+    let to = (ackPage && ackPage > paperEnd) ? ackPage - 1 : pages.length;
+    /* Trim the padding. Between the end of the exam and the booklet sit
+       pages printed "BLANK PAGE" -- two of them on Paper 3 June 2023 -- so a
+       booklet opened on its raw range showed you empty pages before any
+       figure. A page counts as blank when, once its furniture is removed,
+       there are no real words left on it. */
+    const isBlank = function (n) {
+      const t = String(pages[n - 1] || "")
+        .replace(/BLANK PAGE/gi, "")
+        .replace(/\*P\d+[A-Z0-9]*\*/g, "")
+        .replace(/\bPMT\b|Turn over/gi, "")
+        .replace(/[.\d\s]/g, " ");
+      return (t.match(/[A-Za-z]{3,}/g) || []).length < 6;
+    };
+    let from = paperEnd + 1;
+    while (from <= to && isBlank(from)) from++;
+    while (to >= from && isBlank(to)) to--;
+    if (to >= from) booklet = { from: from, to: to };
   }
   return { parts: parts, totals: totals, pages: pages.length, booklet: booklet };
 }
@@ -408,6 +424,38 @@ function readScheme(pdf) {
        read under any question was identical boilerplate and the actual
        points started a screen down. */
     BOILERPLATE.forEach(function (re) { t = t.replace(re, ""); });
+
+    /* The scheme's column headings, "Question / number" and "Indicative
+       content", repeat at the top of every page and were leaking into the
+       text as lines of their own. */
+    t = t.split("\n").filter(function (l) {
+      return !/^\s*(Question|number|Question number|Indicative content|Answer|Mark)\s*$/i.test(l);
+    }).join("\n");
+
+    /* REFLOW. The PDF hard-wraps every sentence at the column edge, so a
+       scheme read as "awarded marks as" on one line and "follows:" on the
+       next, each shown as its own paragraph. A line is joined to the one
+       before it unless it starts something new: a bullet, an AO or level
+       heading, or a line that follows a finished sentence. */
+    const STARTS_NEW = /^\s*(•|-\s|AO\d|Level\s*\d|\(\d+\)|\d+\s*marks?|\(?[a-h]\)|\(?[ivx]+\))/i;
+    const lines = t.split("\n").map(function (l) { return l.trim(); }).filter(Boolean);
+    const merged = [];
+    /* The bullet glyph is drawn vertically centred on a two-line point, so
+       it lands on the point's SECOND line: "• and environmental costs."
+       finishes the point above rather than starting one. A bullet followed
+       by a lower-case word is that continuation, and loses the bullet. */
+    const BULLET_CONT = /^•\s*[a-z]/;
+    lines.forEach(function (l) {
+      const prev = merged.length ? merged[merged.length - 1] : null;
+      if (prev && BULLET_CONT.test(l)) {
+        merged[merged.length - 1] = prev + " " + l.replace(/^•\s*/, "");
+        return;
+      }
+      const finished = prev && /[.:;!?)]$/.test(prev);
+      if (prev && !finished && !STARTS_NEW.test(l)) merged[merged.length - 1] = prev + " " + l;
+      else merged.push(l);
+    });
+    t = merged.join("\n");
 
     t = t.replace(/[ \t]{2,}/g, " ").replace(/\n{3,}/g, "\n\n").trim();
 

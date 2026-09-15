@@ -33,18 +33,26 @@
 
 const PracticeTest = (function () {
 
-  const SUPPORTED = { maths: true, economics: true };
+  const SUPPORTED = { maths: true, economics: true, geography: true };
 
   /* Every Edexcel paper in both subjects is 1.2 minutes a mark: 9EC0 is 100
      marks in two hours, 9MA0 Paper 1 is 100 marks in two hours. One rate
      covers both, and it is the rate the real thing runs at. */
   const MINS_PER_MARK = 1.2;
 
+  /* Geography is the exception to the one rate: 9GE0 Papers 1 and 2 give
+     135 minutes for 105 marks, and the synoptic Paper 3 is 135 for 70. The
+     papers-one-and-two figure is used, since those are most of the bank. */
+  const MINS_PER_MARK_BY_SUBJECT = { geography: 1.3 };
+
   function subjectId() {
     return (typeof Subjects !== "undefined") ? Subjects.currentId() : "maths";
   }
   function supported() { return !!SUPPORTED[subjectId()]; }
-  function minutesFor(marks) { return Math.max(1, Math.round(marks * MINS_PER_MARK)); }
+  function minutesFor(marks) {
+    const per = MINS_PER_MARK_BY_SUBJECT[subjectId()] || MINS_PER_MARK;
+    return Math.max(1, Math.round(marks * per));
+  }
 
   /* ------------------------------------------------------------
      The pool: every question either subject can offer, in one shape
@@ -237,9 +245,44 @@ const PracticeTest = (function () {
     return exam.concat(mathsBankPool());
   }
 
+  /* Geography's past-paper parts. A 9GE0 question is filed by topic, and a
+     topic runs across several Enquiry Questions, so -- the same rule as the
+     maths topic sets -- a part is COUNTED under its topic's first EQ but
+     BELONGS to all of them, so picking any EQ in the topic can find it.
+     Parts on the options you do not sit are left out. */
+  function geoPool() {
+    if (typeof GEO_QUESTIONS === "undefined") return [];
+    const out = [];
+    GEO_QUESTIONS.forEach(function (q) {
+      if (!q.inSpec) return;
+      const cids = ALL_CHAPTER_IDS.filter(function (c) {
+        const inf = CHAPTER_INDEX[c];
+        return inf && inf.paper && inf.paper.id === q.topic;
+      });
+      const cid = cids[0] || null;
+      const inf = cid ? CHAPTER_INDEX[cid] : null;
+      out.push({
+        key: "geo:" + q.id,
+        marks: q.marks,
+        cid: cid,
+        cids: cids,
+        subId: null,
+        source: "exam",
+        group: inf ? inf.paper.short : ("Paper " + q.paper),
+        year: null,
+        label: q.series + " · Paper " + q.paper + " · Q" + q.q + (q.part ? "(" + q.part + ")" : ""),
+        topic: inf ? inf.paper.paper : "Synoptic",
+        where: inf ? inf.paper.paper : "Synoptic",
+        preview: q.text
+      });
+    });
+    return out;
+  }
+
   function pool(includeBank) {
     const s = subjectId();
     if (s === "economics") return ecoPool();
+    if (s === "geography") return geoPool();
     if (s === "maths") return mathsPool(includeBank);
     return [];
   }
@@ -252,6 +295,11 @@ const PracticeTest = (function () {
       if (typeof ECO_QUESTIONS === "undefined") return null;
       const id = bits.slice(1).join(":");
       return ECO_QUESTIONS.filter(function (q) { return q.id === id; })[0] || null;
+    }
+    if (bits[0] === "geo") {
+      if (typeof GEO_QUESTIONS === "undefined") return null;
+      const id = bits.slice(1).join(":");
+      return GEO_QUESTIONS.filter(function (q) { return q.id === id; })[0] || null;
     }
     if (bits[0] === "pp") {
       if (typeof MATHS_PAPER_QUESTIONS === "undefined") return null;
@@ -299,7 +347,7 @@ const PracticeTest = (function () {
      pack attempts; Maths keeps the marks on the chapter's answers. */
   function lastAttempt(key) {
     const bits = String(key || "").split(":");
-    if (bits[0] === "eco") {
+    if ((bits[0] === "eco" || bits[0] === "geo")) {
       const id = bits.slice(1).join(":");
       const a = (Store.get().packAttempts || []).filter(function (x) { return x.questionId === id; })
         .sort(function (x, y) { return String(y.at || "").localeCompare(String(x.at || "")); })[0];
@@ -609,7 +657,7 @@ const PracticeTest = (function () {
       test.scores[key] = { got: marks, at: at };
 
       const bits = key.split(":");
-      if (bits[0] === "eco") {
+      if ((bits[0] === "eco" || bits[0] === "geo")) {
         if (!st.packAttempts) st.packAttempts = [];
         st.packAttempts.unshift({ questionId: bits.slice(1).join(":"), got: marks,
                                   available: item.marks, at: at, test: id });

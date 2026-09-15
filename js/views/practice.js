@@ -472,6 +472,39 @@ const PracticeView = (function () {
      grids; Maths ones carry a sketch. Both renderers already exist, so this
      picks between them rather than growing a third. */
   function questionBody(it, q, show) {
+    /* A Geography part: the printed page is the question -- its tables,
+       maps and calculations are laid out on the page and do not survive as
+       text -- and its resource booklet is the case study, in the same
+       fold-out panel Economics uses for its extracts. */
+    if (PracticeTest.kindOf(it.key) === "geo") {
+      const cs = typeof PacksView !== "undefined" ? PacksView.caseFor(q) : null;
+      const g = typeof PacksView !== "undefined" ? PacksView.guideFor(q.marks) : null;
+      const open = !!caseOpen[it.key];
+      return (cs
+          ? '<div class="pt-case' + (open ? " open" : "") + '">' +
+              '<button class="pt-case-tab" data-action="pt-case" data-key="' + UI.esc(it.key) + '">' +
+                '<b>Resource booklet</b><small>' + (open ? "click to fold it away" : "click to open the figures this question uses") + '</small>' +
+                '<span>' + (open ? "▾" : "▸") + '</span>' +
+              '</button>' +
+              (open ? '<div class="pt-case-body">' + PacksView.caseHtml(cs, null) + '</div>' : "") +
+            '</div>'
+          : "") +
+        paperPanel(encodeURI(q.pdf), q.pageFrom, q.pageTo, true) +
+        '<details class="pt-astext"><summary>Show it as text</summary>' +
+          '<div class="qtext">' + UI.esc(q.text).replace(/\n/g, "<br>") + '</div></details>' +
+        (g ? '<div class="qfocus-guide"><b>' + UI.esc(g.name) + '</b>' +
+             '<span class="pill acc">' + UI.esc(g.split) + '</span><p>' + UI.esc(g.how) + '</p></div>' : "") +
+        '<div class="row" style="justify-content:flex-end;margin-top:8px">' +
+          '<button class="btn btn-sm btn-ghost" data-action="rep-question" data-id="' + q.id +
+            '" data-where="Practice test">Report a problem</button>' +
+        '</div>' +
+        (show
+          ? (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' +
+                    PacksView.msSheet(q.ms, q.id)
+                  : '<div class="tiny faint">No mark scheme was found for this one.</div>')
+          : revealButton(it));
+    }
+
     if (PracticeTest.kindOf(it.key) === "eco") {
       const cs = typeof PacksView !== "undefined" ? PacksView.caseFor(q) : null;
       const g = typeof PacksView !== "undefined" ? PacksView.guideFor(q.marks) : null;

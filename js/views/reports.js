@@ -159,7 +159,8 @@ const ReportsView = (function () {
         const id = el.dataset.id;
         const bank = (typeof MATHS_EXAM_QUESTIONS !== "undefined" ? MATHS_EXAM_QUESTIONS : [])
           .concat(typeof AS_MATHS_EXAM_QUESTIONS !== "undefined" ? AS_MATHS_EXAM_QUESTIONS : [])
-          .concat(typeof ECO_QUESTIONS !== "undefined" ? ECO_QUESTIONS : []);
+          .concat(typeof ECO_QUESTIONS !== "undefined" ? ECO_QUESTIONS : [])
+          .concat(typeof GEO_QUESTIONS !== "undefined" ? GEO_QUESTIONS : []);
         const q = bank.filter(function (x) { return x.id === id; })[0];
         compose({
           kind: el.dataset.kind || "question",

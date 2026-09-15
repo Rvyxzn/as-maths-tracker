@@ -52,16 +52,110 @@ const PacksView = (function () {
   const writtenOpen = {};        // which written answers are unfolded
   const writing = {};            // ids the assistant is writing right now
 
-  function minutesFor(marks) { return Math.round(marks * ECO_MINUTES_PER_MARK); }
+  /* ============================================================
+     WHICH SUBJECT'S PACKS
+
+     One view for every subject with a past-paper bank, rather than a
+     copy per subject that drifts. Everything that differs between them
+     is answered here and nowhere else: which questions, which tariffs
+     and what each one asks for, the papers, the time a mark is worth,
+     and what the case study is. Economics gets back exactly what it
+     used before this existed.
+     ============================================================ */
+  function subjectId() {
+    return (typeof Subjects !== "undefined" && Subjects.currentId) ? Subjects.currentId() : "economics";
+  }
+  function isGeo() { return subjectId() === "geography"; }
+
+  /* The year filter is an Economics idea, and it outlives a subject switch:
+     filter Economics to Year 1, move to Geography, and every Geography
+     question -- none of which has a year -- would be filtered out, leaving
+     the packs looking empty for no visible reason. */
+  function yearOk(q) {
+    return isGeo() || yearFilter === "all" || String(q.year) === yearFilter;
+  }
+
+  /* Geography keeps parts on the options you do not sit in its data -- a
+     friend might sit Glaciated -- but a pack is for your own revision, so
+     those are left out here. */
+  function bank() {
+    if (isGeo()) {
+      return typeof GEO_QUESTIONS !== "undefined"
+        ? GEO_QUESTIONS.filter(function (q) { return q.inSpec; }) : [];
+    }
+    return typeof ECO_QUESTIONS !== "undefined" ? ECO_QUESTIONS : [];
+  }
+  function hasBank() { return bank().length > 0; }
+
+  /* 9GE0's tariffs and what they are asking for, from the command word
+     each one carries and the AO split its mark schemes print. The long
+     answers are levels-marked on AO1 knowledge and AO2 application. */
+  const GEO_GUIDE = {
+    3:  { name: "Short answer", split: "AO1 or AO3",
+          how: "One point, explained. Usually read off the resource in front of you." },
+    4:  { name: "Explain / Calculate", split: "AO1 · AO3",
+          how: "One reason taken to its consequence, or a calculation with the working shown. Two developed points at most." },
+    6:  { name: "Explain", split: "AO1 3 · AO2 3",
+          how: "Two developed points, linked to real places. Knowledge on its own caps you at half." },
+    8:  { name: "Explain / Analyse", split: "AO1 · AO3",
+          how: "Use the figure: pick out the pattern, quote the numbers, and explain what causes it." },
+    12: { name: "Assess", split: "AO1 3 · AO2 9",
+          how: "Weigh the factors against each other and decide which matters most. Three-quarters of the marks are for that judgement, not the knowledge." },
+    18: { name: "Evaluate", split: "AO1 · AO2 · AO3",
+          how: "Synoptic: draw on the whole resource booklet and more than one topic, then reach a conclusion you justify." },
+    20: { name: "Evaluate", split: "AO1 5 · AO2 15",
+          how: "An essay. Both sides with named examples, then a conclusion that answers the question. Most of the marks are for the evaluation." },
+    24: { name: "Evaluate", split: "AO1 · AO2 · AO3",
+          how: "The synoptic essay. Use the booklet and your own case studies across the specification, and commit to a judgement." }
+  };
+
+  /* A tariff this guide has no entry for still gets a sensible card rather
+     than an undefined one. */
+  function guideFor(marks) {
+    if (isGeo()) {
+      return GEO_GUIDE[marks] || { name: marks + " marks", split: "Levels marked",
+        how: "Check the command word: explain, assess or evaluate each ask for something different." };
+    }
+    return GUIDE[marks] || { name: marks + " marks", split: "", how: "" };
+  }
+
+  /* Geography's tariffs are read off the bank, because they are not a
+     fixed ladder the way Economics' are. */
+  function tariffs() {
+    if (!isGeo()) return TARIFFS;
+    const seen = {};
+    bank().forEach(function (q) { seen[q.marks] = true; });
+    return Object.keys(seen).map(Number).sort(function (a, b) { return a - b; });
+  }
+
+  function papers() {
+    return isGeo()
+      ? [["all", "All papers"], ["1", "Paper 1 · physical"], ["2", "Paper 2 · human"], ["3", "Paper 3 · synoptic"]]
+      : [["all", "All papers"], ["1", "Paper 1 · micro"], ["2", "Paper 2 · macro"], ["3", "Paper 3 · synoptic"]];
+  }
+
+  /* 9GE0 Papers 1 and 2 give 135 minutes for 105 marks. */
+  function minutesFor(marks) {
+    const per = isGeo() ? 1.3 : ECO_MINUTES_PER_MARK;
+    return Math.round(marks * per);
+  }
+
+  /* The topic a Geography part is on, by name, from the specification. */
+  function geoTopicName(id) {
+    if (id === "geo-syn") return "Synoptic";
+    if (typeof GEO_SPEC === "undefined") return id;
+    const t = GEO_SPEC.filter(function (x) { return x.id === id; })[0];
+    return t ? t.paper : id;
+  }
 
   /* Counted rather than written down, so adding a series does not leave the
      heading claiming a number that stopped being true. */
   function paperCount() {
     const seen = {};
-    ECO_QUESTIONS.forEach(function (q) { seen[q.paper + "|" + q.series] = true; });
+    bank().forEach(function (q) { seen[q.paper + "|" + q.series] = true; });
     return Object.keys(seen).length;
   }
-  function byId(id) { return ECO_QUESTIONS.filter(function (q) { return q.id === id; })[0]; }
+  function byId(id) { return bank().filter(function (q) { return q.id === id; })[0]; }
 
   /* What you might type looking for a question: a word from it, the topic it
      is on, its code, or the year of the paper. A search is not worth having
@@ -82,17 +176,17 @@ const PacksView = (function () {
        question, not the question filtered to whichever tariff was showing. */
     const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
     if (terms.length) {
-      return ECO_QUESTIONS.filter(function (q) {
+      return bank().filter(function (q) {
         if (paperFilter !== "all" && String(q.paper) !== paperFilter) return false;
-        if (yearFilter !== "all" && String(q.year) !== yearFilter) return false;
+        if (!yearOk(q)) return false;
         if (todoOnly && !onTodo(q.id)) return false;
         return matches(q, terms);
       });
     }
-    return ECO_QUESTIONS.filter(function (q) {
+    return bank().filter(function (q) {
       if (q.marks !== tariff) return false;
       if (paperFilter !== "all" && String(q.paper) !== paperFilter) return false;
-      if (yearFilter !== "all" && String(q.year) !== yearFilter) return false;
+      if (!yearOk(q)) return false;
       if (todoOnly && !onTodo(q.id)) return false;
       return true;
     });
@@ -110,7 +204,7 @@ const PacksView = (function () {
   }
 
   function countBy(fn) {
-    return ECO_QUESTIONS.filter(function (q) {
+    return bank().filter(function (q) {
       return q.marks === tariff && (paperFilter === "all" || String(q.paper) === paperFilter) && fn(q);
     }).length;
   }
@@ -514,6 +608,22 @@ const PacksView = (function () {
 
   /* ---------- the case study ---------- */
   function caseFor(q) {
+    /* Geography's case study is its resource booklet. Up to 2020 that is a
+       file of its own, shown whole; from 2021 it is bound into the back of
+       the question paper, so only its own pages are shown. */
+    if (q.subject === "geography") {
+      if (!q.rb) return null;
+      return {
+        pages: true,
+        label: "Resource booklet",
+        title: q.series + " · Paper " + q.paper,
+        note: q.rbFrom
+          ? "Bound into the back of this paper. Find the figure the question names."
+          : "Find the figure the question names.",
+        figures: [], extracts: [],
+        source: { pdf: q.rb, from: q.rbFrom || 1, to: q.rbTo || 0 }
+      };
+    }
     /* Paper 3's case studies are not transcribed. Their figures are charts
        and their extracts run to pages, and a retyped copy that drifts from
        the paper would be worse than none, so the panel shows the paper's own
@@ -963,6 +1073,13 @@ const PacksView = (function () {
 
   /* ---------- list ---------- */
   function yearPill(q) {
+    /* Geography is filed by topic, not by teaching year. A topic the reader
+       could not place from the wording says so rather than asserting one. */
+    if (isGeo()) {
+      return '<span class="pill acc" title="' + UI.esc(geoTopicName(q.topic)) +
+        (q.topicConfident ? "" : " — topic judged from the wording") + '">' +
+        UI.esc(geoTopicName(q.topic)) + (q.topicConfident ? "" : " ?") + '</span>';
+    }
     if (!q.year) return '<span class="pill">year unclear</span>';
     return '<span class="pill acc" title="' +
       (q.topicCode ? "Specification " + q.topicCode + " — " + q.topicName : "Theme " + q.theme) +
@@ -976,6 +1093,12 @@ const PacksView = (function () {
   const REPORT_SERIES = { "june2020": "october2020", "june2021": "november2021" };
 
   function reportFor(q) {
+    /* Reports are keyed by paper and series, "p1-june2019", and Geography
+       shares both with Economics. Without this a Geography question would
+       be shown Economics' examiner report for the same paper number and
+       sitting, as if it were about that question. There are no Geography
+       reports in the bank. */
+    if (isGeo() || q.subject === "geography") return null;
     if (typeof ECO_EXAMINER_REPORTS === "undefined") return null;
     const name = q.series.toLowerCase().replace(/ /g, "");
     const set = ECO_EXAMINER_REPORTS["p" + q.paper + "-" + name] ||
@@ -1033,7 +1156,7 @@ const PacksView = (function () {
     const cs = caseFor(q);
     const er = reportFor(q);
     const show = !!revealed[q.id];
-    const g = GUIDE[q.marks] || {};
+    const g = guideFor(q.marks);
 
     /* The backdrop closes; the card does not. The card carries its own
        do-nothing action so that a click inside it resolves to that rather
@@ -1063,8 +1186,10 @@ const PacksView = (function () {
             '<span class="qfocus-marks">' + q.marks + '</span>' +
             '<div class="qfocus-where">' +
               '<b>' + UI.esc(q.series) + ' · Paper ' + q.paper + ' · Q' + q.q + (q.part ? "(" + q.part + ")" : "") + '</b>' +
-              '<small>' + (q.topicCode ? UI.esc(q.topicCode + " " + q.topicName) + ' · ' : "") +
-                'Theme ' + q.theme + ' · Year ' + q.year + '</small>' +
+              '<small>' + (isGeo()
+                ? UI.esc(geoTopicName(q.topic)) + (q.section ? ' · Section ' + q.section : '')
+                : (q.topicCode ? UI.esc(q.topicCode + " " + q.topicName) + ' · ' : "") +
+                  'Theme ' + q.theme + ' · Year ' + q.year) + '</small>' +
             '</div>' +
             '<div class="spacer"></div>' +
             '<span class="pill">' + minutesFor(q.marks) + ' min</span>' +
@@ -1074,13 +1199,30 @@ const PacksView = (function () {
           '</div>' +
 
           '<div class="qfocus-scroll">' +
-            '<div class="qtext">' + questionHtml(q.text, q.id) + '</div>' +
+            /* THE PAGE IS THE QUESTION for Geography. Its questions lean on
+               tables, maps and calculations laid out on the page, and a
+               figure table read as text comes out as rows of loose numbers.
+               So the printed page is shown, with the text a click away for
+               searching and reading on a phone. Economics keeps its text,
+               which it has transcribed and drawn properly. */
+            (q.subject === "geography"
+              ? '<div class="pdf-frame qfocus-page" style="height:min(62vh,700px)">' +
+                  '<div class="pdfv" data-src="' + UI.esc(encodeURI(q.pdf)) + '" ' +
+                    'data-from="' + q.pageFrom + '" data-to="' + q.pageTo + '"></div>' +
+                '</div>' +
+                '<details class="pt-astext" style="margin-top:8px"><summary>Show it as text</summary>' +
+                  '<div class="qtext">' + UI.esc(q.text).replace(/\n/g, "<br>") + '</div></details>'
+              : '<div class="qtext">' + questionHtml(q.text, q.id) + '</div>') +
             (g.split ? '<div class="qfocus-guide"><b>' + UI.esc(g.name) + '</b>' +
                        '<span class="pill acc">' + UI.esc(g.split) + '</span>' +
                        '<p>' + UI.esc(g.how) + '</p></div>' : "") +
 
             (show
-              ? writtenBlock(q) + modelBlock(q, er) +
+              /* The written answer and the plan are built around Economics'
+                 KAA and evaluation split. Geography is marked on AO1 and AO2
+                 levels, so showing that frame for it would teach the wrong
+                 shape; its own mark scheme is what is shown instead. */
+              ? (q.subject === "geography" ? "" : writtenBlock(q) + modelBlock(q, er)) +
                 (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' + msSheet(q.ms, q.id)
                       : '<div class="tiny faint">No mark scheme was found for this one.</div>') +
                 (er ? UI.examinerReport(er, { series: q.series, paper: q.paper,
@@ -1120,29 +1262,39 @@ const PacksView = (function () {
   }
 
   function render(root) {
-    if (typeof ECO_QUESTIONS === "undefined") {
+    if (!hasBank()) {
       root.innerHTML = UI.empty("✎", "No question bank for this subject",
-        "Question packs are Economics only at the moment.");
+        "Question packs cover Economics and Geography.");
       return;
     }
-    const g = GUIDE[tariff];
+    /* A tariff carried over from another subject may not exist in this one
+       -- Economics has 25-markers, Geography does not -- so fall back to the
+       first this subject actually has rather than showing an empty list. */
+    const ts = tariffs();
+    if (ts.indexOf(tariff) < 0) tariff = ts[ts.length - 1];
+    const g = guideFor(tariff);
     const list = questions();
     const focused = focusId ? byId(focusId) : null;
 
     root.innerHTML =
       '<div class="card">' +
         '<div class="card-head"><div class="card-title">Question packs</div>' +
-          '<div class="right"><span class="tiny faint">' + ECO_QUESTIONS.length +
+          '<div class="right"><span class="tiny faint">' + bank().length +
             ' questions from ' + paperCount() + ' past papers</span></div>' +
         '</div>' +
-        '<div class="tiny muted">Every question, mark scheme and examiner report is Pearson’s own, from the ' +
-          'Edexcel 9EC0 papers. Pick a tariff and drill it.</div>' +
+        '<div class="tiny muted">' +
+          (isGeo()
+            ? 'Every question and mark scheme is Pearson’s own, from the Edexcel 9GE0 papers, on the ' +
+              'options you sit. Pick a tariff and drill it.'
+            : 'Every question, mark scheme and examiner report is Pearson’s own, from the ' +
+              'Edexcel 9EC0 papers. Pick a tariff and drill it.') +
+        '</div>' +
         '<div class="row wrap" style="gap:7px;margin-top:14px">' +
-          TARIFFS.map(function (t) {
-            const n = ECO_QUESTIONS.filter(function (q) {
+          ts.map(function (t) {
+            const n = bank().filter(function (q) {
               return q.marks === t &&
                 (paperFilter === "all" || String(q.paper) === paperFilter) &&
-                (yearFilter === "all" || String(q.year) === yearFilter);
+                yearOk(q);
             }).length;
             return '<button class="btn btn-sm' + (t === tariff ? " btn-primary" : "") +
               (n ? "" : " is-empty") + '" data-action="pack-tariff" data-val="' + t + '">' +
@@ -1150,15 +1302,18 @@ const PacksView = (function () {
           }).join("") +
         '</div>' +
         '<div class="row wrap" style="gap:7px;margin-top:9px">' +
-          [["all", "All papers"], ["1", "Paper 1 · micro"], ["2", "Paper 2 · macro"],
-           ["3", "Paper 3 · synoptic"]].map(function (p) {
+          papers().map(function (p) {
             return '<button class="btn btn-sm' + (paperFilter === p[0] ? " btn-primary" : "") + '" ' +
               'data-action="pack-paper" data-val="' + p[0] + '">' + p[1] + '</button>';
           }).join("") +
         '</div>' +
-        '<div style="margin-top:12px">' + yearBar() + '</div>' +
+        /* Year 1 and Year 2 are how Economics is taught; Geography's topics
+           are not split that way, so the bar is not shown for it. */
+        (isGeo() ? "" : '<div style="margin-top:12px">' + yearBar() + '</div>') +
         '<div class="row wrap" style="gap:8px;margin-top:12px">' +
-          '<input class="input" id="packSearch" placeholder="Search questions — elasticity, PED, June 2022, 1.2.5…" ' +
+          '<input class="input" id="packSearch" placeholder="' +
+            (isGeo() ? 'Search questions — tectonic, coastal, regeneration, June 2022…'
+                     : 'Search questions — elasticity, PED, June 2022, 1.2.5…') + '" ' +
             'value="' + UI.esc(query) + '" style="flex:1;min-width:240px">' +
           (query ? '<button class="btn btn-sm" data-action="pack-clear">Clear</button>' : "") +
         '</div>' +
@@ -1201,18 +1356,18 @@ const PacksView = (function () {
     return out;
   }
   function openPractice() {
-    const tariffs = TARIFFS.slice();
+    const tariffList = tariffs().slice();
     const picked = {};
     UI.modal({ title: "Build a question practice set", wide: true, body:
       '<div class="field"><label class="label">Which tariffs?</label>' +
-        '<div class="chips" id="packTar">' + tariffs.map(function (t) {
+        '<div class="chips" id="packTar">' + tariffList.map(function (t) {
           return '<button type="button" class="chip" data-tar="' + t + '">' + t + ' mark</button>';
         }).join("") + '</div>' +
         '<div class="tiny faint" style="margin-top:6px">Pick none and it uses every tariff. ' +
         'The paper and year filters above still apply.</div></div>' +
       '<div class="form-grid" style="margin-top:14px"><div class="field"><label class="label">How many questions</label><input class="input" id="packCount" type="number" min="1" placeholder="e.g. 5"></div>' +
       '<div class="field"><label class="label">Or total marks</label><input class="input" id="packMarks" type="number" min="5" placeholder="e.g. 25"></div></div>' +
-      '<div class="tiny faint">Leave one blank to choose by the other. At 1.2 minutes a mark, 25 marks is half an hour.</div>',
+      '<div class="tiny faint">Leave one blank to choose by the other. 25 marks is about ' + minutesFor(25) + ' minutes.</div>',
       footer: '<button class="btn" data-modal-close>Cancel</button><button class="btn btn-primary" id="packStart">Start practice</button>',
       onMount: function (box) {
       box.querySelectorAll('[data-tar]').forEach(function (b2) {
@@ -1226,10 +1381,10 @@ const PacksView = (function () {
         const wantedCount = +box.querySelector('#packCount').value || 0;
         const wantedMarks = +box.querySelector('#packMarks').value || 0;
         const only = Object.keys(picked).filter(function (k) { return picked[k]; }).map(Number);
-        const pool = shuffled(ECO_QUESTIONS.filter(function (q) {
+        const pool = shuffled(bank().filter(function (q) {
           if (only.length && only.indexOf(q.marks) < 0) return false;
           return (paperFilter === 'all' || String(q.paper) === paperFilter) &&
-                 (yearFilter === 'all' || String(q.year) === yearFilter);
+                 yearOk(q);
         }));
         const chosen = [], marks = { value: 0 };
         pool.some(function (q) { if ((wantedCount && chosen.length >= wantedCount) || (wantedMarks && marks.value + q.marks > wantedMarks && chosen.length)) return true; chosen.push(q.id); marks.value += q.marks; return false; });
@@ -1443,5 +1598,5 @@ const PacksView = (function () {
   return { render: render, setSearch: setSearch, handle: handle, minutesFor: minutesFor,
            questionHtml: questionHtml, msSheet: msSheet, caseFor: caseFor, caseHtml: caseHtml,
            reportFor: reportFor,
-           guideFor: function (marks) { return GUIDE[marks] || null; } };
+           guideFor: guideFor, bank: bank, isGeo: isGeo };
 })();
