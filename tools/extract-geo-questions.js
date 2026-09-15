@@ -297,6 +297,7 @@ const KW = {
   water: /\b(water|drought|flood|hydrolog|precipitation|aquifer|river|catchment|evapotranspiration|runoff|groundwater|irrigation|reservoir|water insecurity|dam)/i,
   carbon: /\b(carbon|energy|fossil fuel|emission|greenhouse|climate change|sequestration|peat|renewable|oil|gas|coal|decarboni|global warming)/i,
   globalisation: /\b(globalis|global shift|TNC|transnational|trade|FDI|foreign direct|outsourc|offshor|deindustrial|global network|connectedness|KOF)/i,
+  glacial: /\b(glacia|periglacia|meltwater|proglacial|ice sheet|ice movement|mass balance|glacier|moraine|drumlin|esker|cirque|till\b)/i,
   superpower: /\b(superpower|geopolit|hegemon|emerging power|IGO|BRIC|sphere of influence|military|soft power|hard power|United Nations|NATO|World Bank|IMF)/i
 };
 
@@ -305,7 +306,9 @@ function topicFor(p) {
   if (p.paper === 3) return { topic: "geo-syn", confident: true };
   if (p.paper === 1) {
     if (p.section === "A") return { topic: "geo-t1", confident: true };
-    if (p.section === "B") return p.option === "glaciated"
+    /* The specimen prints both options with no option heading the reader
+       catches, so its glaciated question is told apart by its vocabulary. */
+    if (p.section === "B") return p.option === "glaciated" || KW.glacial.test(text)
       ? { topic: "geo-t2a", confident: true } : { topic: "geo-t2b", confident: true };
     if (p.section === "C") {
       const w = KW.water.test(text), c = KW.carbon.test(text);
@@ -315,11 +318,12 @@ function topicFor(p) {
     }
   }
   if (p.paper === 2) {
+    /* Section A is always Question 1 Globalisation, Question 2 Superpowers.
+       Keywords got this wrong both ways -- "multipolar world" has no word
+       from the superpower list, and a Globalisation question about flows
+       mentions international organisations -- so the number decides it. */
     if (p.section === "A") {
-      const g = KW.globalisation.test(text), s = KW.superpower.test(text);
-      if (g && !s) return { topic: "geo-t3", confident: true };
-      if (s && !g) return { topic: "geo-t7", confident: true };
-      return { topic: s ? "geo-t7" : "geo-t3", confident: false };
+      return { topic: +p.q === 1 ? "geo-t3" : "geo-t7", confident: true };
     }
     if (p.section === "B") return p.option === "diverse"
       ? { topic: "geo-t4b", confident: true } : { topic: "geo-t4a", confident: true };
@@ -332,8 +336,93 @@ function topicFor(p) {
 /* The options this student sits, from the header of js/geo-data.js. Parts
    on the others are kept in the data -- a friend might sit Glaciated --
    and flagged so the app can leave them out by default. */
-const IN_SPEC = { "geo-t1": 1, "geo-t2b": 1, "geo-t5": 1, "geo-t6": 1, "geo-t3": 1,
-                  "geo-t4a": 1, "geo-t7": 1, "geo-t8a": 1, "geo-t8b": 1, "geo-syn": 1 };
+/* The four topics sat: Tectonics and Coasts (Physical), Globalisation and
+   Regenerating Places (Human). Everything else is kept in the data, off. */
+const IN_SPEC = { "geo-t1": 1, "geo-t2b": 1, "geo-t3": 1, "geo-t4a": 1 };
+
+/* ---------- enquiry question ----------
+   Like Economics' 1.2.1 codes: every part is filed under the EQ it is
+   really asking about. Pearson does not tag questions, so each EQ has the
+   specification's own vocabulary, and the sentence carrying the command
+   word counts three times over the rest -- "Assess the importance of
+   prediction ... in reducing the vulnerability of communities" is a
+   management question that happens to mention vulnerability.
+   A tie goes to the EQ listed first in PRIORITY, which puts the
+   evaluative EQs (management, success) ahead, since that is where an
+   essay's judgement sits. */
+const EQ_KW = {
+  "geo1-1": [/distribution/, /plate/, /boundar/, /subduction/, /hot ?spot/, /magma|lava|pyroclastic|ash fall/,
+             /liquefaction/, /tsunami(s)? (form|generat)/, /convection|slab pull|ridge push/, /areal extent/,
+             /why (some )?locations|at risk/, /causes? of (earthquakes|eruptions|tsunami)/],
+  "geo1-2": [/vulnerab/, /disaster/, /impacts?/, /magnitude/, /deaths?/, /level(s)? of development|development/,
+             /governance/, /resilien/, /hazard profile/, /\brisk\b/, /mega-disaster/, /social and economic/,
+             /communities/, /physical factors/],
+  "geo1-3": [/manag/, /predict/, /forecast/, /mitigat/, /monitor/, /strateg/, /\brespon/, /park'?s? model/,
+             /reduc/, /effective/, /warning/, /aid\b|insurance/],
+  "geo2-1": [/geolog/, /litholog/, /cliff profile/, /concordant|discordant/, /vegetation/, /stabilis/, /littoral/,
+             /classif/, /rock (type|strength)/, /structure/, /contrasting cliff/],
+  "geo2-2": [/sediment (cell|transport|budget)/, /sediment/, /deposition/, /erosion(al)? process/, /marine (process|erosion)/,
+             /subaerial/, /mass movement/, /weathering/, /\bwaves?\b/, /beach/, /spit|tombolo|bar\b/, /longshore/,
+             /landforms?/, /development of (this|these)/],
+  "geo2-3": [/sea level/, /isostatic|eustatic/, /emergent|submergent/, /flood/, /recession/, /retreat/,
+             /global warming|climate change/, /manag/, /engineering/, /conflict/, /winners|losers/, /polic/,
+             /communities/, /threat/],
+  "geo3-1": [/causes?/, /accelerat/, /growth of globalisation/, /\bict\b|communication/, /transport/, /free trade/,
+             /international (economic )?organisations/, /\bfdi\b|foreign direct/, /attract/, /switched off/,
+             /economic alliances|trade bloc/, /flows/, /special economic zone/, /connected/],
+  "geo3-2": [/global shift/, /impacts?/, /winners|losers/, /\btncs?\b|transnational/, /cultural (erosion|diversity)/,
+             /westerni[sz]ed/, /inequalit/, /gender|gii\b/, /gdp|income/, /social (costs|benefits)/,
+             /developed world/, /damages? the (physical )?environment/, /negative impacts/],
+  "geo3-3": [/reduce the impact/, /\brespon/, /tension/, /nationalis/, /ethical|fair ?trade/, /local communities/,
+             /sustainab/, /anti-globalisation/, /protect/, /circular economy/],
+  "geo4-1": [/demographic/, /functions?/, /connections/, /perception/, /characteristics/, /employment structure/,
+             /living environment/, /lived experience/, /variation/, /\bvote|voting|engagement/, /wages/,
+             /international and global influences/, /places vary/],
+  "geo4-2": [/need(ed)?\b/, /deprivation/, /inequalit/, /unemployment/, /decline/, /deindustrial/, /low income/,
+             /vacant/, /priorit/, /contrasting views/],
+  "geo4-3": [/government/, /polic/, /rebrand/, /strateg/, /infrastructure/, /investment/, /players/, /controversial/,
+             /limitations/, /managed/],
+  "geo4-4": [/(?<!less )success/, /improves?\b/, /effective/, /measur/, /attractiveness/]
+};
+const PRIORITY = ["geo1-3", "geo1-2", "geo1-1", "geo2-3", "geo2-1", "geo2-2",
+                  "geo3-3", "geo3-1", "geo3-2", "geo4-4", "geo4-3", "geo4-2", "geo4-1"];
+const SPEC_EQ = (function () {
+  const src = fs.readFileSync(path.join(ROOT, "js", "geo-data.js"), "utf8");
+  const spec = new Function(src + "; return GEO_SPEC;")();
+  const out = {};
+  spec.forEach(function (t) {
+    t.sections.forEach(function (s) { out[s.id] = { topic: t.id, num: s.num, name: s.name }; });
+  });
+  return out;
+})();
+
+function eqFor(topic, text) {
+  const ids = Object.keys(SPEC_EQ).filter(function (k) { return SPEC_EQ[k].topic === topic; });
+  if (!ids.length) return null;
+  const t = String(text).replace(/\s+/g, " ").toLowerCase();
+  /* the command sentence: the last one that opens on a command word */
+  const sentences = t.split(/(?<=[.?])\s+|\(i+\)\s*/);
+  const cmd = sentences.filter(function (s) {
+    return /^\s*(explain|assess|evaluate|suggest|analyse|examine|discuss|to what extent|calculate|complete|with reference|for your)/.test(s);
+  }).pop() || t;
+  let best = null, bestScore = 0;
+  const scores = {};
+  ids.forEach(function (id) {
+    let sc = 0;
+    EQ_KW[id].forEach(function (re) {
+      if (re.test(cmd)) sc += 3;
+      else if (re.test(t)) sc += 1;
+    });
+    scores[id] = sc;
+  });
+  PRIORITY.filter(function (id) { return ids.indexOf(id) >= 0; }).forEach(function (id) {
+    if (scores[id] > bestScore) { best = id; bestScore = scores[id]; }
+  });
+  /* confident when the winner is clear of the runner-up */
+  const sorted = ids.map(function (id) { return scores[id]; }).sort(function (a, b) { return b - a; });
+  if (!best) best = ids[0];
+  return { eq: best, eqConfident: bestScore > 0 && sorted[0] - (sorted[1] || 0) >= 2 };
+}
 
 /* ---------- reading a mark scheme ----------
    Blocks keyed by the question number in the scheme's left column:
@@ -485,6 +574,14 @@ function idFor(paper, series, q, part) {
 function cleanText(lines) {
   return lines.join("\n")
     .replace(/�/g, "")
+    /* page furniture the specimen and later papers leave in the text */
+    .replace(/\*S\d+A\d+\*/g, " ")
+    .replace(/^.*(Sample Assessment Materials|© ?Pearson Education Limited).*$/gm, "")
+    .replace(/^\s*\d{1,3}\s*$/gm, "")
+    .replace(/\bPMT\b|Turn over/g, " ")
+    .replace(/^\s*Do not answer Question \d+ if you have answered Question \d+\.?\s*$/gm, "")
+    .replace(/\s+(Landscape Systems, Processes and Change|Physical Systems and Sustainability|International Organisations|Glaciated Landscapes? and Change|Coastal Landscapes? and Change)\s*$/g, "")
+    .replace(/[ \t]+$/gm, "")
     .replace(/[ \t]{2,}/g, " ")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
@@ -553,12 +650,17 @@ Object.keys(PAPERS).forEach(function (pk) {
       if (msText) withMs++;
       if (!t.confident) unconfident++;
       marks += p.marks;
+      const e = IN_SPEC[t.topic] ? eqFor(t.topic, text) : null;
+      const eqInfo = e ? SPEC_EQ[e.eq] : null;
       out.push({
         id: idFor(paper, series, p.q, p.part),
         subject: "geography",
         paper: paper, series: series, section: p.section, option: p.option,
         q: p.q, part: p.part, marks: p.marks,
         topic: t.topic, topicConfident: t.confident, inSpec: !!IN_SPEC[t.topic],
+        eq: e ? e.eq : null, eqConfident: e ? e.eqConfident : false,
+        topicCode: eqInfo ? eqInfo.num : null,
+        topicName: eqInfo ? eqInfo.name : null,
         text: text,
         ms: msText,
         pageFrom: p.pageFrom, pageTo: p.pageTo,

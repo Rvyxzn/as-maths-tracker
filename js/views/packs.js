@@ -75,6 +75,83 @@ const PacksView = (function () {
     return isGeo() || yearFilter === "all" || String(q.year) === yearFilter;
   }
 
+  /* Geography is filed the way the specification is: Physical or Human,
+     then the topic, then its Enquiry Question -- the Geography version of
+     Economics' 1.2.1 codes. `geoTopic` is "all", a group ("Physical",
+     "Human") or a topic id; `geoEq` is "all" or an EQ id like "geo1-2". */
+  let geoTopic = "all";
+  let geoEq = "all";
+
+  function geoTopics() {
+    return typeof GEO_SPEC !== "undefined" ? GEO_SPEC : [];
+  }
+  function geoOk(q) {
+    if (geoEq !== "all") return q.eq === geoEq;
+    if (geoTopic === "all") return true;
+    if (geoTopic === "Physical" || geoTopic === "Human") {
+      return geoTopics().some(function (t) { return t.group === geoTopic && t.id === q.topic; });
+    }
+    return q.topic === geoTopic;
+  }
+
+  /* Every filter a question has to pass, whichever subject. */
+  function filterOk(q) {
+    if (isGeo()) return geoOk(q);
+    return (paperFilter === "all" || String(q.paper) === paperFilter) && yearOk(q);
+  }
+
+  function geoTree() {
+    const qs = bank();
+    const count = function (fn) {
+      /* across every tariff: a topic's size, not how many 20-markers it has */
+      return qs.filter(function (q) { return fn(q); }).length;
+    };
+    const btn = function (on, action, val, label, n, title) {
+      return '<button class="btn btn-sm' + (on ? " btn-primary" : "") + (n ? "" : " is-empty") + '"' +
+        (title ? ' title="' + UI.esc(title) + '"' : "") +
+        ' data-action="' + action + '" data-val="' + UI.esc(val) + '">' + UI.esc(label) +
+        ' <span class="faint">(' + n + ')</span></button>';
+    };
+    const groups = ["Physical", "Human"];
+    let html = '<div class="geo-tree">' +
+      '<div class="row wrap" style="gap:7px">' +
+        btn(geoTopic === "all", "pack-geo-topic", "all", "All topics", count(function () { return true; })) +
+      '</div>' +
+      groups.map(function (g) {
+        const ts = geoTopics().filter(function (t) { return t.group === g; });
+        return '<div class="geo-tree-group">' +
+          btn(geoTopic === g, "pack-geo-topic", g, g,
+            count(function (q) { return ts.some(function (t) { return t.id === q.topic; }); })) +
+          '<span class="geo-tree-arrow">›</span>' +
+          ts.map(function (t) {
+            const label = t.name.replace(/^Topic \w+:\s*/, "").replace(/ and /g, " & ");
+            return btn(geoTopic === t.id, "pack-geo-topic", t.id, label,
+              count(function (q) { return q.topic === t.id; }), t.name);
+          }).join("") +
+        '</div>';
+      }).join("");
+    const topic = geoTopics().filter(function (t) { return t.id === geoTopic; })[0];
+    if (topic) {
+      html += '<div class="geo-tree-group geo-tree-eqs">' +
+        btn(geoEq === "all", "pack-geo-eq", "all", "All EQs", count(function (q) { return q.topic === topic.id; })) +
+        topic.sections.map(function (s) {
+          return btn(geoEq === s.id, "pack-geo-eq", s.id, s.num + " · " + (s.name.split(":")[0]),
+            count(function (q) { return q.eq === s.id; }), s.name);
+        }).join("") +
+      '</div>';
+      const eq = topic.sections.filter(function (s) { return s.id === geoEq; })[0];
+      if (eq) html += '<div class="tiny muted" style="margin-top:6px">' + UI.esc(eq.num + " " + eq.name) + '</div>';
+    }
+    return html + '</div>';
+  }
+
+  /* "1.2 · Tectonic Processes & Hazards", as the Economics pills read "Y1 · 1.2.1". */
+  function geoEqLabel(q) {
+    const t = geoTopics().filter(function (x) { return x.id === q.topic; })[0];
+    const name = t ? t.name.replace(/^Topic \w+:\s*/, "").replace(/ and /g, " & ") : geoTopicName(q.topic);
+    return (q.topicCode ? q.topicCode + " · " : "") + name;
+  }
+
   /* Geography keeps parts on the options you do not sit in its data -- a
      friend might sit Glaciated -- but a pack is for your own revision, so
      those are left out here. */
@@ -177,16 +254,14 @@ const PacksView = (function () {
     const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
     if (terms.length) {
       return bank().filter(function (q) {
-        if (paperFilter !== "all" && String(q.paper) !== paperFilter) return false;
-        if (!yearOk(q)) return false;
+        if (!filterOk(q)) return false;
         if (todoOnly && !onTodo(q.id)) return false;
         return matches(q, terms);
       });
     }
     return bank().filter(function (q) {
       if (q.marks !== tariff) return false;
-      if (paperFilter !== "all" && String(q.paper) !== paperFilter) return false;
-      if (!yearOk(q)) return false;
+      if (!filterOk(q)) return false;
       if (todoOnly && !onTodo(q.id)) return false;
       return true;
     });
@@ -205,7 +280,7 @@ const PacksView = (function () {
 
   function countBy(fn) {
     return bank().filter(function (q) {
-      return q.marks === tariff && (paperFilter === "all" || String(q.paper) === paperFilter) && fn(q);
+      return q.marks === tariff && filterOk(q) && fn(q);
     }).length;
   }
 
@@ -1216,9 +1291,10 @@ const PacksView = (function () {
     /* Geography is filed by topic, not by teaching year. A topic the reader
        could not place from the wording says so rather than asserting one. */
     if (isGeo()) {
-      return '<span class="pill acc" title="' + UI.esc(geoTopicName(q.topic)) +
-        (q.topicConfident ? "" : " — topic judged from the wording") + '">' +
-        UI.esc(geoTopicName(q.topic)) + (q.topicConfident ? "" : " ?") + '</span>';
+      return '<span class="pill acc" title="' +
+        UI.esc(q.topicName ? q.topicCode + " " + q.topicName : geoTopicName(q.topic)) +
+        (q.eqConfident ? "" : " — EQ judged from the wording") + '">' +
+        UI.esc(geoEqLabel(q)) + '</span>';
     }
     if (!q.year) return '<span class="pill">year unclear</span>';
     return '<span class="pill acc" title="' +
@@ -1327,7 +1403,8 @@ const PacksView = (function () {
             '<div class="qfocus-where">' +
               '<b>' + UI.esc(q.series) + ' · Paper ' + q.paper + ' · Q' + q.q + (q.part ? "(" + q.part + ")" : "") + '</b>' +
               '<small>' + (isGeo()
-                ? UI.esc(geoTopicName(q.topic)) + (q.section ? ' · Section ' + q.section : '')
+                ? UI.esc(q.topicName ? q.topicCode + " " + q.topicName : geoTopicName(q.topic)) +
+                  (q.section ? ' · Section ' + q.section : '')
                 : (q.topicCode ? UI.esc(q.topicCode + " " + q.topicName) + ' · ' : "") +
                   'Theme ' + q.theme + ' · Year ' + q.year) + '</small>' +
             '</div>' +
@@ -1412,6 +1489,15 @@ const PacksView = (function () {
        first this subject actually has rather than showing an empty list. */
     const ts = tariffs();
     if (ts.indexOf(tariff) < 0) tariff = ts[ts.length - 1];
+    /* Pick Tectonics while on 20 marks and there is nothing to show -- it
+       has no 20-markers -- so move to the biggest tariff the topic has. */
+    if (isGeo() && !query.trim()) {
+      const has = function (t) { return bank().some(function (q) { return q.marks === t && filterOk(q); }); };
+      if (!has(tariff)) {
+        const alt = ts.slice().reverse().filter(has)[0];
+        if (alt) tariff = alt;
+      }
+    }
     const g = guideFor(tariff);
     const list = questions();
     const focused = focusId ? byId(focusId) : null;
@@ -1432,21 +1518,19 @@ const PacksView = (function () {
         '<div class="row wrap" style="gap:7px;margin-top:14px">' +
           ts.map(function (t) {
             const n = bank().filter(function (q) {
-              return q.marks === t &&
-                (paperFilter === "all" || String(q.paper) === paperFilter) &&
-                yearOk(q);
+              return q.marks === t && filterOk(q);
             }).length;
             return '<button class="btn btn-sm' + (t === tariff ? " btn-primary" : "") +
               (n ? "" : " is-empty") + '" data-action="pack-tariff" data-val="' + t + '">' +
               t + ' mark <span class="faint">(' + n + ')</span></button>';
           }).join("") +
         '</div>' +
-        '<div class="row wrap" style="gap:7px;margin-top:9px">' +
+        (isGeo() ? geoTree() : '<div class="row wrap" style="gap:7px;margin-top:9px">' +
           papers().map(function (p) {
             return '<button class="btn btn-sm' + (paperFilter === p[0] ? " btn-primary" : "") + '" ' +
               'data-action="pack-paper" data-val="' + p[0] + '">' + p[1] + '</button>';
           }).join("") +
-        '</div>' +
+        '</div>') +
         /* Year 1 and Year 2 are how Economics is taught; Geography's topics
            are not split that way, so the bar is not shown for it. */
         (isGeo() ? "" : '<div style="margin-top:12px">' + yearBar() + '</div>') +
@@ -1523,8 +1607,7 @@ const PacksView = (function () {
         const only = Object.keys(picked).filter(function (k) { return picked[k]; }).map(Number);
         const pool = shuffled(bank().filter(function (q) {
           if (only.length && only.indexOf(q.marks) < 0) return false;
-          return (paperFilter === 'all' || String(q.paper) === paperFilter) &&
-                 yearOk(q);
+          return filterOk(q);
         }));
         const chosen = [], marks = { value: 0 };
         pool.some(function (q) { if ((wantedCount && chosen.length >= wantedCount) || (wantedMarks && marks.value + q.marks > wantedMarks && chosen.length)) return true; chosen.push(q.id); marks.value += q.marks; return false; });
@@ -1603,6 +1686,8 @@ const PacksView = (function () {
       case "pack-tariff": tariff = +el.dataset.val; App.render(); return true;
       case "pack-paper":  paperFilter = el.dataset.val; App.render(); return true;
       case "pack-year":   yearFilter = el.dataset.val; App.render(); return true;
+      case "pack-geo-topic": geoTopic = el.dataset.val; geoEq = "all"; App.render(); return true;
+      case "pack-geo-eq":    geoEq = el.dataset.val; App.render(); return true;
       case "pack-random": { const pool = questions(); if (!pool.length) return true; practiceQueue = []; focusId = pool[Math.floor(Math.random() * pool.length)].id; caseOpen = false; App.render(); return true; }
       case "pack-practice": openPractice(); return true;
       /* One figure, as large as the screen allows, with zoom.

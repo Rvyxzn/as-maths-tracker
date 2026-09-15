@@ -3153,3 +3153,10 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .ma-essay-p.is-jud .ma-essay-tag{color:var(--muted)}
 .ma-writing{display:flex;gap:12px;align-items:center;padding:8px 0}
 .ma-writing b{font-size:14px}
+
+/* Geography's filter, laid out as the specification is:
+   Physical / Human, then the topic, then its Enquiry Questions. */
+.geo-tree{display:flex;flex-direction:column;gap:7px;margin-top:9px}
+.geo-tree-group{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.geo-tree-arrow{color:var(--text-faint,#888);font-size:15px;padding:0 2px}
+.geo-tree-eqs{padding-left:14px;border-left:2px solid var(--border-strong);margin-left:4px}

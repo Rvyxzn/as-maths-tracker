@@ -255,7 +255,9 @@ const PracticeTest = (function () {
     const out = [];
     GEO_QUESTIONS.forEach(function (q) {
       if (!q.inSpec) return;
-      const cids = ALL_CHAPTER_IDS.filter(function (c) {
+      /* Filed under its own Enquiry Question, like an Economics question
+         under its subtopic. Only a part with no EQ falls back to the topic. */
+      const cids = q.eq && CHAPTER_INDEX["ch:" + q.eq] ? ["ch:" + q.eq] : ALL_CHAPTER_IDS.filter(function (c) {
         const inf = CHAPTER_INDEX[c];
         return inf && inf.paper && inf.paper.id === q.topic;
       });
@@ -271,8 +273,8 @@ const PracticeTest = (function () {
         group: inf ? inf.paper.short : ("Paper " + q.paper),
         year: null,
         label: q.series + " · Paper " + q.paper + " · Q" + q.q + (q.part ? "(" + q.part + ")" : ""),
-        topic: inf ? inf.paper.paper : "Synoptic",
-        where: inf ? inf.paper.paper : "Synoptic",
+        topic: q.topicCode ? q.topicCode + " " + q.topicName : (inf ? inf.paper.paper : "Synoptic"),
+        where: q.topicCode ? q.topicCode + " · " + (inf ? inf.paper.name : "") : (inf ? inf.paper.paper : "Synoptic"),
         preview: q.text
       });
     });
