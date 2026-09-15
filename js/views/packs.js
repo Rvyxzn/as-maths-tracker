@@ -860,6 +860,146 @@ const PacksView = (function () {
      It has to be written rather than assembled, because a scheme
      rearranged is still a scheme. See js/eco-written.js for where it comes
      from and why nothing is generated until you ask. */
+  /* ============================================================
+     GEOGRAPHY: THE MODEL ANSWER AND THE PLAN
+
+     The same two panels Economics has, kept separate for the same
+     reason -- an answer and advice about answers teach different
+     things -- but built on Geography's marking. See
+     js/geo-written.js and js/geo-model-answers.js.
+     ============================================================ */
+
+  const ROLE_LABEL = { point: "Point", counter: "Counter", weigh: "Weighing" };
+
+  function geoWrittenBlock(q) {
+    if (typeof GeoWritten === "undefined") return "";
+    const open = !!writtenOpen[q.id];
+    const a = GeoWritten.get(q.id);
+    const busy = !!writing[q.id];
+    const can = typeof Assistant !== "undefined" && Assistant.configured();
+
+    const head =
+      '<button class="ma-head" data-action="pack-written" data-id="' + q.id + '">' +
+        UI.icon("cap") +
+        '<span class="ma-title">Model answer</span>' +
+        '<span class="ma-sum">' +
+          (a ? a.words + " words · written by the assistant" : busy ? "writing…" : "not written yet") +
+        '</span>' +
+        '<span class="ma-chev">' + (open ? "−" : "+") + '</span>' +
+      '</button>';
+    if (!open) return '<div class="ma ma-written">' + head + '</div>';
+
+    let body;
+    if (busy) {
+      body = '<div class="ma-writing"><span class="pdfv-spinner"></span>' +
+             '<div><b>Writing it</b><div class="tiny muted">Reading the booklet pages this question uses.</div></div></div>';
+    } else if (a) {
+      const multi = a.paragraphs.length > 1 || a.intro || a.conclusion;
+      body =
+        '<div class="ma-essay">' +
+          (a.resources ? '<div class="ma-flag">' + UI.icon("info") + '<span><b>Uses:</b> ' +
+            UI.esc(a.resources) + '</span></div>' : "") +
+          (a.intro ? '<div class="ma-essay-p is-jud"><span class="ma-essay-tag">Intro</span><p>' +
+            UI.esc(a.intro) + '</p></div>' : "") +
+          a.paragraphs.map(function (p, i) {
+            return '<div class="ma-essay-p ' + (p.role === "weigh" ? "is-ev" : "is-kaa") + '">' +
+              '<span class="ma-essay-tag">' + (multi ? UI.esc(ROLE_LABEL[p.role] || "Point") : "Answer") +
+                (p.ao ? '<small style="display:block;font-weight:500;letter-spacing:0;text-transform:none">' +
+                  UI.esc(p.ao) + '</small>' : "") +
+              '</span><p>' + UI.esc(p.text) + '</p></div>';
+          }).join("") +
+          (a.conclusion ? '<div class="ma-essay-p is-jud"><span class="ma-essay-tag">Conclusion</span><p>' +
+            UI.esc(a.conclusion) + '</p></div>' : "") +
+        '</div>' +
+        '<div class="row wrap" style="gap:8px;margin-top:12px">' +
+          '<button class="btn btn-sm" data-action="pack-rewrite" data-id="' + q.id + '">Write it again</button>' +
+          '<button class="btn btn-sm btn-ghost" data-action="rep-question" data-id="' + q.id +
+            '" data-kind="question" data-where="Model answer">Something wrong with it?</button>' +
+        '</div>' +
+        '<div class="ma-foot">Written by the assistant from the question, the resource booklet pages it ' +
+          'uses and Pearson’s mark scheme, and kept on this device. It is <b>an</b> answer that would ' +
+          'reach the top level, not the only one: the scheme credits other points and case studies.</div>';
+    } else if (can) {
+      body =
+        '<p class="muted" style="margin-top:0">No answer written for this one yet. The assistant will ' +
+          'write it from the question, the resource booklet pages it uses and the mark scheme — with ' +
+          'named places and real data, at the length the tariff allows. It is kept afterwards, so this ' +
+          'only happens once.</p>' +
+        '<button class="btn btn-primary" data-action="pack-write" data-id="' + q.id + '">Write the answer</button>' +
+        '<div class="tiny faint" style="margin-top:8px">Costs a fraction of a penny and takes a few seconds.</div>';
+    } else {
+      body =
+        '<p class="muted" style="margin-top:0">A written answer has to be written, and the thing that ' +
+          'writes it is not set up.</p>' +
+        '<div class="tiny muted">Turning it on is three commands, in <b>ASSISTANT.md</b>. Until then ' +
+          '<b>The plan</b> below is the useful half: the shape of a full-mark answer, what the top level ' +
+          'requires in Pearson’s words, and the points the scheme credits.</div>';
+    }
+    return '<div class="ma ma-written open">' + head + '<div class="ma-body">' + body + '</div></div>';
+  }
+
+  function geoPlanBlock(q) {
+    if (typeof GeoModel === "undefined") return "";
+    const m = GeoModel.build(q);
+    if (!m) return "";
+    const open = !!modelOpen[q.id];
+    const alloc = Object.keys(m.allocation).sort().map(function (k) {
+      return "AO" + k + " " + m.allocation[k];
+    }).join(" · ");
+
+    const pointList = function (title, hint, pts) {
+      if (!pts || !pts.length) return "";
+      return '<div class="ma-col">' +
+        '<div class="ma-col-head"><b>' + UI.esc(title) + '</b><span>' + UI.esc(hint) + '</span></div>' +
+        '<ul class="ma-points">' + pts.map(function (p) { return '<li>' + UI.esc(p) + '</li>'; }).join("") +
+        '</ul></div>';
+    };
+
+    return '<div class="ma' + (open ? " open" : "") + '">' +
+      '<button class="ma-head" data-action="pack-model" data-id="' + q.id + '">' +
+        UI.icon("cap") +
+        '<span class="ma-title">The plan</span>' +
+        '<span class="ma-sum">' + m.minutes + ' min · ' +
+          (m.pointMarked ? "point-marked" : (alloc || "levels-marked")) + '</span>' +
+        '<span class="ma-chev">' + (open ? "−" : "+") + '</span>' +
+      '</button>' +
+      (open ? '<div class="ma-body">' +
+
+        '<div class="ma-plan">' + m.steps.map(function (s) {
+          return '<div class="ma-step"><span class="ma-step-m">' + s.marks + '</span>' +
+                 '<span class="ma-step-l">' + UI.esc(s.label) + '</span>' +
+                 '<span class="ma-step-t">' + s.minutes + ' min</span></div>';
+        }).join("") + '</div>' +
+
+        (m.usesResource ? '<div class="ma-flag">' + UI.icon("alert") +
+          '<span>This question is marked on using the resource. Quote numbers from the figure, and say ' +
+          'what it cannot tell you.</span></div>' : "") +
+
+        /* The definition of full marks, first, because it is the thing
+           everything else in this panel is working towards. */
+        (m.top ? '<div class="ma-cond"><b>What the top level (' + UI.esc(m.top.band) + ' marks) requires</b><ul>' +
+          m.top.descriptors.map(function (d) { return '<li>' + UI.esc(d) + '</li>'; }).join("") +
+          '</ul></div>' : "") +
+
+        (m.rule ? '<div class="ma-cond"><b>How it is marked</b><p style="margin:4px 0 0">' +
+          UI.esc(m.rule) + '</p></div>' : "") +
+        (m.example.length ? '<div class="ma-best"><b>The scheme’s own worked example</b>' +
+          m.example.map(function (e) { return '<p>' + UI.esc(e) + '</p>'; }).join("") + '</div>' : "") +
+        (m.steer ? '<div class="ma-says tip"><b>The examiners’ steer</b><ul><li>' + UI.esc(m.steer) +
+          '</li></ul></div>' : "") +
+
+        '<div class="ma-cols">' +
+          pointList("AO1 · knowledge", "what to know, with named places", m.ao1) +
+          pointList("AO2 · application and judgement", "where most of the marks are", m.ao2) +
+          pointList("AO3 · using the resources", "quote the booklet", m.ao3) +
+        '</div>' +
+
+        '<div class="ma-foot">Read out of Pearson’s mark scheme for this question. Timed at the paper’s ' +
+          '1.3 minutes a mark.</div>' +
+      '</div>' : "") +
+    '</div>';
+  }
+
   function writtenBlock(q) {
     if (typeof EcoWritten === "undefined") return "";
     const open = !!writtenOpen[q.id];
@@ -1222,7 +1362,7 @@ const PacksView = (function () {
                  KAA and evaluation split. Geography is marked on AO1 and AO2
                  levels, so showing that frame for it would teach the wrong
                  shape; its own mark scheme is what is shown instead. */
-              ? (q.subject === "geography" ? "" : writtenBlock(q) + modelBlock(q, er)) +
+              ? (q.subject === "geography" ? geoWrittenBlock(q) + geoPlanBlock(q) : writtenBlock(q) + modelBlock(q, er)) +
                 (q.ms ? '<div class="section-label" style="margin:18px 0 8px">Mark scheme</div>' + msSheet(q.ms, q.id)
                       : '<div class="tiny faint">No mark scheme was found for this one.</div>') +
                 (er ? UI.examinerReport(er, { series: q.series, paper: q.paper,
@@ -1550,11 +1690,13 @@ const PacksView = (function () {
         if (writing[k]) return true;
         const q = byId(k);
         if (!q) return true;
-        if (action === "pack-rewrite") EcoWritten.forget(k);
+        /* Each subject keeps its own answers and writes them its own way. */
+        const Writer = q.subject === "geography" ? GeoWritten : EcoWritten;
+        if (action === "pack-rewrite") Writer.forget(k);
         writing[k] = true;
         writtenOpen[k] = true;
         App.render();
-        EcoWritten.write(q).then(function () {
+        Writer.write(q).then(function () {
           writing[k] = false;
           App.render();
           UI.toast("Written", "ok");

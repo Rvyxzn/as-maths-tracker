@@ -148,6 +148,61 @@ How to write it:
 Length: aim for about ${"${words}"} words in total, which is what a candidate writes in the
 time the tariff allows. Do not pad to reach it.`;
 
+/* ---------------- the same task, for Geography ----------------
+
+   Not the Economics rules with the words changed. 9GE0 is marked two
+   ways: the short answers are point-marked, one mark per step of a
+   developed explanation, and everything from 6 marks up is placed in a
+   level on AO1 (knowledge), AO2 (application, analysis, evaluation) and
+   on Paper 3 AO3 (using the resources). A full-mark Geography essay is
+   built around named, located evidence and a judgement, which is a
+   different thing from an Economics chain with evaluation attached. */
+const GEO_ANSWER_SHAPE = `{
+  "intro":      string|null,   // for 12 marks and up: define the terms, set up the debate
+  "paragraphs": [              // the body, in the order it is written
+    { "role": "point"|"counter"|"weigh", "ao": string, "text": string }
+  ],
+  "conclusion": string|null,   // for 12 marks and up: the judgement
+  "resources":  string|null    // which figures or tables the answer uses, if any
+}`;
+
+const GEO_ANSWER_RULES = `You are an experienced Edexcel A level Geography (9GE0) examiner writing the answer
+you would award full marks to. Write it out in full, as a strong candidate would in the exam.
+Not a plan, not bullet points, not advice - the actual prose.
+
+Return ONLY a JSON object of this shape. No prose outside it, no markdown fence:
+${GEO_ANSWER_SHAPE}
+
+How many body paragraphs, by tariff:
+- 1 to 4 marks: ONE paragraph, no intro or conclusion. These are point-marked: identify the
+  point, then develop it step by step so each step would earn a mark. Calculations: method,
+  substitution, answer with unit, to the precision asked.
+- 6 marks: TWO developed points.
+- 8 to 10 marks: TWO or THREE developed points. For "Analyse" or a figure: describe the pattern
+  quoting the numbers, explain its causes, then note an anomaly or a limit of the data.
+- 12 marks ("Assess"): an intro, THREE paragraphs weighing factors against each other, and a
+  conclusion that decides which matters most.
+- 16 marks and up ("Evaluate"): an intro, THREE paragraphs - the case for, the case against, and
+  one that weighs them by scale, time, place and who is affected - and a conclusion that answers
+  "to what extent" and says what would change that view.
+Never more than four body paragraphs.
+
+What earns the top level:
+- AO1: accurate, specific knowledge. Named, located places and real data - a country, a city, a
+  year, a figure - not "an LIC" or "a coastline". Correct geographical terms, defined when used.
+- AO2: every point applied to the question and taken to a consequence. Judgements supported by
+  evidence throughout, not saved for the end.
+- AO3, when resources are given: quote values from them and comment on how reliable or complete
+  they are.
+- Use the mark scheme's indicative content as the substance; it is what Pearson credits. Where the
+  scheme names case studies, use them or equally specific ones.
+- "role": "point" for an argument, "counter" for the opposing case, "weigh" for the paragraph that
+  compares them. "ao" says which objectives the paragraph earns, e.g. "AO1 + AO2".
+- Continuous prose inside each paragraph. No headings, no bullet points.
+
+Length: aim for about ${"${words}"} words in total, which is what a candidate writes in the
+time the tariff allows. Do not pad to reach it.`;
+
 Deno.serve(async (req) => {
   const origin = req.headers.get("origin");
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors(origin) });
@@ -176,6 +231,7 @@ Deno.serve(async (req) => {
     task?: string;
     text?: string; subjects?: Array<{ id: string; name: string }>; today?: string;
     question?: string; scheme?: string; report?: string; context?: string; marks?: number;
+    subject?: string;
   };
   try { body = await req.json(); } catch { return json({ error: "Bad request" }, 400, origin); }
 
@@ -195,11 +251,15 @@ Deno.serve(async (req) => {
     const marks = Math.max(1, Math.min(25, Number(body.marks) || 25));
     /* Roughly what a candidate writes in the time the tariff allows. */
     const words = marks * 25;
-    system = ANSWER_RULES.replace("${words}", String(words));
+    const geo = body.subject === "geography";
+    system = (geo ? GEO_ANSWER_RULES : ANSWER_RULES).replace("${words}", String(words));
     maxTokens = 4000;
     userContent =
       `The question, worth ${marks} marks:\n${question}\n\n` +
-      (body.context ? `The extracts and figures it refers to:\n${String(body.context).slice(0, 12000)}\n\n` : "") +
+      (body.context
+        ? (geo ? `Text from the resource booklet pages this question uses (maps and charts do not come through as text, so work from what is here and say so where a figure's values are not given):\n`
+               : `The extracts and figures it refers to:\n`) + `${String(body.context).slice(0, 12000)}\n\n`
+        : "") +
       (body.scheme ? `Pearson's mark scheme, indicative content:\n${String(body.scheme).slice(0, 8000)}\n\n` : "") +
       (body.report ? `Pearson's examiner report on this question:\n${String(body.report).slice(0, 6000)}\n` : "");
   } else {

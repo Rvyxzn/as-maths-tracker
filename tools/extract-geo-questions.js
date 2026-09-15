@@ -492,6 +492,10 @@ function cleanText(lines) {
 
 const out = [];
 const report = [];
+/* The booklet's text, page by page, for the assistant to write answers
+   from. Kept out of geo-questions.js and fetched only when an answer is
+   being written, so it costs nothing on an ordinary page load. */
+const booklets = {};
 
 Object.keys(PAPERS).forEach(function (pk) {
   const paper = +pk;
@@ -523,6 +527,21 @@ Object.keys(PAPERS).forEach(function (pk) {
     const hasRbFile = fs.existsSync(rb);
     const bound = !hasRbFile && read.booklet;
     const hasRb = hasRbFile || !!bound;
+
+    if (hasRb) {
+      const src = hasRbFile ? rb : qp;
+      const all = pagesOf(src);
+      const from = hasRbFile ? 1 : bound.from;
+      const to = hasRbFile ? all.length : bound.to;
+      const list = [];
+      for (let n = from; n <= to; n++) {
+        const t = String(all[n - 1] || "")
+          .replace(/BLANK PAGE|\bPMT\b|Turn over|\*P\d+[A-Z0-9]*\*/g, " ")
+          .replace(/[ \t]+/g, " ").replace(/\n\s*\n+/g, "\n").trim();
+        if ((t.match(/[A-Za-z]{3,}/g) || []).length >= 6) list.push({ page: n, text: t });
+      }
+      booklets[paper + "|" + series] = list;
+    }
 
     let marks = 0, withMs = 0, unconfident = 0;
     read.parts.forEach(function (p) {
@@ -579,6 +598,10 @@ console.log(total + " parts, " + sat + " on the options you sit, " +
   out.filter(function (q) { return q.rbMissing; }).length + " needing a booklet that is not available");
 
 if (process.argv.indexOf("--write") >= 0) {
+  const bookletJson = JSON.stringify(booklets);
+  fs.writeFileSync(path.join(ROOT, "js", "geo-booklets.json"), bookletJson, "utf8");
+  console.log("wrote js/geo-booklets.json (" + Math.round(bookletJson.length / 1024) + " KB, " +
+    Object.keys(booklets).length + " booklets)");
   const file = path.join(ROOT, "js", "geo-questions.js");
   const header = "/* ============================================================\n" +
     "   Edexcel A level Geography (9GE0) question bank.\n\n" +
