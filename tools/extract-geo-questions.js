@@ -27,10 +27,12 @@
 
    THE RESOURCE BOOKLET is Geography's case study: questions say
    "Study Figure 4a in the Resource Booklet" and print nothing
-   themselves. It is attached where it exists. For 2021 to 2024
-   it does not exist in anything reachable, so those parts are
-   marked `rbMissing` rather than shown as if the figure were
-   there.
+   themselves. Up to 2020 it is a file of its own. From 2021 it is
+   bound into the back of the question paper, after TOTAL FOR
+   PAPER, so `rb` points at the question paper and `rbFrom` /
+   `rbTo` give the booklet's pages. Every series has one.
+   `rbMissing` is only set if a part asks for a booklet that
+   genuinely cannot be found.
 
    Run: node tools/extract-geo-questions.js [--write]
    ============================================================ */
@@ -120,7 +122,11 @@ const OPTION = {
    and swallowed Questions 4, 5 and 6 -- 131 marks as one part. The letter
    after the number and the must-be-next-in-sequence check are what still
    keep table rows and stray numbers out. */
-const QSTART = /^\s*(\d{1,2})\s+(?:\(([a-h])\)\s*)?([A-Za-z].*)$/;
+/* An "Evaluate this view" question usually opens by quoting the view --
+   "6 `If the Haitian population is to have a prosperous future..." -- so an
+   opening quote mark may come before the first letter. Without it that
+   question went unread and Question 5 absorbed it: 42 marks, as one part. */
+const QSTART = /^\s*(\d{1,2})\s+(?:\(([a-h])\)\s*)?([`'"\u2018\u201C]?[A-Za-z].*)$/;
 /* Parts run (a) to (h). (i), (v) and (x) are roman sub-parts and roll up into
    the part above; allowing any letter made "(i) Calculate the mean" open a
    part "i". And the marker can sit right at the margin -- "(a) (i) Complete
@@ -157,6 +163,20 @@ function readPaper(pdf, paper, series) {
   let cur = null;       /* the part being read */
   let qnum = null;
 
+  /* WHERE THE EXAM STOPS AND THE BOOKLET BEGINS.
+
+     From 2021 the resource booklet is not a separate file: it is bound
+     into the back of the question paper, after "TOTAL FOR PAPER" and before
+     the acknowledgements. Reading on past that point did two kinds of
+     damage. The last question claimed the whole booklet as its answer
+     space -- Paper 3's final question ran from page 14 to page 28 on a
+     paper whose questions end at 18 -- and the booklet's own "SECTION B"
+     and numbered headings were read as questions worth nothing. So
+     questions stop at TOTAL FOR PAPER, and what follows is recorded as
+     the booklet. */
+  let paperEnd = null;
+  let ackPage = null;
+
   function open(q, letter, first, pageNo) {
     cur = { paper: paper, series: series, section: section, option: option,
             q: q, part: letter || "", marks: 0, lines: [first],
@@ -166,9 +186,13 @@ function readPaper(pdf, paper, series) {
 
   pages.forEach(function (txt, i) {
     const pageNo = i + 1;
+    if (/Acknowledg/i.test(txt)) ackPage = pageNo;
+    if (paperEnd !== null) return;       /* the booklet: not questions */
     txt.split("\n").forEach(function (raw) {
       const line = raw.replace(/\s+$/, "");
       if (!line.trim()) return;
+      if (paperEnd !== null) return;
+      if (/TOTAL FOR PAPER/i.test(line)) { paperEnd = pageNo; return; }
 
       const sec = SECTION.exec(line);
       if (sec) { section = sec[1]; option = null; return; }
@@ -237,7 +261,16 @@ function readPaper(pdf, paper, series) {
     else if (blank.length === 1 && printed > read) { blank[0].marks = printed - read; blank[0].fromTotal = true; }
   });
 
-  return { parts: parts, totals: totals, pages: pages.length };
+  /* The bound-in booklet, when there is one: everything after the page the
+     exam ends on, up to the acknowledgements. Only counted as a booklet if
+     there is at least one page of it, so a paper whose TOTAL FOR PAPER sits
+     on its last printed page does not claim an empty one. */
+  let booklet = null;
+  if (paperEnd !== null) {
+    const to = (ackPage && ackPage > paperEnd) ? ackPage - 1 : pages.length;
+    if (to > paperEnd) booklet = { from: paperEnd + 1, to: to };
+  }
+  return { parts: parts, totals: totals, pages: pages.length, booklet: booklet };
 }
 
 /* ---------- topic ----------
@@ -437,7 +470,11 @@ Object.keys(PAPERS).forEach(function (pk) {
       return;
     }
     const scheme = fs.existsSync(ms) ? readScheme(ms) : {};
-    const hasRb = fs.existsSync(rb);
+    /* A separate booklet file where one exists (Specimen to 2020), otherwise
+       the booklet bound into the back of the question paper (2021 on). */
+    const hasRbFile = fs.existsSync(rb);
+    const bound = !hasRbFile && read.booklet;
+    const hasRb = hasRbFile || !!bound;
 
     let marks = 0, withMs = 0, unconfident = 0;
     read.parts.forEach(function (p) {
@@ -459,7 +496,11 @@ Object.keys(PAPERS).forEach(function (pk) {
         ms: msText,
         pageFrom: p.pageFrom, pageTo: p.pageTo,
         pdf: path.posix.join(BASE, PAPERS[paper], "Questions", series + " QP.pdf"),
-        rb: hasRb ? path.posix.join(BASE, PAPERS[paper], "Resource Booklet", series + " RB.pdf") : null,
+        rb: hasRbFile ? path.posix.join(BASE, PAPERS[paper], "Resource Booklet", series + " RB.pdf")
+          : bound ? path.posix.join(BASE, PAPERS[paper], "Questions", series + " QP.pdf")
+          : null,
+        rbFrom: hasRbFile ? null : bound ? bound.from : null,
+        rbTo: hasRbFile ? null : bound ? bound.to : null,
         rbMissing: needsRb && !hasRb
       });
     });
@@ -467,6 +508,7 @@ Object.keys(PAPERS).forEach(function (pk) {
     /* The printed totals are the check on the tariffs read. */
     const printed = Object.keys(read.totals).reduce(function (a, k) { return a + read.totals[k]; }, 0);
     report.push({
+      bound: bound ? ("bound p" + bound.from + "-" + bound.to) : "",
       label: "P" + paper + " " + series,
       parts: read.parts.filter(function (p) { return p.marks; }).length,
       marks: marks, printed: printed, withMs: withMs, unconfident: unconfident,
@@ -480,7 +522,7 @@ report.forEach(function (r) {
   console.log(r.label.padEnd(18), String(r.parts).padStart(3) + " parts",
     String(r.marks).padStart(4) + " marks", "·", ok.padEnd(26),
     "· scheme " + r.withMs + "/" + r.parts, r.unconfident ? "· " + r.unconfident + " topic unsure" : "",
-    r.rb ? "" : "· no RB");
+    r.rb ? (r.bound ? "· booklet " + r.bound : "") : "· no RB");
 });
 const total = out.length, sat = out.filter(function (q) { return q.inSpec; }).length;
 console.log("");

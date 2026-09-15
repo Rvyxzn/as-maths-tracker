@@ -1,7 +1,7 @@
 /* ============================================================
    Edexcel A level Geography (9GE0) question bank.
 
-   303 parts off real past papers, 253 of them on the options
+   304 parts off real past papers, 254 of them on the options
    in js/geo-data.js. Built by tools/extract-geo-questions.js --
    do not hand edit, run the tool; what every field means is
    written up there.
@@ -27,6 +27,8 @@ const GEO_QUESTIONS = [
   "pageTo": 2,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -48,6 +50,8 @@ const GEO_QUESTIONS = [
   "pageTo": 5,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -69,6 +73,8 @@ const GEO_QUESTIONS = [
   "pageTo": 5,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -90,6 +96,8 @@ const GEO_QUESTIONS = [
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -111,6 +119,8 @@ const GEO_QUESTIONS = [
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -132,6 +142,8 @@ const GEO_QUESTIONS = [
   "pageTo": 10,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -153,6 +165,8 @@ const GEO_QUESTIONS = [
   "pageTo": 11,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -174,6 +188,8 @@ const GEO_QUESTIONS = [
   "pageTo": 12,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -195,6 +211,8 @@ const GEO_QUESTIONS = [
   "pageTo": 14,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -216,6 +234,8 @@ const GEO_QUESTIONS = [
   "pageTo": 15,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -237,6 +257,8 @@ const GEO_QUESTIONS = [
   "pageTo": 16,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -258,6 +280,8 @@ const GEO_QUESTIONS = [
   "pageTo": 17,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -279,6 +303,8 @@ const GEO_QUESTIONS = [
   "pageTo": 18,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -294,12 +320,14 @@ const GEO_QUESTIONS = [
   "topic": "geo-t6",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the extent to which today’s increasing demand for energy is the most\nimportant factor modifying the carbon cycle.\n*S49794A01922* Pearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 19\n23\nIssue 2 – February 2017 © Pearson Education Limited 2017\n*S49794A02022* 20\n24\nPearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials –\nIssue 2 – February 2017 © Pearson Education Limited 2017\n*S49794A02122* Pearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 21\nIssue 2 – February 2017 © Pearson Education Limited 2017 25",
+  "text": "Evaluate the extent to which today’s increasing demand for energy is the most\nimportant factor modifying the carbon cycle.\n*S49794A01922* Pearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 19\n23\nIssue 2 – February 2017 © Pearson Education Limited 2017\n*S49794A02022* 20\n24\nPearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials –\nIssue 2 – February 2017 © Pearson Education Limited 2017",
   "ms": "Answer\nnumber\nAO1 (5 marks)/AO2 (15 marks)\nResponses that demonstrate only AO1 without any AO2 should be awarded\nmarks as follows:\n• Level 1 AO1 performance: 1 mark\n• Level 2 AO1 performance: 2 marks\n• Level 3 AO1 performance: 3 marks.\n• Level 4 AO1 performance: 4–5 marks.\nAO1\n• Growing demand for energy leads to changes in land use cover (largely\ndeforestation but some afforestation)\n• Growing use of energy creates increased greenhouse gases, which\nimpacts on carbon emissions\n• Some energy developments are more complex, such as the development\nof biofuel: conversion of forest to farmland for biofuels and growth of\nrenewables offers some hope of a reduction in emissions\n• Other human factors also modify the carbon cycle, especially land use\nchanges causing deforestation and changes to the chemistry and\ntemperature of oceans, which may disrupt their role in the carbon cycle\nAO2\n• there are two major factors modifying the carbon cycle – the burning of\nfossil fuels and deforestation – yet the evaluation of their relative\nimportance is challenging\n• the growing demand for energy is a significant cause in modifying the\ncarbon cycle and is largely a function of economic growth, which\nremains a priority for most governments despite the clear environmental\nimpacts and risks associated\n• fossil fuels still dominate the global economy and there is little sign of\nchange, despite some growth of renewables\n• importantly, oil drives the transport systems and coal remains the most\nimportant primary source for the production of electricity – reductions in\nenergy prices in recent years have been welcomed by many, so there is\nno check to rising demand\n• most emerging countries are using significantly more fossil fuels each\nyear as they grow with rates of energy usage, running slightly ahead of\neconomic growth rates so with economic growth remaining as the\npriority for global organisations, increasing demand is likely to continue\n• many methods of energy extraction produce high levels of carbon\nPearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 61\nIssue 2 – February 2017 © Pearson Education Limited 2017\nAnswer\nnumber\nemissions, including relatively new sources as the era of readily\naccessible, ‘cheap’ energy passes – e.g. tar sands, oil shale, fracking\n• however, land-use changes, especially deforestation, are significant and\nnot a consequence of increasing demand for energy although there are\nexceptions – palm oil and biofuel exploitation\n• most land-use changes are a consequence of increases in agricultural\nland, unrelated to energy exploitation, although they are related to\nchanging diets and higher living standards\n• the increased intensification of agriculture associated with land-use\nchanges does have an impact on energy usage in those systems which,\nin turn, reinforces the role of increasing demand for energy\n• however, some modern energy extraction methods, e.g. oil shale, tar\nsands and mountain-top removal, as well as the deforestation to make\nway for biofuel developments are significant contributors to land-use\nchanges, reinforcing the importance of energy demand\n• by most assessments, the burning of fossil fuels is the primary cause of\nanthropogenic climate change and therefore impacts on other systems,\ne.g. ocean temperature which, in turn, impacts on the carbon cycle\n• the burning of fossil fuels has major knock-on effects on the working of\nthe carbon cycle but other factors, such as quarrying of rocks and peat\nextraction and land use changes for food production, also have\nsignificant impacts.\n62 Pearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials –\nIssue 2 – February 2017 © Pearson Education Limited 2017\nLevel Mark Descriptor\nLevel 1 0\n1–5 No rewardable material.\nLevel 2\n6–10 • Demonstrates isolated elements of geographical knowledge\nLevel 3 and understanding, some of which may be inaccurate or\n11–15 irrelevant. (AO1)\n• Applies knowledge and understanding of geographical ideas,\nmaking limited and rarely logical connections/relationships.\n(AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an interpretation with limited\ncoherence and support from evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an unsupported or generic\nconclusion, drawn from an argument that is unbalanced or\nlacks coherence. (AO2)\n• Demonstrates geographical knowledge and understanding,\nwhich is occasionally relevant and may include some\ninaccuracies. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas with limited but logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical ideas\nin order to produce a partial interpretation that is supported\nby some evidence but has limited coherence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, partially\nsupported by an unbalanced argument with limited\ncoherence. (AO2)\n• Demonstrates geographical knowledge and understanding,\nwhich is mostly relevant and accurate. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find some logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical ideas\nin order to produce a partial but coherent interpretation that\nis supported by some evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, largely\nsupported by an argument that may be unbalanced or\npartially coherent. (AO2)\nPearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 63\nIssue 2 – February 2017 © Pearson Education Limited 2017\nLevel Mark Descriptor\nLevel 4 16–20\n• Demonstrates accurate and relevant geographical\nknowledge and understanding throughout. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find fully logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a full and coherent\ninterpretation that is supported by evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a rational, substantiated\nconclusion, fully supported by a balanced argument that is\ndrawn together coherently. (AO2)\n64 Pearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials –\nIssue 2 – February 2017 © Pearson Education Limited 2017",
   "pageFrom": 19,
-  "pageTo": 21,
+  "pageTo": 20,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -321,6 +349,8 @@ const GEO_QUESTIONS = [
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -342,6 +372,8 @@ const GEO_QUESTIONS = [
   "pageTo": 4,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -363,6 +395,8 @@ const GEO_QUESTIONS = [
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -384,6 +418,8 @@ const GEO_QUESTIONS = [
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -405,6 +441,8 @@ const GEO_QUESTIONS = [
   "pageTo": 8,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -426,6 +464,8 @@ const GEO_QUESTIONS = [
   "pageTo": 12,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -447,6 +487,8 @@ const GEO_QUESTIONS = [
   "pageTo": 12,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -468,6 +510,8 @@ const GEO_QUESTIONS = [
   "pageTo": 13,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -489,6 +533,8 @@ const GEO_QUESTIONS = [
   "pageTo": 14,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -510,6 +556,8 @@ const GEO_QUESTIONS = [
   "pageTo": 15,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -531,6 +579,8 @@ const GEO_QUESTIONS = [
   "pageTo": 18,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -552,6 +602,8 @@ const GEO_QUESTIONS = [
   "pageTo": 18,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -573,6 +625,8 @@ const GEO_QUESTIONS = [
   "pageTo": 19,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -594,6 +648,8 @@ const GEO_QUESTIONS = [
   "pageTo": 20,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -615,6 +671,8 @@ const GEO_QUESTIONS = [
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -636,6 +694,8 @@ const GEO_QUESTIONS = [
   "pageTo": 2,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -657,6 +717,8 @@ const GEO_QUESTIONS = [
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -678,6 +740,8 @@ const GEO_QUESTIONS = [
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -699,6 +763,8 @@ const GEO_QUESTIONS = [
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -720,6 +786,8 @@ const GEO_QUESTIONS = [
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -741,6 +809,8 @@ const GEO_QUESTIONS = [
   "pageTo": 11,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -762,6 +832,8 @@ const GEO_QUESTIONS = [
   "pageTo": 12,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -783,6 +855,8 @@ const GEO_QUESTIONS = [
   "pageTo": 12,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -804,6 +878,8 @@ const GEO_QUESTIONS = [
   "pageTo": 13,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -825,6 +901,8 @@ const GEO_QUESTIONS = [
   "pageTo": 14,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -846,6 +924,8 @@ const GEO_QUESTIONS = [
   "pageTo": 17,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -867,6 +947,8 @@ const GEO_QUESTIONS = [
   "pageTo": 18,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -888,6 +970,8 @@ const GEO_QUESTIONS = [
   "pageTo": 19,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -909,6 +993,8 @@ const GEO_QUESTIONS = [
   "pageTo": 20,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -930,6 +1016,8 @@ const GEO_QUESTIONS = [
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -951,6 +1039,8 @@ const GEO_QUESTIONS = [
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -972,6 +1062,8 @@ const GEO_QUESTIONS = [
   "pageTo": 4,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -993,6 +1085,8 @@ const GEO_QUESTIONS = [
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -1014,6 +1108,8 @@ const GEO_QUESTIONS = [
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -1035,6 +1131,8 @@ const GEO_QUESTIONS = [
   "pageTo": 8,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -1056,6 +1154,8 @@ const GEO_QUESTIONS = [
   "pageTo": 13,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -1077,6 +1177,8 @@ const GEO_QUESTIONS = [
   "pageTo": 14,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -1098,6 +1200,8 @@ const GEO_QUESTIONS = [
   "pageTo": 14,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -1119,6 +1223,8 @@ const GEO_QUESTIONS = [
   "pageTo": 15,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -1140,6 +1246,8 @@ const GEO_QUESTIONS = [
   "pageTo": 17,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -1161,6 +1269,8 @@ const GEO_QUESTIONS = [
   "pageTo": 20,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -1182,6 +1292,8 @@ const GEO_QUESTIONS = [
   "pageTo": 21,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -1203,6 +1315,8 @@ const GEO_QUESTIONS = [
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -1224,6 +1338,8 @@ const GEO_QUESTIONS = [
   "pageTo": 24,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -1245,6 +1361,8 @@ const GEO_QUESTIONS = [
   "pageTo": 26,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -1265,7 +1383,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 3,
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -1286,7 +1406,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 4,
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -1307,8 +1429,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 6,
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
+  "rbMissing": false
  },
  {
   "id": "g1-june2021-q2b",
@@ -1328,7 +1452,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 7,
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -1349,7 +1475,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 8,
   "pageTo": 8,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -1370,7 +1498,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 10,
   "pageTo": 13,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -1391,8 +1521,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 13,
   "pageTo": 14,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
+  "rbMissing": false
  },
  {
   "id": "g1-june2021-q3b",
@@ -1412,7 +1544,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 14,
   "pageTo": 14,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -1433,7 +1567,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 15,
   "pageTo": 15,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -1454,7 +1590,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 17,
   "pageTo": 20,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -1475,8 +1613,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 20,
   "pageTo": 20,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
+  "rbMissing": false
  },
  {
   "id": "g1-june2021-q4b",
@@ -1496,7 +1636,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 21,
   "pageTo": 21,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -1517,7 +1659,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 22,
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -1538,7 +1682,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 24,
   "pageTo": 24,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -1552,15 +1698,17 @@ const GEO_QUESTIONS = [
   "part": "e",
   "marks": 20,
   "topic": "geo-t5",
-  "topicConfident": false,
+  "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the view that most trans-boundary water conflicts are impossible to solve.\nPearson Edexcel Level 3 GCE\nTime 2 hours 15 minutes Paper 9GE0/01\nreference\nGeography\nAdvanced\nPAPER 1\nResource Booklet\nDo not return this Booklet with the question paper.\nP66493A *P66493A*\n©2021 Pearson Education Ltd.\n1/1/1/1/1/1/1/1\n1956 PMT\n1958\n1960 SECTION B\n1962The following resources relate to Question 2.\n1964\n1966+5\n19680\n1970\n1972−5\n1974Mass\n1976balance −10\n1978of glacier −15\n1980(metres\n1982of water −20\n1984equivalent)\n1986\n1988−25\n1990−30\n1992−35\n1994\n1996Baseline Glacier Year\n1998Figure 2a\n2000\n2002Changing mass balance of the glacier (in metres of water equivalent)\n2004of the South Cascade Glacier in North America since 1956\n2006\n20082\n2010\n2012 P66493A\n2014\nB\nA\nSnout of glacier\nKey: Snout = the end of/terminal position of the glacier\nSediment Interquartile range of Average roundness\ncharacteristics the longest axis index\nLocation A 26–350 cm Mostly angular\nLocation B 4–39 cm Mostly rounded\nFigure 2b\nPro-glacial deposits at the snout of the Spielboden Glacier\nP66493A 3\nThe following resources relate to Question 3.\n20\n0\n−20\n−40\nSea level −60\n(metres) −80\n−100\n−120\n−140\n−160 Last glacial maximum\n−180\n−200 140 120 100 80 60 40 20 0\nThouFsiagnudrseo3fayears before present\nAn estimate of change in sea level over the last 140,000 years\n4\nP66493A\nSummer beach pro le\nWinter beach pro le\nBeach morphology and Mean angle of beach Interquartile range of\nsediment characteristics profile (in degrees) the longest axis (in mm)\nSummer 4 0.1 to 2\nWinter 8 1 to 22\nFigure 3b\nA beach photographed in summer and winter\nP66493A 5\nThe following resources relates to Question 4.\n7 000\n6 000 ACTUAL PREDICTED\n2022 2024\nOil 5 000\nproduction\nin 4 000\nthousands\nof barrels 3 000\nper day 2 000\n1 000\n0 2026 2028 2030\n2010 2012 2014 2016 2018 2020\nConventional oil resources Unconventional oil resources\nFigure 4a\nActual and forecast changes in oil production\nin Canada from 2010 to 2030\nUnconventional oil reserves include tar sands, oil shale and deep water oil.\n6\nP66493A\nBLANK PAGE\n7\nP66493A\nBLANK PAGE\nAcknowledgments P66493A\nPearson Education Ltd. gratefully acknowledges all following sources used in the preparation of this paper:\nFigure 1a: © U.S. Geological Survey\nFigure 2a: https://www.epa.gov/sites/production/files/styles/large/public/2016-07/glaciers-download2-\n2016.png\nFigure 3a: http://people.rses.anu.edu.au/lambeck_k/pdf/239.pdf\nFigure 4a: http://crudeoilpeak.info/wp-content/uploads/2011/09/Canada_CAPP_crude_oil_tar_sands_\n2030.jpg\n8",
+  "text": "Evaluate the view that most trans-boundary water conflicts are impossible to solve.",
   "ms": "AO1 (5 marks)/AO2 (15 marks)\nnumber\nResponses that demonstrate only AO1 without any AO2 should be awarded\nmarks as follows:\n• Level 1 AO1 performance: 1 mark\n• Level 2 AO1 performance: 2 marks\n• Level 3 AO1 performance: 3 marks.\n• Level 4 AO1 performance: 4–5 marks.\nAO1 The potential for conflicts to occur between users within a country,\n• and internationally over local and trans-boundary water sources\nIntegrated drainage basin management for large rivers (Nile or\n• Colorado)\nWater sharing treaties and frameworks (United Nations Economic\n• Commission for Europe (UNECE), Water Convention, Helsinki, and\nthe Water Framework Directive and Hydropower, Berlin).\nAO2\n• Transboundary conflicts can be within a country such as the conflicts\nbetween the upper and lower basin users in the Colorado as well as\nbetween countries such as those on the Mekong between China and\nVietnam.\n• A key reason why despite there being water sharing treaties and\nframeworks these have had little success in reducing the conflicts\narising from trans-boundary water sources is that there are no\ninternational rules for solving disputes. Whilst upstream countries\nclaim territorial sovereignty (it is our water and we will use it how we\nlike), downstream countries claim territorial integrity (we should\nreceive the same amount and quality as we always have had in the\npast).\n• This was the case for the Mekong River commission where the\ndownstream users such as Cambodia and Thailand have signed the\nMRC and reduced conflicts particularly over Lake Tonle Sap. Burma\nand China have yet to sign the treaty and as they control the\nupstream river water and so the of the Lower Basin users are\ndependent on the goodwill of the upstream countries. Yet China and\nBurma have already constructed 4 dams on the river and so the MRC\nhas not successfully reduced conflicts.\n• Another key reason why water sharing treaties and frameworks have\nhad little success in reducing the conflicts arising from trans-boundary\nwater sources is that there is often asymmetrical power relationship\nbetween the users. The International Boundary and Water\nCommission (IBWC) managed, through the 1944 United States-Mexico\nTreaty for Utilization of Waters of the Colorado and Tijuana Rivers and\nof the Rio Grande, to guarantee the annual flows of water to Mexico.\nAlthough this led to the building of a desalinisation plant that treated\nthe water from the Wellton-Mohawk river before returning it to the\nColorado River it has not resolved the issues of a lack of water but has\nmade the water less saline. There is still, however, the ongoing issue\nof ground water extraction. The Aquifer on the Mexican side of the\nborder is very low as US famers over extract the resource. Despite\nnegotiations since 1973 the issue remains unresolved.\n• Water treaties can also only be successful where there is little\ngeopolitical tension. Where water crosses from one country to\nanother where relations are poor there the conflict over the use of the\nwater becomes part of the wider geopolitical tensions and as a result\nthe conflicts are less likely to be resolved.\n• Water treaties can also only be successful when authoritarian\ngovernment makes decisions such as the South North Water transfer\nin China, where there is no room for conflict as Government overrules\nobjections\n• Yet despite the lack of success of some water treaties and frameworks\nother frameworks have had more success. A key reason why some\nhave succeeded is that they are based on the Helsinki Rules which\nsuggested that water sharing between regions should consider natural\nfactors, social and economic needs and downstream impacts amongst\nother factors. As a result, there have been a variety of treaties such\nas the Indus Water Treaty (1960) and the Ganges Treaty (1996).\n• Furthermore, other treaties have had success when they have been\npart of a wider political union such as the EU Water Framework\nDirective. This encouraged the development of River Basin Plan. The\nplan is a detailed account of how the objectives set for the river basin\n(ecological status, quantitative status, chemical status and protected\narea objectives) are to be reached within the timescale required.\nCrucially it insisted that all interested parties are fully involved in this\ndiscussion.\n• Other international institutions have developed the EUWFD such as\nthe United Nations Economic Commission for Europe Framework\n(UNECE). Signatories to this framework pledged to protect and\nensure the quality, quantity and sustainable use of transboundary\nwater resources by facilitating cooperation. A good example of how\nthis can reduce water conflicts is the Drin Basin.\n• Another framework that has been developed concentrates specifically\non those river basins that have dams and reservoirs. This is the\nHydropower framework that was developed from a conference held in\nBerlin to improve technical approaches for good practice in\nhydropower use.\n• Accept agreements within a country, e.g., reservoirs in Lake District,\nThirlmere and Haweswater which supply Manchester\nAccept other evaluations of whether most trans-boundary water\nconflicts are impossible to solve.\nLevel Mark Descriptor\nLevel 1 0\n1–5 No rewardable material.\nLevel 2\nLevel 3 6–10 • Demonstrates isolated elements of geographical knowledge\nLevel 4 and understanding, some of which may be inaccurate or\n11–15 irrelevant. (AO1)\n16–20 • Applies knowledge and understanding of geographical ideas,\nmaking limited and rarely logical connections/relationships.\n(AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an interpretation with limited\ncoherence and support from evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an unsupported or generic\nconclusion, drawn from an argument that is unbalanced or\nlacks coherence. (AO2)\n• Demonstrates geographical knowledge and understanding,\nwhich is occasionally relevant and may include some\ninaccuracies. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas with limited but logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical ideas\nin order to produce a partial interpretation that is supported\nby some evidence but has limited coherence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to conclude, partially supported by an\nunbalanced argument with limited coherence. (AO2)\n• Demonstrates geographical knowledge and understanding,\nwhich is mostly relevant and accurate. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find some logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical ideas\nin order to produce a partial but coherent interpretation that\nis supported by some evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, largely\nsupported by an argument that may be unbalanced or\npartially coherent. (AO2)\n• Demonstrates accurate and relevant geographical\nknowledge and understanding throughout. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find fully logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a full and coherent\ninterpretation that is supported by evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a rational, substantiated\nconclusion, fully supported by a balanced argument that is\ndrawn together coherently. (AO2)\nPearson Education Limited. Registered company number 872828\nwith its registered office at 80 Strand, London, WC2R 0RL, United Kingdom",
   "pageFrom": 26,
-  "pageTo": 36,
+  "pageTo": 26,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2021 QP.pdf",
+  "rbFrom": 29,
+  "rbTo": 35,
+  "rbMissing": false
  },
  {
   "id": "g1-june2022-q1a",
@@ -1580,7 +1728,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 3,
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1601,7 +1751,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 4,
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1622,8 +1774,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 6,
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
+  "rbMissing": false
  },
  {
   "id": "g1-june2022-q2b",
@@ -1643,7 +1797,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 7,
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1664,7 +1820,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 8,
   "pageTo": 9,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1685,7 +1843,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 10,
   "pageTo": 14,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1706,8 +1866,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 14,
   "pageTo": 15,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
+  "rbMissing": false
  },
  {
   "id": "g1-june2022-q3b",
@@ -1727,7 +1889,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 15,
   "pageTo": 15,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1748,7 +1912,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 16,
   "pageTo": 17,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1769,7 +1935,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 18,
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1790,7 +1958,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 22,
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1811,7 +1981,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 23,
   "pageTo": 23,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1832,7 +2004,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 24,
   "pageTo": 25,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1853,7 +2027,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 26,
   "pageTo": 27,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1869,13 +2045,15 @@ const GEO_QUESTIONS = [
   "topic": "geo-t5",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the view that land use changes are the main cause of the increasing risk\nof river flooding.\n\n Turn over\n\n\nBLANK PAGE\n\nPearson Edexcel Level 3 GCE\nTime 2 hours 15 minutes Paper 9GE0/01\nreference\n\nGeography\nAdvanced\nPAPER 1\nResource Booklet\nDo not return this Booklet with the question paper.\nP70935A *P70935A*\n©2022 Pearson Education Ltd.\nQ:1/1/1/1\nThe following resources relate to Question 2.\nFigure 2a\nDistinctive glacial landforms in an upland relict landscape\n2 P70935A\n\nFigure 2b\nAn active glacial landscape in Iceland\nP70935A 3\n Turn over\nThe following resources relate to Question 3.\nFigure 3a\nDistinctive landforms in a coastal plain landscape\n4 P70935A\n\nFigure 3b\nA coastal landscape in Dorset\nP70935A 5\n Turn over\nThe following resource relates to Question 4a.\nMegawatts China\n‘000s\n250\n200\n150\n100\nEuropean Union\n50\n0 2016 2017 2018 2019\n2015\nFigure 4\nElectricity generation (in megawatts) from solar power in two contrasting places",
+  "text": "Evaluate the view that land use changes are the main cause of the increasing risk\nof river flooding.\n\n Turn over\n",
   "ms": "Indicative content\nnumber AO1 (5 marks)/AO2 (15 marks)\nResponses that demonstrate only AO1 without any AO2 should be awarded\nmarks as follows:\n Level 1 AO1 performance: 1 mark\n Level 2 AO1 performance: 2 marks\n Level 3 AO1 performance: 3 marks.\n Level 4 AO1 performance: 4–5 marks.\nAO1\n Human actions that can exacerbate flood risk by changing land use\nwithin the river catchment\n Human actions that can exacerbate flood risk by mismanagement of\nrivers using hard engineering systems.\n Humans disrupt the drainage basin cycle by accelerating processes\nadding to flood risk\n Meteorological causes of flooding, including intense storms leading\nto flash flooding,\n Flood risk is also caused by unusually heavy or prolonged rainfall,\nextreme monsoonal rainfall and snowmelt.\nAO2\n The change from greenfield sites to urban areas is often considered\nthe greatest cause of how land use changes can increase flood risk as\nurbanisation of greenfield sites reduces interception, infiltration and\nsoil moisture storage and so increases surface runoff reducing lag\ntime and so increases flood risk.\n The flood risk from land use changes associated with urbanisation is\nalso greatest in floodplain areas where the changes to the land use\ncoincide with areas of greatest risk. On a micro scale conversion of\nfront gardens into driveways reduces infiltration and increases flood\nrisk. In London 25 km2 or nearly 5% of the area is now car parks\nincreasing the flood risk to neighbouring areas.\n In addition the changes from primary rain forest to secondary forest\nsuch as palm can reduce interception and increase surface runoff\nincreasing flood risk by 20% in areas in Malaysia.\n The changes in land use brought about by logging and subsequent\ngrazing of land has been found to increases the flood risk by over\n50% in areas in India as not only there is less interception but also\ntrampling by cattle also decreases the infiltration rates and can\nincrease surface runoff leading to increased flood risk.\n The practice of ‘Gripping’ (the channelization of streams) in converting\nmoorlands for use in arable farming has increased flood risk in\ncatchments such as the river Hodder. Water flows as through flow to\nthe grip (a drainage channel). This then rapidly flows down hill into\nthe river faster than through flow and so increases the peak\ndischarge.\n Removal of hedgerows reduces barriers to surface runoff from fields\nand so increases flood risk such as in the increased flood risk of the\nRiver Lavant.\n Impeding channel flow in urban areas such as the building of low\nbridges (such as in Boscastle) or the building of wing dykes such as\non the river Mississippi which slows down channel flow and increases\nthe possible flood wave increases the flood risk.\n Yet climate change is also thought to be a key factor in increasing\nflood risk. Higher temperatures are likely to lead to more rapid snow\nmelt leading to flood events for those communities effected by snow\nmelt from the Himalayas.\n Climate change may also cause more rapid snow melt in continental\ninterior areas such as the northern states of the USA. As the Red\nRiver Valley flows northwards into Lake Winnipeg increased snowmelt\ndue to warmer spring temperatures increases river flow which could\nlead to more flood events such as those experienced in 1997.\n Climate change may also increase the number of summer storms such\nas that which devasted Boscastle as well as increasing the number of\nautumn depressional events which caused flooding in Cockermouth.\n Increasing ENSO events are also thought to be a reason for the\nincreasing flood risk in both Australia as well as the East Pacific coasts\nof North and South America.\n Population increase in vulnerable areas is also a key factor in\nincreasing the flood risk.\nAccept other evaluations of whether land use changes are the main\ncause of the increasing risk of river flooding.\nIndicative content\nLevel Mark Descriptor\n0\nLevel No rewardable matrial\n1 1–5\n Demonstrates isolated elements of geographical knowledge and\nLevel 6-10 understanding, some of which may be inaccurate or irrelevant. (AO1)",
   "pageFrom": 28,
-  "pageTo": 38,
+  "pageTo": 30,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2022 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
+  "rbMissing": false
  },
  {
   "id": "g1-june2023-q1",
@@ -1895,7 +2073,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 2,
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1916,7 +2096,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 4,
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1937,8 +2119,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 6,
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
+  "rbMissing": false
  },
  {
   "id": "g1-june2023-q2c",
@@ -1958,7 +2142,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 8,
   "pageTo": 9,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -1979,7 +2165,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 10,
   "pageTo": 14,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2000,8 +2188,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 14,
   "pageTo": 15,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
+  "rbMissing": false
  },
  {
   "id": "g1-june2023-q3c",
@@ -2021,7 +2211,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 16,
   "pageTo": 17,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2042,7 +2234,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 18,
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2063,7 +2257,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 22,
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2084,7 +2280,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 23,
   "pageTo": 23,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2105,7 +2303,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 24,
   "pageTo": 25,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2126,8 +2326,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 26,
   "pageTo": 27,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
+  "rbMissing": false
  },
  {
   "id": "g1-june2023-q4e",
@@ -2139,16 +2341,18 @@ const GEO_QUESTIONS = [
   "q": "4",
   "part": "e",
   "marks": 20,
-  "topic": "geo-t5",
-  "topicConfident": false,
+  "topic": "geo-t6",
+  "topicConfident": true,
   "inSpec": true,
-  "text": "The processes of the carbon cycle operate at longer and slower (geological) and\nshorter and faster (biological) timescales.\nEvaluate the view that human activities are having a greater impact on shorter\nterm biological processes than on longer term geological processes.\n\n Turn over\n\n\nBLANK PAGE\nPearson Edexcel Level 3 GCE\nWednesday 17 May 2023\nMorning (Time: 2 hours 15 minutes) Paper 9GE0/01\nreference\n\nGeography\nAdvanced\nPAPER 1\nResource Booklet\nDo not return this Booklet with the question paper.\nP72619A *P72619A*\n©2023 Pearson Education Ltd.\nN:1/1/1/1/1/1\nThe following resources relate to Question 2.\nValley wall\nGlacier Internal Bedrock\nBasal slide deformation\nUnfrozen Glacier bed\nrock bed\nKey\nMeltwater\nIce movement (Length of arrow indicates relative ice velocity)\nFigure 2a\nDistribution of velocity in a temperate glacier\nIncrease in Increase in\natmospheric ice melting\ntemperature\nReduction in\nsurface re ection\n(albedo)\nFigure 2b\nImpact of increases in atmospheric temperature on the size of ice sheets and sea ice\n2 P72619A\n\nS The following resources relate to Question 3.\nCli s S\nBeach\nCli s O S\nT\nO\nS\nOcean\nKey\nS Sources of sediment to the cell\nT Transfers of sediment within the cell\nO Outputs of sediment from the cell\nFigure 3a\nA coastal sediment cell showing sources, transfers and outputs\nP72619A 3\n Turn over\n100 PMT\n2020\n50 1993–2008 mean\n0\nChange in mean\nsea level (mm)\n–50\n–100\n–150 1940 1960 1980 2000\n1920\nYears\nFigure 3b\nMean sea level, 1920–2020, compared to 1993–2008 mean\n4 P72619A\n\nThe following resources relate to Question 4.\nFigure 4a\nAn onshore wind farm\nP72619A 5\n Turn over\nCatchment X\nCatchment area 14km\nMean catchment slope 9°\nN\n01 P\nkm\nMeasuring\nPoint\nHydrograph for Catchment X\n6\n5\n4\nStream discharge\nin cubic metres per 3\nsecond (cumecs)\n2\n1\n0\n0 3 6 9 12 15 18 21 24\nTime after onset of storm in hours\nKey\nMoorland and grassland\nunderlain by impermeable rock\nUrban area\nRiver ow\nP Measuring point\nFigure 4b\nA map and hydrograph of upland Catchment X",
+  "text": "The processes of the carbon cycle operate at longer and slower (geological) and\nshorter and faster (biological) timescales.\nEvaluate the view that human activities are having a greater impact on shorter\nterm biological processes than on longer term geological processes.\n\n Turn over\n",
   "ms": "Indicative content\nnumber Evaluate the view that human activities are having a greater impact\non shorter term biological processes than longer term geological\nprocesses.\nAO1 (5 marks)/AO2 (15 marks)\nResponses that demonstrate only AO1 without any AO2 should be awarded\nmarks as follows:\n• Level 1 AO1 performance: 1 mark\n• Level 2 AO1 performance: 2 marks\n• Level 3 AO1 performance: 3 marks.\n• Level 4 AO1 performance: 4–5 marks.\nAO1 Most of the earth’s carbon is geological, resulting from the formation\n• of sedimentary carbonate rocks (limestone) in the oceans and\n• biologically derived carbon in shale, coal and other rocks.\n•\nChemical weathering removes carbon from silicate rocks. The carbon\n• ends up in the ocean as carbonate rock. Carbon is released via\n• outgassing at ocean ridges, hotspot volcanoes and subduction zones.\nPhytoplankton sequester atmospheric carbon during\nphotosynthesis in surface ocean waters; carbonate shells/tests\nmove into the deep ocean water through the carbonate pump\nand action of the thermohaline circulation.\nTerrestrial primary producers sequester carbon during photosynthesis;\nsome of this carbon is returned to the atmosphere during respiration\nby consumer organisms.\nBiological carbon can be stored as dead organic matter in soils, or\nreturned to the atmosphere via biological decomposition over several\nyears.\nAO2 On average, 1013 to 1014 grams (10–100 million metric tons) of\n• carbon move through the slow carbon cycle every year whereas the\nfast carbon cycle moves 1016 to 1017 grams of carbon per year.\n• Many scientists believe that the human activities are having the\n• greatest impact on shorter term biological processes.\nIn particular deforestation, afforestation and conversion of grasslands\n• to farmland directly alters the shorter term biological processes in the\ncarbon cycle of photosynthesis and respiration.\nHumans have been clearing forests for millenniums but by the end of\nthe twentieth century the forest area in most of Europe was stable or\nincreasing, with forests covering around one third of the total land\narea.\nIndicative content\nnumber Evaluate the view that human activities are having a greater impact\non shorter term biological processes than longer term geological\nprocesses.\n• Deforestation however has generally increased in tropical rain forests\nespecially in LIC countries; In tropical Africa - Nigeria, for example,\nlost more than 90 percent of its primary forest due to practices\ninitiated in the colonial era, such as the mechanized logging of forest\nreserves, the establishment of state-owned agricultural plantations\n(such as cocoa and oil palm), and mining. All these human activities\nwill have had a great impact on the shorter term biological processes.\n• Others highlight the impact on the biological carbon cycle in the soil.\nPoor agricultural practices has led to increases in desertification. This\nreduces the organic content of the soil and so reduces the subsequent\nrelease of this carbon through the respiration of soil biota. It is\nestimated that over 75% of the earth’s surface is already degraded\nand over 90% could be degraded by 2050.\n• Yet in tropical areas the rate of deforestation has been reduced from 8\nmillion hectares to 6 million hectares per year through schemes such\nas debt for nature swaps and so the impact on the shorter-term\nbiological processes is reducing. Furthermore afforestation,\nparticularly in HIC is increasing - Indeed in Europe, 35 countries\nrecorded a net increase in forest area, totalling 21.5 million hectares.\nThis also reduces the impact on these shorter term biological\nprocesses.\n• The other key shorter term biological processes in the carbon cycle\nare found in the oceans. As CO2 levels rise due to the burning of\nfossil fuels and deforestation ocean temperatures rise and ocean\nacidification occurs.\n• This has impacts on two pumps of the ocean.\n• The biological pump will be impacted. Warmer conditions may reduce\nthe abundance and primary productivity of phytoplankton due to\nenhanced stratification, less vertical mixing and reduced nutrient\nsupply to the euphotic zone. This will therefore disrupt the food chain\nand so impact on the shorter term biological processes.\n• Changes in ocean temperature and ocean acidification will also impact\non the carbonate pump. Decreasing the amount of carbonate ions in\nthe water makes conditions more difficult for both calcite users\n(phytoplankton and foraminifera) and aragonite users (corals and\nshellfish). This then means that the exoskeleton of these species are\nthinner and as a result the organisms are less healthy and so there\nare great impacts on the shorter term biological processes.\n• Yet other argue that human activities are having a greater impact on\nlonger term geological processes.\n• Naturally the longer term geological processes are responsible for the\nlargest stores of carbon in the carbon cycle. Only 1% of Earth's total\ncarbon is above ground the rest is contained within the crust, mantle\nand core.\n• The main longer term geological process is out-gassing of CO2 via\nvolcanoes and through other geological processes such as the heating of\nlimestone in mountain belts is thought to be 0.3 to 0.4 Gt.\n• Yet through human activities of burning of fossil fuels and\ndeforestation, anthropogenic carbon emissions are up to 100 times\ngreater than all volcanic emissions. Indeed Since 1850 there has\nIndicative content\nnumber Evaluate the view that human activities are having a greater impact\non shorter term biological processes than longer term geological\nprocesses.\nbeen 2500 billion tonnes of CO2 released into the atmosphere and so\nhaving a great impact on the longer term geological processes.\n• Human activity has also thought to be responsible for increases of\nvolcanic outgassing itself. It is though that increased seasonal rainfall\ncaused by climate change increases the eruptions of Mnt Etna as a\nresult of changing the pore pressure build-up and so triggering the\neruptive cycle.\n• The other key longer term geological processes is weathering as ions\nsuch as calcium are released from silicate rocks and are washed to the\noceans where they reacts with bicarbonate ions to create calcium\ncarbonate. Global warming therefore increases the rate of weathering\nand as it increases the rate of reaction and increases precipitation\nlevels. Studies have suggested that an increase of 7C would double\nthe rate of chemical weathering.\n• Yet more recent studies suggest that the importance of weathering as\na longer term geological processes may be less important than the\namount of land being exposed above sea level and topography of the\nEarth’s surface.\n• Overall although anthropogenic emissions of carbon dwarf the\noutgassing of carbon by volcanic processes there is little impact on\nthe processes of longer term geological processes. Crucially the\nimpacts of human activity have a greater impact on all aspects of the\nshorter term biological processes.\nAccept other evaluations of the view that human activities are having\na greater impact on shorter term biological processes than longer\nterm geological processes.\nLevel Mark Descriptor\n0\nLevel No rewardable material\n1 1–5\n• Demonstrates isolated elements of geographical knowledge and\nLevel 6-10 understanding, some of which may be inaccurate or irrelevant. (AO1)",
   "pageFrom": 28,
-  "pageTo": 38,
+  "pageTo": 30,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2023 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
+  "rbMissing": false
  },
  {
   "id": "g1-june2024-q1",
@@ -2168,7 +2372,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 2,
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2189,7 +2395,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 4,
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2210,8 +2418,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 6,
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
+  "rbMissing": false
  },
  {
   "id": "g1-june2024-q2c",
@@ -2231,7 +2441,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 8,
   "pageTo": 9,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2252,7 +2464,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 10,
   "pageTo": 14,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2273,8 +2487,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 14,
   "pageTo": 15,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
+  "rbMissing": false
  },
  {
   "id": "g1-june2024-q3c",
@@ -2294,7 +2510,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 16,
   "pageTo": 17,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2315,7 +2533,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 18,
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2336,7 +2556,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 22,
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2357,7 +2579,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 23,
   "pageTo": 23,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2378,7 +2602,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 24,
   "pageTo": 25,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2399,7 +2625,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 26,
   "pageTo": 27,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
   "rbMissing": false
  },
  {
@@ -2415,13 +2643,15 @@ const GEO_QUESTIONS = [
   "topic": "geo-t5",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the view that trans-boundary water conflicts will inevitably increase in\nthe future.\n\n Turn over\n\n\nBLANK PAGE\nPearson Edexcel Level 3 GCE\nThursday 16 May 2024\nMorning (Time: 2 hours 15 minutes) Paper 9GE0/01\nreference\nGeography \nAdvanced\nPAPER 1\nResource Booklet\nDo not return this Booklet with the question paper.\nP74464A *P74464A*\n©2024 Pearson Education Ltd.\nF:1/1/1/1/1/1/1/1/1\nThe following resources relate to Question 2.\nFigure 2a\nA relict till plain created by the Laurentide Ice Sheet, in North America\n2 P74464A\n\nN\n0km 1km\nKey\nROCK FEATURES\nOutcrop\nCli\nScree\nFootpath\nFigure 2b\nA relict upland glaciated landscape in the Lake District, northern England\nP74464A 3\n Turn over\nThe following resources relate to Question 3.\nSEA\nFigure 3a\nDiagram showing an emergent coastline\n4 P74464A\n\n0km 1km\nKey\nNational Park\nWATER FEATURES\nNational Trail, Scotland’s Great Trails, Footpath\nEuropean Long Distance Path and\nselected Recreational Routes\nFigure 3b\nA depositional coastal landscape in southern England\nP74464A 5\n Turn over\nThe following resource relates to Question 4a.\nPredicted %\nchange in\nUK summer 0\nprecipitation\n−5\n−10\n−15\n−20\n−25\n−30\n−35\n−40 2040 2050 2060 2070 2080 2090 2100\n2030 Year\nFigure 4\nPredicted percentage (%) change to UK summer precipitation, 2030–2100",
+  "text": "Evaluate the view that trans-boundary water conflicts will inevitably increase in\nthe future.\n\n Turn over\n",
   "ms": "Indicative content\nnumber Evaluate the view that it is inevitable that transboundary water\nconflicts will increase in the future.\nAO1 (5 marks)/AO2 (15 marks)\nResponses that demonstrate only AO1 without any AO2 should be awarded\nmarks as follows:\n• Level 1 AO1 performance: 1 mark\n• Level 2 AO1 performance: 2 marks\n• Level 3 AO1 performance: 3 marks.\n• Level 4 AO1 performance: 4–5 marks.\nAO1 Climate change affects stores and flows, size of snow and glacier\n• mass, reservoirs, lakes, amount of permafrost, soil moisture levels\nas well as rates of runoff and stream flow with implications for\n• precipitation patterns, river regimes and water stores.\n• The finite water resource faces pressure from rising demand\n• (increasing population, improving living standards, industrialisation\n• and agriculture), which is increasingly serious in some locations\nand is leading to increasing risk of water insecurity.\nThe potential for conflicts to occur between users within a country,\nand internationally over local and trans-boundary water sources.\nIntegrated drainage basin management for large rivers (Nile or\nColorado)\nWater sharing treaties and frameworks (United Nations Economic\nCommission for Europe (UNECE), Water Convention, Helsinki, and\nthe Water Framework Directive and Hydropower, Berlin).\nAO2\n• Transboundary conflicts can be within a country such as the conflicts\nbetween the upper and lower basin users in the Colorado as well as\nbetween countries such as those on the Mekong between China and\nVietnam.\n• A key reason why it is inevitable that transboundary water conflicts\nwill increase in the future is due to climate change. This will disrupt\nprecipitation patterns and so up stream users may see declines in\nprecipitation totals and so reduce the amount of discharge that they\nallow downstream users creating conflicts. If upper basin users in the\nColorado see reduced precipitation or runoff from snowfall they may\nreduce (or seek to reduce) the amount they release to the lower basin\nusers.\n• Furthermore, increases in evaporation, particularly in semi-arid\nregions will also reduce the water available for upstream users and so\nIndicative content\nnumber Evaluate the view that it is inevitable that transboundary water\nconflicts will increase in the future.\nexacerbate the permitted flows for downstream users. There are\nalready very levels of evaporation from the reservoirs in the lower\nbasin of the Colorado which has already increased salinity levels.\nFurther increases in evaporation will only increase the salinity of water\nflowing into Mexico..\n• Increasing demand for water for increasing population, improving\nliving standards, industrialisation and agriculture will also increase\ntransboundary water conflicts. The increased need for water from the\nMekong river for these purposes has led to an increasing number of\ndams being built on the upper Mekong leading to increased conflicts\nbetween the downstream users such as Cambodia and Thailand who\nhave signed a water sharing treaty and Burma and China have yet to\nsign the treaty.\n• Another key reason why it is inevitable that transboundary water\nconflicts will increase in the future is that there are still no\ninternational rules for solving disputes nor given the current political\nclimate between the ‘west’, Russia, China and other nonaligned\nemerging powers such as India likely to be so. Whilst upstream\ncountries claim territorial sovereignty (it is our water and we will use\nit how we like), downstream countries claim territorial integrity (we\nshould receive the same amount and quality as we always have had in\nthe past).\n• There is also an increase in asymmetrical power relationship between\nthe users. The International Boundary and Water Commission (IBWC)\nmanaged, through the 1944 United States-Mexico Treaty for\nUtilization of Waters of the Colorado and Tijuana Rivers and of the Rio\nGrande, to guarantee the annual flows of water to Mexico. Although\nthis led to the building of a desalinisation plant that treated the water\nfrom the Wellton-Mohawk river before returning it to the Colorado\nRiver it has not resolved the issues of a lack of water but has made\nthe water less saline. There is still, however, the ongoing issue of\nground water extraction. The Aquifer on the Mexican side of the\nborder is very low as US famers over extract the resource. Despite\nnegotiations since 1973 the issue remains unresolved and so\ntransboundary water conflicts between the US and Mexico are likely to\nincrease in the future.\n• Yet water transboundary water conflicts can be reduced through water\ntreaties. Water treaties can also only be successful where there is\nlittle geopolitical tension. Where water crosses from one country to\nanother where relations are poor there the conflict over the use of the\nwater becomes part of the wider geopolitical tensions and as a result\nthe conflicts are less likely to be resolved.\n• A key reason why some have succeeded is that they are based on the\nHelsinki Rules which suggested that water sharing between regions\nshould consider natural factors, social and economic needs and\ndownstream impacts amongst other factors. As a result, there have\nbeen a variety of treaties such as the Indus Water Treaty (1960) and\nthe Ganges Treaty (1996).\nIndicative content\nnumber Evaluate the view that it is inevitable that transboundary water\nconflicts will increase in the future.\n• Furthermore, other treaties have had success when they have been\npart of a wider political union such as the EU Water Framework\nDirective. This encouraged the development of River Basin Plan. The\nplan is a detailed account of how the objectives set for the river basin\n(ecological status, quantitative status, chemical status and protected\narea objectives) are to be reached within the timescale required.\nCrucially it insisted that all interested parties are fully involved in this\ndiscussion.\n• Other international institutions have developed the EUWFD such as\nthe United Nations Economic Commission for Europe Framework\n(UNECE). Signatories to this framework pledged to protect and\nensure the quality, quantity and sustainable use of transboundary\nwater resources by facilitating cooperation. A good example of how\nthis can reduce water conflicts is the Drin Basin.\n• Another framework that has been developed concentrates specifically\non those river basins that have dams and reservoirs. This is the\nHydropower framework that was developed from a conference held in\nBerlin to improve technical approaches for good practice in\nhydropower use Or agreements within a country, e.g., reservoirs in\nLake District, Thirlmere and Haweswater supply Manchester.\n• Allow transboundary to include intra-country boundary conflicts such\nas those between the different states in the Colorado basin.\n• Overall the impact of climate change coupled with rising demand for\nwater will increase the risk of transboundary water conflicts. The\ndegree that they are inevitable is dependent upon how many of these\ncan be resolved through water sharing treaties which in turn are\ndependent upon the prevailing geopolitical circumstances of the\nconflict.\nAccept other evaluations of whether it is inevitable that\ntransboundary water conflicts will increase in the future.\nLevel Mark Descriptor\n0\nLevel No rewardable material\n1 1–5\n• Demonstrates isolated elements of geographical knowledge and\nLevel 6-10 understanding, some of which may be inaccurate or irrelevant. (AO1)",
   "pageFrom": 28,
-  "pageTo": 38,
+  "pageTo": 30,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 1 (Physical)/Questions/June 2024 QP.pdf",
+  "rbFrom": 32,
+  "rbTo": 39,
+  "rbMissing": false
  },
  {
   "id": "g2-specimen-q1a",
@@ -2442,6 +2672,8 @@ const GEO_QUESTIONS = [
   "pageTo": 2,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2463,6 +2695,8 @@ const GEO_QUESTIONS = [
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2484,6 +2718,8 @@ const GEO_QUESTIONS = [
   "pageTo": 4,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2505,6 +2741,8 @@ const GEO_QUESTIONS = [
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2526,6 +2764,8 @@ const GEO_QUESTIONS = [
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2547,6 +2787,8 @@ const GEO_QUESTIONS = [
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2568,6 +2810,8 @@ const GEO_QUESTIONS = [
   "pageTo": 10,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2589,6 +2833,8 @@ const GEO_QUESTIONS = [
   "pageTo": 11,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2610,6 +2856,8 @@ const GEO_QUESTIONS = [
   "pageTo": 12,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2631,6 +2879,8 @@ const GEO_QUESTIONS = [
   "pageTo": 14,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2652,6 +2902,8 @@ const GEO_QUESTIONS = [
   "pageTo": 16,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2673,6 +2925,8 @@ const GEO_QUESTIONS = [
   "pageTo": 17,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2694,6 +2948,8 @@ const GEO_QUESTIONS = [
   "pageTo": 20,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2715,6 +2971,8 @@ const GEO_QUESTIONS = [
   "pageTo": 21,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2736,6 +2994,8 @@ const GEO_QUESTIONS = [
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2751,12 +3011,14 @@ const GEO_QUESTIONS = [
   "topic": "geo-t8b",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate this statement:\n‘In a globalising world, national sovereignty becomes less important’.\n*S49795A02324* Pearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 23\n87\nIssue 2 – February 2017 © Pearson Education Limited 2017\n*S49795A02424* 24\n88\nPearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials –\nIssue 2 – February 2017 © Pearson Education Limited 2017",
+  "text": "Evaluate this statement:\n‘In a globalising world, national sovereignty becomes less important’.\n*S49795A02324* Pearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 23\n87\nIssue 2 – February 2017 © Pearson Education Limited 2017",
   "ms": "Answer\nnumber\nAO1 (5 marks)/AO2 (15 marks)\nResponses that demonstrate only AO1 without any AO2 should be awarded\nmarks as follows:\n• Level 1 AO1 performance: 1 mark\n• Level 2 AO1 performance: 2 marks\n• Level 3 AO1 performance: 3 marks.\n• Level 4 AO1 performance: 4–5 marks.\nAO1\n• globalisation reduces the decision-making power of national\ngovernments, especially in terms of their economic policies as nation\nstates are bound by international agreements over trade, capital flows\nand in the case of the EU labour movements\n• as globalisation has developed so too has the number of nation states\nas there has been a significant growth of tax-haven states as a direct\nresult of globalisation\n• there has been overt resistance to globalisation from some\ngovernments\nAO2\n• sovereignty involves the power to make decisions within a given area\nand there can be significant reductions in sovereignty whilst retaining\nthe integrity of national borders\n• historically, regions and local areas have lost sovereignty to central\ngovernments and that is partially replicated globally but language and\ncultural differences impedes the complete integration of states\n• the ‘importance’ of sovereignty is open to several different\ninterpretations – importance for who and for what?\n• given that globalisation is a contested term with distinctive and\ncontroversial processes attached to it, e.g. privatisation and free trade,\nit provokes a varied response within nation states\n• from the point of view of TNCs, national sovereignty is certainly less\nimportant – in fact something of an obstacle when national\ngovernments intrude on their operations\n• national sovereignty has also been a reaction to globalisation as well as\na consequence in states that have wanted to develop a new global\nmodel\n• migration is seen by some as a consequence of globalisation which\nstimulates an active and contentious debate over national sovereignty\nand the role of borders\n• reactions to globalisation also involve attempts to create states within\nsuper-states to preserve cultural and ethnic distinctiveness\n• the growth of tax haven ‘mini-states’ is a direct consequence of\nPearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 129\nIssue 2 – February 2017 © Pearson Education Limited 2017\nAnswer\nnumber\nglobalisation and an example of the increasing importance of\n‘sovereignty’ with secrecy over their banking and focal arrangements.\n130 Pearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials –\nIssue 2 – February 2017 © Pearson Education Limited 2017\nLevel Mark Descriptor\nLevel 1 0\n1–5 No rewardable material.\nLevel 2\n6–10 • Demonstrates isolated elements of geographical knowledge\nLevel 3 and understanding, some of which may be inaccurate or\nLevel 4 11–15 irrelevant. (AO1)\n16–20 • Applies knowledge and understanding of geographical\nideas, making limited and rarely logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an interpretation with limited\ncoherence and support from evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an unsupported or generic\nconclusion, drawn from an argument that is unbalanced or\nlacks coherence. (AO2)\n• Demonstrates geographical knowledge and understanding,\nwhich is occasionally relevant and may include some\ninaccuracies. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas with limited but logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\nideas in order to produce a partial interpretation that is\nsupported by some evidence but has limited coherence.\n(AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, partially\nsupported by an unbalanced argument with limited\ncoherence. (AO2)\n• Demonstrates geographical knowledge and understanding,\nwhich is mostly relevant and accurate. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find some logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\nideas in order to produce a partial but coherent\ninterpretation that is supported by some evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, largely\nsupported by an argument that may be unbalanced or\npartially coherent. (AO2)\n• Demonstrates accurate and relevant geographical\nknowledge and understanding throughout. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find fully logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a full and coherent\nPearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 131\nIssue 2 – February 2017 © Pearson Education Limited 2017\nLevel Mark Descriptor\ninterpretation that is supported by evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a rational, substantiated\nconclusion, fully supported by a balanced argument that is\ndrawn together coherently. (AO2)\n132 Pearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials –\nIssue 2 – February 2017 © Pearson Education Limited 2017",
   "pageFrom": 23,
-  "pageTo": 24,
+  "pageTo": 23,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2778,6 +3040,8 @@ const GEO_QUESTIONS = [
   "pageTo": 2,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2799,6 +3063,8 @@ const GEO_QUESTIONS = [
   "pageTo": 2,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2820,6 +3086,8 @@ const GEO_QUESTIONS = [
   "pageTo": 5,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2841,6 +3109,8 @@ const GEO_QUESTIONS = [
   "pageTo": 8,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2862,6 +3132,8 @@ const GEO_QUESTIONS = [
   "pageTo": 9,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2883,6 +3155,8 @@ const GEO_QUESTIONS = [
   "pageTo": 13,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2904,6 +3178,8 @@ const GEO_QUESTIONS = [
   "pageTo": 14,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2925,6 +3201,8 @@ const GEO_QUESTIONS = [
   "pageTo": 15,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2946,6 +3224,8 @@ const GEO_QUESTIONS = [
   "pageTo": 16,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2967,6 +3247,8 @@ const GEO_QUESTIONS = [
   "pageTo": 19,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -2988,6 +3270,8 @@ const GEO_QUESTIONS = [
   "pageTo": 20,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3009,6 +3293,8 @@ const GEO_QUESTIONS = [
   "pageTo": 21,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3030,6 +3316,8 @@ const GEO_QUESTIONS = [
   "pageTo": 25,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3051,6 +3339,8 @@ const GEO_QUESTIONS = [
   "pageTo": 25,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3072,6 +3362,8 @@ const GEO_QUESTIONS = [
   "pageTo": 26,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3093,6 +3385,8 @@ const GEO_QUESTIONS = [
   "pageTo": 27,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3108,12 +3402,14 @@ const GEO_QUESTIONS = [
   "topic": "geo-t8b",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the view that national identity is easier to define for some countries than\nfor others.\nBLANK PAGE\nBLANK PAGE",
+  "text": "Evaluate the view that national identity is easier to define for some countries than\nfor others.",
   "ms": "Answer\nnumber\nAO1 (5 marks)/AO2 (15 marks)\nResponses that demonstrate only AO1 without any AO2 should be awarded\nmarks as follows:\n Level 1 AO1 performance: 1 mark\n Level 2 AO1 performance: 2 marks\n Level 3 AO1 performance: 3 marks.\n Level 4 AO1 performance: 4–5 marks.\nAO1 Evaluate whether national identity is easier to define for some countries than for\nothers.\n Nation states are highly varied and have very different histories\n(resulting in contrasting patterns of ethnicity, language and culture).\nAnswer\nnumber\n National identity is an elusive and contested concept reinforced through\nsport, education and politics.\n Most countries are multinational with contrasting ethnic groups (linked\nto migration) therefore questions of national identity are complex.\nAO2\nStronger identity factors:\n Countries with common language (UK) and history might be expected to\nhave a stronger national identity.\n Countries with clear physical borders.\n Government action can attempt to strengthen national identity (e.g.\nUSA: daily pledging allegiance to the flag, UK: lessons in British values).\n Sport can strengthen national identity (London 2012).\nFactors that may weaken national identity\n Countries with clear tribal or religious differences may lack national\nidentity or coherence (Kenya, Nigeria, Syria), which may be exploited\nby extremists and harden attitudes and identity to a sub-group rather\nthan the nation.\n International migration can weaken national identity as cultures blend\nand may challenge the status quo: Sharia Law in UK.\n Social media allows individuals to build identity through a common\ninterest, which may be global in extent, making the nation irrelevant.\nEvaluative ideas may include:\n Although sport can strengthen national identity as seen through London\n2012 Olympics), this may be short-lived (Scottish referendum 2014 and\nBrexit vote 2016).\n Individuals may choose to reject the nation’s identity (those going to\njoin IS in Syria) and if enough do this the nation’s identity itself may be\nthreatened.\nLevel Mark Descriptor\nLevel 1 0\n1–5 No rewardable material.\n Demonstrates isolated elements of geographical knowledge\nand understanding, some of which may be inaccurate or\nirrelevant. (AO1)\n Applies knowledge and understanding of geographical\nideas, making limited and rarely logical\nconnections/relationships. (AO2)\n Applies knowledge and understanding of geographical\ninformation/ideas to produce an interpretation with limited\ncoherence and support from evidence. (AO2)\n Applies knowledge and understanding of geographical\ninformation/ideas to produce an unsupported or generic\nconclusion, drawn from an argument that is unbalanced or\nlacks coherence. (AO2)\nLevel Mark Descriptor\nLevel 2 6–10\n Demonstrates geographical knowledge and understanding,\nLevel 3 11–15 which is occasionally relevant and may include some\ninaccuracies. (AO1)\nLevel 4 16–20\n Applies knowledge and understanding of geographical\ninformation/ideas with limited but logical\nconnections/relationships. (AO2)\n Applies knowledge and understanding of geographical\nideas in order to produce a partial interpretation that is\nsupported by some evidence but has limited coherence.\n(AO2)\n Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, partially\nsupported by an unbalanced argument with limited\ncoherence. (AO2)\n Demonstrates geographical knowledge and understanding,\nwhich is mostly relevant and accurate. (AO1)\n Applies knowledge and understanding of geographical\ninformation/ideas to find some logical and relevant\nconnections/relationships. (AO2)\n Applies knowledge and understanding of geographical\nideas in order to produce a partial but coherent\ninterpretation that is supported by some evidence. (AO2)\n Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, largely\nsupported by an argument that may be unbalanced or\npartially coherent. (AO2)\n Demonstrates accurate and relevant geographical\nknowledge and understanding throughout. (AO1)\n Applies knowledge and understanding of geographical\ninformation/ideas to find fully logical and relevant\nconnections/relationships. (AO2)\n Applies knowledge and understanding of geographical\ninformation/ideas to produce a full and coherent\ninterpretation that is supported by evidence. (AO2)\n Applies knowledge and understanding of geographical\ninformation/ideas to come to a rational, substantiated\nconclusion, fully supported by a balanced argument that is\ndrawn together coherently. (AO2)\nPearson Education Limited. Registered company number 872828\nwith its registered office at 80 Strand, London, WC2R 0RL, United Kingdom",
   "pageFrom": 28,
-  "pageTo": 32,
+  "pageTo": 28,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3135,6 +3431,8 @@ const GEO_QUESTIONS = [
   "pageTo": 2,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3156,6 +3454,8 @@ const GEO_QUESTIONS = [
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3177,6 +3477,8 @@ const GEO_QUESTIONS = [
   "pageTo": 5,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3198,6 +3500,8 @@ const GEO_QUESTIONS = [
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3219,6 +3523,8 @@ const GEO_QUESTIONS = [
   "pageTo": 9,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3240,6 +3546,8 @@ const GEO_QUESTIONS = [
   "pageTo": 10,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3261,6 +3569,8 @@ const GEO_QUESTIONS = [
   "pageTo": 15,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3282,6 +3592,8 @@ const GEO_QUESTIONS = [
   "pageTo": 16,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3303,6 +3615,8 @@ const GEO_QUESTIONS = [
   "pageTo": 17,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3324,6 +3638,8 @@ const GEO_QUESTIONS = [
   "pageTo": 18,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3345,6 +3661,8 @@ const GEO_QUESTIONS = [
   "pageTo": 24,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3366,6 +3684,8 @@ const GEO_QUESTIONS = [
   "pageTo": 25,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3387,6 +3707,8 @@ const GEO_QUESTIONS = [
   "pageTo": 32,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3408,6 +3730,8 @@ const GEO_QUESTIONS = [
   "pageTo": 34,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3429,6 +3753,8 @@ const GEO_QUESTIONS = [
   "pageTo": 35,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3450,6 +3776,8 @@ const GEO_QUESTIONS = [
   "pageTo": 37,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3471,6 +3799,8 @@ const GEO_QUESTIONS = [
   "pageTo": 4,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3492,6 +3822,8 @@ const GEO_QUESTIONS = [
   "pageTo": 4,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3513,6 +3845,8 @@ const GEO_QUESTIONS = [
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3534,6 +3868,8 @@ const GEO_QUESTIONS = [
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3555,6 +3891,8 @@ const GEO_QUESTIONS = [
   "pageTo": 10,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3576,6 +3914,8 @@ const GEO_QUESTIONS = [
   "pageTo": 11,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3597,6 +3937,8 @@ const GEO_QUESTIONS = [
   "pageTo": 16,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3618,6 +3960,8 @@ const GEO_QUESTIONS = [
   "pageTo": 17,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3639,6 +3983,8 @@ const GEO_QUESTIONS = [
   "pageTo": 18,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3660,6 +4006,8 @@ const GEO_QUESTIONS = [
   "pageTo": 19,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3681,6 +4029,8 @@ const GEO_QUESTIONS = [
   "pageTo": 24,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3702,6 +4052,8 @@ const GEO_QUESTIONS = [
   "pageTo": 24,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3723,6 +4075,8 @@ const GEO_QUESTIONS = [
   "pageTo": 25,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3744,6 +4098,8 @@ const GEO_QUESTIONS = [
   "pageTo": 31,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3765,6 +4121,8 @@ const GEO_QUESTIONS = [
   "pageTo": 32,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3786,6 +4144,8 @@ const GEO_QUESTIONS = [
   "pageTo": 32,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3807,6 +4167,8 @@ const GEO_QUESTIONS = [
   "pageTo": 33,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3822,12 +4184,14 @@ const GEO_QUESTIONS = [
   "topic": "geo-t8b",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the extent to which the rise of nationalism can prevent globalisation.\nBLANK PAGE\nBLANK PAGE",
+  "text": "Evaluate the extent to which the rise of nationalism can prevent globalisation.",
   "ms": "Evaluate the extent to which the rise of nationalism can prevent globalisation.\nnumber\nAO1 (5 marks)/AO2 (15 marks)\nResponses that demonstrate only AO1 without any AO2 should be awarded marks as\nfollows:\n• Level 1 AO1 performance: 1 mark\n• Level 2 AO1 performance: 2 marks\n• Level 3 AO1 performance: 3 marks.\n• Level 4 AO1 performance: 4–5 marks.\nAO1\n• Globalisation is increasing in depth and breadth through trade, migration, flows of\ncapital and goods and the role of TNCS.\n• International organisations including IMF, WB, WTO and UN established after WWII\nhave been important establishing trade and global cooperation in flows of capital,\naid, human rights and environmental treaties.\n• Regional groupings (trade blocs) have been established and increased\npolitical/financial unity has been achieved in the EU.\n• Nationalism remains a powerful force, reinforced through education, sport, tourism\nand politics.\n• Identity and loyalty are tied to national character and landscapes.\n• Strong nationalist movements seek to create smaller independent states.\nAO2\n• Rise in nationalism is seeking to ‘take back control’ from global or regional\norganisations (USA, UK).\n• Independence referenda have taken place in Scotland and Catalonia, and separatist\nmovements exist in most European states, showing that loyalty to a local place,\nreligion or language group is considerable. Clashes have occurred all over the world,\nand some have become violent.\n• Many states have movements which celebrate their history and culture, though this\ncan be seen as superficial or ‘fossilised’ (Morris dancing) for tourists.\n• Many people are nevertheless highly globalised in terms of their shopping, use of\nmedia and choice of food, as many rely on Amazon and Netflix and imported food.\n• But the power of TNCs and current production methods make this increasing\nEvaluate the extent to which the rise of nationalism can prevent globalisation.\nnumber\ncomplex (E.g. JLR, EDF).\n• ‘Reshoring’ of industry is being attempted, but global production chains make this a\nchallenging process.\n• National government responses to Covid19 have led to increase resurgence in\nprotecting national borders.\n• Protecting national interests have increased i.e. America First as a foreign policy\nstance in the US that emphasises isolationism, has been revived by President\nTrump’s administration.\nConclusion may weigh the extent to which further globalisation is inevitable for most,\neven though many states are seeking a stronger national identity.\nAccept any other appropriate response.\nLevel Mark Descriptor\nLevel 1 0\nLevel 2 1–5 No rewardable material.\nLevel 3\nLevel 4 6–10 • Demonstrates isolated elements of geographical knowledge and\nunderstanding, some of which may be inaccurate or irrelevant. (AO1)\n11–15\n• Applies knowledge and understanding of geographical ideas, making\n16–20 limited and rarely logical connections/relationships. (AO2)\n• Applies knowledge and understanding of geographical information/ideas\nto produce an interpretation with limited coherence and support from\nevidence. (AO2)\n• Applies knowledge and understanding of geographical information/ideas\nto produce an unsupported or generic conclusion, drawn from an\nargument that is unbalanced or lacks coherence. (AO2)\n• Demonstrates geographical knowledge and understanding, which is\noccasionally relevant and may include some inaccuracies. (AO1)\n• Applies knowledge and understanding of geographical information/ideas\nwith limited but logical connections/relationships. (AO2)\n• Applies knowledge and understanding of geographical ideas in order to\nproduce a partial interpretation that is supported by some evidence but\nhas limited coherence. (AO2)\n• Applies knowledge and understanding of geographical information/ideas\nto come to a conclusion, partially supported by an unbalanced argument\nwith limited coherence. (AO2)\n• Demonstrates geographical knowledge and understanding, which is\nmostly relevant and accurate. (AO1)\n• Applies knowledge and understanding of geographical information/ideas\nto find some logical and relevant connections/relationships. (AO2)\n• Applies knowledge and understanding of geographical ideas in order to\nproduce a partial but coherent interpretation that is supported by some\nevidence. (AO2)\n• Applies knowledge and understanding of geographical information/ideas\nto come to a conclusion, largely supported by an argument that may be\nunbalanced or partially coherent. (AO2)\n• Demonstrates accurate and relevant geographical knowledge and\nunderstanding throughout. (AO1)\n• Applies knowledge and understanding of geographical information/ideas\nto find fully logical and relevant connections/relationships. (AO2)\n• Applies knowledge and understanding of geographical information/ideas\nto produce a full and coherent interpretation that is supported by\nevidence. (AO2)\n• Applies knowledge and understanding of geographical information/ideas\nto come to a rational, substantiated conclusion, fully supported by a\nbalanced argument that is drawn together coherently. (AO2)\nPearson Education Limited. Registered company number 872828\nwith its registered office at 80 Strand, London, WC2R 0RL, United Kingdom",
   "pageFrom": 35,
-  "pageTo": 40,
+  "pageTo": 35,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -3848,7 +4212,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 2,
   "pageTo": 2,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -3869,7 +4235,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 3,
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -3890,7 +4258,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 5,
   "pageTo": 9,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -3911,8 +4281,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 9,
   "pageTo": 10,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
+  "rbMissing": false
  },
  {
   "id": "g2-june2021-q3b",
@@ -3932,7 +4304,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 11,
   "pageTo": 11,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -3953,7 +4327,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 12,
   "pageTo": 16,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -3974,8 +4350,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 16,
   "pageTo": 17,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
+  "rbMissing": false
  },
  {
   "id": "g2-june2021-q4b",
@@ -3995,7 +4373,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 18,
   "pageTo": 18,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4016,7 +4396,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 19,
   "pageTo": 23,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4037,7 +4419,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 23,
   "pageTo": 23,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4058,8 +4442,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 24,
   "pageTo": 24,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
+  "rbMissing": false
  },
  {
   "id": "g2-june2021-q5c",
@@ -4079,7 +4465,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 25,
   "pageTo": 25,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4100,7 +4488,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 27,
   "pageTo": 31,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4121,7 +4511,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 31,
   "pageTo": 31,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4142,8 +4534,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 32,
   "pageTo": 32,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
+  "rbMissing": false
  },
  {
   "id": "g2-june2021-q6c",
@@ -4163,7 +4557,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 33,
   "pageTo": 33,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4179,13 +4575,15 @@ const GEO_QUESTIONS = [
   "topic": "geo-t8b",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the view that increased globalisation inevitably results in international\nmigration.\nBLANK PAGE\nBLANK PAGE\nPearson Edexcel Level 3 GCE\nTime 2 hours 15 minutes Paper 9GE0/02\nreference\nGeography\nAdvanced\nPAPER 2\nResource Booklet\nDo not return this Booklet with the question paper.\nP66494A *P66494A*\n©2021 Pearson Education Ltd.\n1/1/1/1/1\nThe following resource relates to Question 3.\nUrban places (region)\nCambridge Derby Wigan Slough UK\n(East) (East (North (South\nMidlands) West) East)\nAverage wages 609 595 436 606 539\n(£ per week)\nNumber\nof patents\nregistered 270 81 3 30 18\n(per 100 000\npeople)\n% of working\npopulation 58 32 27 39 38\nwith higher\neducation\n% of city\nwith ultrafast 94 91 91 88 56\nbroadband\nFigure 2\nInformation about four urban places compared to the UK average, 2018\n2\nP66494A\nThe following resource relates to Question 4.\nUrban area (region)\nCoventry Blackpool Peterborough Bath UK\n(West (North (East of (South 14\nMidlands) West) England) West) 0.6\n% 25 4 24 12\npopulation\nforeign-\nborn\n%\npopulation 1.84 −0.4 1.07 0.9\nchange\n2017–2018\nFertility rate 1.47 1.98 2.15 1.48 1.70\nAverage\nwages 532 500 497 473 539\n(£ per week)\nFigure 3\nInformation about four urban places compared to the UK average, 2018\nP66494A 3\nThe following resource relates to Question 5b.\nVietnam\nTunisia\nPhilippines\nIndia\nKenya\nBolivia\nHaiti\nHonduras\nZimbabwe\nSouth Sudan\n0 10 20 30 40 50 60 70 80 90\n% of population living below national poverty line\nKey:\nSub-Saharan Africa\nLatin America & Caribbean\nNorth Africa\nAsia\nFigure 4\nPercentage (%) of population living below the national poverty line\nfor selected countries, 2019\n4\nP66494A\nThe following resource relates to Question 6b.\nIreland\nCaribbean*\nSingapore\nSwitzerland\nNetherlands\nLuxembourg\nPuerto Rico\nHong Kong\nBermuda\nBelgium\n0 20 40 60 80 100 120\nThe TNC pro ts received (US$ billion), 2019\nKey:\nAsia\nEurope\nCentral America\n* Caribbean includes Cayman Islands, Panama, The Bahamas and British Virgin Islands\nFigure 5\nTop ten tax-haven countries receiving Transnational Corporation (TNC) profits in 2019\n5\nP66494A\nBLANK PAGE\n6\nP66494A\nBLANK PAGE\n7\nP66494A\nBLANK PAGE\nPearson Education Ltd gratefully acknowledges all following sources used in preparation of this paper: P66494A\nFigure 1 Source from: https://www.sipri.org/databases/milex\nFigure 2 Source from: https://www.centreforcities.org/publication/cities-outlook-2019/\nContains public sector information licensed under the Open Government Licence v3.0.\nFigure 3 Source from: Contains public sector information licensed under the Open Government Licence v3.0.\nFigure 4 Source from: http://povertydata.worldbank.org/poverty/home/\nFigure 5 Source from: www.consultancy.lat\n8",
+  "text": "Evaluate the view that increased globalisation inevitably results in international\nmigration.",
   "ms": "AO1 (5 marks)/AO2 (15 marks)\nnumber\nResponses that demonstrate only AO1 without any AO2 should be awarded\nmarks as follows:\n• Level 1 AO1 performance: 1 mark\n• Level 2 AO1 performance: 2 marks\n• Level 3 AO1 performance: 3 marks.\n• Level 4 AO1 performance: 4–5 marks.\nAO1\n• Demand for labour resulting from changes in the global economic system\nhas encouraged rural-urban migration, and international migration of elites,\nskilled and semi-skilled labour.\n• Causes of migration are numerous, and change.\n• Economic theory may suggest that efficiency is maximised when labour can\nmove freely across borders, but this is not permitted in many situations, as\ngovernments respond to public pressure to protect national identity and\nsovereignty.\n• Multi-national countries have contrasting ethnic groups and families seek to\nreunite, so ongoing pressure for further migration is likely.\n• Unrestricted migration occurs within many countries to provide labour\nwhere needed, and this occurs to come extent regionally and even globally.\nAO2\n• Pressures for migration have not abated in recent years and it seems\nunlikely that they will.\n• Globalisation contributes to environmental problems including sea level rise,\ndrought and floods, which force further migration.\n• Conflict in the Middle East in reaction to globalisation of culture has\nincreased migration from those seeking safety or freedom from persecution.\n• Economic differentials between sub-Saharan Africa and Europe continue to\nincrease, and so those escaping poverty will take risks to begin a new life.\n• However, the growth of nationalism and defence of a more traditional\nnational identity increases pressure to close borders and only allow select\nmigrants permission to gain right of residence.\n• This is not equally true of all states and all migrants. Health, youth and\nwealth are often welcome internationally and this is likely to continue.\n• Migration remains one of the four freedoms of EU membership, and ongoing\nmovement between states is likely to continue, despite growing racism and\nprotest in some member countries.\nEvaluation will depend on the examples chosen but most are likely to conclude\nthat due to the demands of a global economy and increased global connections,\ngrowth of migration is likely to continue for economic reasons, though political\npressure will restrict numbers of less welcome migrants.\nLevel Mark Descriptor\nLevel 1 0\n1–5 No rewardable material.\nLevel 2\nLevel 3 6–10 • Demonstrates isolated elements of geographical knowledge\nLevel 4 and understanding, some of which may be inaccurate or\n11–15 irrelevant. (AO1)\n16–20 • Applies knowledge and understanding of geographical ideas,\nmaking limited and rarely logical connections/relationships.\n(AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an interpretation with limited\ncoherence and support from evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an unsupported or generic\nconclusion, drawn from an argument that is unbalanced or\nlacks coherence. (AO2)\n• Demonstrates geographical knowledge and understanding,\nwhich is occasionally relevant and may include some\ninaccuracies. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas with limited but logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical ideas in\norder to produce a partial interpretation that is supported by\nsome evidence but has limited coherence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, partially supported\nby an unbalanced argument with limited coherence. (AO2)\n• Demonstrates geographical knowledge and understanding,\nwhich is mostly relevant and accurate. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find some logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical ideas in\norder to produce a partial but coherent interpretation that is\nsupported by some evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, largely supported\nby an argument that may be unbalanced or partially coherent.\n(AO2)\n• Demonstrates accurate and relevant geographical knowledge\nand understanding throughout. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find fully logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a full and coherent interpretation\nthat is supported by evidence. (AO2)\nLevel Mark Descriptor\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a rational, substantiated\nconclusion, fully supported by a balanced argument that is\ndrawn together coherently. (AO2)\nPearson Education Limited. Registered company number 872828\nwith its registered office at 80 Strand, London, WC2R 0RL, United Kingdom",
   "pageFrom": 35,
-  "pageTo": 48,
+  "pageTo": 35,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2021 QP.pdf",
+  "rbFrom": 39,
+  "rbTo": 47,
+  "rbMissing": false
  },
  {
   "id": "g2-june2022-q1a",
@@ -4205,7 +4603,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 2,
   "pageTo": 2,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4226,7 +4626,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 3,
   "pageTo": 4,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4247,7 +4649,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 5,
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4268,7 +4672,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 6,
   "pageTo": 8,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4289,8 +4695,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 8,
   "pageTo": 9,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
+  "rbMissing": false
  },
  {
   "id": "g2-june2022-q3b",
@@ -4310,7 +4718,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 10,
   "pageTo": 10,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4331,7 +4741,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 11,
   "pageTo": 15,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4352,8 +4764,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 15,
   "pageTo": 16,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
+  "rbMissing": false
  },
  {
   "id": "g2-june2022-q4b",
@@ -4373,7 +4787,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 17,
   "pageTo": 17,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4394,7 +4810,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 18,
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4415,7 +4833,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 22,
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4436,7 +4856,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 23,
   "pageTo": 23,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4457,7 +4879,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 24,
   "pageTo": 25,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4478,7 +4902,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 26,
   "pageTo": 30,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4499,7 +4925,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 30,
   "pageTo": 30,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4520,7 +4948,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 31,
   "pageTo": 31,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4541,7 +4971,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 32,
   "pageTo": 33,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
   "rbMissing": false
  },
  {
@@ -4557,13 +4989,15 @@ const GEO_QUESTIONS = [
   "topic": "geo-t8b",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the view that global organisations have been more effective in\nmanaging global economic issues than environmental issues.\n\n Turn over\n\n\nBLANK PAGE\n\nBLANK PAGE\n\nBLANK PAGE\n\nPearson Edexcel Level 3 GCE\nTime 2 hours 15 minutes Paper 9GE0/02\nreference\n\nGeography\nAdvanced\nPAPER 2\nResource Booklet\nDo not return this Booklet with the question paper.\nP70936A *P70936A*\n©2022 Pearson Education Ltd.\nQ:1/1/1/1/1\nThe following resource relates to Question 3.\nHyson Green Wollaton Park\nAdult unemployment (%) 9.5 3.6\n26,660 56,400\nMean annual household\nincome in 2018 (£) 29.8 18.0\n% of adults with no\neducational qualifications\nFigure 2\nSelected data on deprivation for two areas of Nottingham with\nsimilar population sizes, 2018\n2 P70936A\n\nThe following resource relates to Question 4.\nBroomhill Bedminster\n% aged 65 and over 10.8 20.2\nBirth rate (per 1000) 15 10\nMedian age of residents in years 35 40\nFigure 3\nSelected population data for two areas of Bristol with similar\npopulation sizes, 2018\nP70936A 3\n Turn over\nThe following resource relates to Question 5b.\nfertility rate*\n7\n6\n5\n4\n3\n2\n1\n0\n0 10 20 30 40 50 60 70 80 90 100\nfemale literacy rate (%)\nFigure 4\nFemale literacy rates and fertility rates* for a range of countries, 2018\n*Fertility rate: The average number of children born in a woman’s reproductive years.\n4 P70936A\n\nThe following resource relates to Question 6b.\n80 000\n70 000\n60 000\n50 000\nGDP per 40 000\ncapita\n(US$),\n2018\n30 000\n20 000\n10 000\n0\n0 5 10 15 20 25 30 35\n% of foreign-born population, 2018\nFigure 5\nPercentage of a population who are foreign-born and Gross Domestic Product\n(GDP) per capita for a range of countries, 2018\nP70936A 5\n\nBLANK PAGE\n6 P70936A\n\nBLANK PAGE\nP70936A 7\n\nBLANK PAGE\nAcknowledgements P70936A\nPearson Education Ltd gratefully acknowledges all following sources used in preparation of this\npaper: \nFigure 1 Sourced from https://apps.bea.gov/itable/iTable.cfm?ReqID=70&step=1\nFigure 2 Sourced from https://www.nomisweb.co.uk/reports/localarea?compare=E01013810,\nhttps://www.nomisweb.co.uk/reports/localarea?compare=E01013977,\nhttps://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/\ndatasets/smallareaincomeestimatesformiddlelayersuperoutputareasenglandandwales\nFigure 3 Sourced from https://www.nomisweb.co.uk/reports/localarea?compare=E01014519,\nhttps://www.nomisweb.co.uk/reports/localarea?compare=E01014491,\nhttps://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/\nadhocs/10773birthsbylowerlayersuperoutputarealsoaenglandandwalesmidyear2001to2018\nFigure 4 Sourced from https://data.worldbank.org/indicator/SP.DYN.TFRT.IN?name_desc=false,\nhttps://data.worldbank.org/indicator/SE.ADT.LITR.FE.ZS?name_desc=false\nFigure 5 Sourced from https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD,\nhttps://data.oecd.org/migration/foreign-born-population.htm\n8",
+  "text": "Evaluate the view that global organisations have been more effective in\nmanaging global economic issues than environmental issues.\n\n Turn over\n",
   "ms": "Answer\nnumber\nAO1 (5 marks)/AO2 (15 marks)\nResponses that demonstrate only AO1 without any AO2 should be awarded marks\nas follows:\n• Level 1 AO1 performance: 1 mark\n• Level 2 AO1 performance: 2 marks\n• Level 3 AO1 performance: 3 marks.\n• Level 4 AO1 performance: 4–5 marks.\nAO1\n• The post-war period since 1945 has seen an acceleration towards greater\nglobal governance with intergovernmental organisations (IGOs) focused on\nimproving the global economic system and tackling environmental issues.\n• Three key IGOs were established and have influenced world trade and\neconomic development of countries; the World Bank, the International\nMonetary Fund (IMF) and the World Trade Organisation (WTO)\n• The UN has attempted to manage environmental problems through global\nagreements and actions on the atmosphere, biosphere and regulating the use\nof oceans and marine ecosystems as a global commons.\nAO2\n• The establishment of the IMF, World Bank and WTO at the end of WW2 have\nbeen important throughout the 21st Century in maintaining the dominance of\n‘Western’ capitalism through a combination of global economic management\nand free-trade policies. Arguably it has allowed the USA to gain a\ndisproportionate influence over the principles that underpin the global\neconomic system.\n• The IMF and WTO lending and rulings have helped many countries to develop\nAnswer\nnumber\neconomically e.g. Mexico, Indonesia, Nigeria and Turkey have benefitted from\nlarge loans in the past. However, since 1970s the rules and conditions\nattached to this lending has become tougher with the introduction of\nstructural adjustment programmes and the Heavily Indebted Poor Countries\n(HIPC) initiative.\n• The WTO relative failure to deliver to free trade or to persuade the all\ncountries of the benefits of free trade, has led the world to create regional\ngroupings in the form of trading blocs. The growth of these, predominately\ndriven by the concept of comparative advantage and economies of scale have\nbeen the guiding principles for the 21st Century.\n• Global organisations have also played a part in environmental governance in\nthe through the global agreements and actions on the atmosphere, biosphere\nand oceans and rivers. These to some extent have shaped developmental\npriorities for countries through UNCLOS provisions such as the Exclusive\neconomic zones (EEZs) and regulation of global shipping flows. However,\nChina’s largely unabated territorial expansion in the South China Sea shows\nthat UNCLOS has limited power to hold countries to account.\n• Since the late 1960s there has been an increasing focus on the role that\nhumans are playing in changing the earth’s climate. Historical treaties such\nas the Montreal Protocol in 1997 saw the successful phasing out of CFC use.\nHowever, more recently international co-operation on climate change has\nbeen slow with many critics arguing that countries at not going far enough in\ntheir pledges to reduce carbon emissions.\n• Global organisations have developed laws for managing the oceans and\ninternational rivers to ensure sustainable use of resources e.g. UNCLOS and\nEU Water Framework Directive. However, transboundary rivers remain highly\ncontested water sources and are at risk of over-exploitation and\ncontamination.\n• More recently the World Bank's 2016 Climate Change Action Plan looking to\nfocus on increasing climate finance to 28% by 2020 through renewable\nenergy and adaptation finance. The Action Plan also focused on five key\nsystems which accounted for over 90% of global GHGs: Energy, agricultural\nand food, Cities and urban infrastructure, Transport and Manufacturing.\nHowever, the current economic crisis means that countries are potentially\nhaving to forgo climate change commitments in order to sure up their\neconomies.\nAnswer\nnumber\n• However, the COP26 had varied success with $130 trillion committed towards\nachieving net zero, but a failure to meet the target to ‘consign coal to history’\ndue to India’s intervention to reword it to ‘phase down’ rather than ‘phase\nout’. This has resulted in countries being on track for a 2.4°c warming rather\nthan the 1.5°c target.\n• Global organisation such as charities as the WWF/Greenpeace have worked\nto raise the global profile of a host of environmental issues. These charities\nhowever have no power over national governments meaning that their impact\nis weakened.\nCandidates may argue that global organisations have been more effective in\nmanaging global economic issues due to the high priority this is given by nation\nstates when compared to environmental issues. Candidates may also consider\nthat the history of IGOs and their relative success is high controversial and\npoliticised.\nAccept any other appropriate response.\nLevel Mark Descriptor\nLevel 1 0\n1–5 No rewardable material.\nLevel 2\n6–10 • Demonstrates isolated elements of geographical knowledge and\nunderstanding, some of which may be inaccurate or irrelevant.\n(AO1)\n• Applies knowledge and understanding of geographical ideas,\nmaking limited and rarely logical connections/relationships.\n(AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an interpretation with limited\ncoherence and support from evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an unsupported or generic\nconclusion, drawn from an argument that is unbalanced or lacks\ncoherence. (AO2)\n• Demonstrates geographical knowledge and understanding,\nwhich is occasionally relevant and may include some\ninaccuracies. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas with limited but logical\nLevel Mark Descriptor\nLevel 3 11–15\nLevel 4 16–20 connections/relationships. (AO2)\n• Applies knowledge and understanding of geographical ideas in\norder to produce a partial interpretation that is supported by\nsome evidence but has limited coherence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, partially supported\nby an unbalanced argument with limited coherence. (AO2)\n• Demonstrates geographical knowledge and understanding,\nwhich is mostly relevant and accurate. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find some logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical ideas in\norder to produce a partial but coherent interpretation that is\nsupported by some evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, largely supported by\nan argument that may be unbalanced or partially coherent.\n(AO2)\n• Demonstrates accurate and relevant geographical knowledge\nand understanding throughout. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find fully logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a full and coherent interpretation\nthat is supported by evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a rational, substantiated\nconclusion, fully supported by a balanced argument that is\ndrawn together coherently. (AO2)\nPearson Education Limited. Registered company number 872828\nwith its registered office at 80 Strand, London, WC2R 0RL, United Kingdom",
   "pageFrom": 34,
-  "pageTo": 48,
+  "pageTo": 36,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2022 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 47,
+  "rbMissing": false
  },
  {
   "id": "g2-june2023-q1a",
@@ -4583,7 +5017,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 2,
   "pageTo": 2,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4604,7 +5040,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 3,
   "pageTo": 4,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4625,7 +5063,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 5,
   "pageTo": 5,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4646,7 +5086,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 6,
   "pageTo": 8,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4667,8 +5109,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 8,
   "pageTo": 9,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
+  "rbMissing": false
  },
  {
   "id": "g2-june2023-q3b",
@@ -4688,7 +5132,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 10,
   "pageTo": 10,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4709,7 +5155,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 11,
   "pageTo": 15,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4730,8 +5178,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 15,
   "pageTo": 16,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
+  "rbMissing": false
  },
  {
   "id": "g2-june2023-q4b",
@@ -4751,7 +5201,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 17,
   "pageTo": 17,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4772,7 +5224,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 18,
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4793,7 +5247,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 22,
   "pageTo": 23,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4814,7 +5270,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 24,
   "pageTo": 25,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4835,7 +5293,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 26,
   "pageTo": 30,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4856,7 +5316,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 30,
   "pageTo": 31,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4877,7 +5339,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 32,
   "pageTo": 33,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4893,13 +5357,15 @@ const GEO_QUESTIONS = [
   "topic": "geo-t8b",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the view that a loss of national sovereignty is inevitable in a globalised\nworld.\n\n Turn over\n\n\nBLANK PAGE\nBLANK PAGE\n *P72620RRA03940* 39\nBLANK PAGE\nPearson Edexcel Level 3 GCE\nTuesday 6 June 2023\nMorning (Time: 2 hours 15 minutes) Paper 9GE0/02\nreference\n\nGeography\nAdvanced\nPAPER 2\nResource Booklet\nDo not return this Booklet with the question paper.\nP72620RRA *P72620RRA*\n©2023 Pearson Education Ltd.\nN:1/1/1/1/1/1/1\nThe following resources relate to Question 3.\nAge group National voter turnout (%)\n18–24 54.5\n25–34 54.4\n35–44 60.9\n45–54 71.0\n55–64 72.8\n65+ 78.5\nFigure 1a\nNational voter turnout* for each age group in the 2019 UK general election\n*the % of people who are legally entitled to vote who actually vote\nTown Percentage (%) Index of Multiple\n(region) voter turnout Deprivation (IMD)\nLewes 76.7 Medium to low\n(South East) deprivation\n56.1\nMiddlesbrough Very high\n(North East) deprivation\nFigure 1b\nVoter turnout % in the 2019 UK general election and the IMD levels\nfor two contrasting towns\n2 P72620RRA\n\nThe following resources relate to Question 4.\nTown (region) Lewes Middlesbrough\n(South East) (North East)\nPercentage (%)\nvoter turnout 76.7 56.1\nTown’s ethnicity % Lewes Middlesbrough\nAsian (South East) (North East)\n1.9 10.5\nBlack 0.7 2.7\nMixed 2.5 2.1\nWhite 94.2 82.4\nOther 0.7 2.3\nFigure 2a\nVoter turnout* (%) in the 2019 UK general election and ethnicity\nfor two contrasting towns\n*the % of people who are legally entitled to vote who actually vote\nFigure 2b Figure 2c\nHigh Street, Lewes Linthorpe Road, Middlesbrough\nP72620RRA 3\n\nBLANK PAGE\nAcknowledgements P72620RRA\nPearson Education Ltd gratefully acknowledges all following sources used in preparation of this paper:\nFigure 1a assests-learning.parliament.uk \nFigure 1b dclgapps.communities.gov.uk\nassests-learning.parliament.uk\nFigure 2a www.ons.gov.uk\nassests-learning.parliament.uk\nFigure 2b © Grant Rooney/Alamy Stock Photo\nFigure 2c © Robert Lazenby/Alamy Stock Photo\nFigure 3 The World Bank/OECD\nFigure 4 un.org/development\n4",
+  "text": "Evaluate the view that a loss of national sovereignty is inevitable in a globalised\nworld.\n\n Turn over\n",
   "ms": "Evaluate the view that the loss of national sovereignty is inevitable in a globalised world.\nnumber (8B.10abc/8B.11abc)\nAnswer\nAO1 (5 marks)/AO2 (15 marks)\nResponses that demonstrate only AO1 without any AO2 should be awarded marks as follows:\n• Level 1 AO1 performance: 1 mark\n• Level 2 AO1 performance: 2 marks\n• Level 3 AO1 performance: 3 marks.\n• Level 4 AO1 performance: 4–5 marks.\nAO1 Globalisation is increasing in depth and breadth through trade, migration, flows of capital\n• and goods and the role of TNCS.\n• Sovereignty refers to the capacity of the state to act independently and autonomously\n• on the world stage.\n• Globalisation has led to deeper levels of interdependence and interconnectedness that\nmean that state borders are increasingly porous and that sovereignty is eroded.\n• The emergence of transnational corporations and non-governmental organisations, the\ncreation of international judicial bodies such as the ICC all appear to have eroded the\nsignificance of state sovereignty.\nThe focus on nationalism in order to retain sovereignty has led to national identity\nbeing contested in countries which have multinational populations due to history or\nmigration flows. These contrasting ethnic groups can lead to changes in national\nidentity and cultural cohesion.\nEvaluate the view that the loss of national sovereignty is inevitable in a globalised world.\nnumber (8B.10abc/8B.11abc)\nAnswer\nAO2\n• Globalisation entails the increasing volume of flows within and across borders of people,\nideas, goods, money, and much else, thus challenging one of sovereignty’s basic\nprinciples: the ability to control what crosses borders in either direction.\n• As people become global consumers of goods and information, the cross-border flow of\ninformation, people and goods makes it difficult for people’s national identity to retain\ntheir unique significance and distinguish themselves from others.\n• TNCs are producing and selling goods to customers all over the world. Critics argue\nthat countries are being homogenised into a global era where all consumer goods are\nthe same. This results in cultural characteristics being lost through the spread of\nMcDonaldisation for example and identities being eliminated.\n• However, despite TNCs such as McDonalds achieving global domination, they have been\nforced to recognise that products and services need to be tailored more to ethnic and\ncultural preferences as consumers have the right to choose what they buy.\n• Some argue that globalisation reinforces national feelings and identity as members of\nnations whose national identity has been reshaped by waves of immigrants are more\nlikely to reflect on their national identity, reinforcing its meaning.\n• As a result of political globalisation, institutions of global governance have been\nestablished which limit the sovereignty of their member states. These include the\nInternational Criminal Court and the European Court of Human Rights.\n• The IMF and World Bank are Western-based institutions and are seen to promote and\nprotect western capitalist interests, particularly those of the USA. Both institutions\nhave made loans contingent upon the borrowing country implementing certain policies.\nThis undermines the concept of state sovereignty by which nations should be free to\nimplement their own policies and programmes without outside coercion.\n• The impact of global capital flows and financial investment also means that in order\nto attract investment, nation-states have a strong inducement to engage in free-market\ncapitalism. This therefore puts limits on the economic choices that governments can\nmake.\n• Governments agree to accept the rulings of the World Trade Organization because on\nbalance they benefit from an international trading order, even if a particular decision\nrequires that they alter a practice that is their sovereign right to carry out.\n• Regional organisations, in particular the European Union, possess supranational\ninstitutions to which member states can be held accountable. For example, established\nEvaluate the view that the loss of national sovereignty is inevitable in a globalised world.\nnumber (8B.10abc/8B.11abc)\nAnswer\nthe principle that as a member of the European Union, EU law takes precedence over\nBritish law.\n• Necessity may also lead to reducing or even eliminating sovereignty when a\ngovernment, whether from a lack of capacity or policy, is unable to provide for the\nbasic needs of its citizens.\n• Some countries are localising their identities and refusing to give up their sovereignty\nby consuming premium local products in order to celebrate the uniqueness of their\nidentity. This can also be seen on a national scale through the rise of nationalism\nstrategies such as the protection of language in films in France and the Iranian\ngovernment approach to the influx of western products such as Barbie.\nEvaluation\n• Some may argue that in a globalised world economy, governments have no alternative\nbut to adopt neoliberal economic policies of privatisation and deregulation.\n• Some may argue that states must be prepared to give up some sovereignty to world\nbodies if the international system is to function.\n• Candidates may argue that homogenisation of national identity and complete loss of\nsovereignty as a result of globalisation in unlikely due to the strong opposition found in\ncertain countries.\n• Candidates may suggest that globalisation has to some extent reduced the barriers\nbetween nations but in doing so has made countries and people more aware of their\ncultural differences and ideologies, thereby reinforcing national identity.\nAccept any other appropriate response.\nLevel Mark Descriptor\nLevel 1\nLevel 2 0 No rewardable material.\nLevel 3 1–5\nLevel 4 • Demonstrates isolated elements of geographical knowledge and\n6–10 understanding, some of which may be inaccurate or irrelevant. (AO1)\n11– • Applies knowledge and understanding of geographical ideas, making limited\n15 and rarely logical connections/relationships. (AO2)\n16– • Applies knowledge and understanding of geographical information/ideas to\n20 produce an interpretation with limited coherence and support from evidence.\n(AO2)\n• Applies knowledge and understanding of geographical information/ideas to\nproduce an unsupported or generic conclusion, drawn from an argument that\nis unbalanced or lacks coherence. (AO2)\n• Demonstrates geographical knowledge and understanding, which is\noccasionally relevant and may include some inaccuracies. (AO1)\n• Applies knowledge and understanding of geographical information/ideas with\nlimited but logical connections/relationships. (AO2)\n• Applies knowledge and understanding of geographical ideas in order to produce\na partial interpretation that is supported by some evidence but has limited\ncoherence. (AO2)\n• Applies knowledge and understanding of geographical information/ideas to\ncome to a conclusion, partially supported by an unbalanced argument with\nlimited coherence. (AO2)\n• Demonstrates geographical knowledge and understanding, which is mostly\nrelevant and accurate. (AO1)\n• Applies knowledge and understanding of geographical information/ideas to find\nsome logical and relevant connections/relationships. (AO2)\n• Applies knowledge and understanding of geographical ideas in order to produce\na partial but coherent interpretation that is supported by some evidence. (AO2)\n• Applies knowledge and understanding of geographical information/ideas to\ncome to a conclusion, largely supported by an argument that may be\nunbalanced or partially coherent. (AO2)\n• Demonstrates accurate and relevant geographical knowledge and\nunderstanding throughout. (AO1)\n• Applies knowledge and understanding of geographical information/ideas to find\nfully logical and relevant connections/relationships. (AO2)\n• Applies knowledge and understanding of geographical information/ideas to\nproduce a full and coherent interpretation that is supported by evidence. (AO2)\n• Applies knowledge and understanding of geographical information/ideas to\ncome to a rational, substantiated conclusion, fully supported by a balanced\nargument that is drawn together coherently. (AO2)\nPearson Education Limited. Registered company number 872828\nwith its registered office at 80 Strand, London, WC2R 0RL, United Kingdom",
   "pageFrom": 34,
-  "pageTo": 44,
+  "pageTo": 36,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2023 QP.pdf",
+  "rbFrom": 38,
+  "rbTo": 43,
+  "rbMissing": false
  },
  {
   "id": "g2-june2024-q1a",
@@ -4919,7 +5385,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 2,
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4940,7 +5408,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 3,
   "pageTo": 4,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4961,7 +5431,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 5,
   "pageTo": 5,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -4982,7 +5454,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 6,
   "pageTo": 8,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -5003,8 +5477,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 8,
   "pageTo": 9,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
+  "rbMissing": false
  },
  {
   "id": "g2-june2024-q3b",
@@ -5024,7 +5500,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 10,
   "pageTo": 10,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -5045,7 +5523,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 11,
   "pageTo": 15,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -5066,8 +5546,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 15,
   "pageTo": 16,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
+  "rbMissing": false
  },
  {
   "id": "g2-june2024-q4b",
@@ -5087,7 +5569,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 17,
   "pageTo": 17,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -5108,7 +5592,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 18,
   "pageTo": 22,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -5129,7 +5615,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 23,
   "pageTo": 24,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -5150,7 +5638,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 25,
   "pageTo": 26,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -5171,7 +5661,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 27,
   "pageTo": 32,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -5192,7 +5684,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 33,
   "pageTo": 34,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -5213,7 +5707,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 35,
   "pageTo": 36,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
   "rbMissing": false
  },
  {
@@ -5229,13 +5725,15 @@ const GEO_QUESTIONS = [
   "topic": "geo-t8b",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the view that westernisation poses the most serious threat to national\nidentity in many countries.\n Turn over\n\n Turn over\n\nPearson Edexcel Level 3 GCE\nMonday 3 June 2024\nMorning (Time: 2 hours 15 minutes) Paper 9GE0/02\nreference\nGeography \nAdvanced\nPAPER 2\nResource Booklet\nDo not return this Booklet with the question paper.\nP74465A *P74465A*\n©2024 Pearson Education Ltd.\nF:1/1/1/1/1/1/1/1/1/1/1\nThe following resources relate to Question 3.\nFigure 1a\nLee Bank, Birmingham, 1980\nFigure 1b\nLee Bank, Birmingham, 2021\n2 P74465A\n\nThe following resources relate to Question 4.\nFigure 2a\nBrick Lane, London, 1984\nFigure 2b\nBrick Lane, London, 2019\nP74465A 3\n\nBLANK PAGE\nAcknowledgements P74465A\nPearson Education Ltd gratefully acknowledges all following sources used in preparation of this paper: \nFigure 1a: © https://datashare.ed.ac.uk/handle/10283/4196\nFigure 1b: © Images of Birmingham / Alamy Stock Photo\nFigure 2a: © JACK LUDLAM / AlamyStock Photo\nFigure 2b: © Robert Evans / Alamy Stock Photo\n4",
+  "text": "Evaluate the view that westernisation poses the most serious threat to national\nidentity in many countries.\n Turn over\n\n Turn over",
   "ms": "Evaluate the view that westernisation poses the most serious threat to national\nnumber identity in many countries\nAnswer\nAO1 (5 marks)/AO2 (15 marks)\nResponses that demonstrate only AO1 without any AO2 should be awarded marks\nas follows:\n• Level 1 AO1 performance: 1 mark\n• Level 2 AO1 performance: 2 marks\n• Level 3 AO1 performance: 3 marks.\n• Level 4 AO1 performance: 4–5 marks.\n• Westernisation is the process by which a country or society adopts the\ncustoms and institutions that are said to characterise the Western world.\nThis can happen in many different ways including adopting English instead\nof native languages, wearing typically Western clothes and a shift in\nreligious belief.\n• National identity is a person's identity or sense of belonging to one or more\nstates or one or more nations e.g. similar culture, language and traditions.\n• The spread of Western culture, values, and norms has led to the erosion\nof traditional cultural practices and beliefs, which are integral to national\nidentity.\n• Other threats to national identity include globalisation, migration and the\nincreasing ownership of companies and foreign ownership of property,\nland and businesses.\nAO2\n• The spread of westernised as a result of globalisation leads to openness to\nforeign values which can erode traditional values and indigenous cultural\nidentity.\nEvaluate the view that westernisation poses the most serious threat to national\nnumber\nidentity in many countries\nAnswer\n• Westernisation is largely driven by retail, food and media, 'westernisation'\nand is a soft power challenge to national identity by European and North\nAmerican TNCs. The spread of 'western' culture by TNCs is not a form of\nglobal political power play, however, their promotion does naturally bring\nabout a cultural change to places\n• Rapid economic and income growth are leading to a dramatic shift of Asian\ndiets away from staples and increasingly towards livestock and dairy\nproducts, vegetables and fruit, and fats and oils. This has seen\ndiversification of diets away from traditional rice and a move towards a\nWestern diet. This has impacts socially e.g. due to rising obesity but also\nenvironmentally.\n• Property, land and businesses are increasingly owned by non-nationals\nwhich impacts national identity. Foreign property investments has pushed\nup property prices in London, making housing unaffordable for many and\nnon-national ownership of property within the UK is targeted within\nLondon, which is seen as an area with a great return on investment.\n• In some location ethnoscapes or flows of people have resulted in changes\nto the cultural landscapes, which not only changes the physical landscape\nbut also can result in cultural change as well as making it harder for local\nresidents to live in these areas.\n• In some locations westernisation is resisted e.g. sales of Valentine's Day\ncards and associated gifts were targeted by the local government in Kohat,\nPakistan, who were worried about the 'western tradition' of honouring a\nChristian saint.\nEvaluation\n• Westernisation has led to the emergence of new hybrid cultures that are\nunique to each country and that these cultures are not necessarily inferior\nto traditional cultures.\nAccept any other appropriate response.\nLevel Mark Descriptor\nLevel 1 0\n1–5 No rewardable material.\n• Demonstrates isolated elements of geographical knowledge and\nunderstanding, some of which may be inaccurate or irrelevant.\n(AO1)\n• Applies knowledge and understanding of geographical ideas,\nmaking limited and rarely logical connections/relationships.\n(AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an interpretation with limited\ncoherence and support from evidence. (AO2)\nLevel Mark Descriptor\nLevel 2 6–10\nLevel 3 11–15 • Applies knowledge and understanding of geographical\nLevel 4 16–20 information/ideas to produce an unsupported or generic\nconclusion, drawn from an argument that is unbalanced or lacks\ncoherence. (AO2)\n• Demonstrates geographical knowledge and understanding,\nwhich is occasionally relevant and may include some\ninaccuracies. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas with limited but logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical ideas in\norder to produce a partial interpretation that is supported by\nsome evidence but has limited coherence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, partially supported\nby an unbalanced argument with limited coherence. (AO2)\n• Demonstrates geographical knowledge and understanding,\nwhich is mostly relevant and accurate. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find some logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical ideas in\norder to produce a partial but coherent interpretation that is\nsupported by some evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, largely supported by\nan argument that may be unbalanced or partially coherent.\n(AO2)\n• Demonstrates accurate and relevant geographical knowledge\nand understanding throughout. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find fully logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a full and coherent interpretation\nthat is supported by evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a rational, substantiated\nconclusion, fully supported by a balanced argument that is\ndrawn together coherently. (AO2)\nPearson Education Limited. Registered company number 872828\nwith its registered office at 80 Strand, London, WC2R 0RL, United Kingdom",
   "pageFrom": 37,
-  "pageTo": 44,
+  "pageTo": 39,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 2 (Human)/Questions/June 2024 QP.pdf",
+  "rbFrom": 41,
+  "rbTo": 43,
+  "rbMissing": false
  },
  {
   "id": "g3-specimen-q1",
@@ -5256,6 +5754,8 @@ const GEO_QUESTIONS = [
   "pageTo": 2,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5277,6 +5777,8 @@ const GEO_QUESTIONS = [
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5298,6 +5800,8 @@ const GEO_QUESTIONS = [
   "pageTo": 4,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5319,6 +5823,8 @@ const GEO_QUESTIONS = [
   "pageTo": 5,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5340,6 +5846,8 @@ const GEO_QUESTIONS = [
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5361,6 +5869,8 @@ const GEO_QUESTIONS = [
   "pageTo": 9,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5376,12 +5886,14 @@ const GEO_QUESTIONS = [
   "topic": "geo-syn",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the view that the natural resources found in the three countries shown are\nmore of a ‘curse’ than a ‘blessing’ for their people and environment.\n*S49796A0912* Pearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 9\n141\nIssue 2 – February 2017 © Pearson Education Limited 2017\n*S49796A01012* 10\n142\nPearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials –\nIssue 2 – February 2017 © Pearson Education Limited 2017\n*S49796A01112* Pearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 11\n143\nIssue 2 – February 2017 © Pearson Education Limited 2017",
+  "text": "Evaluate the view that the natural resources found in the three countries shown are\nmore of a ‘curse’ than a ‘blessing’ for their people and environment.\n*S49796A0912* Pearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 9\n141\nIssue 2 – February 2017 © Pearson Education Limited 2017\n*S49796A01012* 10\n142\nPearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials –\nIssue 2 – February 2017 © Pearson Education Limited 2017",
   "ms": "Indicative content\nnumber\nAO1 (4 marks)/AO2 (12 marks)/AO3 (8 marks)\nThere is no ‘correct’ answer here, although answers that argue ‘more curse than\nblessing’ are likely to be the most common; answers should present both sides\nand use evidence from the Resource Booklet to support their assertions.\nAO1 mining and other extraction industries support direct jobs as well as\n• further employment opportunities through the multiplier effect and\ncumulative causation\n• jobs are low paid and exploitative, with poor/dangerous working\n• conditions\n• some jobs are well paid and will lead to increases in income inequalities\nthere is a range of environmental issues linked to mining (water\npollution, deforestation)\nAO2\nPossible argument for ‘curse’:\n• Colonial powers, who controlled the three countries’ resources in the first\nhalf of the 20th century, are likely to have actively suppressed education\nfor the poor/landless because an educated population might have\nthreatened their control\n• There doesn’t appear to be a strong relationship between proportion of\nGDP generated from exporting natural resources and the GDP per\nperson, which suggests that being naturally rich in resources is not\nequivalent to a high standard of living\n• Many jobs in the oil industry might not go to local people but instead\nimmigrants from the West/China therefore the money made from oil\ndoes not trickle down to local people\n• TNC profits from resource extraction are likely to be repatriated which\nleaves little for the three countries’ governments in tax revenue that\ncould support state welfare, which impacts the poorest disproportionately\n• There is often a link between conflict and mineral resources, with mining\nareas controlled by military groups in the DRC, or the oil and diamond\nindustries being used to fund the Angolan civil war, which may\ndisproportionately impact on the poorest people\n• Environmental costs are seldom included in any analysis so any short\nterm economic gains are offset by longer-term environmental damage,\nfor example the deforestation in the DRC. The need for conservation\nstrategies has increased\n• An important cost to the environment is the destruction of habitats and\npollution of local water bodies which not only reduces biodiversity but can\nalso increase issues of water insecurity for local people. This could lead\nPearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 167\nIssue 2 – February 2017 © Pearson Education Limited 2017\nIndicative content\nnumber\nto local conflict or even international conflict over the trans-boundary\nCongo River\n• All three countries are heavily reliant on China (both for imports and\nexports) making them dependent on China’s status as a global economic\npower. This makes them vulnerable to any economic slowdown where\nChina’s buying power is reduced, reducing the three countries’ revenue,\nand/or China’s exports reduce, potentially derailing the three countries’\neconomic development.\nPossible arguments for ‘blessing’:\n• There are direct and indirect jobs created in industries that have higher\nlevels of pay than the subsistence agriculture that was likely to have\nbeen present in these countries before these resources were exploited\n• Access through tropical rainforest, swamps and water bodies to obtain\nthe rich natural resources (particularly in Congo and the DRC) requires\ninfrastructure that can act as a catalyst for development\n• Industrial development produces increased tax revenues (however small)\nthat the governments of all three countries could use to improve\ninfrastructure and services. Improved access to electricity (which is as\nlow as 15% in the DRC) and healthcare to reduce infant mortality (which\nis as high as 102/1000 in Angola) would improve the chance that people\nliving in these countries live beyond their 50s.\n• The situation may improve over time (Rostow model or Kuznet’s curve)\nas it did in what are now developed countries. What could seem a curse,\nat this point in time for these countries, could be seen as the short-term\ndrawbacks of a greater long-term benefit.\n• It may be that the resources are themselves a blessing, but it is their\nmanagement that turns them into a curse. The rich resources would\nhave played a large part in attracting the colonial powers to the countries\nin the first place. In the present day, all three countries still have\nimportant trade connections with their colonisers, and France still imports\n$0.9 billion of goods from the Congo. However these countries,\nparticularly the DRC, have a history of poor governance post-\nindependence with proceeds from the resource ‘blessing’ channelled into\nhands of a small elite; Over 70% of people in the DRC live on less than\nUS$1.25 per day.\n• Resources may be more of a blessing if they are diversified. Countries,\nsuch as DRC, with a diversity of resource exports will be less sensitive to\ncommodity price fluctuations than countries which rely on few resource\nexports, such as Congo and Angola, and therefore will gain a comparable\nadvantage at these times.\n• Sometimes resources are more of a blessing than at other times, for\nexample due to price fluctuations or the rise of new technologies such as\nsmartphones and tablets. The production of lithium batteries in mobile\nphones and tablets relies on cobalt, which has had a stable price of\nUS$35 to US$45. However, between 2005 and 2008 prices peaked at\nUS$85, which would have been a short-term blessing for the DRC as the\nworld’s largest producer. Crude oil on the other hand, which Angola is\nreliant on, has fluctuated more with lows of US$20 to highs of US$115.\nOver time this can be considered more of a blessing for Angola because\n11688 Pearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials –\nIssue 2 – February 2017 © Pearson Education Limited 2017\nIndicative content\nnumber prices have trended upwards.\nAO3 Introduction to Section A: all three countries were previously colonies,\n• with the DRC and Congo gaining independence in 1960, and Angola\nexperiencing a lengthy war to gain independence in 1975 and then\n• experiencing civil war for almost 30 years until 2002, which indicates\nthat there has been an unsettled political climate in the region\n• Figure 9: the countries with the highest GDP per capita have smaller\n• proportions of their GDP coming from fossil fuels, mineral and ore\n• exports - for example, Argentina has a GDP per capita of approximately\n• $14,500 and about 9% GDP from exports, whereas Angola has\n• approximately half the GDP per capita and 97% GDP from exports.\n• Figure 12 includes opinion and views of external interest of groups such\n• as American media and conservation charities, so their agendas should\nbe taken into account\n• Figure 12: view 4 argues that resource rich countries benefit in terms of\n• economic growth\n• Figure 11 shows two extremes of resource development but there are\nlikely to be a continuum of approaches that have varied impacts\nFigure 3, Figure 12 show that inequality is high in all countries; this\nmight suggest the poorest simply never see any resource wealth (no\ntrickle down);\nFigure 12: issues of corruption are mentioned. View 1 makes this\npoint. Poverty, child labour, exploitation are all serious issues;\nFigure 11 suggests mining is arduous and likely to be dangerous\nFigure 10 and 11: resources show that deforestation is slow compared\nto other areas, but this may not last as significant areas of DRC have\nbeen licensed for artisanal and commercial logging ensuring future\ndegradation\nFigure 11: there are possible issues with soil erosion from mining and\npossibly oil spills off the coast of Angola/Congo\nFigure 10: future deforestation and widespread degradation could result\nif localised mineral exploration in DRC turns into widespread exploitation\nFigure 10: some large areas of DRC are protected\nPearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 11699\nIssue 2 – February 2017 © Pearson Education Limited 2017\nLevel Mark Descriptor\nLevel 1\n0 No rewardable material.\n1–6 • Demonstrates isolated elements of geographical knowledge\nand understanding, some of which may be inaccurate or\nLevel 2 7-12 irrelevant. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas, making limited and rarely logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an interpretation with limited\nrelevance and/or support. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an unsupported or generic\nconclusion, drawn from an argument that is unbalanced or\nlacks coherence. (AO2)\n• Makes superficial judgements about the value and reliability\nof quantitative and qualitative data/evidence. (AO3)\n• Investigates the question/issue to produce a limited\ninterpretation of quantitative and qualitative data/evidence,\nbut lacks meaningful connections to geographical ideas from\nacross the course of study. (AO3)\n• Demonstrates geographical knowledge and understanding,\nwhich is occasionally relevant and may include some\ninaccuracies. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas with limited but logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a partial interpretation that is\nsupported by some evidence but has limited coherence.\n(AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, partially\nsupported by an unbalanced argument with limited\ncoherence. (AO2)\n• Makes some valid judgements about the value and reliability\nof quantitative and qualitative data/evidence. (AO3)\n• Investigates the question/issue to produce an interpretation\nof quantitative and qualitative data/evidence, making few\nconnections to geographical ideas from across the course of\nstudy, which may not be meaningful. (AO3)\n11700 Pearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials –\nIssue 2 – February 2017 © Pearson Education Limited 2017\nLevel Mark Descriptor\nLevel 3 13-18\n• Demonstrates geographical knowledge and understanding,\nLevel 4 19-24 which is mostly relevant and accurate. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find some logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a partial but coherent\ninterpretation that is supported by some evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, largely supported\nby an argument that may be unbalanced or partially\ncoherent. (AO2)\n• Makes mostly valid judgements about the value and\nreliability of quantitative and qualitative data/evidence.\n(AO3)\n• Critically investigates the question/issue to produce a\ncoherent interpretation of quantitative and qualitative\ndata/evidence, making connections to relevant geographical\nideas from across the course of study, some of which are\nmeaningful. (AO3)\n• Demonstrates accurate and relevant geographical\nknowledge and understanding throughout. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find fully logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a full and coherent\ninterpretation that is supported by evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a rational, substantiated\nconclusion, fully supported by a balanced argument that is\ndrawn together coherently. (AO2)\n• Makes valid judgements about the value and reliability of\nquantitative and qualitative data/evidence throughout.\n(AO3)\n• Critically investigates the question/issue to produce a\ncoherent interpretation of quantitative and qualitative\ndata/evidence, comprehensively making meaningful\nconnections to relevant geographical ideas from across the\ncourse of study throughout the response. (AO3)\nPearson Edexcel Level 3 Advanced GCE in Geography – Sample Assessment Materials – 11711\nIssue 2 – February 2017 © Pearson Education Limited 2017",
   "pageFrom": 9,
-  "pageTo": 11,
+  "pageTo": 10,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/Specimen QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/Specimen RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5403,6 +5915,8 @@ const GEO_QUESTIONS = [
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5424,6 +5938,8 @@ const GEO_QUESTIONS = [
   "pageTo": 4,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5445,6 +5961,8 @@ const GEO_QUESTIONS = [
   "pageTo": 5,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5466,6 +5984,8 @@ const GEO_QUESTIONS = [
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5487,6 +6007,8 @@ const GEO_QUESTIONS = [
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5508,6 +6030,8 @@ const GEO_QUESTIONS = [
   "pageTo": 11,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5523,12 +6047,14 @@ const GEO_QUESTIONS = [
   "topic": "geo-syn",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the view that climate change and natural hazards pose the most serious\nthreat to the economic, social and political stability of Southeast Asia.\nBLANK PAGE\nBLANK PAGE\nBLANK PAGE",
+  "text": "Evaluate the view that climate change and natural hazards pose the most serious\nthreat to the economic, social and political stability of Southeast Asia.",
   "ms": "Indicative content\nnumber\nAO1 (4 marks)/AO3 (4 marks)\n3 AO1 The Human Development Index includes GDP per capita (Table 1), Life\n Expectancy (Figure 2) and Years in Schooling (Figure 2).\n\n Political development is not included in the HDI but may reflect\n differences in approaches to development and the role of globalisation.\n There is a complex inter-relationship between economic development,\n measures of globalisation and social development.\nEconomic development increases state income and can thus fund\nimprovements in both health and education through government\nspending.\nBoth Modernisation Theory and Dependency Theory argue that the\ndevelopment of institutions play a central role in economic development.\nThe institutions include democratic and legal institutions which increase\nthe rule of law and the strength of central governance.\nAO3 In general terms the ASEAN countries have low GDP per capita and poor\n levels of education, life expectancy and governance when compared with\nglobal averages.\n There are significant variations within the ASEAN group.\n\nFour countries have higher than global average levels of education but\n one of these, the Philippines, is only the fifth on the GDP per capita list of\n ASEAN countries.\nLife expectancy is higher than global average in five countries and lower\n in the other five.\n The relationship with GDP per capita is poor with Thailand and Vietnam\nobvious ‘anomalies’ on one side whilst Indonesia and the Philippines have\npoor life expectancy in terms of their GDP per capita.\nSix countries have lower than global average scores for Governance –\nmost of these have relatively low GDP per capita.\nMyanmar stands out as both economically, socially and politically very\npoorly developed - at the other extreme Singapore has the highest\nscores in all four categories.\nAccept any other appropriate response.\nLevel Mark Descriptor\nLevel 1\n0 No rewardable material.\n1–2  Demonstrates isolated elements of geographical knowledge\nand understanding, some of which may be inaccurate or\nLevel 2 3-5 irrelevant. (AO1)\n Investigates the question/issue to produce a limited analysis\nLevel 3 6-8 of data/evidence, making few connections to geographical\nideas. (AO3)\n Demonstrates geographical knowledge and understanding,\nwhich is mostly relevant but may include some inaccuracies.\n(AO1)\n Critically investigates the question/issue to produce an\nanalysis of data/evidence, making some logical connections\nto geographical ideas, which are mostly relevant. (AO3)\n Demonstrates accurate and relevant geographical\nknowledge and understanding throughout. (AO1)\n Critically investigates the question/issue to produce a\ncoherent analysis of data/evidence, making logical\nconnections to relevant geographical ideas. (AO3)",
   "pageFrom": 11,
-  "pageTo": 16,
+  "pageTo": 11,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2018 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2018 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5550,6 +6076,8 @@ const GEO_QUESTIONS = [
   "pageTo": 2,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5571,6 +6099,8 @@ const GEO_QUESTIONS = [
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5592,6 +6122,8 @@ const GEO_QUESTIONS = [
   "pageTo": 4,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5613,6 +6145,8 @@ const GEO_QUESTIONS = [
   "pageTo": 5,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5634,6 +6168,8 @@ const GEO_QUESTIONS = [
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5655,6 +6191,8 @@ const GEO_QUESTIONS = [
   "pageTo": 13,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5676,6 +6214,8 @@ const GEO_QUESTIONS = [
   "pageTo": 13,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2019 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2019 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5697,6 +6237,8 @@ const GEO_QUESTIONS = [
   "pageTo": 2,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5718,6 +6260,8 @@ const GEO_QUESTIONS = [
   "pageTo": 4,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5739,6 +6283,8 @@ const GEO_QUESTIONS = [
   "pageTo": 4,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5760,6 +6306,8 @@ const GEO_QUESTIONS = [
   "pageTo": 5,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5781,6 +6329,8 @@ const GEO_QUESTIONS = [
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5802,6 +6352,8 @@ const GEO_QUESTIONS = [
   "pageTo": 13,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5823,6 +6375,8 @@ const GEO_QUESTIONS = [
   "pageTo": 13,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2020 QP.pdf",
   "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Resource Booklet/June 2020 RB.pdf",
+  "rbFrom": null,
+  "rbTo": null,
   "rbMissing": false
  },
  {
@@ -5843,7 +6397,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 2,
   "pageTo": 2,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2021 QP.pdf",
+  "rbFrom": 11,
+  "rbTo": 27,
   "rbMissing": false
  },
  {
@@ -5864,7 +6420,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 3,
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2021 QP.pdf",
+  "rbFrom": 11,
+  "rbTo": 27,
   "rbMissing": false
  },
  {
@@ -5885,7 +6443,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 4,
   "pageTo": 4,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2021 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2021 QP.pdf",
+  "rbFrom": 11,
+  "rbTo": 27,
   "rbMissing": false
  },
  {
@@ -5906,8 +6466,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 5,
   "pageTo": 5,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2021 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2021 QP.pdf",
+  "rbFrom": 11,
+  "rbTo": 27,
+  "rbMissing": false
  },
  {
   "id": "g3-june2021-q4",
@@ -5927,8 +6489,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 6,
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2021 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2021 QP.pdf",
+  "rbFrom": 11,
+  "rbTo": 27,
+  "rbMissing": false
  },
  {
   "id": "g3-june2021-q5",
@@ -5948,8 +6512,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 7,
   "pageTo": 9,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2021 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2021 QP.pdf",
+  "rbFrom": 11,
+  "rbTo": 27,
+  "rbMissing": false
  },
  {
   "id": "g3-june2021-q6",
@@ -5964,13 +6530,15 @@ const GEO_QUESTIONS = [
   "topic": "geo-syn",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the view that the Arctic is more likely to be a focus of both short-term and\nlong-term political conflict than Antarctica.\nBLANK PAGE\nBLANK PAGE\nPearson Edexcel Level 3 GCE\nTime 2 hours 15 minutes Paper 9GE0/03\nreference\nGeography\nAdvanced\nPAPER 3\nResource Booklet\nDo not return this Booklet with the question paper.\nP66495A *P66495A*\n©2021 Pearson Education Ltd.\n1/1/1/1/1/1\nTo the ends of the Earth\nThe Arctic is the area that lies north of the Arctic Circle. The circle more or less marks\nthe southern boundary of the region that experiences 24 hours of sunlight in summer\nand 24 hours of darkness in winter. Most of the continent of Antarctica lies within the\nsouthern hemisphere equivalent: the Antarctic Circle (see Figure 1).\nThe Arctic and Antarctic are contrasting in that the Arctic is an ocean almost completely\nsurrounded by land whereas Antarctica is a continent completely surrounded by ocean.\nThe Antarctic continent and the Arctic Ocean are approximately the same size, at\n15 million km2. They include the two major ice sheets on the planet. Antarctica has\napproximately 26.5 million km3 and Greenland 2.8 million km3 of ice. Together this ice\nlocks up about 70% of the Earth’s freshwater, and if it melted would raise sea levels by\n66 metres.\nThe climates of the two regions have similarities but also differences. Both poles are very\ndry and relatively cold. However, Arctic summer temperatures can reach 10° C, whilst on\nthe thick high-altitude ice sheet temperatures stay considerably below 0° C.\nIn both regions there have been significant changes in average temperatures\n(see Figures 2, 3 and 4).\n180°\n60°W\nArctic Circle 66.33° N Antarctic Circle 66.33° S\nFigure 1\n2\nP66495A\n2\n1980–2015 Global\naverage\n1\nDiﬀerence\nfrom\naverage 0\ntemperature\n(°C)\n−1\nArctic\n−2\n1980 2000 2015\nFigure 2\nGlobal and Arctic temperature changes, 1980–2015\nP66495A 3\nTemperature Trend (°C/year)\n-0.1 -0.05 0 +0.05 +0.1\nFigure 3\nMean annual Antarctic temperature changes, 1980–2016\n4\nP66495A\nSea-ice is found in both regions but is rarely thicker than 2 metres. The area\ncovered by sea-ice varies according to the seasons, and has varied over both historic\nand geological time. In both hemispheres sea-ice can reach an area of between\n12–15 million km2 (see Figure 4).\n1.60\n1.20\nArctic\n0.80\nSea-ice 0.40 1980–2015\nextent, 0.00 average\nrelative −0.40\nto 1980 −0.80\nto 2015\n(million\nsq km)\n−1.20 Antarctic\n−1.60 1985 1990 1995 2000 2005 2010 2015\n1980\nFigure 4\nSea-ice changes in the Arctic and Antarctic, 1980–2015\nP66495A 5\nThe impact of climate change has been significant in both polar regions and the long-\nterm impacts of changes in Antarctica will be particularly challenging (see Figure 5).\nHowever, recently its impact has been especially notable in the Arctic. This is partly\nbecause of its greater geopolitical significance and partly because 2m thick sea-ice is\nmuch more vulnerable to global warming than large and very thick ice-sheets. Most\nclimate models predict that summer sea-ice in the Arctic will disappear by the end of this\ncentury (see Figure 6).\nFigure 5\nAntarctic changes\n6\nP66495A\nFigure 6\nPast and future summer Arctic sea-ice\nP66495A 7\nPeople and Resources\nAbout 4 million people live within the Arctic Circle, which has been settled for at least\n10,000 years. Indigenous peoples form a significant proportion of the Arctic populations\nof most of the countries with some part of their land mass inside the Arctic Circle:\nNorway, Russia, Greenland (Denmark), the USA and Canada (see Figure 8).\nAntarctica was discovered in the first half of the nineteenth century and has no\npermanent population. It has a large number of polar research centres that are ‘home’ to\nbetween 1,000 and 5,000 scientists according to the season. There is also, controversially,\na growing tourist industry that attracted over 50,000 visitors in 2019 (see Figure 7).\nFigure 7\nAntarctic tourism\nBoth regions have enormous mineral resources, not least oil and gas reserves. These have\nbeen inaccessible partly because of the technical and climatic challenges. At present, it is\nthe Arctic resources that are attracting most interest (see Figure 8).\nHowever, Antarctic waters have some of the richest and least exploited fisheries in the\nworld. Antarctica’s continental shelf is geologically very similar to the richest oil and gas\nbearing strata found in Australia and South Africa, once part of the same super continent\nas Antarctica. The Antarctic land mass probably has significant mineral resources, but\nwith current technology they are beyond reach.\n8\nP66495A\nARCTIC RUSSIA\nCIRCLE Siberia\nFINLAND\nEast Siberian LOM North SVALBARD\nSea ONOSOV Pole (to Norway)\nChukchi ARCTIC RIDGE Greenland\nSea OCEAN Sea\nGREENLAND ICELAND\n(to Denmark)\nALASKA\n(to United Disko\nBay\nStates)\nKey:\nAreas where oil and gas might be discovered, showing the probability of making\na discovery in this location as a %\n100 50–99 30–49 10–29 <10\nAgreed national oﬀshore boundaries 200-nautical mile limit\nIndigenous Indigenous\nInuit population Sami population\nFigure 8\nOil and gas resources in the Arctic\nP66495A 9\nAmongst the most significant ‘resources’ that may result from the changing environment\nof the Arctic is a possible new shorter trade route between East Asia and Europe. This is\nof value not just to Russia but also to China and Japan. It is estimated that the new route\nthrough the Arctic would reduce transport costs by as much as US$ 120 trillion a year.\nATLANTIC OCEAN PACIFIC\nSuez Canal OCEAN\nINDIAN OCEAN P66495A\nKey:\n35 days via northeast passage\n48 days via Suez Canal\nFigure 9\nTrade routes between Asia and Europe\n10\nPower and borders\nAntarctica is unique because no one country has control of its territory or its resources.\nDespite the claims made in the first half of the 20th century (see Figure 10) the Antarctic\nTreaty of 1961 established the continent as international, not national. Initially signed by\n12 ‘local’ southern hemisphere countries and northern hemisphere countries that had\nplayed a role in its exploration, it now has 53 members.\nThe aims of the treaty are to:\n• ensure that it is only exploited for peaceful purposes\n• promote international scientific cooperation\n• set aside disputes and claims over territorial sovereignty.\nThere are currently 70 permanent research stations scattered across the continent of\nAntarctica. All the major superpowers are represented.\nThe treaty has yet to be tested and there are no powers of enforcement should it be\nbreached in the future. It is due to be reviewed in 2048.\nP66495A 11\n0° 60th parallel\nSOUTHERN Antarctic\nOCEAN Circle\nSouth Orkney Islands\nsouthern shelf MPA\nKing George Larsen Weddell\nIsland Ice Shelf Sea\nSOUTHERN Ronne Ice Amundsen-Scott,\nOCEAN Shelf the US research station,\nhas been at the South\nPole since 1956\nSOUTHERN\nOCEAN\nThwaites\nGlacier\nRoss Ice Fifth Chinese research\nShelf station under construction\non Inexpressible Island\nRoss Sea\nRoss Sea region MPA\nKrill\nresearch\nzone\nSOUTHERN\nOCEAN\nKey: Marine protected area Chinese research station\n(MPA) Other research station\nUS research station\nIce shelf\nRussian research station\nFigure 10\nTerritorial claims and research stations in the Antarctic, 2015\n12\nP66495A\nThe laws governing the oceans are complex. All countries have territorial sovereignty\nover the first 200 nautical miles of sea bed off their coastline, called the EEZ (Exclusive\nEconomic Zone).\nBeyond the EEZs, the sea belongs to no nation. However, the Law of the Sea allows some\nnations to extend their claims if their continental shelf extends into international waters\nbeyond their EEZ. Under this clause, Russia has claimed the seabed and the marine\nresources around the Lomonosov ridge, an underwater mountain ridge crossing the\nArctic (see Figure 11).\nIn the case of Antarctica with no territorial sovereignty and its nearest land neighbour\nnearly 1,000 km away, its coastal waters are also international.\nARCTIC CIRCLE – 66°33N\nRUSSIA\nLomonosov ARCTIC\nridge OCEAN\nUNCLAIMED\nNORWAY DENMARK\nSVALBARD\nBering (to Norway)\nSea\nGREENLAND FAROES\nALASKA (to Denmark) (to Denmark)\n(to United\nStates)\nATLANTIC OCEAN\nPACIFIC CANADA\nOCEAN\nKey: Arctic territorial claims\nAgreed oﬀshore Beyond 200-nautical-mile limit\nnational boundaries\n200-nautical-mile limit Denmark Canada United States\nUnclaimed\nNorth Pole\nRussia Norway\nFigure 11\nTerritorial claims in the Arctic\nP66495A 13\nWith by far the longest Arctic coastline Russia has the most to gain from the opening\nup of the Arctic Ocean. Along with other regional powers it has militarised the region,\nreviving old bases and opening new ones. In the opinion of some, the Arctic is the next\nbattleground in the Cold War (see Figure 12).\nPACIFIC\nOCEAN\nUSA\nARCTIC CIRCLE\nNORTH AMERICA ARCTIC ASIA\nOCEAN\nCANADA RUSSIA\nNorth\nPole\nGREENLAND\nNORWAY\nATLANTIC DENMARK\nOCEAN\nKey: Arctic military bases\nRussia Norway Denmark/Greenland Canada USA\nFigure 12\nMilitary bases in the Arctic\n14\nP66495A\nBLANK PAGE\n15\nP66495A\nBLANK PAGE\nPearson Education Ltd gratefully acknowledges all following sources used in preparation of this paper: P66495A\nFigure 2 (Source: https://mashable.com/2016/12/13/warmest-year-arctic-ice-melt-report/?europe=true)\nFigure 3 (Source: NOAA Climate.gov)\nFigure 4 (Source: NOAA Climate.gov)\nFigure 5 (Source: Proceedings from the National Academy of Sciences)\nFigure 6 (Source: https://www.thearcticinstitute.org/future-arctic-shipping)\nFigure 7 (Source: Joe Sohm/Visions of America / Contributor/Getty Images & Michel Setboun / Contributor/\nGetty Images)\nFigure 12 (Source: https://www.bloomberg.com/graphics/2017-arctic/the-political-arctic/)\n16",
+  "text": "Evaluate the view that the Arctic is more likely to be a focus of both short-term and\nlong-term political conflict than Antarctica.",
   "ms": "Indicative content\nnumber AO1 (4 marks)/AO2 (12 marks)/AO3 (8 marks)\nThere is no ‘correct’ answer here, although answers that argue that whilst these\nregions continue to be contested there is an increasing likelihood of conflict in\none form or another, as a consequence of resource shortages.\nAO1\n• Globalisation in its current version has, since the 1970s, widened the\ndevelopment gap between countries and also accelerated the search for\nresources.\n• Many international conflicts originate from resource shortages.\n• Superpowers and emerging countries have substantial resource which\nwill grow in the future\n• The demands of economic growth inevitably affect the environment\nnegatively.\n• Resource usage is very uneven and that is probably not sustainable.\n• There are important IGOs that control the world economy including the\nIMF, WTO and World Bank.\n• The history is global governance is not promising\n• TNCs are important in the global economy and the global economy and\nmay be more important than national governments.\nAO2\n• Global governance is generally regarded as weak and largely ineffective\nin managing conflict making conflict more likely\n• There has been rising international tension in many regions e.g the South\nChina Sea\n• Global governance is seen by some superpowers as an intrusion into\ntheir sphere of influence so it’s unlikely to be a route pursued by many\nother than NGOs\n• The Antarctic treaty would not be fit for purpose if a superpower took it\nupon themselves to exploit the available resources\n• The Arctic is clearly contested more actively and thus more likely to be a\npotential area of disputed claims and tensions and thus probably a more\nlikely focus for conflict\n• With Russia as the dominant regional power in the Arctic recent history\ne.g. Crimea, Ukraine, might give rise to growing tensions\nIndicative content\nnumber Russians northern coast has been largely ice-bound so global warming\nmight be seen positively – this might be a general truth given the climate\n• of much of Siberia\nUnder Trump exploitation of unconventional energy sources was\n• encouraged including the Alaskan north slope\n• Indigenous peoples have their livelihoods threatened but governments\n• are very likely to ignore these issues if past policies are a guide\n• Without global governance conflict might be seen as more likely than not\nAO3 although not necessarily armed conflict\n• China is likely to be the major challenge to the USA in Antarctica whilst\n• the Russians pose the greatest threat in the Arctic\n•\n• Figure 10 (text) indicates that only 53 countries are signatories to the\n• treaty which is not enforceable\n• Figure 10 (text) indicates that the treaty has never been tested\n• Figure 10 (text) states that there are 70 research stations on the\n• continent\n• Figure 10 (text) infers that northern hemisphere countries have a\n• significant role in the management of the continent.\nFigure 10 shows that three superpowers (China, Russia, USA) have a\nsignificant presence\nFigure 11 (text) shows that there are substantial disputes in the Arctic\nover sovereignty\nFigure 11 (text) suggests that Russia is a major claimant and has the\nlargest ‘footprint’ in the Arctic\nFigure 11 (map) shows that there are several areas of overlapping\nclaims\nFigure 12 (text) confirms the above\nFigure 12 (map) shows that Russian bases outnumber all others\nSection B materials include the following points;\n1. Sea-ice changes will make both regions more accessible\n2. The changes in the Arctic are faster and more significant in their\nimpact\n3. Antarctic changes are not short-term and so less significant\nalthough that may not be the case for its off shore resources\n4. However, the remoteness of Antarctica pose more infrastructure\nissues for exploitation\nSection A materials include the following points\n1. Arctic changes are more immediate\n2. Arctic changes are faster\n3. Arctic changes are more important in the short term\n4. There are significant risks of feedback mechanisms accelerating\nchanges\nLevel Mark Descriptor\nLevel 1\n0 No rewardable material.\n1–6 • Demonstrates isolated elements of geographical knowledge\nand understanding, some of which may be inaccurate or\nLevel 2 7-12 irrelevant. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas, making limited and rarely logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an interpretation with limited\nrelevance and/or support. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an unsupported or generic\nconclusion, drawn from an argument that is unbalanced or\nlacks coherence. (AO2)\n• Makes superficial judgements about the value and reliability\nof quantitative and qualitative data/evidence. (AO3)\n• Investigates the question/issue to produce a limited\ninterpretation of quantitative and qualitative data/evidence,\nbut lacks meaningful connections to geographical ideas from\nacross the course of study. (AO3)\n• Demonstrates geographical knowledge and understanding,\nwhich is occasionally relevant and may include some\ninaccuracies. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas with limited but logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a partial interpretation that is\nsupported by some evidence but has limited coherence.\n(AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, partially\nsupported by an unbalanced argument with limited\ncoherence. (AO2)\n• Makes some valid judgements about the value and reliability\nof quantitative and qualitative data/evidence. (AO3)\n• Investigates the question/issue to produce an interpretation\nof quantitative and qualitative data/evidence, making few\nconnections to geographical ideas from across the course of\nstudy, which may not be meaningful. (AO3)\nLevel Mark Descriptor\nLevel 3 13-18\n• Demonstrates geographical knowledge and understanding,\nLevel 4 19-24 which is mostly relevant and accurate. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find some logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a partial but coherent\ninterpretation that is supported by some evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, largely supported\nby an argument that may be unbalanced or partially\ncoherent. (AO2)\n• Makes mostly valid judgements about the value and\nreliability of quantitative and qualitative data/evidence.\n(AO3)\n• Critically investigates the question/issue to produce a\ncoherent interpretation of quantitative and qualitative\ndata/evidence, making connections to relevant geographical\nideas from across the course of study, some of which are\nmeaningful. (AO3)\n• Demonstrates accurate and relevant geographical\nknowledge and understanding throughout. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find fully logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a full and coherent\ninterpretation that is supported by evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a rational, substantiated\nconclusion, fully supported by a balanced argument that is\ndrawn together coherently. (AO2)\n• Makes valid judgements about the value and reliability of\nquantitative and qualitative data/evidence throughout.\n(AO3)\n• Critically investigates the question/issue to produce a\ncoherent interpretation of quantitative and qualitative\ndata/evidence, comprehensively making meaningful\nconnections to relevant geographical ideas from across the\ncourse of study throughout the response. (AO3)\nPearson Education Limited. Registered company number 872828\nwith its registered office at 80 Strand, London, WC2R 0RL, United Kingdom",
   "pageFrom": 9,
-  "pageTo": 28,
+  "pageTo": 9,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2021 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2021 QP.pdf",
+  "rbFrom": 11,
+  "rbTo": 27,
+  "rbMissing": false
  },
  {
   "id": "g3-june2022-q1",
@@ -5990,7 +6558,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 2,
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2022 QP.pdf",
+  "rbFrom": 18,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -6011,7 +6581,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 4,
   "pageTo": 5,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2022 QP.pdf",
+  "rbFrom": 18,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -6032,7 +6604,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 6,
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2022 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2022 QP.pdf",
+  "rbFrom": 18,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -6053,8 +6627,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 7,
   "pageTo": 8,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2022 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2022 QP.pdf",
+  "rbFrom": 18,
+  "rbTo": 35,
+  "rbMissing": false
  },
  {
   "id": "g3-june2022-q4",
@@ -6074,8 +6650,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 9,
   "pageTo": 10,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2022 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2022 QP.pdf",
+  "rbFrom": 18,
+  "rbTo": 35,
+  "rbMissing": false
  },
  {
   "id": "g3-june2022-q5",
@@ -6095,8 +6673,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 11,
   "pageTo": 14,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2022 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2022 QP.pdf",
+  "rbFrom": 18,
+  "rbTo": 35,
+  "rbMissing": false
  },
  {
   "id": "g3-june2022-q6",
@@ -6111,13 +6691,15 @@ const GEO_QUESTIONS = [
   "topic": "geo-syn",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the view that without significant global action to address climate change,\nthe future of SIDS is one of decline.\n\n Turn over\n\n\nBLANK PAGE\n\nBLANK PAGE\n\nBLANK PAGE\n\nPearson Edexcel Level 3 GCE\nTime 2 hours 15 minutes Paper 9GE0/03\nreference\n\nGeography\nAdvanced\nPAPER 3\nResource Booklet\nDo not return this Booklet with the question paper.\nP70937A *P70937A*\n©2022 Pearson Education Ltd.\nQ:1/1/1/1/1/1\nThe characteristics of Small Island Developing States (SIDS)\nIn 1992 the United Nations (UN) identified a group of maritime countries that faced\nparticular challenges. Known since as ‘Small Island Developing States’ (SIDS), not all of\nthese countries are recognised states, nor are they all actually islands (e.g. Belize). An\nestimated 65 million people live in SIDS, less than 1% of the global population.\nThere is no official list of members. Most UN led SIDS projects include well over 50\ncountries, of which 38 are full members of the UN (Figure 1), with others being territories\nthat still belong to the old colonial powers (e.g. the British Virgin Islands). They are usually\ndivided into three geographical groups, Caribbean (C), Pacific (P) and the countries in the\nAtlantic, Indian Ocean, Mediterranean and South China Sea (AIMS) (Figure 1).\nMarshall Islands\nPalau The Federated Paci c SIDS\nStates of Micronesia\nPapua Nauru Republic\nNew Guinea of Kiribati\nSolomon Tuvalu\nIslands Samoa\nTimor-Leste Vanuatu Tonga\nThe Bahamas Caribbean SIDS Fiji\nBahrain\nDominican Republic Cabo\nVerde\nCuba St Kitts and Nevis\nAntigua and Barbuda Guinea\n-Bissau\nJamaica Haiti Dominica Maldives\nSt Lucia\nBelize St Vincent and\nthe Grenadines Barbados\nTrinidad and Tobago\nGrenada Comoros Seychelles Singapore\nAtlManatuircitaiunsd\nSuriname São Tomé and Indian Ocean\nGuyana Principe SIDSAIMS\nFigure 1\nThe 38 SIDS that are full members of the United Nations\n2 P70937A\n\nThe SIDS group varies in landscape, population, resources, and levels of development.\nThe challenges faced by these states are considerable and often include:\n• Small populations, although some are also growing fast, placing pressure on\nresources\n• Small land areas with limited resources as a result, especially water, energy and food\n• Enormous marine resources within the 200 nautical miles covered by a country’s\noffshore Exclusive Economic Zone (EEZ), with 30% of the world’s oceans and seas\ncontrolled by SIDS, but a limited capacity to manage these zones\n• Remoteness; many SIDS, especially in the Pacific, are remote and dispersed – Kiribati\nis made up of 33 coral atolls spread over 3.5 million km2 – an area larger than India\n• High levels of out migration including more educated people (brain drain) and a\nreliance on remittances (money sent home by expatriates)\n• Limited and sometimes problematic connectivity to the global economy; this affects\ntourism and leads to a dependency on imports\n• The number of natural hazards, both tectonic and hydro-meteorological threats\n• Climate change, rising sea levels, ocean acidification and loss of biodiversity, e.g. loss\nof coral reefs\nC = Caribbean Land area Agricultural Population Population Remoteness\nP = Pacific (km2) (2015) rank (1–186)\nAIMS = Atlantic, area Islands EEZ (km2) density 1 is most\nIndian Ocean, (per km2) remote\nMediterranean and (km2)\nSouth China Sea\nBahamas (C) 10,010 150 1,897 629,293 371,960 37 144\nHaiti (C) 27,750 18,526 40 117,376 11,263,079 405 68\nJamaica (C) 10,830 4,490 47 263,283 2,768,941 256 90\nCabo Verde (AIMS) 4,030 750 36 796,840 494,401 123 80\nComoros (AIMS) 1,861 1,550 21 164,691 717,503 386 18\nMaldives (AIMS) 300 70 900 916,189 338,442 1,128 46\nFiji (P) 18,270 4,276 463 1,281,122 874,472 48 7\nNauru (P) 20 4 1 308,502 10,032 502 12\nSamoa (P) 2,830 350 13 131,812 188,889 67 4\nVanuatu (P) 12,190 1,870 156 827,891 247,262 20 3\nFigure 2\nGeographical data for 10 selected SIDS\nP70937A 3\n Turn over\nThe island of Malé in the Maldives\nThe highest point in the Maldives is just\n5 metres above sea level. In 2009 the\nMaldivian President drew attention to\nthe country’s perilous future by holding\na cabinet meeting under water. However,\nthe Maldives remains heavily dependent\non international tourism.\nA Jamaican resort and golf course\nThe Caribbean SIDS are a favourite\ndestination for American tourists\nvisiting by cruise ship and by plane on\nall‑inclusive holidays. The environmental\nimpact is negative, especially for marine\nenvironments, above all coral reefs and\nmangrove forests.\nA volcanic island in Vanuatu\nMost Pacific SIDS are made up of highly\ndispersed islands and atolls. Many of\nthese are uninhabited and most are too\nremote to attract tourists. In common\nwith many other SIDS, their experience of\ncolonialism was almost wholly negative.\nHaiti after the 2010 earthquake\nHaiti is the poorest country in the\nAmericas with a complex and often\nunhappy relationship with the USA.\nTwelve years after the 2010 earthquake\nand despite over US$13bn in aid it has still\nnot recovered. It is regarded as a ‘fragile’\nstate by some analysts, by others as a\nvictim of neo-colonialism.\nFigure 3\nThe varied landscapes of SIDS\n4 P70937A\n\nAverage emigration rates of SIDS are far above those of other developing countries\nand high-income countries. This is true for low-skilled workers (15.6%, i.e. about 13\npercentage points above the average level of other developing countries) and for college\ngraduates (50.8%, i.e. about 37 percentage points above the average level of other\ndeveloping countries).\nSIDS with the largest brain drain rates of college graduates are Guyana (89.2%), Jamaica\n(84.7%), Grenada (84.3%), Saint Vincent and the Grenadines (81.9%), Haiti (79.0%), Tonga\n(75.6%) and Samoa (73.4%). Other SIDS have no higher education facilities whatsoever.\nNet migration rate, 2010–2015 Personal remittances received\n(as a percentage of GDP), 2010–2012\n–20 –15 –10 –5 0 5 0 5 10 15 20 25\nTonga\nSamoa\nSt Vincent and the Grenadines\nGuyana\nGrenada\nCabo Verde\nFiji\nJamaica\nHaiti\nDominican Republic\nTrinidad and Tobago\nSão Tomé and Principe\nAntigua and Barbuda\nMaldives\nVanuatu\nMauritius\nSaint Lucia\nBarbados\nBelize\nFigure 4a\nMigration rates and remittances for selected SIDS\nP70937A 5\n Turn over\nSmall Island Developing State Region Human Development Index\nrank highest to lowest\nBarbados C\n58\nMauritius AIMS 66\nTrinidad and Tobago C 67\nGrenada C 74\nAntigua and Barbuda C 78\nSaint Lucia C 86\nDominican Republic C 88\nFiji P 93\nMaldives AIMS 95\nSaint Vincent and the Grenadines C 97\nJamaica C 101\nTonga P 104\nSamoa P 111\nGuyana C 122\nCabo Verde AIMS 126\nSão Tomé and Principe AIMS 135\nVanuatu P 140\nTimor-Leste P 141\nPapua New Guinea P 155\nHaiti C 170\nFigure 4b\nHuman Development Index for 20 selected SIDS, 2020\n6 P70937A\n\nThe vulnerabilities of SIDS\nThe small size of most SIDS (17 of them are smaller than 1,000 km2) is an obstacle to\neconomic development because there is limited scope to develop economies of scale,\nwhich in turn prevents the development of a manufacturing sector.\nMost SIDS have narrowly based economies that depend on just a few products and\nresources due to their small domestic markets, distance from international markets, high\nproduction costs and limited competitiveness.\nThis leads to an almost total dependence on imported products (including fossil fuels but\nalso food), partially paid for by exporting any available raw materials and allowing the\ndevelopment of tourism, often foreign owned and controlled.\nSIDS are, on average, more severely indebted than other developing countries. In 2014,\nthe SIDS’ debt to GDP ratios stood at, on average, 57% as compared to 44% in all other\nmiddle- and low-income countries.\nTheir vulnerability also makes them unattractive for foreign investors, so some SIDS\ngovernments have offered financial services with low tax rates. In 2015 the European\nUnion identified 30 countries as tax havens; more than half were SIDS.\nGDP growth rate (%) 2005 2010 2015\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1\n0\n2000\nKey Year\nOther developing countries SIDS\nFigure 5\nGDP growth rate (%)\nEconomic growth rates for SIDS and other developing countries, 2000–2015\n10\n9\n8\n7\n6\n5\n4\n3\n2\n1\n0 2005 2010 2015\n2000\nP70937A Year 7\nKey\nNinety per cent of SIDS are in the tropics (Figure 6). Many are affected by extreme\nweather events, especially tropical cyclones (typhoons and hurricanes). Climate\nvariability, droughts and flooding are also features of their climate. The El Niño Southern\nOscillation events also produce dramatic changes in rainfall, rising sea levels and other\nweather‑related phenomena.\nEquator\nKey Tropical cyclone frequency\nSIDS Low\nHigh\nFigure 6\nThe frequency of tropical cyclones, 1990–2015",
+  "text": "Evaluate the view that without significant global action to address climate change,\nthe future of SIDS is one of decline.\n\n Turn over\n",
   "ms": "Indicative content\nnumber\nAO1 (4 marks)/AO2 (12 marks)/AO3 (8 marks)\nThere are three possible sub-questions here. One is the issue of what\nconstitutes ‘significant action’ , the second is whether it is likely to take place\nand the third should be an evaluation of what the consequences will be for\nthe SIDS of the many possible scenarios of ‘action’ and ‘inaction’\nAO1 Addressing climate change requires mitigation at a global scale\n although local actions might also have a small role\n Globalisation in its current version has widened the development gap\n between countries.\n Inequalities within countries are closely related to the political system\n and power relations.\n Superpowers and emerging countries have substantial resource\ndemands which have affected the environment negatively.\n Resource usage is very uneven and probably not sustainable.\nThere are important IGOs that control the world economy including\nthe IMF, WTO and World Bank who would have to be involved in any\nrescue package for SIDS\nTNCs are important in the global economy and have significant\ninfluence on IGOs\nAO2\n The SIDS face multiple issues many of which will be, and are being,\nexacerbated by climate change – their future is challenging because\nof some processes that are not controllable (e.g. hazards and\nlocation) but others that are potentially tractable\n Climate change is part of a much larger issue of biosphere destruction\nthat will certainly need global action to mitigate which will have huge\ncosts as will adaptation\n Some SIDS are exposed more than other nations to both climate\nchange and environmental destruction – they act as canaries in the\nglobal local mine\n There is plenty of evidence that global action to deal with climate\nchange is unlikely – the prognosis since Paris has not been good and\nthere are very few examples of global action being taken – the\nbanning of chlorofluorocarbons might be quoted as an exception\n There are very powerful vested interests in the dominant model of\npursuing economic growth at, more or less, any cost\n This has been tested significantly during the 2020/2021 Covid crisis\nwhen ‘lockdown’ led to temporary improvements in the environment\n The ‘extinction rebellion’ remains a popular and important movement\nbut it has not, by and large made an impact in governments\n Short-termism dominates government agendas whereas mitigation\nstrategies to address both climate change and biodiversity loss\nrequire long-term planning, at a global scale\n Specific attention needs to be focused on the superpowers and\nemerging countries which have the largest carbon footprint and have\nmost to lose\n The United Nations has a patchy track record in engineering global\naction and there has been a lack of will in addressing climate change\n Other global institutions, such as the IMF and the WTO have been\npowerful players in the move to a more globalised world with support\nfor free trade, privatization and deregulation – if economic growth is\nthe problem their dominant paradigm would need to be revisited.\n The gap between rich and poor has increased partly because of the\ndistribution of power in the global economy.\n The SIDS are not politically powerful and their ‘voice’ is seldom heard\non the international diplomatic stage – thus they are unable to\nengineer change on their own\n However, with about 50 nations involved they do comprise about 20%\nof the nations who belong to the UN so they have a potential leverage\n Decision making in the UN rests with the Security Council dominated\nby the very countries that are the largest contributors to global\nwarming\n The 65 million who live in SIDS are less than 1% of the total global\npopulation\n It might reasonably be argued that some of the SIDS are already\ndoomed and that their populations will have to be offered alternative\nliving spaces e.g. the Maldives and Vanuatu\n However not all of the SIDS are so obviously doomed – Singapore is\none possible example but others are neither remote nor necessarily\nany more vulnerable than other less developed countries\n They may be threatened by other factors, not least their very\nconstrained economies and their isolation (see AO3)\nAO3 Table 1 shows that 17 of the SIDS are rated as extremely vulnerable\n on the EVI\n The outcome of the Chi-squared test is stated to be ‘significant at the\n 99% level suggesting that the SIDS are more vulnerable than most\n Figure 1 (text) states that 65 million people live in the SIDS\nFigure 2 (text and table) suggests that remoteness is an issue as\n are natural hazards and their very limited resource base given their\nsmall land areas\nFigure 3 (photographs and text) the picture and description of\nMalé shows that it is more or less at sea-level now\n Figure 3 (photographs and text) the picture shows that both Haiti\nand Vanuatu are threatened by volcanoes and earthquakes\n Figure 3 (photographs and text) the picture of Jamaica shows a\nmuch-modified landscape, and the text suggests that there are\nnegative impacts of tourism\n Figure 4 (text and graphic) high levels of out-migration and\nremittances provide evidence that the SIDS are facing significant\nchallenges that have been/will be exacerbated by climate change\n Figure 5 (text and graphic) reinforces the idea that the SIDS are\nfacing significant challenges that have been/will be exacerbated by\nclimate change\n Figures 6 and 7 (text and map/graphic) show how relatively\nhazardous the SIDS are\n Figures 8 (text) offers the view that the SIDS have been markedly\nimpacted by the 2020 collapse because of their dependence on\ninternational link\n Their dependence on tourism of these 12 SIDS shown on Figure 8 is\nthreatened by climate change – note especially the case of the\nMaldives illustrated also in Figure 3\n Figure 8 (graphic) shows data for the fall in GDP experienced by 12\nSIDS and their level of debt\n Figure 8 (graphic) also shows the amount of financial assistance\nneeded by these 12 SIDS and their ‘reserves\n Figure 9 (text) outlines the dependence of SIDS on fossil fuels both\nfor power and for transport\n Figure 9 (text) states that ‘most’ SIDS have carbon emissions <5t\nper capita because of their lack of development\n Figure 9 (text) also suggests that some SIDS might become\n‘uninhabitable’\n Figure 9 (map) shows a very uneven pattern of emissions with very\nhigh emissions in North America, Australia and Saudi Arabia but very\nlow per capita emissions in most African countries, which as with the\nSIDS are in many cases low income countries.\n Figure 10(text) suggests a link between rising carbon emissions and\nnatural disasters\n Figure 10 (graph) shows a historic upward trend in natural disasters\nin SIDS although that trend is not consistent\n Figure 11 (text) suggests that we have already locked in significant\nchanges in sea-level with more to come by the 2030s unless\nimmediate action is taken.\n Figure 11 (text) also suggest that we have ‘passed the point of no\nreturn with positive feedback loops and tipping points reached’ – this\nsuggest that it is now too late for‘significant action’\n Figure 11 (graph) shows that despite many international\n‘agreements’ greenhouse gas emissions have continued to climb\nwhich obviously threatens SIDS – in other words a distinction\nbetween promises and signifucxanr action.\nLevel Mark Descriptor\nLevel 1\n0 No rewardable material.\n1–6  Demonstrates isolated elements of geographical knowledge\nand understanding, some of which may be inaccurate or\nLevel 2 7-12 irrelevant. (AO1)\n Applies knowledge and understanding of geographical\ninformation/ideas, making limited and rarely logical\nconnections/relationships. (AO2)\n Applies knowledge and understanding of geographical\ninformation/ideas to produce an interpretation with limited\nrelevance and/or support. (AO2)\n Applies knowledge and understanding of geographical\ninformation/ideas to produce an unsupported or generic\nconclusion, drawn from an argument that is unbalanced or\nlacks coherence. (AO2)\n Makes superficial judgements about the value and reliability\nof quantitative and qualitative data/evidence. (AO3)\n Investigates the question/issue to produce a limited\ninterpretation of quantitative and qualitative data/evidence,\nbut lacks meaningful connections to geographical ideas from\nacross the course of study. (AO3)\n Demonstrates geographical knowledge and understanding,\nwhich is occasionally relevant and may include some\ninaccuracies. (AO1)\n Applies knowledge and understanding of geographical\ninformation/ideas with limited but logical\nconnections/relationships. (AO2)\n Applies knowledge and understanding of geographical\ninformation/ideas to produce a partial interpretation that is\nsupported by some evidence but has limited coherence.\n(AO2)\n Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, partially\nsupported by an unbalanced argument with limited\ncoherence. (AO2)\n Makes some valid judgements about the value and reliability\nof quantitative and qualitative data/evidence. (AO3)\n Investigates the question/issue to produce an interpretation\nof quantitative and qualitative data/evidence, making few\nconnections to geographical ideas from across the course of\nstudy, which may not be meaningful. (AO3)\nLevel 3 13-18  Demonstrates geographical knowledge and understanding,\nwhich is mostly relevant and accurate. (AO1)\nLevel 4 19-24\n Applies knowledge and understanding of geographical\ninformation/ideas to find some logical and relevant\nconnections/relationships. (AO2)\n Applies knowledge and understanding of geographical\ninformation/ideas to produce a partial but coherent\ninterpretation that is supported by some evidence. (AO2)\n Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, largely supported\nby an argument that may be unbalanced or partially\ncoherent. (AO2)\n Makes mostly valid judgements about the value and\nreliability of quantitative and qualitative data/evidence.\n(AO3)\n Critically investigates the question/issue to produce a\ncoherent interpretation of quantitative and qualitative\ndata/evidence, making connections to relevant geographical\nideas from across the course of study, some of which are\nmeaningful. (AO3)\n Demonstrates accurate and relevant geographical\nknowledge and understanding throughout. (AO1)\n Applies knowledge and understanding of geographical\ninformation/ideas to find fully logical and relevant\nconnections/relationships. (AO2)\n Applies knowledge and understanding of geographical\ninformation/ideas to produce a full and coherent\ninterpretation that is supported by evidence. (AO2)\n Applies knowledge and understanding of geographical\ninformation/ideas to come to a rational, substantiated\nconclusion, fully supported by a balanced argument that is\ndrawn together coherently. (AO2)\n Makes valid judgements about the value and reliability of\nquantitative and qualitative data/evidence throughout.\n(AO3)\n Critically investigates the question/issue to produce a\ncoherent interpretation of quantitative and qualitative\ndata/evidence, comprehensively making meaningful\nconnections to relevant geographical ideas from across the\ncourse of study throughout the response. (AO3)\nPearson Education Limited. Registered company number 872828\nwith its registered office at 80 Strand, London, WC2R 0RL, United Kingdom",
   "pageFrom": 14,
-  "pageTo": 28,
+  "pageTo": 16,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2022 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2022 QP.pdf",
+  "rbFrom": 18,
+  "rbTo": 35,
+  "rbMissing": false
  },
  {
   "id": "g3-june2023-q1",
@@ -6137,7 +6719,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 2,
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2023 QP.pdf",
+  "rbFrom": 19,
+  "rbTo": 31,
   "rbMissing": false
  },
  {
@@ -6158,7 +6742,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 4,
   "pageTo": 5,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2023 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2023 QP.pdf",
+  "rbFrom": 19,
+  "rbTo": 31,
   "rbMissing": false
  },
  {
@@ -6179,8 +6765,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 6,
   "pageTo": 7,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2023 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2023 QP.pdf",
+  "rbFrom": 19,
+  "rbTo": 31,
+  "rbMissing": false
  },
  {
   "id": "g3-june2023-q4",
@@ -6200,8 +6788,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 8,
   "pageTo": 9,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2023 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2023 QP.pdf",
+  "rbFrom": 19,
+  "rbTo": 31,
+  "rbMissing": false
  },
  {
   "id": "g3-june2023-q5",
@@ -6221,8 +6811,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 10,
   "pageTo": 14,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2023 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2023 QP.pdf",
+  "rbFrom": 19,
+  "rbTo": 31,
+  "rbMissing": false
  },
  {
   "id": "g3-june2023-q6",
@@ -6237,13 +6829,15 @@ const GEO_QUESTIONS = [
   "topic": "geo-syn",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Evaluate the view that the crisis of biodiversity loss is both more serious and more\nchallenging to solve than climate change.\n\n Turn over\n\n Turn over\n\nBLANK PAGE\n *P72621A01920* 19\nBLANK PAGE\nPearson Edexcel Level 3 GCE 9GE0/03\nMonday 12 June 2023 \nAfternoon (Time: 2 hours 15 minutes) Paper\nreference\nGeography\nAdvanced\nPaper 3\nResource Booklet\nDo not return this Resource Booklet with the question paper.\nP72621A *P72621A*\n©2023 Pearson Education Ltd.\nN:1/1/1/1/1/1/1/\nPopulation and land-use changes\n10,000 years ago the global population is estimated to have been about 4 million.\nBy 1700, the population had reached 600 million (see Figure 1).\nGrowth rate increased slowly after 1700 but accelerated in the 20th century. In the past\n50 years the growth rate has generally fallen.\nToday the global population is about 13 times larger than in 1700. However, during\nthe same period, global Gross Domestic Product (GDP) grew from 643 billion (US$) to\n120 trillion (US$). This astonishing growth has largely been a consequence of using\nfossil fuels.\nKey 2.1% in 1968 10.9 billion\nAnnual growth rate of world population in 2100\nWorld population\n2%\n1.8% 9.7 billion\n1.6% in 2050\n1.4%\n1.2% 7.7 billion\nin 2019\n1% 5 billion\nin 1987 1.08%\nin 2019\n0.8%\n0.6%\n0.4% 2.5 billion in 1950\n2 billion in 1928\n0.2% * 1 billion in 1803\n0% 600 million in 1700 1850 1900 1950 2000 2050 2100\n1700 1750 1800\nProjection\nFigure 1\nPast and projected global population growth, 1700-2100\n2 P72621A\n\nGlobal land-use has changed. 10,000 years ago 10.6 billion hectares (ha), 71% of the\nEarth’s land surface, was covered by forests, wild grassland and shrubland. The remaining\n29% was made up of uninhabitable mountains, deserts and glaciers, much as it is today.\nBy 1700, 9% of the world’s habitable land was farmed. Today that figure has risen to 46%,\nmostly grazing land for animals (see Figure 2).\n10,000 years ago 57% Forests 43% Wild grassland and shrubs\n6 billion hectares 4.6 billion hectares\n5,000 years ago 55% Forests 44% Wild grassland and shrubs\n1700 52% Forests 3% 6% 38% Wild grassland and shrubs\n1900 48% Forests 8% 16% 27% Wild grassland\nCrops Grazing land and shrubs\n2018 38% Forests 15% Crops 31% Grazing land 14%\n4 billion hectares 1.6 billion ha 3.2 billion hectares 1.48 bn ha\n2% Urban and\nbuilt-up land\nFigure 2\nChanges in the land-use of habitable land in the past 10,000 years\nP72621A 3\n Turn over\nMore than half of Europe’s forests have disappeared in the past 10,000 years. The main\nreasons are the demand for agricultural land and wood for fuel. As economies grow and\ndiets change, forest area declines rapidly before recovering through afforestation in post-\nindustrial economies.\nThe differences in modern Europe are partly explained by climate, geology, relief and\npopulation density but also by land management policies and practices.\nFor example, 60% of Iceland is glaciers and rocky desert. Most of the rest was forested\nwhen the original settlers arrived 1150 years ago. The settlers deforested it for both\nheating and construction and also grazed sheep, preventing forest regeneration. Colder\nclimates in the past also changed some lowland areas into a treeless tundra, but recent\nglobal warming has increased the area that could be reforested.\nForest area of total land area in percentages in European countries\n62.8-73.1\n1.1 52.7-62.0 1.1\n40.3-49.8 68.9 73.1 49.8\n68.9 733.31.2 52.7 49.8\n34.0-39.6 14.6 54.0\n34.8\n3130..92 52.7 42.5\n11.2\n30.8-33.5 5304.8.0\n14.6 13.0 32.7 40.3 16.7 13.8\n22.6-29.8 46.9 34.5\n34.8\n11.2 22.6 22.9 29.8\n31.0 42.5 12.4 40.6\n1.1-18.7 31.6 35.2 11.7\n13.0 34.7 30.8 15.2\nN/A 32.736.8 31.7 16.7\n34.5 28.2 31.5\nN\n31.0 34.3 12.4 40.6\n11.7\n31.6 62.8 42.7 31.1\n61.5 39.6 15.2\n36.8 31.7\nFigure 3\nForest area as a percentage (%) of total land area in European countries, 2018\n4 P72621A\n\nLand management and social history also help to explain modern variations in forest\ncover. The geology, relief and climate of south-west Norway (Figure 4a) and north-west\nScotland (Figure 4b) are very similar, but the landscapes are not.\nFarms in Norway are normally much smaller than the typical farm estate in Scotland.\nLand-use in Norway’s mountains is diverse, with farm income based on a mix of\nagriculture, grazing, forestry, hunting and fishing, fuel wood production and tourism.\nTrees can grow in almost all of Scotland. However, on some of the large estates in the\nHighlands, landscapes have been deliberately transformed into open moorland, which\nlimits tree growth. Incomes and employment are often based on the hunting of deer and\nthe shooting of game birds such as grouse.\nFigure 4a\nThe forested landscape of south-west Norway\nFigure 4b\nThe deforested landscape of north-west Scotland\nP72621A 5\n Turn over\nMitigating climate change\nCO2 levels were at 415 parts per million (ppm) in 2022, significantly higher than the\nhistoric, pre-industrial levels of 280 ppm. This increase correlates with global temperature\nincreases, especially over the past 70 years. There is no serious doubt that human beings\nare responsible for this enhanced greenhouse effect.\nOther\n10%\nPower\n25%\nAgriculture\nand land-use\n24%\nTransport Planes Other\n14% 12% 5%\nBuildings Industry Ships\n6% 21%\n11% Cars\nOther Iron & steel\n36% 22% 47%\nLorries\n25%\nCement\n13%\nWaste Chemicals\n14% 15%\nFigure 5\nGlobal fossil fuel usage by sector, 2019\n6 P72621A\n\nThere are three main ways of mitigating climate change.\nThe first way is to reduce the emission of greenhouse gases created by the burning of\nfossil fuels.\nTo reduce the current dependence on fossil fuels, substitutes need to be found. There are\nseveral important challenges in achieving this.\n• There is a global dependency on oil for transport, and the manufacture of plastics\nand fertiliser. Substitutes are not immediately available for many of its uses, for\nexample as fuel for aircraft and shipping.\n• Not all power sources are always available; for example solar and wind power.\nFossil fuels and nuclear energy offer flexibility because they can be used at\ndifferent rates at different times depending on demand.\n• Many renewable sources have low power densities. This is a measure of the\namount of power (watts) generated per square metre, (see Figure 6). Power\ndensities for fossil fuels are often high, ranging from >10,000w/m2 to 200w/m2.\nFor example, the USA provides for all its energy needs using just 0.5% of its land\narea. A complete switch to renewable energy would require about 50% of its\nland area.\nEnergy Source Median Power Issues\nNuclear Power Density\nSolar Power watts/m2 Worries about safety and storage costs of\nWind Power 240 nuclear waste.\nGeothermal 6.5\nBiofuels 1.8 Very difficult to store and creates an\nHydroelectric Power 1.0 unappealing landscape.\n0.8 Also very difficult to store and creates an\nunappealing landscape.\n0.2\nOnly economically profitable in a few\nlocations such as Iceland.\nLikely to lead to a net increase in emissions\nif forest is removed to make way for\nplantations.\nMay increase greenhouse gas emissions with\ndrowned land creating methane.\nFigure 6\nNuclear and renewable power densities\nP72621A 7\n Turn over\nThe second way of mitigating climate change is by developing technologies that extract\ngreenhouse gases from the atmosphere.\nThis can be done through carbon capture and storage (CCS). Currently the cost of\nextracting a tonne of CO2 is between $100 and $250. Almost any switch to renewable\nenergy and therefore a reduction in CO2 emissions is cheaper, but the technology\nis improving.\nThe third way of mitigating climate change is to reduce the amount of incoming energy\nfrom the sun with various methods of solar radiation management (SRM).\nBoth CCS and SRM are examples of artificial geo-engineering, the costs of which are\ndisputed. These technologies have support and investment from many transnational\ncorporations (TNCs) including fossil fuel TNCs. There are also significant concerns about\nthe science behind some artificial geo-engineering, especially SRM.\nNatural geo-engineering is promoting forest growth through reforestation and rewilding\nto achieve the same goal (see Figure 7).\nPlace giant\nre ectors in\norbit (SRM)\nShoot aerosols Grow trees Genetically\nto stratosphere (SRM) engineer crops\nIron fertilisation of sea Pump liquid Greening of\nCO into rocks deserts\nPump liquid CO (CCS)\nto deep sea\nFigure 7\nArtificial and natural geo-engineering plans to mitigate climate change",
+  "text": "Evaluate the view that the crisis of biodiversity loss is both more serious and more\nchallenging to solve than climate change.\n\n Turn over\n\n Turn over",
   "ms": "Evaluate the view that the crisis of biodiversity loss is\nnumber both more serious and more challenging to solve than\nclimate change.\n(24)\nIndicative content\nThere are several key terms to deconstruct. Firstly the issues of how one\nmeasures the seriousness of a threat – serious in what way and for who? The\nsecond is ‘challenging’ – again for who and how do these challenges manifest\nthemselves.\nAO1 There are implications for human well-being posed by climate change\n• Some evidence of afforestation growth in developed countries\n• Clear impacts on biological carbon cycle from growing demand for fuel\n• and food\nWider implications for water cycle as a consequence\n• Future emissions are uncertain because of natural factors and\n• inherent problems of prediction\nAttitudes of different countries poses challenges for any mitigation\n• policies\nIndigenous people likely to bear the brunt of climate change impacts\n•\nAO2\n• Climate change is part of a much larger issue of biosphere destruction\nthat will certainly need global action to mitigate which will have huge\ncosts as will adaptation.\n• The short-term consequences of both are significant but the long-\nterm issues are more challenging – the interrelated nature of food\nwebs is significant here.\n• There is plenty of evidence that global action to deal with climate\nchange is as ineffective as that to address global inequalities– the\nprognosis since Paris has not been good and there are very few\nexamples of global action being taken – the banning of\nchlorofluorocarbons might be quoted as an exception.\n• There are very powerful vested interests in the dominant model of\npursuing economic growth at, more or less, any cost.\n• The model of globalisation has been built around free-trade,\nderegulation, privatisation and low tax regimes. It is not clear how\nthese policies sit easily with protection of the biosphere .\nEvaluate the view that the crisis of biodiversity loss is\nnumber both more serious and more challenging to solve than\nclimate change.\n(24)\nIndicative content\n• The United Nations has a patchy track record in engineering global\naction and there has been a lack of will in addressing climate change\nand it has no power at all to influence economic and social.\ndevelopment other than through its agencies –\n• The gap between rich and poor has increased partly because of the\ndistribution of power in the global economy.\n• The countries in the developing world are not politically powerful and\ntheir ‘voice’ is seldom heard on the international diplomatic stage –\nthus they are unable to engineer change on their own. Nonetheless\nthey are critically impacted by biosphere destruction whilst the\npopulations who are causing the problem are much more insulated\nfrom its impacts\n• Rewilding implies a significant change of focus for capitalist\neconomies and there is little evidence to support the view that\ngovernments are likely to embrace this or the majority of their\npopulations.\n• For some critics, climate change is significant but sone of the\nproposed solutions e.g. SRM or DAC or simply ways of carrying in as\nbefore – emit more carbon so pump more aerosols which allows\neconomic growth to continue and therefore biosphere destruction.\n• There are short-term/long-term issues here – the global system is set\nup on short-termism both politically and economically but biosphere\ndestruction is a long-term issue.\n• It is also arguable that environmental destruction is not costed so the\nloss of rainforest species is not accounted.\nAO3\nThe booklet contains resources in Section A and Section B that would be\nused here as evidence both for and against the contentions in the title. Only\nthe Section C material is covered here.\n• Figure 8 (graphic) the overarching message of the graphic is that\nsignificant changes to species extinction began in the 18th century.\n• Figure 8 (graphic) shows that current rates of species extinction are\nunparalleled when compared to earlier times.\n• Figure 8 (graphic) all vertebrate groups have experienced a very\nrapid decline\n• Figure 8 (text) difficulty of calculating total species numbers but\nsignificance of forests\n• Figure 8 (text) particular importance of tropical rainforests in the\nglobal biodiversity\n• Figure 8 (text) stresses the concentration of biodiversity in a limited\narea\n• Figure 8 (text) sixth extinction idea – faster rate than in any\nprevious period of earth history\nEvaluate the view that the crisis of biodiversity loss is\nnumber both more serious and more challenging to solve than\nclimate change.\n(24)\nIndicative content\n• Figure 8 (text) clear acceleration of extinction in the last 100 years\nwith rates 100 to 100 times higher than in previous periods\n• earthquake has been a depressing example of ‘disaster capitalism’\n• Figure 9 (text) shows that there are a significant range of threats to\nbiodiversity of which climate change is just one\n• Figure 9(text) shows that there are many causes for species loss\n• Figure 9 (text) shows that pollution and land use changes ae\nsignificant\n• Figure 9 (graphic) Top seven are all meat/dairy based\n• Figure 9 (graphic) Bottom seven are all vegetable/fruit based\n• Figure 9 (graphic) Differences are very large so meat x100 land\nusage when compared with tofu etc.\n• Figure 9 (text) reminder about rewilding and land shortages\n• Figure 9 (text) reminder about the land gained form vegetarianism\nand veganism.\n• Figure 10 (graphic) shows that debate is highly political\n• Figure 10 (graphic) shows that it is especially polarised in the USA\n89/40\n• Figure 10 (graphic) more consistency of opinion in South Korea,\nJapan and France\nLevel Mark Descriptor\nLevel 1\n0 No rewardable material.\n1–6 • Demonstrates isolated elements of geographical knowledge\nand understanding, some of which may be inaccurate or\nLevel 2 7-12 irrelevant. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas, making limited and rarely logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an interpretation with limited\nrelevance and/or support. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an unsupported or generic\nconclusion, drawn from an argument that is unbalanced or\nlacks coherence. (AO2)\n• Makes superficial judgements about the value and reliability\nof quantitative and qualitative data/evidence. (AO3)\n• Investigates the question/issue to produce a limited\ninterpretation of quantitative and qualitative data/evidence,\nbut lacks meaningful connections to geographical ideas from\nacross the course of study. (AO3)\n• Demonstrates geographical knowledge and understanding,\nwhich is occasionally relevant and may include some\ninaccuracies. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas with limited but logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a partial interpretation that is\nsupported by some evidence but has limited coherence.\n(AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, partially\nsupported by an unbalanced argument with limited\ncoherence. (AO2)\n• Makes some valid judgements about the value and reliability\nof quantitative and qualitative data/evidence. (AO3)\n• Investigates the question/issue to produce an interpretation\nof quantitative and qualitative data/evidence, making few\nconnections to geographical ideas from across the course of\nstudy, which may not be meaningful. (AO3)\nLevel Mark Descriptor\nLevel 3 13-18\n• Demonstrates geographical knowledge and understanding,\nLevel 4 19-24 which is mostly relevant and accurate. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find some logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a partial but coherent\ninterpretation that is supported by some evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, largely supported\nby an argument that may be unbalanced or partially\ncoherent. (AO2)\n• Makes mostly valid judgements about the value and\nreliability of quantitative and qualitative data/evidence.\n(AO3)\n• Critically investigates the question/issue to produce a\ncoherent interpretation of quantitative and qualitative\ndata/evidence, making connections to relevant geographical\nideas from across the course of study, some of which are\nmeaningful. (AO3)\n• Demonstrates accurate and relevant geographical\nknowledge and understanding throughout. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find fully logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a full and coherent\ninterpretation that is supported by evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a rational, substantiated\nconclusion, fully supported by a balanced argument that is\ndrawn together coherently. (AO2)\n• Makes valid judgements about the value and reliability of\nquantitative and qualitative data/evidence throughout.\n(AO3)\n• Critically investigates the question/issue to produce a\ncoherent interpretation of quantitative and qualitative\ndata/evidence, comprehensively making meaningful\nconnections to relevant geographical ideas from across the\ncourse of study throughout the response. (AO3)\nPearson Education Limited. Registered company number 872828\nwith its registered office at 80 Strand, London, WC2R 0RL, United Kingdom",
   "pageFrom": 14,
-  "pageTo": 28,
+  "pageTo": 17,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2023 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2023 QP.pdf",
+  "rbFrom": 19,
+  "rbTo": 31,
+  "rbMissing": false
  },
  {
   "id": "g3-june2024-q1",
@@ -6263,7 +6857,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 2,
   "pageTo": 3,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2024 QP.pdf",
+  "rbFrom": 20,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -6284,7 +6880,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 4,
   "pageTo": 5,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2024 QP.pdf",
+  "rbFrom": 20,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -6305,7 +6903,9 @@ const GEO_QUESTIONS = [
   "pageFrom": 6,
   "pageTo": 6,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2024 QP.pdf",
-  "rb": null,
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2024 QP.pdf",
+  "rbFrom": 20,
+  "rbTo": 35,
   "rbMissing": false
  },
  {
@@ -6326,8 +6926,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 7,
   "pageTo": 8,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2024 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2024 QP.pdf",
+  "rbFrom": 20,
+  "rbTo": 35,
+  "rbMissing": false
  },
  {
   "id": "g3-june2024-q4",
@@ -6347,8 +6949,10 @@ const GEO_QUESTIONS = [
   "pageFrom": 9,
   "pageTo": 10,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2024 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2024 QP.pdf",
+  "rbFrom": 20,
+  "rbTo": 35,
+  "rbMissing": false
  },
  {
   "id": "g3-june2024-q5",
@@ -6359,16 +6963,41 @@ const GEO_QUESTIONS = [
   "option": null,
   "q": "5",
   "part": "",
-  "marks": 42,
+  "marks": 18,
   "topic": "geo-syn",
   "topicConfident": true,
   "inSpec": true,
-  "text": "Study the resources in Section B of the Resource Booklet.\nEvaluate the view that Haiti’s colonial past is the main reason for its current level of\ndevelopment.\n Turn over\n\n Turn over\n\nYou should have read the whole of the Resource Booklet, including Section C,\nbefore attempting this question.\n6 ‘If the Haitian population is to have a prosperous future it needs international action\nto build a sustainable economy’. Evaluate this view.\n Turn over\n\n Turn over\n\n\nBLANK PAGE\nPearson Edexcel Level 3 GCE 9GE0/03\nMonday 10 June 2024 \nAfternoon (Time: 2 hours 15 minutes) Paper reference\nGeography\nAdvanced\nPAPER 3\nResource Booklet\nDo not return this Booklet with the question paper.\nP74466A *P74466A*\n©2024 Pearson Education Ltd.\nF:1/1/1/1/1/1/1/1/1\nHaiti, ‘the poorest country in the Americas’\nHaiti is a small country of 27,065 km2. It is situated at the western end of the Caribbean\nisland of Hispaniola. Most of this island is occupied by the Dominican Republic.\nMuch of Haiti is mountainous. Slopes are often steep, with nearly two thirds having\ngradients greater than 20%. Its climate is tropical.\nIt is located in a tectonically active region and is also subjected to frequent tropical\nstorms and hurricanes. On the 2020 Climate Risk Index, Haiti is third among the countries\nmost affected by severe weather events.\nThe population of 11.6 million mostly live on coastal lowlands. It has an average\npopulation density of 414 per km2. Almost 3 million live in the capital city, Port-au-Prince.\nHowever, 40% of Haitians still live in rural areas.\nCuba Atlantic\nOcean\nPort-de-Paix\nCap-Haitien\nGonaïves Dominican\nSaint-Marc Republic\nHinche\nJérémie Ile de la Gonâve\nPort-au-Prince\nN Pétion-Ville\nLes Cayes Jacmel\n0 15 30 45 Caribbean Sea\nkm\nKey 2000m 500m 0m\nNational Capital\nProvincial Capitals Roads\nLakes Rivers\n1000m 200m\nFigure 1\nHaiti\n2 P74466A\n\n• The country has one of the highest levels of food insecurity in the world, with\nmore than half of its total population food insecure. 22% of children are chronically\nmalnourished. The majority of the food insecure population live in rural areas.\n• Two of the main reasons for food insecurity are extreme poverty and frequent natural\ndisasters.\n• A small economic and political elite of less than 1% of the Haitian population is\nextremely wealthy, including many multi-millionaires.\nGDP per % living Fertility Annual net Human Corruption\ncapita in on less rate migration Development Perception\nthan rate per 1000 Index rank\nUS$ US$5.50 (average (if negative, Index rank\na day number emigration is (1, most (1, least\n6,630 higher than corrupt to\n29 of immigration) developed, 180, most\nchildren 180, least corrupt)\nborn per developed)\nwoman)\nColombia 1.8 −0.8 83 92\nCosta Rica 13,373 11 1.7 0.8 62 42\nCuba 9,540 n/a 1.6 −1.3 70 63\nDominican 8,476 12 2.3 −2.8 88 137\nRepublic\nHaiti 1,819 79 2.9 −3.2 170 170\nHonduras 3,040 49 2.4 −0.7 132 157\nJamaica 5,185 30 2.0 −3.9 101 69\nMexico 11,091 23 2.1 −0.5 74 124\nNicaragua 2,255 35 2.4 −3.3 128 159\nPanama 17,358 13 2.4 2.7 57 111\n62,866 2.9\nUnited 11 1.7 17 25\nStates 3,460 −22.3\n33 2.3 113 176\nVenezuela\nFigure 2\nSelected data for Haiti and some of its neighbours, 2019\nP74466A 3\n Turn over\nThousands of US$ Cuba\n10\n9\n8\nDominican",
+  "text": "Study the resources in Section B of the Resource Booklet.\nEvaluate the view that Haiti’s colonial past is the main reason for its current level of\ndevelopment.\n Turn over\n\n Turn over\n\nYou should have read the whole of the Resource Booklet, including Section C,\nbefore attempting this question.",
   "ms": "Study the resources in Section B of the\nnumber Resource Booklet.\nEvaluate the view that Haiti’s colonial past is the main\nreason for its current level of development.\nIndicative Content (18)\nAO1 (3 marks)/AO2 (9 marks)/AO3 (6 marks)\nAO1 Colonialism generally involves the extraction of resources by the\n• colonial power, often by force.\n• Level of development is multi-dimensional often defined as including\n• economic, social and political measures.\n• Theories of development include modernisation and dependency\ntheory but might also include resource-curse theory\n• Modernisation theory (Rostow) argues that states have to develop\ninstitutions that protect private property and develop the institutions\nthat promote capitalism (private property, banks, legal systems).\nDependency theories argue that institutional reform is not enough\nbecause local elites and core economies combine to reinforce\ninequalities land ownership and political control.\nAO2 Development is a multi-facetted concept – it has economic, social\n• and environmental elements of which the last is often neglected .\n• All economic development must start with the extraction and/or the\ngrowth of resources which is necessarily damaging to the\n• environment.\nNatural resources change over time as we develop the technology to\n• use them – for Haiti the natural resources in question were the\nfertile soils which grew the sugar crop.\nIn some/many cases the ownership of those resources is highly\nuneven as are/were the benefits.\nStudy the resources in Section B of the\nnumber Resource Booklet.\nEvaluate the view that Haiti’s colonial past is the main\nreason for its current level of development.\nIndicative Content (18)\n• The pathway to economic development has invariably meant the\ndevelopment of a manufacturing base which in turn requires a\nsizeable domestic market to build a comparative advantage through\nexpertise and scale economies – colonialism did not encourage this\ntype of development.\n• The destruction of natural environments in many countries brings\neconomic benefits to some but at great cost to the environment –\nthis was the case in Haiti and remains so today.\n• Climate change is likely to accelerate this destruction making\nsustainability much more challenging.\n• This is a positive feedback loop in which, for example, expanding\ninternational tourism leads to further greenhouse gas emissions\nwhich in turn accelerates global warming and so on, threatening\nlow-lying nations and coastlines with more powerful storms.\n• More sustainable options might be possible but there is a tension\nbetween capitalism and environmentalism with developed countries\nplaying a major role, including their TNCs.\n• Figure 2 carries some messages about Haiti’s governance both\nindirectly through the HDI data and more directly through the\nmeasurement of corruption perception.\n• Figure 3 might be interpreted as a counter view assuming that many\ncountries have similar histories – Jamaica might be quoted here\ngiven the parallels.\nAO3 Much of Section A shows that Haiti has many physical challenges\n• that will also play a role it its low level of development.\nThese challenges\n• Figure 2 also shows that Haiti is something of an outlier with social\n• and economic data that is often measurably worse than many of its\nneighbours.\n• Figure 3 shows that the divergence between Haiti and its\nneighbours appears to have been quite recent.\n• Figure 7 (map ) shows that many regions of the Americas were\naffected by the slave trade.\n• Figure 7 (map) also shows that many slaves went to the Caribbean\n• Figure 7 (map) shows that west Africa was the main source\nStudy the resources in Section B of the\nnumber Resource Booklet.\nEvaluate the view that Haiti’s colonial past is the main\nreason for its current level of development.\nIndicative Content (18)\n• Figure 7 (text) identifies the history of the Caribbean as being\n‘complex and brutal’.\n• Figure 7 (text) also identifies the transatlantic slave trade as being\n‘dominated by France and Great Britain’.\n• Figure 7 (text) suggest that Jamaica was the British equivalent to\nthe French ‘Haiti’.\n• Figure 7 (text) references the enormous wealth extracted by the\nFrench (planation owners) becoming,along with Jamaica as ‘the\nrichest colonies of all time’.\n• Figure 7 (text) references the revolution and the subsequent\npenalties paid by the Haitian government to France crippling its\neconomy.\n• Figure 8 shows that unemployment has almost doubled in30 years\n• Figure 9 (text and photo 1) suggests that there internal obstacles\nto development.\n• Figure 9 (text and photo 2) suggests that there are both external\ninternal obstacles to development.\n• Figure 9 (text and photo 3) suggests that US neo-colonial\nintervention has been unhelpful\n• Figure 9 (text and photo 4) suggests that tourism has been\ninhibited by political tensions – so may add that this is some part\nthe fault of the US.\nAccept any other appropriate response.\nLevel Mark Descriptor\nLevel 1\n0 No rewardable material.\n1–6 • Demonstrates isolated elements of geographical knowledge\nand understanding, some of which may be inaccurate or\nirrelevant. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas, making limited and rarely logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an interpretation with limited\nrelevance and/or support. (AO2)\nLevel Mark Descriptor\nLevel 2 7–12 • Applies knowledge and understanding of geographical\ninformation/ideas to produce an unsupported or generic\nLevel 3 13–18 conclusion, drawn from an argument that is unbalanced or\nlacks coherence. (AO2)\n• Makes superficial judgements about the value and reliability\nof quantitative and qualitative data/evidence. (AO3)\n• Investigates the question/issue to produce a limited\ninterpretation of quantitative and qualitative data/evidence,\nbut lacks meaningful connections to geographical ideas from\nacross the course of study. (AO3)\n• Demonstrates geographical knowledge and understanding,\nwhich is mostly relevant but may include some inaccuracies.\n(AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find some logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a partial but coherent\ninterpretation that is supported by some evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, partially\nsupported by an argument that may be unbalanced or\npartially coherent. (AO2)\n• Makes some valid judgements about the value and reliability\nof quantitative and qualitative data/evidence. (AO3)\n• Investigates the question/issue to produce an interpretation\nof quantitative and qualitative data/evidence, making some\nmeaningful connections to geographical ideas from across\nthe course of study. (AO3)\n• Demonstrates accurate and relevant geographical\nknowledge and understanding throughout. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find fully logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a full and coherent\ninterpretation that is supported by evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a rational, substantiated\nconclusion, fully supported by a balanced argument that is\ndrawn together coherently. (AO2)\n• Makes valid judgements about the value and reliability of\nquantitative and qualitative data/evidence throughout.\n(AO3)\nLevel Mark Descriptor\n• Critically investigates the question/issue to produce a\ncoherent interpretation of quantitative and qualitative\ndata/evidence, making meaningful connections to relevant\ngeographical ideas from across the course of study\nthroughout the response. (AO3)",
   "pageFrom": 11,
-  "pageTo": 24,
+  "pageTo": 15,
   "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2024 QP.pdf",
-  "rb": null,
-  "rbMissing": true
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2024 QP.pdf",
+  "rbFrom": 20,
+  "rbTo": 35,
+  "rbMissing": false
+ },
+ {
+  "id": "g3-june2024-q6",
+  "subject": "geography",
+  "paper": 3,
+  "series": "June 2024",
+  "section": "A",
+  "option": null,
+  "q": "6",
+  "part": "",
+  "marks": 24,
+  "topic": "geo-syn",
+  "topicConfident": true,
+  "inSpec": true,
+  "text": "‘If the Haitian population is to have a prosperous future it needs international action\nto build a sustainable economy’. Evaluate this view.\n Turn over\n\n Turn over\n",
+  "ms": "‘If the Haitian population is to have a prosperous future\nnumber it needs international action to build a sustainable\neconomy’. Evaluate the view.\n(24)\nIndicative content\nAO1 (4 marks)/AO2 (12 marks)/AO3 (8 marks)\nThere are three possible sub-questions here. One is the issue of what a\n‘sustainable (Haitian) economy’ might look like, the second is whether recent\nevidence suggests that ‘international action’ is likely to be helpful in\ndelivering that and thirdly whether the ‘population’ as a whole will benefit.\nAO1 Haiti has many challenges to overcome if it is to afford its population\n• a sustainable future.\n• Its current problems are enormously challenging and likely to became\n• more so as climate change becomes more threatening.\n• The most obvious challenge is its very high levels of poverty\n• exacerbated by inequalities.\n• Globalisation in its current version has tended to widen the\ndevelopment gap between countries.\n• Addressing climate change requires mitigation at a global scale\n• although local actions might also have a small role.\nSuperpowers and emerging countries have substantial resource\n• demands which have affected the environment negatively and are\nlikely to continue to do so.\nResource usage is very uneven and probably not sustainable.\nThere are important IGOs that control the world economy including\nthe IMF, WTO and World Bank who would have to be involved in any\ninternational action to help Haiti.\nTNCs are important in the global economy and have significant\ninfluence on IGOs; in the tourism sector they would likely be\nsignificant players in Haiti.\nAO2\n• Haiti faces multiple issues many of which will be, and are being,\nexacerbated by climate change – their future is challenging because\nof some processes that are not controllable (e.g. hazards and\nlocation) but others that are potentially more tractable.\n‘If the Haitian population is to have a prosperous future\nnumber it needs international action to build a sustainable\neconomy’. Evaluate the view.\n(24)\nIndicative content\n• Haiti’s lack of productive industry needs addressing – currently its\nproduction is completely dependent on cheap low value exports and\nraw materials/agricultural products. To date, globalisation policies\nhave not encouraged the development of manufacturing industries in\nLIDCs such as Haiti.\n• The political problems are as much to do with past international\ninterventions as they are domestic problems. That suggests caution is\nneeded in encouraging policies that have, historically been unhelpful\nto the majority of the population.\n• Climate change is part of a much larger issue of biosphere destruction\nthat will certainly need global action to mitigate which will have huge\ncosts as will adaptation -in Haiti’s case deforestation needs to be\nreversed.\n• There is plenty of evidence that global action to deal with climate\nchange is as ineffective as that to address global inequalities– the\nprognosis since Paris has not been good and there are very few\nexamples of global action being taken – the banning of\nchlorofluorocarbons might be quoted as an exception.\n• There are very powerful vested interests in the dominant model of\npursuing economic growth at, more or less, any cost.\n• The model of globalisation has been built around free-trade,\nderegulation, privatisation and low tax regimes. It is not clear how\nthese policies would help the mass of the Haitian population.\n• The United Nations has a patchy track record in engineering global\naction and there has been a lack of will in addressing climate change\nand it has no power at all to influence economic and social\ndevelopment other than through its agencies – once again the Haitian\nexperience of international action has been pretty grim.\n• The gap between rich and poor has increased partly because of the\ndistribution of power in the global economy.\n• Countries such as Haiti are not politically powerful and their ‘voice’ is\nseldom heard on the international diplomatic stage – thus they are\nunable to engineer change on their own\nAO3\nThe booklet contains resources In Section A and Section B that would be\nused here as evidence both for and against the contention in the title. The\nSection C material is covered here.\n• Figure 10 (text) shows that the US has intervened frequent in Haiti.\n‘If the Haitian population is to have a prosperous future\nnumber it needs international action to build a sustainable\neconomy’. Evaluate the view.\n(24)\nIndicative content\n• Figure 10 (text) suggest that the neo-liberal model has dminated\nthe recent history of Haiti\n• Figure 10 (text) suggests that successive US politicians have\nexpressed negative and racist views concerning Haiti\n• Figure 10 (Figure) shows that Haiti’s relative level globalisation is\nvery low\n• Figure 10 (figure) shows that its overall ranking is in the bottom\n10% of countries\n• Figure 10 (figure) shows that performance in all categories is very\nweak\n• Figure 10 (figure) rank order suggests that there is a relationship\nbetween globalisation and GDP per capita\n• Figure 10 (figure) shows that comparable neighbours have a\nhigher ranking for globalisation and higher GDP per capita.\n• Figure 11 (both) shows just how little trade Haiti is engaged in\n• Figure 11 shows that it imports largely manufactured goods but also\nrice (which it once self-sufficient in) and knitted fabric.\n• Figure 11 shows that it almost exclusively exports goods\nmanufactured from the imported knitted fabric\nLevel Mark Descriptor\nLevel 1\n0 No rewardable material.\n1–6 • Demonstrates isolated elements of geographical knowledge\nand understanding, some of which may be inaccurate or\nLevel 2 7-12 irrelevant. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas, making limited and rarely logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an interpretation with limited\nrelevance and/or support. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce an unsupported or generic\nconclusion, drawn from an argument that is unbalanced or\nlacks coherence. (AO2)\n• Makes superficial judgements about the value and reliability\nof quantitative and qualitative data/evidence. (AO3)\n• Investigates the question/issue to produce a limited\ninterpretation of quantitative and qualitative data/evidence,\nbut lacks meaningful connections to geographical ideas from\nacross the course of study. (AO3)\n• Demonstrates geographical knowledge and understanding,\nwhich is occasionally relevant and may include some\ninaccuracies. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas with limited but logical\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a partial interpretation that is\nsupported by some evidence but has limited coherence.\n(AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, partially\nsupported by an unbalanced argument with limited\ncoherence. (AO2)\n• Makes some valid judgements about the value and reliability\nof quantitative and qualitative data/evidence. (AO3)\n• Investigates the question/issue to produce an interpretation\nof quantitative and qualitative data/evidence, making few\nconnections to geographical ideas from across the course of\nstudy, which may not be meaningful. (AO3)\nLevel Mark Descriptor\nLevel 3 13-18\n• Demonstrates geographical knowledge and understanding,\nLevel 4 19-24 which is mostly relevant and accurate. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find some logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a partial but coherent\ninterpretation that is supported by some evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a conclusion, largely supported\nby an argument that may be unbalanced or partially\ncoherent. (AO2)\n• Makes mostly valid judgements about the value and\nreliability of quantitative and qualitative data/evidence.\n(AO3)\n• Critically investigates the question/issue to produce a\ncoherent interpretation of quantitative and qualitative\ndata/evidence, making connections to relevant geographical\nideas from across the course of study, some of which are\nmeaningful. (AO3)\n• Demonstrates accurate and relevant geographical\nknowledge and understanding throughout. (AO1)\n• Applies knowledge and understanding of geographical\ninformation/ideas to find fully logical and relevant\nconnections/relationships. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to produce a full and coherent\ninterpretation that is supported by evidence. (AO2)\n• Applies knowledge and understanding of geographical\ninformation/ideas to come to a rational, substantiated\nconclusion, fully supported by a balanced argument that is\ndrawn together coherently. (AO2)\n• Makes valid judgements about the value and reliability of\nquantitative and qualitative data/evidence throughout.\n(AO3)\n• Critically investigates the question/issue to produce a\ncoherent interpretation of quantitative and qualitative\ndata/evidence, comprehensively making meaningful\nconnections to relevant geographical ideas from across the\ncourse of study throughout the response. (AO3)\nPearson Education Limited. Registered company number 872828\nwith its registered office at 80 Strand, London, WC2R 0RL, United Kingdom",
+  "pageFrom": 15,
+  "pageTo": 18,
+  "pdf": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2024 QP.pdf",
+  "rb": "Exam questions PDFs/A-Level Geography/Paper 3 (Synoptic)/Questions/June 2024 QP.pdf",
+  "rbFrom": 20,
+  "rbTo": 35,
+  "rbMissing": false
  }
 ];
