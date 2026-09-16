@@ -3,7 +3,7 @@
 
    395 real Edexcel questions carrying 2868 marks, one
    collection per textbook chapter, each with its own scheme in
-   the same PDF. Questions already in the other banks are left out.
+   the same PDF, question and scheme pages recorded separately.
 
    Built by tools/extract-chalkface.js -- do not hand edit.
    ============================================================ */

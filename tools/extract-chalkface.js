@@ -19,9 +19,12 @@
    Y1P8 -> pu8, Y2S3 -> st2c3, Y1M9 -> me9 and so on, the same
    textbook numbering the app uses.
 
-   Questions already in the other banks (the same Edexcel
-   question reached through a different compilation) are left
-   out, matched on their wording.
+   Every question is kept, with its question pages and scheme
+   pages recorded separately so the app can show one without the
+   other. Chalkface and Yesterday's Maths are alternatives the app
+   switches between; a question also in the Yesterday's Maths
+   banks is marked `inOtherBank`. Each file's full item list is in
+   CF_MATHS_SETS[code].items for the one-at-a-time viewer.
 
    Run: node tools/extract-chalkface.js [--write] [--probe]
    ============================================================ */
@@ -398,7 +401,7 @@ function main() {
       "   Chalkface exam questions (thechalkface.net/xmqs).\n\n" +
       "   " + out.length + " real Edexcel questions carrying " + marks + " marks, one\n" +
       "   collection per textbook chapter, each with its own scheme in\n" +
-      "   the same PDF. Questions already in the other banks are left out.\n\n" +
+      "   the same PDF, question and scheme pages recorded separately.\n\n" +
       "   Built by tools/extract-chalkface.js -- do not hand edit.\n" +
       "   ============================================================ */\n\n";
     const body = "const CF_MATHS_SETS = " + JSON.stringify(sets, null, 1) + ";\n\n" +
