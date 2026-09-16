@@ -330,20 +330,35 @@ function main() {
       probe ? " " + f.kinds : "");
     if (!ok) return;
 
-    sets[code] = { name: NAMES[code], chapter: chapterOf(code) };
+    sets[code] = { name: NAMES[code], chapter: chapterOf(code), items: [] };
 
     f.index.forEach(function (row, i) {
       const it = f.items[i];
       const text = questionText(f.pages.slice(it.qFrom - 1, it.qTo).join("\n"));
       const key = norm(text).slice(0, KEYLEN);
+      const msCheck = !it.msFrom ? "none"
+        : schemeNamesQuestion(f.pages[it.msFrom - 1], row.num) ? "verified" : "unverifiable";
+
+      /* Every item goes in its file's list, duplicate or not: the Exam
+         Questions page walks the file one question at a time, and a gap
+         where a question is printed would be confusing. */
+      sets[code].items.push({
+        n: row.n, num: row.num, marks: row.marks,
+        source: row.source.replace(/_/g, " ") + " Q" + row.num,
+        qFrom: it.qFrom, qTo: it.qTo, msFrom: it.msFrom, msTo: it.msTo, msCheck: msCheck
+      });
+
       const dup = dupOf(key);
-      if (dup) {
-        /* Already banked. If it was banked from another Chalkface file, it
-           belongs to this chapter too -- the file's author put it here. */
-        if (dup.rec && dup.rec.chapters.indexOf(chapterOf(code)) < 0) dup.rec.chapters.push(chapterOf(code));
-        dupes++;
+      if (dup && dup.rec) {
+        /* The same question in an earlier Chalkface file: it belongs to this
+           chapter too -- the file's author put it here. */
+        if (dup.rec.chapters.indexOf(chapterOf(code)) < 0) dup.rec.chapters.push(chapterOf(code));
         return;
       }
+      /* Already in the Yesterday's Maths banks. Kept -- you may be using
+         Chalkface instead of those -- but marked, so a practice test that
+         draws from both never serves it twice. */
+      if (dup) dupes++;
       /* The row names the chapter the question is really on, which is
          usually the file's own but not always: Y1S3 opens with a Data
          Collection question. It is filed under both. */
@@ -362,7 +377,8 @@ function main() {
         year: year,
         pageFrom: it.qFrom, pageTo: it.qTo,
         msFrom: it.msFrom, msTo: it.msTo,
-        msCheck: !it.msFrom ? "none" : schemeNamesQuestion(f.pages[it.msFrom - 1], row.num) ? "verified" : "unverifiable",
+        msCheck: msCheck,
+        inOtherBank: !!dup,
         flags: "",
         text: text
       };
@@ -373,8 +389,8 @@ function main() {
 
   const marks = out.reduce(function (a, q) { return a + q.marks; }, 0);
   console.log("");
-  console.log(out.length + " new questions, " + marks + " marks; " + dupes +
-    " already in the other banks; " + mismatched + " files skipped (index and pages disagree)");
+  console.log(out.length + " questions, " + marks + " marks; " + dupes +
+    " of them also in the Yesterday's Maths banks; " + mismatched + " files skipped (index and pages disagree)");
 
   if (process.argv.indexOf("--write") >= 0) {
     const file = path.join(ROOT, "js", "cf-maths-exam-questions.js");

@@ -574,18 +574,31 @@ middling, two harder and one easier, and only those are totalled. */
   from the PDFs in the project folder. Nothing to download or attach - the mark scheme simply stays behind a deliberate click. */
   function questionPdf(cid) {
     const inf = Store.info(cid);
-    const sets = inf.sets || [];
+    const sets = (inf.sets || []).filter(MathsSource.wants);
     const t = Store.topic(cid);
+    const pick = (inf.sets || []).length
+      ? '<div class="row wrap" style="gap:8px;margin-bottom:10px;align-items:center">' +
+          '<span class="tiny muted">Questions from</span>' + MathsSource.toggle() + '</div>'
+      : "";
 
     if (!sets.length) {
-      return '<div class="qset"><div class="qset-head">' + UI.icon("paper") +
+      return pick + '<div class="qset"><div class="qset-head">' + UI.icon("paper") +
         '<div style="flex:1"><b>Exam questions</b>' +
-        '<div class="tiny muted">No question set is filed against this chapter yet.</div></div>' +
+        '<div class="tiny muted">' + (pick
+          ? MathsSource.name() + ' has no questions for this chapter. Try the other source.'
+          : 'No question set is filed against this chapter yet.') + '</div></div>' +
         '<button class="btn btn-sm" data-action="ch-pdf" data-id="' + cid + '" data-kind="q">Attach your own</button>' +
         '</div>' + ownPdf(cid, t) + '</div>';
     }
 
-    return sets.map(function (s, i) {
+    return pick + sets.map(function (s, i) {
+      if (MathsSource.isCf(s.key)) {
+        return '<div class="qset">' +
+          '<div class="qset-head">' + UI.icon("paper") +
+            '<div style="flex:1;min-width:0"><b>Chalkface, ' + UI.esc(s.name) + '</b>' +
+              '<div class="tiny muted">Real Edexcel questions, one at a time, each with its own mark scheme.</div></div>' +
+          '</div>' + CfViewer.html(s.key, cid) + '</div>';
+      }
       const shown = revealedMs[cid + ":" + s.key];
       return '<div class="qset">' +
         '<div class="qset-head">' + UI.icon("paper") +

@@ -3160,3 +3160,24 @@ svg.sk .sk-t{fill:var(--muted);font-size:10.5px;font-family:var(--font-body,inhe
 .geo-tree-group{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
 .geo-tree-arrow{color:var(--text-faint,#888);font-size:15px;padding:0 2px}
 .geo-tree-eqs{padding-left:14px;border-left:2px solid var(--border-strong);margin-left:4px}
+
+/* Maths question source: Yesterday's Maths or Chalkface */
+.msrc{display:inline-flex;border:1px solid var(--border-strong);border-radius:999px;overflow:hidden;flex-shrink:0}
+.msrc-btn{background:transparent;border:0;color:inherit;font:inherit;font-size:12.5px;font-weight:600;
+  padding:6px 13px;cursor:pointer;opacity:.7}
+.msrc-btn + .msrc-btn{border-left:1px solid var(--border-strong)}
+.msrc-btn.on{background:var(--accent,#3b82f6);color:#fff;opacity:1}
+.msrc-btn:not(.on):hover{opacity:1}
+
+/* A Chalkface collection, one question at a time */
+.cfv-list{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.cfv-chip{display:inline-flex;align-items:baseline;gap:3px;min-width:38px;justify-content:center;
+  padding:4px 8px;border-radius:8px;border:1px solid var(--border-strong);background:transparent;
+  color:inherit;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+.cfv-chip small{font-size:10px;opacity:.6;font-weight:500}
+.cfv-chip.seen{border-color:rgba(34,197,94,.55)}
+.cfv-chip.on{background:var(--accent,#3b82f6);border-color:transparent;color:#fff}
+.cfv-chip.on small{opacity:.85}
+.cfv-bar{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.cfv-where{flex:1;min-width:0;text-align:center;display:flex;flex-direction:column}
+.cfv-where small{opacity:.65;font-size:12px}

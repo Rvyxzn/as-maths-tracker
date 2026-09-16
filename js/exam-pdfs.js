@@ -230,6 +230,37 @@ const CHAPTER_SETS = {
   });
 })();
 
+/* WHICH QUESTIONS YOU SEE. Yesterday's Maths (the AS and A level topic
+   sets) and Chalkface cover the same papers filed differently, so the app
+   shows one or the other, not both. Remembered on this device. */
+const MathsSource = (function () {
+  const KEY = "maths-question-source";
+  const NAMES = { ym: "Yesterday's Maths", cf: "Chalkface" };
+  let cur = null;
+  function get() {
+    if (cur) return cur;
+    try { cur = localStorage.getItem(KEY); } catch (e) { cur = null; }
+    if (!NAMES[cur]) cur = "ym";
+    return cur;
+  }
+  function set(v) {
+    if (!NAMES[v]) return;
+    cur = v;
+    try { localStorage.setItem(KEY, v); } catch (e) { /* this session only */ }
+  }
+  function isCf(setKey) { return !!(EXAM_SETS[setKey] && EXAM_SETS[setKey].root === "cf"); }
+  /* does this set belong to the source you are looking at? */
+  function wants(set) { return isCf(set.key) === (get() === "cf"); }
+  function toggle(extraClass) {
+    return '<div class="msrc' + (extraClass ? " " + extraClass : "") + '" role="group" aria-label="Question source">' +
+      Object.keys(NAMES).map(function (k) {
+        return '<button class="msrc-btn' + (get() === k ? " on" : "") + '" data-action="mq-source" data-val="' + k + '">' +
+          NAMES[k] + '</button>';
+      }).join("") + '</div>';
+  }
+  return { get: get, set: set, isCf: isCf, wants: wants, toggle: toggle, name: function (k) { return NAMES[k || get()]; } };
+})();
+
 /* Resolve a chapter to fully-formed set records */
 function setsForChapter(chapterKey) {
   const list = CHAPTER_SETS[chapterKey] || [];

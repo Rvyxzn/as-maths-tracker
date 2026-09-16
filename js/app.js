@@ -493,6 +493,7 @@ function setSidebar(open) {
     if (PaperView.handle(action, el)) return;
     if (ReportsView.handle(action, el)) return;
     if (ExamQView.handle(action, el)) return;
+    if (typeof CfViewer !== "undefined" && CfViewer.handle(action, el)) return;
     if (FlashcardsView.handle(action, el)) return;
 
     switch (action) {

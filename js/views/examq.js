@@ -30,7 +30,9 @@ const ExamQView = (function () {
   }
 
   function render(root) {
-    const sets = allExamSets();
+    /* only the collection you picked: Yesterday's Maths or Chalkface */
+    const sets = allExamSets().filter(MathsSource.wants);
+    const cf = MathsSource.get() === "cf";
     const byYear = sets.filter(inYear);
     const shown = byYear.filter(function (s) { return filter === "all" || s.paper === filter; });
     /* the paper counts follow the year filter, so "Pure (13)" means thirteen
@@ -47,9 +49,11 @@ const ExamQView = (function () {
           '<div style="flex:1;min-width:220px">' +
             '<b>Edexcel topic questions</b>' +
             '<div class="tiny muted" style="margin-top:3px">' +
-              sets.length + ' question sets with full mark schemes, filed by chapter. ' +
-              'Everything opens here, nothing to download.</div>' +
+              sets.length + ' question sets with full mark schemes, filed by chapter' +
+              (cf ? ', one question at a time with its own scheme.' : '. Everything opens here, nothing to download.') +
+            '</div>' +
           '</div>' +
+          MathsSource.toggle() +
           '<div class="chips">' +
             chip("all", "All (" + counts.all + ")") +
             chip("Pure", "Pure (" + counts.Pure + ")") +
@@ -112,14 +116,15 @@ const ExamQView = (function () {
           /* Half these topics appear twice, once at AS and once at A level,
              so the level belongs next to the name rather than in a detail
              line: "Proof" and "Proof" are otherwise the same row twice. */
-          ' <span class="pill ' + (s.level === "A level" ? "acc" : "") + '">' +
+          ' <span class="pill ' + (s.level === "A level" || s.level === "Chalkface" ? "acc" : "") + '">' +
             UI.esc(s.level || "AS") + '</span>' +
           '<div class="eq-chaps">' + chapters.map(function (c) {
             return '<span class="eq-chap' + (c.done ? " done" : "") + '">' +
               UI.ragDot(c.rag) + 'Ch ' + UI.esc(c.num) + ' ' + UI.esc(c.name) + '</span>';
           }).join("") + '</div>' +
         '</div>' +
-        '<span class="pill">questions + mark scheme</span>' +
+        '<span class="pill">' + (MathsSource.isCf(s.key)
+          ? CfViewer.itemsFor(s.key).length + ' questions' : 'questions + mark scheme') + '</span>' +
         '<span class="qz-chev">' + (open ? "▾" : "▸") + '</span>' +
       '</div>' +
       (open ? '<div class="eq-body">' +
@@ -130,6 +135,7 @@ const ExamQView = (function () {
             : "") +
           '<div class="spacer"></div>' +
         '</div>' +
+        (MathsSource.isCf(s.key) ? CfViewer.html(s.key, "eq") :
         '<div class="pdf-frame" style="height:min(72vh,820px)">' +
           '<div class="pdfv" data-src="' + s.qUrl + '"></div>' +
         '</div>' +
@@ -150,7 +156,7 @@ const ExamQView = (function () {
               '<div><b>Mark scheme hidden</b>' +
               '<div class="tiny muted" style="margin-top:4px">Work through the questions first, then mark yourself honestly.</div></div>' +
               '<button class="btn btn-primary" data-action="eq-ms-reveal" data-key="' + s.key + '">Reveal mark scheme</button>' +
-            '</div>') +
+            '</div>')) +
       '</div>' : "") +
     '</div>';
   }
@@ -173,6 +179,7 @@ const ExamQView = (function () {
         return true;
       }
       case "eq-ms-hide": delete msShown[el.dataset.key]; App.render(); return true;
+      case "mq-source": openSet = null; return CfViewer.handle(action, el);
     }
     return false;
   }

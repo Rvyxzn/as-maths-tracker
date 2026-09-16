@@ -106,11 +106,20 @@ const PracticeTest = (function () {
      the AS sets are Year 1 only and were extracted later, which is why
      they live in their own file. Nothing downstream needs to know which
      file a question came from, so they are joined here once. */
-  function examBank() {
+  /* Which questions a new test is built from follows the Maths question
+     source you picked -- Yesterday's Maths or Chalkface -- because the two
+     overlap heavily and mixing them serves the same question twice.
+     Looking a question up by key searches both, so a test built before
+     you switched still opens. */
+  function allExamBank() {
     const al = typeof MATHS_EXAM_QUESTIONS !== "undefined" ? MATHS_EXAM_QUESTIONS : [];
     const as = typeof AS_MATHS_EXAM_QUESTIONS !== "undefined" ? AS_MATHS_EXAM_QUESTIONS : [];
     const cf = typeof CF_MATHS_EXAM_QUESTIONS !== "undefined" ? CF_MATHS_EXAM_QUESTIONS : [];
     return al.concat(as, cf);
+  }
+  function examBank() {
+    const cfOn = typeof MathsSource !== "undefined" && MathsSource.get() === "cf";
+    return allExamBank().filter(function (q) { return /^cf-/.test(q.id) === cfOn; });
   }
 
   function mathsExamPool() {
@@ -312,7 +321,7 @@ const PracticeTest = (function () {
     }
     if (bits[0] === "mex") {
       const id = bits.slice(1).join(":");
-      return examBank().filter(function (q) { return q.id === id; })[0] || null;
+      return allExamBank().filter(function (q) { return q.id === id; })[0] || null;
     }
     if (bits[0] === "maths") {
       /* the chapter id itself contains a colon, so the index is the last part */

@@ -161,6 +161,10 @@ const PracticeView = (function () {
         '<div class="tiny muted">A set number of questions, one clock across all of them, and a total at ' +
           'the end. Questions are weighted towards what you are weak at and what you have never done, ' +
           'and spread across chapters so a long test is not one topic four times.</div>' +
+        (subj.id === "maths" && typeof MathsSource !== "undefined"
+          ? '<div class="row wrap" style="gap:8px;margin-top:12px;align-items:center">' +
+              '<span class="tiny muted">Exam questions from</span>' + MathsSource.toggle() + '</div>'
+          : "") +
 
         '<div class="pt-presets">' + PRESETS.map(function (p) {
           return '<button class="pt-preset" data-action="pt-preset" data-id="' + p.id + '">' +
