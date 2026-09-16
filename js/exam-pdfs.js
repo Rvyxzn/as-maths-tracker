@@ -35,7 +35,8 @@ Exam question sets, the PDFs sitting in "Exam questions PDFs".
    can point at both, and usually should: the AS set to get going, the A
    level one for what the real paper will actually ask. */
 const PDF_ROOTS = {
-  as: "Exam questions PDFs/A-Level Maths/AS maths (Year 1)/",
+  cf: "Exam questions PDFs/A-Level Maths/Chalkface/",
+  as:"Exam questions PDFs/A-Level Maths/AS maths (Year 1)/",
   al: "Exam questions PDFs/A-Level Maths/A level topics (Year 1 & 2)/"
 };
 const PDF_ROOT = PDF_ROOTS.as;   /* kept for anything still reading it */
@@ -135,6 +136,8 @@ function examSetPath(setKey, which) {
   const s = EXAM_SETS[setKey];
   if (!s) return null;
   const root = s.root || "as";
+  /* A Chalkface file holds the questions AND the schemes, one flat folder. */
+  if (root === "cf") return encodeURI(PDF_ROOTS.cf + s.q + ".pdf");
   const dirs = PDF_DIRS[root][s.dir];
   const folder = which === "ms" ? dirs.ms : dirs.q;
   const file = (which === "ms" ? s.ms : s.q) + ".pdf";
@@ -206,6 +209,26 @@ const CHAPTER_SETS = {
   me2c7: [{ key: "alForcesStat" }, { key: "alForcesDyn" }],
   me2c8: [{ key: "alIsJs" }, { key: "alVarAccel" }]
 };
+
+/* THE CHALKFACE COLLECTIONS (thechalkface.net/xmqs). One file per textbook
+   chapter, named by the numbering the app uses -- Y1P8 is Pure Year 1
+   chapter 8 -- with each question's scheme straight after it. The
+   questions themselves are in js/cf-maths-exam-questions.js. */
+(function () {
+  const names = typeof CF_MATHS_SETS !== "undefined" ? CF_MATHS_SETS : {};
+  Object.keys(names).forEach(function (code) {
+    const m = /^Y([12])([PSM])(\d+)$/.exec(code);
+    if (!m) return;
+    const file = code + "_XMQs_and_MS";
+    const key = "cf" + code;
+    EXAM_SETS[key] = {
+      paper: { P: "Pure", S: "Stats", M: "Mech" }[m[2]], name: names[code].name,
+      dir: "", root: "cf", level: "Chalkface", q: file, ms: file
+    };
+    const ch = names[code].chapter.replace(/^ch:/, "");
+    (CHAPTER_SETS[ch] = CHAPTER_SETS[ch] || []).push({ key: key });
+  });
+})();
 
 /* Resolve a chapter to fully-formed set records */
 function setsForChapter(chapterKey) {

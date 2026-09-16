@@ -109,7 +109,8 @@ const PracticeTest = (function () {
   function examBank() {
     const al = typeof MATHS_EXAM_QUESTIONS !== "undefined" ? MATHS_EXAM_QUESTIONS : [];
     const as = typeof AS_MATHS_EXAM_QUESTIONS !== "undefined" ? AS_MATHS_EXAM_QUESTIONS : [];
-    return al.concat(as);
+    const cf = typeof CF_MATHS_EXAM_QUESTIONS !== "undefined" ? CF_MATHS_EXAM_QUESTIONS : [];
+    return al.concat(as, cf);
   }
 
   function mathsExamPool() {
@@ -162,7 +163,8 @@ const PracticeTest = (function () {
            chapters, which is why a set spanning both years has none. */
         year: q.year || (spread.length === 1 ? +spread[0] : null),
         years: q.year ? [q.year] : spread.map(Number),
-        label: q.topic + " · Q" + q.num,
+        /* Chalkface questions say which paper they came from. */
+        label: q.source ? q.source + " · " + q.topic : q.topic + " · Q" + q.num,
         topic: inf.chapter.name,
         where: inf.chapter.name,
         preview: q.text
