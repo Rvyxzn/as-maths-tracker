@@ -243,63 +243,80 @@ const PdfViewer = (function () {
      normally. A double tap toggles between fit and 2x at the spot you
      tapped, the way every PDF app on a phone behaves. */
   function attachTouchZoom(container, sess, viewport) {
-    const pts = new Map();
-    let pinch = null, lastTap = 0, lastX = 0, lastY = 0;
+    /* TOUCH EVENTS, NOT POINTER EVENTS. This used to count fingers from
+       pointerdown / pointerup. But once a swipe becomes a scroll the browser
+       takes the gesture over, and the matching "finger lifted" does not
+       always arrive -- a re-render in between loses it too. A finger that
+       never lifted stayed in the count, so the next ordinary one-finger
+       swipe counted as two and zoomed: on a phone every swipe was a pinch.
+       `e.touches` is the browser's own live list of fingers on the glass,
+       so it cannot go stale. */
+    let pinch = null;
+    let tap = null, lastTap = null;
 
-    viewport.addEventListener("pointerdown", function (e) {
-      if (e.pointerType !== "touch") return;
-      pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
-      if (pts.size !== 2) return;
-      /* A second finger means this was never a stroke, drop whatever the
+    function startPinch(t) {
+      const rect = viewport.getBoundingClientRect();
+      pinch = {
+        dist: Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) || 1,
+        scale: sess.scale,
+        mx: (t[0].clientX + t[1].clientX) / 2 - rect.left,
+        my: (t[0].clientY + t[1].clientY) / 2 - rect.top
+      };
+      /* A second finger means this was never a stroke; drop whatever the
          pen had started so a pinch does not leave a stray line behind. */
       const annot = container.querySelector(".pdfv-annot");
       if (annot) {
-        try { annot.dispatchEvent(new PointerEvent("pointercancel", { pointerId: e.pointerId, bubbles: false })); }
+        try { annot.dispatchEvent(new PointerEvent("pointercancel", { bubbles: false })); }
         catch (err) { /* the stroke simply ends where it was */ }
       }
-      const a = Array.from(pts.values());
-      const rect = viewport.getBoundingClientRect();
-      pinch = {
-        dist: Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y) || 1,
-        scale: sess.scale,
-        mx: (a[0].x + a[1].x) / 2 - rect.left,
-        my: (a[0].y + a[1].y) / 2 - rect.top
-      };
+    }
+
+    viewport.addEventListener("touchstart", function (e) {
+      if (e.touches.length === 2) { startPinch(e.touches); tap = null; return; }
+      if (e.touches.length > 2) { pinch = null; tap = null; return; }
+      pinch = null;
+      const t = e.touches[0];
+      tap = { x: t.clientX, y: t.clientY, at: Date.now() };
     }, { passive: true });
 
-    viewport.addEventListener("pointermove", function (e) {
-      if (e.pointerType !== "touch" || !pts.has(e.pointerId)) return;
-      pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
-      if (!pinch || pts.size !== 2) return;
-      e.preventDefault();
-      const a = Array.from(pts.values());
-      const dist = Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y) || 1;
+    viewport.addEventListener("touchmove", function (e) {
+      if (e.touches.length !== 2) {
+        pinch = null;
+        /* a finger that travels is a swipe, not a tap */
+        if (tap && e.touches.length === 1) {
+          const t = e.touches[0];
+          if (Math.abs(t.clientX - tap.x) > 10 || Math.abs(t.clientY - tap.y) > 10) tap = null;
+        }
+        return;
+      }
+      if (!pinch) startPinch(e.touches);
+      /* Only a real two-finger pinch stops the browser scrolling. */
+      if (e.cancelable) e.preventDefault();
+      const t = e.touches;
+      const dist = Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) || 1;
       applyZoom(container, sess, pinch.scale * (dist / pinch.dist), pinch.mx, pinch.my);
     }, { passive: false });
 
-    function release(e) {
-      if (e.pointerType !== "touch") return;
-      pts.delete(e.pointerId);
-      if (pts.size < 2) pinch = null;
-    }
-
-    viewport.addEventListener("pointerup", function (e) {
-      if (e.pointerType === "touch" && !pinch && pts.size === 1) {
-        const now = Date.now();
-        const quick = now - lastTap < 300;
-        const samePlace = Math.abs(e.clientX - lastX) < 30 && Math.abs(e.clientY - lastY) < 30;
-        if (quick && samePlace) {
-          const rect = viewport.getBoundingClientRect();
-          applyZoom(container, sess, sess.scale > 1.2 ? 1 : 2, e.clientX - rect.left, e.clientY - rect.top);
-          lastTap = 0;
-        } else {
-          lastTap = now; lastX = e.clientX; lastY = e.clientY;
-        }
+    viewport.addEventListener("touchend", function (e) {
+      if (e.touches.length < 2) pinch = null;
+      if (e.touches.length || !tap) { tap = null; return; }
+      /* A double tap toggles fit and 2x at the spot tapped: two short,
+         still touches, close together in time and place. */
+      const now = Date.now();
+      const quick = now - tap.at < 250;
+      const t = e.changedTouches[0];
+      if (quick && lastTap && now - lastTap.at < 300 &&
+          Math.abs(t.clientX - lastTap.x) < 30 && Math.abs(t.clientY - lastTap.y) < 30) {
+        const rect = viewport.getBoundingClientRect();
+        applyZoom(container, sess, sess.scale > 1.2 ? 1 : 2, t.clientX - rect.left, t.clientY - rect.top);
+        lastTap = null;
+      } else {
+        lastTap = quick ? { x: t.clientX, y: t.clientY, at: now } : null;
       }
-      release(e);
+      tap = null;
     }, { passive: true });
 
-    viewport.addEventListener("pointercancel", release, { passive: true });
+    viewport.addEventListener("touchcancel", function () { pinch = null; tap = null; }, { passive: true });
   }
 
 /* Right mouse button drag pans the viewport, handy once you are
@@ -338,15 +355,22 @@ const PdfViewer = (function () {
 
   /* zoom anchored at a specific point in the viewport (cursor position) */
   function applyZoom(container, sess, newScale, anchorX, anchorY) {
-    newScale = Math.round(clampScale(newScale) * 100) / 100;
-    if (newScale === sess.scale) return;
+    /* NOT rounded. Rounding to 1% threw away every small step a trackpad
+       pinch sends -- 0.4% at a time rounds straight back to where it was --
+       so the zoom stuck and then lurched. Only the label is rounded. */
+    newScale = clampScale(newScale);
+    if (Math.abs(newScale - sess.scale) < 0.0005) return;
     const viewport = container.querySelector(".pdfv-viewport");
     const oldScale = sess.scale;
-    const contentX = (viewport.scrollLeft + anchorX) / oldScale;
+    /* The centring shift is part of where the content sits on screen, so it
+       comes out before the anchor maths and goes back in after; leaving it
+       out made zooming below fit width jump sideways. */
+    const oldOffset = sess.offset || 0;
+    const contentX = (viewport.scrollLeft + anchorX - oldOffset) / oldScale;
     const contentY = (viewport.scrollTop + anchorY) / oldScale;
     sess.scale = newScale;
     setPagesTransform(container, sess);
-    viewport.scrollLeft = contentX * newScale - anchorX;
+    viewport.scrollLeft = contentX * newScale + (sess.offset || 0) - anchorX;
     viewport.scrollTop = contentY * newScale - anchorY;
     updateZoomUI(container, sess);
     scheduleResharpen(container, sess);
@@ -360,9 +384,10 @@ const PdfViewer = (function () {
     sess.sharpenTimer = setTimeout(function () {
       sess.sharpenTimer = null;
       if (sessions.get(container) !== sess) return;
-      if (sess.sharpenedAt === sess.scale) return;
+      /* only worth redrawing once the backing store is meaningfully off */
+      if (sess.sharpenedAt && Math.abs(sess.sharpenedAt - sess.scale) / sess.scale < 0.08) return;
       sess.sharpenedAt = sess.scale;
-      if (sess.doc) renderDoc(container, sess.doc, sess);
+      if (sess.doc) renderDoc(container, sess.doc, sess, { sharpen: true });
     }, 260);
   }
 
@@ -392,6 +417,7 @@ const PdfViewer = (function () {
     const scaledWidth = naturalWidth * sess.scale;
     const vpWidth = viewport.clientWidth;
     const offset = scaledWidth < vpWidth ? Math.round((vpWidth - scaledWidth) / 2) : 0;
+    sess.offset = offset;
     pages.style.transform = "translateX(" + offset + "px) scale(" + sess.scale + ")";
   }
 
@@ -777,9 +803,52 @@ const PdfViewer = (function () {
     sess.ro.observe(viewport);
   }
 
-  function renderDoc(container, pdf, sess) {
+  function renderDoc(container, pdf, sess, opts) {
     sess.doc = pdf;                 // kept so a zoom can redraw at the new size
     const pagesEl = container.querySelector(".pdfv-pages");
+
+    /* SHARPENING AFTER A ZOOM REPLACES THE PAGES IN PLACE. It used to clear
+       the stack and redraw from scratch: the content collapsed to nothing,
+       the viewport jumped to the top, and the pages came back one by one
+       while the scroll position was restored -- every pause in a zoom made
+       the whole document flash and jump. A page's laid-out size does not
+       depend on the zoom (the transform does the magnifying), so each page
+       is drawn off screen and swapped for the old one, which moves nothing. */
+    const oldPages = pagesEl ? Array.from(pagesEl.querySelectorAll(".pdfv-page")) : [];
+    const vpNow = container.querySelector(".pdfv-viewport");
+    if (opts && opts.sharpen && oldPages.length && vpNow &&
+        /* a scrollbar appearing as you zoom narrows it slightly; same as watchWidth */
+        Math.abs((vpNow.clientWidth || 700) - sess.renderedWidth) < 40) {
+      sess.renderToken = (sess.renderToken || 0) + 1;
+      const tok = sess.renderToken;
+      const from = sess.from ? Math.max(1, Math.min(sess.from, pdf.numPages)) : 1;
+      let k = 0;
+      const step = function () {
+        if (sessions.get(container) !== sess || sess.renderToken !== tok) return;
+        if (k >= oldPages.length) return;
+        const old = oldPages[k];
+        pdf.getPage(from + k).then(function (page) {
+          if (sessions.get(container) !== sess || sess.renderToken !== tok) return;
+          const base = page.getViewport({ scale: 1 });
+          const fit = Math.max(0.6, (sess.renderedWidth - 4) / base.width);
+          const ss = superSample(sess.scale);
+          const vp = page.getViewport({ scale: fit * ss });
+          const canvas = document.createElement("canvas");
+          canvas.className = "pdfv-page";
+          canvas.width = vp.width; canvas.height = vp.height;
+          canvas.style.width = old.style.width;
+          canvas.style.height = old.style.height;
+          return renderNow(page, canvas.getContext("2d"), vp).then(function () {
+            if (sessions.get(container) !== sess || sess.renderToken !== tok) return;
+            if (old.parentNode) old.replaceWith(canvas);
+          });
+        }).catch(function () { /* keep the softer page */ })
+          .then(function () { k++; step(); });
+      };
+      step();
+      return;
+    }
+
     /* If this is a re-render (a resize, or the width refit), remember where
        the reader was before the pages are thrown away. A full-screen toggle
        has already captured it deliberately, so do not overwrite that. */
@@ -838,6 +907,7 @@ const PdfViewer = (function () {
     function finish() {
       if (stale()) return;
       setPagesTransform(container, sess); // centre the freshly-rendered pages if narrower than the panel
+      sess.sharpenedAt = sess.scale;      // drawn for this zoom already
       let maxW = 0;
       pagesEl.querySelectorAll(".pdfv-page").forEach(function (c) {
         maxW = Math.max(maxW, parseFloat(c.style.width) || 0);
