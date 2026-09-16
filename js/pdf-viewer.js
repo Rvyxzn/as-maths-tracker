@@ -236,34 +236,89 @@ const PdfViewer = (function () {
     attachTouchZoom(container, sess, viewport);
   }
 
-  /* Pinch zooms the PDF rather than the whole site. Left to itself a phone
-     takes any two-finger gesture and scales the entire page, so the toolbar
-     and the rest of the app blow up along with the paper. The CSS hands the
-     gesture over (touch-action on the viewport); one finger still scrolls
-     normally. A double tap toggles between fit and 2x at the spot you
-     tapped, the way every PDF app on a phone behaves. */
-  function attachTouchZoom(container, sess, viewport) {
-    /* TOUCH EVENTS, NOT POINTER EVENTS. This used to count fingers from
-       pointerdown / pointerup. But once a swipe becomes a scroll the browser
-       takes the gesture over, and the matching "finger lifted" does not
-       always arrive -- a re-render in between loses it too. A finger that
-       never lifted stayed in the count, so the next ordinary one-finger
-       swipe counted as two and zoomed: on a phone every swipe was a pinch.
-       `e.touches` is the browser's own live list of fingers on the glass,
-       so it cannot go stale. */
-    let pinch = null;
-    let tap = null, lastTap = null;
+  /* Pinch zooms the PDF rather than the whole site, one finger moves it,
+     and a double tap toggles between fit and 2x at the spot tapped.
 
-    function startPinch(t) {
+     THE VIEWER DOES ALL OF IT ITSELF (touch-action: none in the CSS).
+     Letting the browser scroll and the viewer zoom in the same gesture does
+     not work: once the browser has started a scroll it stops honouring
+     preventDefault, so a pinch that began with one finger a moment early
+     was scrolled by the browser and zoomed by the viewer at once -- the
+     page lurched and snapped back. Safari adds its own page zoom on top,
+     through gesture events, which are blocked here too.
+
+     Fingers are read from `e.touches`, the browser's live list. Counting
+     them from pointer events left a finger "down" whenever its lift went
+     missing, and every later one-finger swipe then zoomed. */
+  function attachTouchZoom(container, sess, viewport) {
+    let mode = null;          /* "pan" | "pinch" | null */
+    let pan = null, pinch = null, glide = null;
+    let tap = null, lastTap = null;
+    let touching = false;
+
+    const frame = function (fn) {
+      return document.visibilityState === "hidden" ? setTimeout(fn, 16) : requestAnimationFrame(fn);
+    };
+
+    /* Where a swipe goes once the PDF cannot move any further that way:
+       the page around it, so a phone can still scroll past the viewer. */
+    function outerScroller() {
+      let el = viewport.parentElement;
+      while (el && el !== document.body) {
+        const oy = getComputedStyle(el).overflowY;
+        if ((oy === "auto" || oy === "scroll") && el.scrollHeight > el.clientHeight + 1) return el;
+        el = el.parentElement;
+      }
+      return document.scrollingElement || document.documentElement;
+    }
+
+    function moveBy(dx, dy) {
+      const maxX = viewport.scrollWidth - viewport.clientWidth;
+      const maxY = viewport.scrollHeight - viewport.clientHeight;
+      const x0 = viewport.scrollLeft, y0 = viewport.scrollTop;
+      viewport.scrollLeft = Math.max(0, Math.min(maxX, x0 + dx));
+      viewport.scrollTop = Math.max(0, Math.min(maxY, y0 + dy));
+      const leftY = dy - (viewport.scrollTop - y0);
+      if (Math.abs(leftY) > 0.5) {
+        const o = outerScroller();
+        o.scrollTop += leftY;
+      }
+    }
+
+    function stopGlide() { if (glide) { glide.stop = true; glide = null; } }
+
+    function startGlide(vx, vy) {
+      if (Math.hypot(vx, vy) < 0.25) return;           /* px per ms */
+      const g = { stop: false, vx: vx, vy: vy, last: performance.now() };
+      glide = g;
+      const tick = function () {
+        if (g.stop) return;
+        const now = performance.now();
+        const dt = Math.min(40, now - g.last);
+        g.last = now;
+        moveBy(g.vx * dt, g.vy * dt);
+        const decay = Math.pow(0.995, dt);
+        g.vx *= decay; g.vy *= decay;
+        if (Math.hypot(g.vx, g.vy) < 0.02) { glide = null; return; }
+        frame(tick);
+      };
+      frame(tick);
+    }
+
+    function beginPinch(t) {
       const rect = viewport.getBoundingClientRect();
+      const mx = (t[0].clientX + t[1].clientX) / 2 - rect.left;
+      const my = (t[0].clientY + t[1].clientY) / 2 - rect.top;
+      const off = sess.offset || 0;
       pinch = {
         dist: Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) || 1,
         scale: sess.scale,
-        mx: (t[0].clientX + t[1].clientX) / 2 - rect.left,
-        my: (t[0].clientY + t[1].clientY) / 2 - rect.top
+        /* the point on the page under the fingers, in unzoomed page units */
+        cx: (viewport.scrollLeft + mx - off) / sess.scale,
+        cy: (viewport.scrollTop + my) / sess.scale
       };
-      /* A second finger means this was never a stroke; drop whatever the
-         pen had started so a pinch does not leave a stray line behind. */
+      mode = "pinch";
+      /* a second finger means this was never a pen stroke */
       const annot = container.querySelector(".pdfv-annot");
       if (annot) {
         try { annot.dispatchEvent(new PointerEvent("pointercancel", { bubbles: false })); }
@@ -272,36 +327,70 @@ const PdfViewer = (function () {
     }
 
     viewport.addEventListener("touchstart", function (e) {
-      if (e.touches.length === 2) { startPinch(e.touches); tap = null; return; }
-      if (e.touches.length > 2) { pinch = null; tap = null; return; }
-      pinch = null;
-      const t = e.touches[0];
-      tap = { x: t.clientX, y: t.clientY, at: Date.now() };
-    }, { passive: true });
-
-    viewport.addEventListener("touchmove", function (e) {
-      if (e.touches.length !== 2) {
-        pinch = null;
-        /* a finger that travels is a swipe, not a tap */
-        if (tap && e.touches.length === 1) {
-          const t = e.touches[0];
-          if (Math.abs(t.clientX - tap.x) > 10 || Math.abs(t.clientY - tap.y) > 10) tap = null;
-        }
+      touching = true;
+      stopGlide();
+      if (e.touches.length >= 2) {
+        beginPinch(e.touches);
+        tap = null;
+        if (e.cancelable) e.preventDefault();
         return;
       }
-      if (!pinch) startPinch(e.touches);
-      /* Only a real two-finger pinch stops the browser scrolling. */
+      const t = e.touches[0];
+      /* with the pen on, one finger draws rather than moves the page */
+      mode = sess.pen ? null : "pan";
+      pan = { x: t.clientX, y: t.clientY, vx: 0, vy: 0, at: performance.now() };
+      tap = { x: t.clientX, y: t.clientY, at: Date.now() };
+    }, { passive: false });
+
+    viewport.addEventListener("touchmove", function (e) {
+      if (e.touches.length >= 2) {
+        if (e.cancelable) e.preventDefault();
+        if (mode !== "pinch") beginPinch(e.touches);
+        const t = e.touches;
+        const rect = viewport.getBoundingClientRect();
+        const dist = Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) || 1;
+        const mx = (t[0].clientX + t[1].clientX) / 2 - rect.left;
+        const my = (t[0].clientY + t[1].clientY) / 2 - rect.top;
+        /* zoom, and keep the page point that started under the fingers
+           under them as they move -- which also pans with two fingers */
+        sess.scale = clampScale(pinch.scale * dist / pinch.dist);
+        setPagesTransform(container, sess);
+        viewport.scrollLeft = pinch.cx * sess.scale + (sess.offset || 0) - mx;
+        viewport.scrollTop = pinch.cy * sess.scale - my;
+        updateZoomUI(container, sess);
+        scheduleResharpen(container, sess);
+        return;
+      }
+      if (mode !== "pan" || !pan) return;
       if (e.cancelable) e.preventDefault();
-      const t = e.touches;
-      const dist = Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY) || 1;
-      applyZoom(container, sess, pinch.scale * (dist / pinch.dist), pinch.mx, pinch.my);
+      const t = e.touches[0];
+      const now = performance.now();
+      const dx = pan.x - t.clientX, dy = pan.y - t.clientY;
+      const dt = Math.max(1, now - pan.at);
+      moveBy(dx, dy);
+      /* smoothed velocity, for the glide after the finger lifts */
+      pan.vx = 0.8 * (dx / dt) + 0.2 * pan.vx;
+      pan.vy = 0.8 * (dy / dt) + 0.2 * pan.vy;
+      pan.x = t.clientX; pan.y = t.clientY; pan.at = now;
+      if (tap && (Math.abs(t.clientX - tap.x) > 10 || Math.abs(t.clientY - tap.y) > 10)) tap = null;
     }, { passive: false });
 
     viewport.addEventListener("touchend", function (e) {
-      if (e.touches.length < 2) pinch = null;
-      if (e.touches.length || !tap) { tap = null; return; }
-      /* A double tap toggles fit and 2x at the spot tapped: two short,
-         still touches, close together in time and place. */
+      if (e.touches.length >= 2) return;
+      if (e.touches.length === 1) {
+        /* one finger left after a pinch carries on as a pan from here */
+        const t = e.touches[0];
+        mode = sess.pen ? null : "pan";
+        pan = { x: t.clientX, y: t.clientY, vx: 0, vy: 0, at: performance.now() };
+        pinch = null; tap = null;
+        return;
+      }
+      touching = false;
+      const wasPan = mode === "pan" && pan;
+      if (wasPan && performance.now() - pan.at < 80) startGlide(pan.vx, pan.vy);
+      mode = null; pinch = null; pan = null;
+
+      if (!tap) return;
       const now = Date.now();
       const quick = now - tap.at < 250;
       const t = e.changedTouches[0];
@@ -316,7 +405,27 @@ const PdfViewer = (function () {
       tap = null;
     }, { passive: true });
 
-    viewport.addEventListener("touchcancel", function () { pinch = null; tap = null; }, { passive: true });
+    viewport.addEventListener("touchcancel", function () {
+      touching = false; mode = null; pinch = null; pan = null; tap = null;
+    }, { passive: true });
+
+    /* Safari. On an iPhone these arrive alongside the touches, which already
+       do the work, so they are only blocked. On a Mac trackpad they are the
+       only sign of a pinch, so they drive the zoom. */
+    let gStart = null;
+    viewport.addEventListener("gesturestart", function (e) {
+      e.preventDefault();
+      if (!touching) gStart = { scale: sess.scale };
+    });
+    viewport.addEventListener("gesturechange", function (e) {
+      e.preventDefault();
+      if (touching || !gStart) return;
+      const rect = viewport.getBoundingClientRect();
+      applyZoom(container, sess, gStart.scale * e.scale,
+        (e.clientX || rect.left + rect.width / 2) - rect.left,
+        (e.clientY || rect.top + rect.height / 2) - rect.top);
+    });
+    viewport.addEventListener("gestureend", function (e) { e.preventDefault(); gStart = null; });
   }
 
 /* Right mouse button drag pans the viewport, handy once you are

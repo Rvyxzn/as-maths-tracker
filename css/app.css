@@ -1123,7 +1123,8 @@ PdfViewer, toolbar, zoom, pen tool, in-app full screen
 /* pan-x pan-y keeps one-finger scrolling but takes the two-finger gesture
    away from the browser, so a pinch zooms the paper and not the site. */
 .pdfv-viewport{flex:1;min-height:0;overflow:auto;position:relative;background:var(--surface-2);
-  touch-action:pan-x pan-y;overscroll-behavior:contain;scrollbar-gutter:stable;
+  /* the viewer moves and zooms the page itself; see attachTouchZoom */
+  touch-action:none;overscroll-behavior:contain;scrollbar-gutter:stable;
   /* the browser's scroll anchoring fights the zoom's own scroll maths */
   overflow-anchor:none}
 .pdfv-pages{
