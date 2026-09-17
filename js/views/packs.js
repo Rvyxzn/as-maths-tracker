@@ -233,6 +233,8 @@ const PacksView = (function () {
     return Object.keys(seen).length;
   }
   function byId(id) { return bank().filter(function (q) { return q.id === id; })[0]; }
+  /* The to-do list resolves starred questions through here rather than
+     naming a bank of its own, so Geography questions resolve too. */
 
   /* What you might type looking for a question: a word from it, the topic it
      is on, its code, or the year of the paper. A search is not worth having
@@ -1822,6 +1824,7 @@ const PacksView = (function () {
   function focus(id) { focusId = id; practiceQueue = []; caseOpen = false; }
 
   return { render: render, setSearch: setSearch, handle: handle, minutesFor: minutesFor, focus: focus,
+           byId: byId,
            questionHtml: questionHtml, msSheet: msSheet, caseFor: caseFor, caseHtml: caseHtml,
            reportFor: reportFor,
            guideFor: guideFor, bank: bank, isGeo: isGeo };

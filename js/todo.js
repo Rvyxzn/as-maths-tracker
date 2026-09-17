@@ -78,13 +78,16 @@ const Todo = (function () {
      a blank row. */
   function resolve(e) {
     if (e.kind === "question") {
-      const q = (typeof ECO_QUESTIONS !== "undefined")
-        ? ECO_QUESTIONS.filter(function (x) { return x.id === e.id; })[0] : null;
+      /* Which bank a subject reads is the packs view's business \u2014 Economics
+         and Geography have different ones \u2014 so the id is resolved there
+         rather than against a bank named here. */
+      const q = (typeof PacksView !== "undefined" && PacksView.byId) ? PacksView.byId(e.id) : null;
       if (!q) return null;
       return { kind: "question", id: e.id, at: e.at, ref: q,
                code: q.marks + " marks",
                name: (q.topicName || q.section || "Question"),
-               sub: "Paper " + q.paper + " \u00b7 " + (q.series || "") };
+               sub: [q.paper ? "Paper " + q.paper : "", q.series || ""]
+                 .filter(Boolean).join(" \u00b7 ") };
     }
     const inf = Store.info(e.id);
     if (!inf || !inf.sub) return null;
