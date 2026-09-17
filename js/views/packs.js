@@ -94,8 +94,29 @@ const PacksView = (function () {
     return q.topic === geoTopic;
   }
 
+  /* ---------- sections of the paper ----------
+     A "5 marker" in Section A of Paper 1 is 1 + 1 + 3 across three parts,
+     which is not the thing you practise when you sit down to write a five
+     mark answer. Being able to leave a section out is the difference. The
+     list is read off the bank so each subject gets its own sections, and
+     the choice is shared with the practice builder. */
+  function sectionsHere() {
+    return (typeof PracticeTest !== "undefined") ? PracticeTest.sectionsAvailable() : [];
+  }
+
+  function sectionsOn() {
+    return (typeof PracticeTest !== "undefined") ? PracticeTest.sectionsOn() : [];
+  }
+
+  function sectionOk(q) {
+    const on = sectionsOn();
+    if (!on.length) return true;
+    return !!q.section && on.indexOf(q.section) >= 0;
+  }
+
   /* Every filter a question has to pass, whichever subject. */
   function filterOk(q) {
+    if (!sectionOk(q)) return false;
     if (isGeo()) return geoOk(q);
     return (paperFilter === "all" || String(q.paper) === paperFilter) && yearOk(q);
   }
@@ -1462,6 +1483,26 @@ const PacksView = (function () {
   }
 
   /* ---------- year control ---------- */
+  /* The section chips, plus the reason you would want them. A subject whose
+     bank has no sections gets no row at all. */
+  function sectionBar() {
+    const secs = sectionsHere();
+    if (secs.length < 2) return "";
+    const on = sectionsOn();
+    const chips = secs.map(function (s) {
+      return '<button class="btn btn-sm' + (on.indexOf(s.id) >= 0 ? " btn-primary" : "") + '" ' +
+        'data-action="pack-section" data-val="' + UI.esc(s.id) + '" ' +
+        'title="' + UI.esc(SectionNote.title(s)) + '">Section ' + UI.esc(s.id) +
+        ' <span class="faint">(' + s.n + ')</span></button>';
+    }).join("");
+
+    return '<div class="row wrap" style="gap:7px;margin-top:9px">' +
+        '<button class="btn btn-sm' + (on.length ? "" : " btn-primary") + '" ' +
+          'data-action="pack-section" data-val="all">All sections</button>' + chips +
+      '</div>' +
+      '<div class="tiny faint" style="margin-top:6px">' + SectionNote.hint(secs, on) + '</div>';
+  }
+
   function yearBar() {
     const seg = function (val, label, n) {
       return '<button class="yearseg' + (yearFilter === val ? " on" : "") + '" ' +
@@ -1529,6 +1570,7 @@ const PacksView = (function () {
               'data-action="pack-paper" data-val="' + p[0] + '">' + p[1] + '</button>';
           }).join("") +
         '</div>') +
+        sectionBar() +
         /* Year 1 and Year 2 are how Economics is taught; Geography's topics
            are not split that way, so the bar is not shown for it. */
         (isGeo() ? "" : '<div style="margin-top:12px">' + yearBar() + '</div>') +
@@ -1586,7 +1628,7 @@ const PacksView = (function () {
           return '<button type="button" class="chip" data-tar="' + t + '">' + t + ' mark</button>';
         }).join("") + '</div>' +
         '<div class="tiny faint" style="margin-top:6px">Pick none and it uses every tariff. ' +
-        'The paper and year filters above still apply.</div></div>' +
+        'The section, paper and year filters above still apply.</div></div>' +
       '<div class="form-grid" style="margin-top:14px"><div class="field"><label class="label">How many questions</label><input class="input" id="packCount" type="number" min="1" placeholder="e.g. 5"></div>' +
       '<div class="field"><label class="label">Or total marks</label><input class="input" id="packMarks" type="number" min="5" placeholder="e.g. 25"></div></div>' +
       '<div class="tiny faint">Leave one blank to choose by the other. 25 marks is about ' + minutesFor(25) + ' minutes.</div>',
@@ -1684,6 +1726,16 @@ const PacksView = (function () {
       case "pack-tariff": tariff = +el.dataset.val; App.render(); return true;
       case "pack-paper":  paperFilter = el.dataset.val; App.render(); return true;
       case "pack-year":   yearFilter = el.dataset.val; App.render(); return true;
+      case "pack-section": {
+        const v = el.dataset.val;
+        if (v === "all") { PracticeTest.setSections([]); App.render(); return true; }
+        const on = sectionsOn();
+        const i = on.indexOf(v);
+        if (i >= 0) on.splice(i, 1); else on.push(v);
+        PracticeTest.setSections(on.sort());
+        App.render();
+        return true;
+      }
       case "pack-geo-topic": geoTopic = el.dataset.val; geoEq = "all"; App.render(); return true;
       case "pack-geo-eq":    geoEq = el.dataset.val; App.render(); return true;
       case "pack-random": { const pool = questions(); if (!pool.length) return true; practiceQueue = []; focusId = pool[Math.floor(Math.random() * pool.length)].id; caseOpen = false; App.render(); return true; }

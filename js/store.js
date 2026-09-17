@@ -171,6 +171,7 @@ const Store = (function () {
     if (!st.schoolAssessments) st.schoolAssessments = [];
     if (!st.packAttempts) st.packAttempts = [];
     if (!st.packTodo) st.packTodo = [];
+    if (!st.settings.sections) st.settings.sections = [];
     if (typeof Todo !== "undefined") Todo.migrate(st);
     if (!st.practiceTests) st.practiceTests = [];
     if (!st.examAttempts) st.examAttempts = [];

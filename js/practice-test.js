@@ -75,6 +75,16 @@ const PracticeTest = (function () {
     return null;
   }
 
+  /* A question printed with its own (a), (b), (c) parts rather than as one
+     prompt. It matters because a "5 marker" that is 1 + 1 + 3 across three
+     parts does not practise writing a five mark answer, and on Papers 1 and
+     2 every Section A question is one of those — 89 of them, and nothing
+     outside Section A of those two papers. The parts are printed in the
+     question text, each on its own line, which is what this reads. */
+  function isMultiPart(q) {
+    return /\n\([a-z]\)/.test(q.text || "");
+  }
+
   function ecoPool() {
     if (typeof ECO_QUESTIONS === "undefined") return [];
     return ECO_QUESTIONS.map(function (q) {
@@ -83,6 +93,13 @@ const PracticeTest = (function () {
       return {
         key: "eco:" + q.id,
         marks: q.marks,
+        /* Which section of the paper it came from. On Papers 1 and 2 a
+           Section A "5 marker" is really 1 + 1 + 3 across three parts, so
+           being able to leave those out is the difference between practising
+           a 5 mark answer and practising three fragments. */
+        section: q.section || null,
+        paper: q.paper,
+        multi: isMultiPart(q),
         cid: cid,
         cids: cid ? [cid] : [],
         subId: subId,
@@ -277,6 +294,9 @@ const PracticeTest = (function () {
       out.push({
         key: "geo:" + q.id,
         marks: q.marks,
+        section: q.section || null,
+        paper: q.paper,
+        multi: isMultiPart(q),
         cid: cid,
         cids: cids,
         subId: null,
@@ -421,11 +441,79 @@ const PracticeTest = (function () {
     return cands[cands.length - 1];
   }
 
+  /* ---------- the sections of a paper ----------
+     Which sections exist, what each is worth and how its questions are put
+     together, read off the bank rather than written down here — the two
+     subjects that have sections number them differently and a third would
+     again. Picking none means all of them, the way the tariff chips work. */
+  function sectionsAvailable(includeBank) {
+    const seen = {};
+    pool(includeBank).forEach(function (m) {
+      if (!m.section) return;
+      const s = seen[m.section] || (seen[m.section] = { id: m.section, n: 0, multi: 0, marks: {}, papers: {} });
+      s.n++;
+      if (m.multi) s.multi++;
+      s.marks[m.marks] = (s.marks[m.marks] || 0) + 1;
+      if (m.paper != null) {
+        const p = s.papers[m.paper] || (s.papers[m.paper] = { n: 0, multi: 0, marks: {} });
+        p.n++;
+        if (m.multi) p.multi++;
+        p.marks[m.marks] = true;
+      }
+    });
+    const nums = function (o) {
+      return Object.keys(o).map(Number).sort(function (a, b) { return a - b; });
+    };
+    return Object.keys(seen).sort().map(function (k) {
+      const s = seen[k];
+      /* Which papers print this section as multi-part questions and which
+         print it whole. Section A is split on Papers 1 and 2 and not on
+         Paper 3, so a section cannot be described without saying where. */
+      const splitOn = [], wholeOn = [], splitMarks = {};
+      Object.keys(s.papers).sort().forEach(function (p) {
+        if (s.papers[p].multi === s.papers[p].n) {
+          splitOn.push(p);
+          Object.keys(s.papers[p].marks).forEach(function (t) { splitMarks[t] = true; });
+        } else {
+          wholeOn.push(p);
+        }
+      });
+      return { id: s.id, n: s.n, multi: s.multi,
+               tariffs: nums(s.marks),
+               papers: Object.keys(s.papers).sort(),
+               splitPapers: splitOn, wholePapers: wholeOn,
+               /* the tariffs of the split papers only: Section A runs to 25
+                  marks on Paper 3, and saying "a 25 marker is 1 + 1 + 3"
+                  would be nonsense */
+               splitTariffs: nums(splitMarks),
+               allSplit: s.multi === s.n && s.n > 0 };
+    });
+  }
+
+  /* The sections you are working on, remembered between visits so the packs
+     and the builder agree without being set twice. */
+  function sectionsOn() {
+    try {
+      const v = Store.get().settings.sections;
+      return Array.isArray(v) ? v.slice() : [];
+    } catch (e) { return []; }
+  }
+
+  function setSections(list) {
+    Store.mutate(function (st) { st.settings.sections = (list || []).slice(); });
+  }
+
+  function sectionOk(section, on) {
+    if (!on || !on.length) return true;
+    return !!section && on.indexOf(section) >= 0;
+  }
+
   /* Everything the filters leave in play. */
   function eligible(opts) {
     const o = opts || {};
     return pool(o.includeBank).filter(function (m) {
       if (o.tariffs && o.tariffs.length && o.tariffs.indexOf(m.marks) < 0) return false;
+      if (!sectionOk(m.section, o.sections)) return false;
       if (o.minMarks && m.marks < o.minMarks) return false;
       if (o.maxMarks && m.marks > o.maxMarks) return false;
       if (o.group && o.group !== "all" && m.group !== o.group) return false;
@@ -832,6 +920,8 @@ const PracticeTest = (function () {
   return {
     supported: supported, minutesFor: minutesFor, MINS_PER_MARK: MINS_PER_MARK,
     pool: pool, eligible: eligible, choose: choose, question: question, meta: meta,
+    sectionsAvailable: sectionsAvailable, sectionsOn: sectionsOn,
+    setSections: setSections, sectionOk: sectionOk,
     examPool: mathsExamPool,
     kindOf: kindOf, lastAttempt: lastAttempt,
     all: all, get: get, live: live, history: history, unlog: unlog,

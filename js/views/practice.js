@@ -39,9 +39,34 @@ const PracticeView = (function () {
 
   function tariffsAvailable() {
     const seen = {};
-    PracticeTest.pool().forEach(function (m) { seen[m.marks] = (seen[m.marks] || 0) + 1; });
+    const on = PracticeTest.sectionsOn();
+    PracticeTest.pool().forEach(function (m) {
+      if (!PracticeTest.sectionOk(m.section, on)) return;
+      seen[m.marks] = (seen[m.marks] || 0) + 1;
+    });
     return Object.keys(seen).map(Number).sort(function (a, b) { return a - b; })
       .map(function (m) { return { marks: m, n: seen[m] }; });
+  }
+
+  /* Sections of the paper, for subjects whose papers have them. The chips
+     write the same setting the question packs read, so choosing to work on
+     Section B is a decision you make once. */
+  function sectionChips() {
+    const secs = PracticeTest.sectionsAvailable();
+    if (secs.length < 2) return "";
+    const on = PracticeTest.sectionsOn();
+    return '<div class="section-label" style="margin:18px 0 8px">Sections</div>' +
+      '<div class="row wrap" style="gap:7px">' +
+        '<button class="chip' + (on.length ? "" : " on") + '" data-action="pt-section" data-val="all">' +
+          'All sections</button>' +
+        secs.map(function (s) {
+          return '<button class="chip' + (on.indexOf(s.id) >= 0 ? " on" : "") + '" ' +
+            'data-action="pt-section" data-val="' + UI.esc(s.id) + '" ' +
+            'title="' + UI.esc(SectionNote.title(s)) + '">' +
+            'Section ' + UI.esc(s.id) + ' <span class="faint">(' + s.n + ')</span></button>';
+        }).join("") +
+      '</div>' +
+      '<div class="tiny faint" style="margin-top:6px">' + SectionNote.hint(secs, on) + '</div>';
   }
 
   function groupsAvailable() {
@@ -62,6 +87,7 @@ const PracticeView = (function () {
          scrolling past forty chapters that Year 1 cannot use is not a list,
          it is a haystack. */
       if (picked.group !== "all" && m.group !== picked.group) return;
+      if (!PracticeTest.sectionOk(m.section, PracticeTest.sectionsOn())) return;
       if (picked.year !== "all" && m.year != null && String(m.year) !== String(picked.year)) return;
       const mine = m.cids && m.cids.length ? m.cids : (m.cid ? [m.cid] : []);
       mine.forEach(function (cid) {
@@ -103,6 +129,7 @@ const PracticeView = (function () {
     const chapters = Object.keys(picked.chapters).filter(function (k) { return picked.chapters[k]; });
     return {
       tariffs: tariffs, chapters: chapters,
+      sections: PracticeTest.sectionsOn(),
       group: picked.group, year: picked.year,
       weakFirst: picked.weakFirst, unseenOnly: picked.unseenOnly,
       includeBank: picked.includeBank || needsBank(),
@@ -211,6 +238,8 @@ const PracticeView = (function () {
               }).join("") +
             '</div>'
           : "") +
+
+        sectionChips() +
 
         '<div class="section-label" style="margin:18px 0 8px">Year</div>' +
         '<div class="row wrap" style="gap:7px">' +
@@ -1015,6 +1044,17 @@ const PracticeView = (function () {
       }
       case "pt-group": readInputs(); picked.group = el.dataset.val; App.render(); return true;
       case "pt-year": readInputs(); picked.year = el.dataset.val; App.render(); return true;
+      case "pt-section": {
+        readInputs();
+        const v = el.dataset.val;
+        if (v === "all") { PracticeTest.setSections([]); App.render(); return true; }
+        const on = PracticeTest.sectionsOn();
+        const i = on.indexOf(v);
+        if (i >= 0) on.splice(i, 1); else on.push(v);
+        PracticeTest.setSections(on.sort());
+        App.render();
+        return true;
+      }
       case "pt-weak": readInputs(); picked.weakFirst = !picked.weakFirst; App.render(); return true;
       case "pt-unseen": readInputs(); picked.unseenOnly = !picked.unseenOnly; App.render(); return true;
       case "pt-chapters": readInputs(); chaptersOpen = !chaptersOpen; App.render(); return true;
