@@ -760,15 +760,11 @@ const PacksView = (function () {
   }
 
   /* ---------- the to-do list ---------- */
-  function todo() { return Store.get().packTodo || []; }
-  function onTodo(id) { return todo().indexOf(id) >= 0; }
-  function toggleTodo(id) {
-    Store.mutate(function (st) {
-      if (!st.packTodo) st.packTodo = [];
-      const i = st.packTodo.indexOf(id);
-      if (i >= 0) st.packTodo.splice(i, 1); else st.packTodo.push(id);
-    });
-  }
+  /* Questions and chapters share one list now, so a star here and a star on
+     a chapter card land in the same place. */
+  function todo() { return Todo.idsOfKind("question"); }
+  function onTodo(id) { return Todo.has("question", id); }
+  function toggleTodo(id) { Todo.toggle("question", id); }
 
   /* Everything you have scored, for the running total beside the filters. */
   function tally(list) {
@@ -1822,7 +1818,10 @@ const PacksView = (function () {
      same Economics questions inside a paper rather than one at a time. It
      lives here because this is where the extraction quirks it works around
      are documented; exporting it beats a second, drifting copy. */
-  return { render: render, setSearch: setSearch, handle: handle, minutesFor: minutesFor,
+  /* Opening a starred question from the to-do list on Today. */
+  function focus(id) { focusId = id; practiceQueue = []; caseOpen = false; }
+
+  return { render: render, setSearch: setSearch, handle: handle, minutesFor: minutesFor, focus: focus,
            questionHtml: questionHtml, msSheet: msSheet, caseFor: caseFor, caseHtml: caseHtml,
            reportFor: reportFor,
            guideFor: guideFor, bank: bank, isGeo: isGeo };

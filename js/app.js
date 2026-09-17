@@ -380,9 +380,13 @@ function setSidebar(open) {
        otherwise sit, so "this device only" stays visible rather than being a
        warning seen once at sign-in and then forgotten. */
     if (typeof Auth !== "undefined" && Auth.isSignedIn() && !Auth.isCloud() && Cloud.configured()) {
-      return '<button class="sync-chip warn" data-action="go" data-view="settings" ' +
-        'title="Guest progress is saved in this browser only. Use Settings to export a backup or move it to another device.">' +
-        'This device only</button>';
+      /* "This device only" is accurate and reads like a setting rather than a
+         warning, which is how someone ends up doing a chapter on the laptop
+         and looking for it on the desktop. Say that nothing is syncing, and
+         make the chip the way out rather than a signpost to Settings. */
+      return '<button class="sync-chip bad" data-action="not-syncing" ' +
+        'title="This profile is saved in this browser only. Nothing you do here reaches your other devices.">' +
+        'Not syncing</button>';
     }
     if (typeof Sync === "undefined" || !Sync.enabled()) return "";
     const s = Sync.state();
@@ -509,6 +513,28 @@ function setSidebar(open) {
       }
 
       case "open-topic": go("topic", { id: el.dataset.id }); return;
+
+      /* The to-do star appears on chapter cards, section rows, the chapter
+         page and the question packs, so it is handled once here rather than
+         in each view. */
+      case "todo-toggle": {
+        const on = Todo.toggle(el.dataset.kind || "chapter", el.dataset.id);
+        UI.toast(on ? "Added to your to-do list" : "Taken off your to-do list", on ? "ok" : "");
+        render();
+        return;
+      }
+      case "todo-clear": {
+        if (!Todo.count()) return;
+        UI.confirm("Clear your to-do list?",
+          "All " + Todo.count() + " starred items come off. Nothing else changes — your " +
+          "ratings, scores and plan stay exactly as they are.",
+          "Clear the list", true).then(function (ok) {
+            if (!ok) return;
+            Todo.clear(); UI.toast("To-do list cleared"); render();
+          });
+        return;
+      }
+      case "todo-open-q": PacksView.focus(el.dataset.id); go("packs"); return;
 
       /* put something on today, or take it off again, without leaving the
          page you are on */
@@ -685,6 +711,7 @@ function setSidebar(open) {
         render(); return;
       }
 
+      case "not-syncing": notSyncingModal(); return;
       case "timer-start-adhoc": timerStartModal("Study session", "adhoc", null); return;
       case "retake-assessment": retakeModal(); return;
       case "log-time": logTimeModal(); return;
@@ -2170,6 +2197,37 @@ function setSidebar(open) {
       if (!t || !t.generatedAt) return;
       Timetable.reflow("work logged");
     } catch (e) {}
+  }
+
+  /* What a device-only profile actually means, and how to leave it. */
+  function notSyncingModal() {
+    UI.modal({
+      title: "This work is only on this computer",
+      body: '<div class="warnbox bad" style="margin-top:0"><b>Nothing here is syncing</b>' +
+          'You are signed in to a profile that lives in this browser. It is never uploaded, so ' +
+          'anything you do on another device will not appear here, and anything you do here will ' +
+          'not appear there.</div>' +
+        '<div class="tiny muted" style="margin-top:12px">Sign in with Google on every device you ' +
+          'revise on and they all share one set of ratings, scores, papers and your timetable. ' +
+          'When you sign in, this device\u2019s work is offered to keep \u2014 it is not thrown away.</div>',
+      footer: '<button class="btn" data-modal-close>Not now</button>' +
+              '<button class="btn" id="nsExport">Export a backup first</button>' +
+              '<button class="btn btn-primary" id="nsSignIn">Sign in with Google</button>',
+      onMount: function (box) {
+        box.querySelector("#nsExport").onclick = function () {
+          UI.closeModal();
+          go("settings");
+        };
+        box.querySelector("#nsSignIn").onclick = function () {
+          UI.closeModal();
+          /* Signing out of the guest profile drops to the sign-in screen,
+             where the Google button lives and where the keep-this-device
+             prompt runs. The local save stays on disk throughout. */
+          Auth.signOut();
+          render();
+        };
+      }
+    });
   }
 
   function refreshTimeBars() {

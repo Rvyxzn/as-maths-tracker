@@ -112,18 +112,11 @@ const AssessmentsView = (function () {
           'raises those chapters in your plan. A mock covers everything, so it is tracked as an overall grade only.</div></div>' +
 
           '<div class="field" id="chapterField"' + (a.kind === "mock" ? ' style="display:none"' : "") + '>' +
-          '<label class="label">Chapters it covered</label>' +
-          '<div class="tiny faint" style="margin-bottom:6px">Suggested from the title as you type, tick or untick to correct it.</div>' +
-          '<div id="chapterSuggest"></div>' +
-          '<select class="input" id="chapterAdd" style="margin-top:8px">' +
-          '<option value="">+ add another chapter…</option>' +
-          SPEC.map(function (sp) {
-              return '<optgroup label="' + UI.esc(sp.short) + '">' + sp.sections.map(function (sec) {
-                  return '<option value="' + CHAPTER_PREFIX + sec.id + '">' +
-                  UI.esc("Y" + (sec.year || 1) + " Ch " + sec.num + " · " + sec.name) + '</option>';
-                }).join("") + '</optgroup>';
-            }).join("") +
-          '</select></div>' +
+          '<div class="tiny faint" style="margin-bottom:6px">Suggested from the title as you type — search, ' +
+          'or tick through the papers, to correct it.</div>' +
+          ChapterPicker.html({ heading: "Chapters it covered",
+            emptyHint: "Nothing picked yet. Type the chapter name above, or tick them off below." }) +
+          '</div>' +
 
           '<div class="field"><label class="label">What do you know about the result?</label>' +
           '<div class="chips" data-a-chips="scoreMode">' +
@@ -152,51 +145,35 @@ const AssessmentsView = (function () {
           onMount: function (box) {
             let kind = a.kind;
             let scoreMode = a.scoreMode;
-            let chosen = (a.chapterIds || []).slice();
             /* Once the student edits the ticks themselves, stop overwriting their
             choice from the title, the suggestion is a starting point, not a
             thing that keeps snatching the wheel back. */
             let userTouched = !!existing;
+            let suggesting = false;   // true only while resuggest() is writing
+            /* The picker reports its selection once as it mounts. That first
+               report is not the student touching anything, and counting it as
+               one stopped the title from ever suggesting chapters again. */
+            let ready = false;
 
             const get = function (k) { return box.querySelector('[data-a="' + k + '"]').value; };
 
-            function drawChapters() {
-              const host = box.querySelector("#chapterSuggest");
-              if (!chosen.length) {
-                host.innerHTML = '<div class="tiny faint">Nothing matched yet, type the chapter or topic name, or pick one below.</div>';
-                return;
-              }
-              host.innerHTML = '<div class="chips">' + chosen.map(function (cid) {
-                  const inf = CHAPTER_INDEX[cid];
-                  if (!inf) return "";
-                  return '<button class="chip on" data-drop="' + cid + '" title="Remove">' +
-                  UI.esc(inf.chapterLabel) + ' ✕</button>';
-                }).join("") + '</div>';
-              host.querySelectorAll("[data-drop]").forEach(function (b) {
-                  b.onclick = function () {
-                    userTouched = true;
-                    chosen = chosen.filter(function (c) { return c !== b.dataset.drop; });
-                    drawChapters();
-                  };
-                });
-            }
+            const picker = ChapterPicker.mount(box, {
+              selected: (a.chapterIds || []).slice(),
+              emptyHint: "Nothing picked yet. Type the assessment name above and it will suggest chapters, " +
+                         "or search and tick them off yourself.",
+              onChange: function () { if (ready && !suggesting) userTouched = true; }
+            });
+            ready = true;
+            const chapters = function () { return picker.get(); };
 
             function resuggest() {
               if (userTouched || kind === "mock") return;
-              chosen = SchoolAssessments.suggest(get("title"));
-              drawChapters();
+              suggesting = true;
+              picker.set(SchoolAssessments.suggest(get("title")));
+              suggesting = false;
             }
 
             box.querySelector('[data-a="title"]').addEventListener("input", resuggest);
-
-            box.querySelector("#chapterAdd").onchange = function () {
-              const v = this.value;
-              this.value = "";
-              if (!v) return;
-              userTouched = true;
-              if (chosen.indexOf(v) < 0) chosen.push(v);
-              drawChapters();
-            };
 
             box.querySelectorAll('[data-a-chips="kind"] .chip').forEach(function (c) {
                 c.onclick = function () {
@@ -205,7 +182,7 @@ const AssessmentsView = (function () {
                       x.classList.toggle("on", x.dataset.val === kind);
                     });
                   box.querySelector("#chapterField").style.display = kind === "mock" ? "none" : "";
-                  if (kind === "mock") { chosen = []; drawChapters(); }
+                  if (kind === "mock") picker.set([]);
                   else resuggest();
                 };
               });
@@ -222,7 +199,6 @@ const AssessmentsView = (function () {
               });
 
             box.querySelector("[data-a-cancel]").onclick = UI.closeModal;
-            drawChapters();
 
             box.querySelector("#saveAssessment").onclick = function () {
               const title = get("title").trim();
@@ -240,7 +216,7 @@ const AssessmentsView = (function () {
               SchoolAssessments.save({
                   id: existing ? existing.id : "sa-" + Date.now().toString(36),
                   title: title, date: get("date"), kind: kind,
-                  chapterIds: kind === "mock" ? [] : chosen,
+                  chapterIds: kind === "mock" ? [] : chapters(),
                   scoreMode: scoreMode,
                   mark: mark, total: total,
                   grade: scoreMode === "grade" ? get("grade") : null,
@@ -251,7 +227,7 @@ const AssessmentsView = (function () {
               UI.closeModal();
               UI.toast(kind === "mock"
                 ? "Mock saved, tracked as an overall grade."
-                : (chosen.length ? "Saved and attached to " + chosen.length + " chapter" + (chosen.length > 1 ? "s" : "") + "."
+                : (chapters().length ? "Saved and attached to " + chapters().length + " chapter" + (chapters().length > 1 ? "s" : "") + "."
                   : "Saved. Attach a chapter to make it affect your plan."), "ok", 4500);
               App.render();
             };

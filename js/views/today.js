@@ -107,7 +107,36 @@ const TodayView = (function () {
         'Everything scheduled for today is done. If you have more time, press “What should I do now?” for a bonus task, ' +
           'it will pick your highest-priority topic and pull work forward.</div>' : "") +
 
+      todoCard() +
       upcoming();
+  }
+
+  /* Everything you have starred, on the page you open first. A to-do list
+     you have to go and find is a to-do list you stop writing to. */
+  function todoCard() {
+    const list = Todo.entries();
+    if (!list.length) return "";
+    const rows = list.map(function (e) {
+      const isQ = e.kind === "question";
+      return '<div class="todo-row">' +
+        (e.rag ? UI.ragDot(e.rag) : '<span class="todo-kind">' + (isQ ? "✎" : "▣") + '</span>') +
+        '<div class="todo-main">' +
+          '<b>' + UI.esc(e.name) + '</b>' +
+          '<small>' + UI.esc(e.code) + (e.sub ? ' · ' + UI.esc(e.sub) : "") + '</small>' +
+        '</div>' +
+        (isQ
+          ? '<button class="btn btn-sm" data-action="todo-open-q" data-id="' + UI.esc(e.id) + '">Open</button>'
+          : '<button class="btn btn-sm" data-action="open-session" data-id="' + UI.esc(e.id) + '">Revise</button>' +
+            UI.todayToggle(e.id, { compact: true })) +
+        '<button class="btn btn-sm btn-ghost" data-action="todo-toggle" data-kind="' + e.kind +
+          '" data-id="' + UI.esc(e.id) + '" title="Take this off the list">✕</button>' +
+      '</div>';
+    }).join("");
+    return '<div class="card" style="margin-top:18px">' +
+      '<div class="card-head"><div class="card-title">★ Your to-do list</div>' +
+        '<div class="right"><span class="pill">' + list.length + '</span>' +
+        '<button class="btn btn-sm btn-ghost" data-action="todo-clear">Clear</button></div></div>' +
+      '<div class="todo-list">' + rows + '</div></div>';
   }
 
   /* Every chunk of time logged today, each removable in one click. */

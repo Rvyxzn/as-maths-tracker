@@ -52,7 +52,8 @@ const Subjects = (function () {
         { key: "pure",  name: "AS Pure",                    paper: "Paper 1", full: 120, section: 50 },
         { key: "stats", name: "AS Statistics & Mechanics",  paper: "Paper 2", full: 75,  section: 40 }
       ],
-      searchHint: "Search topics, e.g. binomial, suvat, hypothesis…"
+      searchHint: "Search topics, e.g. binomial, suvat, hypothesis…",
+      pickerHint: "binomial, radians, integration…"
     },
     economics: {
       id: "economics",
@@ -77,7 +78,8 @@ const Subjects = (function () {
         { key: "p1", name: "Markets and business behaviour", paper: "Paper 1", full: 120, section: 45 },
         { key: "p2", name: "The national and global economy", paper: "Paper 2", full: 120, section: 45 }
       ],
-      searchHint: "Search topics, e.g. elasticity, externalities, oligopoly…"
+      searchHint: "Search topics, e.g. elasticity, externalities, oligopoly…",
+      pickerHint: "elasticity, market failure, 1.2.5…"
     },
     geography: {
       id: "geography",
@@ -107,7 +109,8 @@ const Subjects = (function () {
         { key: "phys", name: "Physical Geography", paper: "Paper 1", full: 105, section: 45 },
         { key: "hum",  name: "Human Geography",    paper: "Paper 2", full: 105, section: 45 }
       ],
-      searchHint: "Search topics, e.g. tectonic, longshore drift, superpowers…"
+      searchHint: "Search topics, e.g. tectonic, longshore drift, superpowers…",
+      pickerHint: "tectonics, coasts, superpowers…"
     }
   };
 

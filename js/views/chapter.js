@@ -127,7 +127,8 @@ const ChapterView = (function () {
         '</div>' +
         '<div style="text-align:right">' + UI.ragPill(eff.rag) +
           '<div class="tiny faint" style="margin-top:6px">' + st.doneCount + ' of ' + st.totalSteps + ' steps done</div>' +
-          '<div style="margin-top:8px">' + UI.todayToggle(cid, { label: true }) + '</div>' +
+          '<div class="row" style="margin-top:8px;gap:6px;justify-content:flex-end">' +
+            Todo.star("chapter", cid, { label: true }) + UI.todayToggle(cid, { label: true }) + '</div>' +
         '</div>' +
       '</div>' +
       timeToday(cid) +

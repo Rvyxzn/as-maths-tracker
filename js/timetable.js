@@ -137,6 +137,10 @@ const Timetable = (function () {
   function save() {
     try { localStorage.setItem(key(), JSON.stringify(get())); }
     catch (e) { if (typeof UI !== "undefined") UI.toast("Could not save the timetable", "bad"); }
+    /* The timetable travels in the sync bundle now, but only Store's save
+       was asking for a push — so a timetable edit sat here until some
+       unrelated subject change happened to carry it up. */
+    if (typeof Sync !== "undefined" && Sync.enabled()) Sync.schedulePush();
   }
 
   /* A short history of the days, so a mis-drop can be taken back. Only the

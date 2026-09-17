@@ -137,7 +137,8 @@ const Store = (function () {
       papers: [], // past paper records
       schoolAssessments: [], // class tests, mini-assessments and school mocks
       packAttempts: [], // Economics question-pack attempts, newest first
-      packTodo: [], // question ids you have starred to come back to
+      packTodo: [], // legacy: question ids starred before the list held chapters
+      todo: [], // your to-do list: [{kind:"chapter"|"section"|"question", id, at}]
       practiceTests: [], // assembled practice tests, newest first
       examAttempts: [], // maths exam-question attempts, newest first
       plan: null, // { generatedAt, days:{ iso: [task] } }
@@ -170,6 +171,7 @@ const Store = (function () {
     if (!st.schoolAssessments) st.schoolAssessments = [];
     if (!st.packAttempts) st.packAttempts = [];
     if (!st.packTodo) st.packTodo = [];
+    if (typeof Todo !== "undefined") Todo.migrate(st);
     if (!st.practiceTests) st.practiceTests = [];
     if (!st.examAttempts) st.examAttempts = [];
 
