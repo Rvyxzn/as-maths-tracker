@@ -40,8 +40,10 @@ const PracticeView = (function () {
   function tariffsAvailable() {
     const seen = {};
     const on = PracticeTest.sectionsOn();
+    const whole = PracticeTest.wholeOnly();
     PracticeTest.pool().forEach(function (m) {
       if (!PracticeTest.sectionOk(m.section, on)) return;
+      if (whole && m.multi) return;
       seen[m.marks] = (seen[m.marks] || 0) + 1;
     });
     return Object.keys(seen).map(Number).sort(function (a, b) { return a - b; })
@@ -53,20 +55,32 @@ const PracticeView = (function () {
      Section B is a decision you make once. */
   function sectionChips() {
     const secs = PracticeTest.sectionsAvailable();
-    if (secs.length < 2) return "";
+    const nMulti = PracticeTest.multiCount();
+    /* Nothing to choose between: no sections and nothing printed in parts. */
+    if (secs.length < 2 && !nMulti) return "";
     const on = PracticeTest.sectionsOn();
+    const whole = PracticeTest.wholeOnly();
     return '<div class="section-label" style="margin:18px 0 8px">Sections</div>' +
       '<div class="row wrap" style="gap:7px">' +
-        '<button class="chip' + (on.length ? "" : " on") + '" data-action="pt-section" data-val="all">' +
-          'All sections</button>' +
-        secs.map(function (s) {
-          return '<button class="chip' + (on.indexOf(s.id) >= 0 ? " on" : "") + '" ' +
-            'data-action="pt-section" data-val="' + UI.esc(s.id) + '" ' +
-            'title="' + UI.esc(SectionNote.title(s)) + '">' +
-            'Section ' + UI.esc(s.id) + ' <span class="faint">(' + s.n + ')</span></button>';
-        }).join("") +
+        (secs.length > 1
+          ? '<button class="chip' + (on.length ? "" : " on") + '" data-action="pt-section" data-val="all">' +
+              'All sections</button>' +
+            secs.map(function (s) {
+              return '<button class="chip' + (on.indexOf(s.id) >= 0 ? " on" : "") + '" ' +
+                'data-action="pt-section" data-val="' + UI.esc(s.id) + '" ' +
+                'title="' + UI.esc(SectionNote.title(s)) + '">' +
+                'Section ' + UI.esc(s.id) + ' <span class="faint">(' + s.n + ')</span></button>';
+            }).join("")
+          : "") +
+        (nMulti
+          ? '<button class="chip' + (whole ? " on" : "") + '" data-action="pt-whole" ' +
+            'title="' + UI.esc("Leave out the " + nMulti + " questions printed as (a), (b), (c). " +
+              "Unlike turning a section off, this keeps the whole-answer questions in the same section.") + '">' +
+            'Whole answers only</button>'
+          : "") +
       '</div>' +
-      '<div class="tiny faint" style="margin-top:6px">' + SectionNote.hint(secs, on) + '</div>';
+      '<div class="tiny faint" style="margin-top:6px">' +
+        SectionNote.hint(secs, on, { whole: whole, multi: nMulti }) + '</div>';
   }
 
   function groupsAvailable() {
@@ -88,6 +102,7 @@ const PracticeView = (function () {
          it is a haystack. */
       if (picked.group !== "all" && m.group !== picked.group) return;
       if (!PracticeTest.sectionOk(m.section, PracticeTest.sectionsOn())) return;
+      if (PracticeTest.wholeOnly() && m.multi) return;
       if (picked.year !== "all" && m.year != null && String(m.year) !== String(picked.year)) return;
       const mine = m.cids && m.cids.length ? m.cids : (m.cid ? [m.cid] : []);
       mine.forEach(function (cid) {
@@ -130,6 +145,7 @@ const PracticeView = (function () {
     return {
       tariffs: tariffs, chapters: chapters,
       sections: PracticeTest.sectionsOn(),
+      wholeOnly: PracticeTest.wholeOnly(),
       group: picked.group, year: picked.year,
       weakFirst: picked.weakFirst, unseenOnly: picked.unseenOnly,
       includeBank: picked.includeBank || needsBank(),
@@ -1044,6 +1060,11 @@ const PracticeView = (function () {
       }
       case "pt-group": readInputs(); picked.group = el.dataset.val; App.render(); return true;
       case "pt-year": readInputs(); picked.year = el.dataset.val; App.render(); return true;
+      case "pt-whole":
+        readInputs();
+        PracticeTest.setWholeOnly(!PracticeTest.wholeOnly());
+        App.render();
+        return true;
       case "pt-section": {
         readInputs();
         const v = el.dataset.val;

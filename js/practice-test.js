@@ -503,6 +503,23 @@ const PracticeTest = (function () {
     Store.mutate(function (st) { st.settings.sections = (list || []).slice(); });
   }
 
+  /* "Whole answers only" cuts across the sections rather than replacing
+     them. Leaving Section A out drops 45 perfectly good Paper 3 questions
+     with the 89 split ones; this drops the 89 and keeps the 45, which is
+     what you actually want when the complaint is the 1 + 1 + 3. */
+  function wholeOnly() {
+    try { return !!Store.get().settings.wholeOnly; } catch (e) { return false; }
+  }
+
+  function setWholeOnly(on) {
+    Store.mutate(function (st) { st.settings.wholeOnly = !!on; });
+  }
+
+  /* How many questions the toggle would cost, so the control can say. */
+  function multiCount(includeBank) {
+    return pool(includeBank).filter(function (m) { return m.multi; }).length;
+  }
+
   function sectionOk(section, on) {
     if (!on || !on.length) return true;
     return !!section && on.indexOf(section) >= 0;
@@ -514,6 +531,7 @@ const PracticeTest = (function () {
     return pool(o.includeBank).filter(function (m) {
       if (o.tariffs && o.tariffs.length && o.tariffs.indexOf(m.marks) < 0) return false;
       if (!sectionOk(m.section, o.sections)) return false;
+      if (o.wholeOnly && m.multi) return false;
       if (o.minMarks && m.marks < o.minMarks) return false;
       if (o.maxMarks && m.marks > o.maxMarks) return false;
       if (o.group && o.group !== "all" && m.group !== o.group) return false;
@@ -922,6 +940,8 @@ const PracticeTest = (function () {
     pool: pool, eligible: eligible, choose: choose, question: question, meta: meta,
     sectionsAvailable: sectionsAvailable, sectionsOn: sectionsOn,
     setSections: setSections, sectionOk: sectionOk,
+    wholeOnly: wholeOnly, setWholeOnly: setWholeOnly, multiCount: multiCount,
+    isMultiPart: isMultiPart,
     examPool: mathsExamPool,
     kindOf: kindOf, lastAttempt: lastAttempt,
     all: all, get: get, live: live, history: history, unlog: unlog,

@@ -45,11 +45,12 @@ const SectionNote = (function () {
   /* The line under the chips. It leads with the split sections, because
      wanting rid of those is the reason this control exists, and then says
      what is currently selected so the filter is never silently on. */
-  function hint(secs, on) {
+  function hint(secs, on, state) {
+    const st = state || {};
     const split = secs.filter(function (s) { return s.splitPapers.length; });
     let lead;
     if (!split.length) {
-      lead = "Pick the sections you want to practise.";
+      lead = secs.length > 1 ? "Pick the sections you want to practise." : "";
     } else {
       lead = split.map(function (s) {
         const t = s.splitTariffs[0];
@@ -61,10 +62,30 @@ const SectionNote = (function () {
                " mark answer." + whole;
       }).join(" ");
     }
-    const tail = (on && on.length)
-      ? " Showing Section " + list(on.slice()) + " only."
-      : " None picked, so all of them are showing.";
-    return lead + tail;
+
+    /* The two controls overlap, and saying which one is doing the work
+       matters: "whole answers only" is the narrower cut, because it takes
+       the split questions and leaves everything else in the same section
+       alone. When both are on, the sections are the coarser filter and are
+       named second. */
+    const parts = [];
+    if (st.whole) {
+      parts.push("Leaving out the " + st.multi + " split ones.");
+      if (on && on.length) parts.push("Showing Section " + list(on.slice()) + " only.");
+    } else if (on && on.length) {
+      parts.push("Showing Section " + list(on.slice()) + " only.");
+      if (st.multi) {
+        parts.push("“Whole answers only” drops just the " + st.multi +
+                   " split questions and keeps the rest of every section.");
+      }
+    } else if (secs.length > 1) {
+      parts.push("Nothing filtered, so everything is showing.");
+    } else if (st.multi) {
+      parts.push("Nothing filtered. “Whole answers only” drops the " + st.multi +
+                 " questions printed in parts.");
+    }
+
+    return [lead].concat(parts).filter(Boolean).join(" ");
   }
 
   return { title: title, hint: hint };

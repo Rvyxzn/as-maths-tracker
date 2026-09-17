@@ -114,9 +114,18 @@ const PacksView = (function () {
     return !!q.section && on.indexOf(q.section) >= 0;
   }
 
+  /* A question printed as (a), (b), (c) rather than as one prompt. What
+     counts as one is the engine's call, so the packs and a test built from
+     the same toggle never disagree about which questions it means. */
+  function wholeOk(q) {
+    if (typeof PracticeTest === "undefined" || !PracticeTest.wholeOnly()) return true;
+    return !PracticeTest.isMultiPart(q);
+  }
+
   /* Every filter a question has to pass, whichever subject. */
   function filterOk(q) {
     if (!sectionOk(q)) return false;
+    if (!wholeOk(q)) return false;
     if (isGeo()) return geoOk(q);
     return (paperFilter === "all" || String(q.paper) === paperFilter) && yearOk(q);
   }
@@ -1487,20 +1496,31 @@ const PacksView = (function () {
      bank has no sections gets no row at all. */
   function sectionBar() {
     const secs = sectionsHere();
-    if (secs.length < 2) return "";
+    const nMulti = (typeof PracticeTest !== "undefined") ? PracticeTest.multiCount() : 0;
+    if (secs.length < 2 && !nMulti) return "";
     const on = sectionsOn();
-    const chips = secs.map(function (s) {
+    const chips = secs.length < 2 ? "" : secs.map(function (s) {
       return '<button class="btn btn-sm' + (on.indexOf(s.id) >= 0 ? " btn-primary" : "") + '" ' +
         'data-action="pack-section" data-val="' + UI.esc(s.id) + '" ' +
         'title="' + UI.esc(SectionNote.title(s)) + '">Section ' + UI.esc(s.id) +
         ' <span class="faint">(' + s.n + ')</span></button>';
     }).join("");
 
+    const whole = PracticeTest.wholeOnly();
     return '<div class="row wrap" style="gap:7px;margin-top:9px">' +
-        '<button class="btn btn-sm' + (on.length ? "" : " btn-primary") + '" ' +
-          'data-action="pack-section" data-val="all">All sections</button>' + chips +
+        (secs.length > 1
+          ? '<button class="btn btn-sm' + (on.length ? "" : " btn-primary") + '" ' +
+            'data-action="pack-section" data-val="all">All sections</button>'
+          : "") + chips +
+        (nMulti
+          ? '<button class="btn btn-sm' + (whole ? " btn-primary" : "") + '" data-action="pack-whole" ' +
+            'title="Leave out the ' + nMulti + ' questions printed as (a), (b), (c). ' +
+            'Unlike turning a section off, this keeps the whole-answer questions that sit in the same section.">' +
+            'Whole answers only</button>'
+          : "") +
       '</div>' +
-      '<div class="tiny faint" style="margin-top:6px">' + SectionNote.hint(secs, on) + '</div>';
+      '<div class="tiny faint" style="margin-top:6px">' +
+        SectionNote.hint(secs, on, { whole: whole, multi: nMulti }) + '</div>';
   }
 
   function yearBar() {
@@ -1726,6 +1746,10 @@ const PacksView = (function () {
       case "pack-tariff": tariff = +el.dataset.val; App.render(); return true;
       case "pack-paper":  paperFilter = el.dataset.val; App.render(); return true;
       case "pack-year":   yearFilter = el.dataset.val; App.render(); return true;
+      case "pack-whole":
+        PracticeTest.setWholeOnly(!PracticeTest.wholeOnly());
+        App.render();
+        return true;
       case "pack-section": {
         const v = el.dataset.val;
         if (v === "all") { PracticeTest.setSections([]); App.render(); return true; }
