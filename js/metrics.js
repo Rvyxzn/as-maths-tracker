@@ -422,40 +422,46 @@ const Metrics = (function () {
   }
 
   /* ---------- grade boundaries ----------
-  A level Mathematics (9MA0) is marked out of 300: Paper 1 Pure 100,
-  Paper 2 Pure 100, Paper 3 Statistics & Mechanics 100.
+     Latest published Pearson Edexcel whole-qualification boundaries.
+     Keep each subject separate: reusing Maths percentages for Economics
+     used to turn 63% into an A when the June 2026 Economics boundary makes
+     it a C. These are whole-subject comparisons, not predictions for one
+     short topic test; the UI states that caveat wherever a grade appears. */
+  const GRADE_SCHEMES = {
+    maths: {
+      maxMark: 300,
+      series: "June 2026 Pearson Edexcel 9MA0",
+      marks: { "A*": 254, A: 210, B: 173, C: 136, D: 100, E: 64 }
+    },
+    economics: {
+      maxMark: 335,
+      series: "June 2026 Pearson Edexcel 9EC0",
+      marks: { "A*": 288, A: 265, B: 230, C: 195, D: 160, E: 126 }
+    },
+    geography: {
+      maxMark: 350,
+      series: "June 2026 Pearson Edexcel 9GE0",
+      marks: { "A*": 268, A: 242, B: 213, C: 184, D: 155, E: 126 }
+    }
+  };
 
-  IMPORTANT, READ BEFORE TRUSTING A GRADE
-  Unlike the mark totals above, which are published and fixed, the marks
-  below are INDICATIVE. They are a round-number reading of where recent
-  9MA0 series have tended to sit, not a transcription of one published
-  series, and Edexcel move them every year, sometimes by ten marks or
-  more. They are here so a percentage has some human meaning, not so you
-  can predict a grade.
-
-  Check your own target against Pearson's published boundaries for the
-  series you are sitting, and edit these numbers if you want them exact.
-
-  They are also whole-subject boundaries: a set of topic questions on one
-  chapter is not a whole paper, so a grade here indicates where that score
-  would sit on a full paper. The UI repeats this wherever a grade shows. */
-  const AS_MAX_MARK = 300;
-  const AS_BOUNDARY_SERIES = "Edexcel 9MA0, indicative, not a published series";
-  const AS_BOUNDARIES = [
-    { grade: "A*", mark: 213 },
-    { grade: "A", mark: 176 },
-    { grade: "B", mark: 139 },
-    { grade: "C", mark: 102 },
-    { grade: "D", mark: 66 },
-    { grade: "E", mark: 30 }
-  ].map(function (b) {
-    return { grade: b.grade, mark: b.mark, pct: b.mark / AS_MAX_MARK * 100 };
-  });
+  function gradeScheme() {
+    const id = typeof Subjects !== "undefined" ? Subjects.currentId() : "maths";
+    const scheme = GRADE_SCHEMES[id] || GRADE_SCHEMES.maths;
+    if (!scheme.boundaries) {
+      scheme.boundaries = ["A*", "A", "B", "C", "D", "E"].map(function (grade) {
+        const mark = scheme.marks[grade];
+        return { grade: grade, mark: mark, pct: mark / scheme.maxMark * 100 };
+      });
+    }
+    return scheme;
+  }
 
   function estimateGrade(pct) {
     if (pct == null) return null;
-    for (let i = 0; i < AS_BOUNDARIES.length; i++) {
-      if (pct >= AS_BOUNDARIES[i].pct) return AS_BOUNDARIES[i].grade;
+    const boundaries = gradeScheme().boundaries;
+    for (let i = 0; i < boundaries.length; i++) {
+      if (pct >= boundaries[i].pct) return boundaries[i].grade;
     }
     return "U";
   }
@@ -464,10 +470,12 @@ const Metrics = (function () {
      "3 marks off a B" rather than just naming a letter. */
   function gradeDetail(pct, marksAvailable) {
     if (pct == null) return null;
+    const scheme = gradeScheme();
+    const boundaries = scheme.boundaries;
     const grade = estimateGrade(pct);
     let next = null;
-    for (let i = AS_BOUNDARIES.length - 1; i >= 0; i--) {
-      if (pct < AS_BOUNDARIES[i].pct) { next = AS_BOUNDARIES[i]; break; }
+    for (let i = boundaries.length - 1; i >= 0; i--) {
+      if (pct < boundaries[i].pct) { next = boundaries[i]; break; }
     }
     let marksOff = null;
     if (next && marksAvailable) {
@@ -477,7 +485,7 @@ const Metrics = (function () {
     return {
       grade: grade, pct: pct, next: next ? next.grade : null,
       nextPct: next ? next.pct : null, marksOff: marksOff,
-      series: AS_BOUNDARY_SERIES
+      series: scheme.series
     };
   }
 
@@ -536,14 +544,15 @@ const Metrics = (function () {
   function recommendRag(pct, opts) {
     if (pct == null) return null;
     opts = opts || {};
-    const gradeA = AS_BOUNDARIES[0].pct; // 67.5%
-    const gradeC = AS_BOUNDARIES[2].pct; // 51.25%
+    const scheme = gradeScheme();
+    const gradeA = scheme.boundaries[1].pct;
+    const gradeC = scheme.boundaries[3].pct;
     const grade = estimateGrade(pct);
     let rag, why;
 
     if (pct >= gradeA) {
       rag = "green";
-      why = "that is an A on the " + AS_BOUNDARY_SERIES + " grade boundaries";
+      why = "that is an A on the " + scheme.series + " grade boundaries";
     } else if (pct >= gradeC) {
       rag = "amber";
       why = "a grade " + grade + " means you can mostly do it, but not reliably enough yet";
@@ -845,7 +854,7 @@ const Metrics = (function () {
     };
   }
 
-  return {
+  const api = {
     iso: iso, today: today, addDays: addDays, diffDays: diffDays, parseISO: parseISO,
     fmtDate: fmtDate, fmtDateLong: fmtDateLong, fmtMins: fmtMins,
     daysLeft: daysLeft, examPassed: examPassed, isExamDay: isExamDay, phase: phase,
@@ -858,12 +867,17 @@ const Metrics = (function () {
     chapterScore: chapterScore, marksAttempted: marksAttempted, confidenceOf: confidenceOf,
     likelyTopics: likelyTopics, priorityTopics: priorityTopics,
     chapterExamValue: chapterExamValue, PAPER_MARKS: PAPER_MARKS,
-    AS_BOUNDARIES: AS_BOUNDARIES, AS_MAX_MARK: AS_MAX_MARK,
-    AS_BOUNDARY_SERIES: AS_BOUNDARY_SERIES,
+    gradeScheme: gradeScheme,
     timeDoneToday: timeDoneToday, timeEntriesToday: timeEntriesToday,
     weaknesses: weaknesses, weaknessesByChapter: weaknessesByChapter, chapterRollup: chapterRollup,
     practice: practice,
     recurringErrors: recurringErrors, errorTypeTotals: errorTypeTotals,
     availableMinutes: availableMinutes, requiredMinutes: requiredMinutes, feasibility: feasibility
   };
+  Object.defineProperties(api, {
+    AS_BOUNDARIES: { get: function () { return gradeScheme().boundaries; } },
+    AS_MAX_MARK: { get: function () { return gradeScheme().maxMark; } },
+    AS_BOUNDARY_SERIES: { get: function () { return gradeScheme().series; } }
+  });
+  return api;
 })();

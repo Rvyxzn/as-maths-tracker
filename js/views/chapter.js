@@ -433,8 +433,8 @@ const ChapterView = (function () {
           'Total video time <b>' + (vm.exact ? "" : "about ") + Metrics.fmtMins(vm.total) + '</b>' +
           (vm.estimated
             ? '<span class="ep-est" title="A video’s length is only known once it has been loaded. ' +
-              vm.knownCount + ' measured, ' + vm.unknownCount + ' still estimated from the average, so this figure ' +
-              'moves as you watch more.">' + vm.knownCount + '/' + vm.episodes + ' measured</span>'
+              vm.knownCount + ' measured, ' + vm.unknownCount + ' still using the chapter estimate. ' +
+              'Loading one video only replaces that videoâ€™s estimate.">' + vm.knownCount + '/' + vm.episodes + ' measured</span>'
             : "") +
         '</span>' +
         (left > 0
@@ -575,7 +575,10 @@ middling, two harder and one easier, and only those are totalled. */
   from the PDFs in the project folder. Nothing to download or attach - the mark scheme simply stays behind a deliberate click. */
   function questionPdf(cid) {
     const inf = Store.info(cid);
-    const sets = (inf.sets || []).filter(MathsSource.wants);
+    const activeYear = String(Store.settings().yearFilter || "all");
+    const sets = (inf.sets || []).filter(MathsSource.wants).filter(function (s) {
+      return examSetMatchesYear(s, activeYear);
+    });
     const t = Store.topic(cid);
     const pick = (inf.sets || []).length
       ? '<div class="row wrap" style="gap:8px;margin-bottom:10px;align-items:center">' +
@@ -837,15 +840,16 @@ middling, two harder and one easier, and only those are totalled. */
         '<b>' + got + '/' + avail + ' = ' + gd.pct + '%, a grade ' + gd.grade + '</b>' +
         (gd.next && gd.marksOff
           ? '<span class="tiny muted">' + gd.marksOff + ' more mark' + (gd.marksOff === 1 ? "" : "s") +
-            ' would have been ' + (gd.next === "A" || gd.next === "E" ? "an " : "a ") + gd.next + '</span>'
-          : (gd.grade === "A" ? '<span class="tiny muted">top band</span>' : "")) +
+            ' would have been ' + (gd.next === "A*" || gd.next === "A" || gd.next === "E" ? "an " : "a ") + gd.next + '</span>'
+          : (gd.grade === "A*" ? '<span class="tiny muted">top band</span>' : "")) +
       '</div>' +
       '<div class="gb-scale">' + bands + '</div>' +
       '<div class="tiny faint">Measured against the ' + UI.esc(Metrics.AS_BOUNDARY_SERIES) +
-        ' subject boundaries (' + Metrics.AS_MAX_MARK + ' marks: A ' + Metrics.AS_BOUNDARIES[0].mark +
-        ', B ' + Metrics.AS_BOUNDARIES[1].mark + ', C ' + Metrics.AS_BOUNDARIES[2].mark +
-        ', D ' + Metrics.AS_BOUNDARIES[3].mark + ', E ' + Metrics.AS_BOUNDARIES[4].mark + '). ' +
-        'One chapter of questions is not a whole paper, and the boundaries move a bit every year, so use this ' +
+        ' subject boundaries (' + Metrics.AS_MAX_MARK + ' marks: A* ' + Metrics.AS_BOUNDARIES[0].mark +
+        ', A ' + Metrics.AS_BOUNDARIES[1].mark + ', B ' + Metrics.AS_BOUNDARIES[2].mark +
+        ', C ' + Metrics.AS_BOUNDARIES[3].mark + ', D ' + Metrics.AS_BOUNDARIES[4].mark +
+        ', E ' + Metrics.AS_BOUNDARIES[5].mark + '). ' +
+        'One chapter of questions is not a whole qualification, and the boundaries move every year, so use this ' +
         'as a rough idea of where you are, not a predicted grade.</div>' +
     '</div>';
   }

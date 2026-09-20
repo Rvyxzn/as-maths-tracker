@@ -144,6 +144,42 @@ function examSetPath(setKey, which) {
   return encodeURI(PDF_ROOTS[root] + s.dir + "/" + folder + "/" + file);
 }
 
+/* Which teaching year a question collection belongs to. AS PDFs are the
+   Year 1 collection; A-level topic PDFs are the Year 2 collection.
+   Chalkface keys encode their textbook year directly. */
+function examSetYear(setOrKey) {
+  const key = typeof setOrKey === "string" ? setOrKey : setOrKey && setOrKey.key;
+  const s = key && EXAM_SETS[key];
+  if (!s) return null;
+  if (s.root === "cf") {
+    const m = /^cfY([12])/.exec(key);
+    return m ? m[1] : null;
+  }
+  return s.root === "al" ? "2" : "1";
+}
+
+function examSetHasChapterYear(setOrKey, year) {
+  const key = typeof setOrKey === "string" ? setOrKey : setOrKey && setOrKey.key;
+  return (typeof ALL_CHAPTER_IDS !== "undefined" ? ALL_CHAPTER_IDS : []).some(function (cid) {
+    const inf = CHAPTER_INDEX[cid];
+    if (!inf || String(inf.year || 1) !== String(year)) return false;
+    return (inf.sets || []).some(function (s) { return s.key === key; });
+  });
+}
+
+function examSetMatchesYear(setOrKey, year) {
+  if (!year || year === "all") return true;
+  const key = typeof setOrKey === "string" ? setOrKey : setOrKey && setOrKey.key;
+  const s = key && EXAM_SETS[key];
+  if (!s) return false;
+  if (s.root === "cf") return examSetYear(key) === String(year);
+  /* Year 1 uses the AS collection. Year 2 uses only A-level collections
+     that are genuinely filed against at least one Year 2 chapter; this
+     excludes A-level-standard sets covering Year 1-only topics. */
+  if (String(year) === "1") return !s.root || s.root === "as";
+  return s.root === "al" && examSetHasChapterYear(key, "2");
+}
+
 /* Which set(s) cover each chapter. `approx` marks a closest-match rather
    than an exact one, so the app never overstates the fit. */
 const CHAPTER_SETS = {

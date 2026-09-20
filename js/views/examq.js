@@ -6,7 +6,6 @@ Exam Questions, every topic question set, by chapter, opened
 const ExamQView = (function () {
 
   let filter = "all";
-  let yearFilter = "all";
   let openSet = null; // set key currently expanded
   const msShown = {}; // set keys whose mark scheme is revealed
 
@@ -15,24 +14,14 @@ const ExamQView = (function () {
      Year 1 and the A level ones as whichever years their topic spans. The
      ones that span both, like Differentiation, appear under either filter,
      because they genuinely are both. */
-  function yearsOf(s) {
-    const seen = {};
-    (s.chapters || []).forEach(function (cid) {
-      const inf = CHAPTER_INDEX[cid];
-      if (inf) seen[inf.year || 1] = true;
-    });
-    return Object.keys(seen);
-  }
-
-  function inYear(s) {
-    if (yearFilter === "all") return true;
-    return yearsOf(s).indexOf(yearFilter) >= 0;
-  }
+  function activeYear() { return String(Store.settings().yearFilter || "all"); }
+  function inYear(s) { return examSetMatchesYear(s, activeYear()); }
 
   function render(root) {
     /* only the collection you picked: Yesterday's Maths or Chalkface */
     const sets = allExamSets().filter(MathsSource.wants);
     const cf = MathsSource.get() === "cf";
+    const yearFilter = activeYear();
     const byYear = sets.filter(inYear);
     const shown = byYear.filter(function (s) { return filter === "all" || s.paper === filter; });
     /* the paper counts follow the year filter, so "Pure (13)" means thirteen
@@ -40,7 +29,7 @@ const ExamQView = (function () {
     const counts = { all: byYear.length, Pure: 0, Stats: 0, Mech: 0 };
     byYear.forEach(function (s) { counts[s.paper]++; });
     const yearCount = function (y) {
-      return sets.filter(function (s) { return yearsOf(s).indexOf(y) >= 0; }).length;
+      return sets.filter(function (s) { return examSetMatchesYear(s, y); }).length;
     };
 
     root.innerHTML =
@@ -74,7 +63,7 @@ const ExamQView = (function () {
   }
 
   function ybtn(v, label, n) {
-    return '<button class="yearseg' + (yearFilter === v ? " on" : "") + '" ' +
+    return '<button class="yearseg' + (activeYear() === v ? " on" : "") + '" ' +
       'data-action="eq-year" data-val="' + v + '">' + label + '<small>' + n + '</small></button>';
   }
 
@@ -84,6 +73,7 @@ const ExamQView = (function () {
   }
 
   function byPaper(sets) {
+    const yearFilter = activeYear();
     const groups = { Pure: [], Stats: [], Mech: [] };
     sets.forEach(function (s) { groups[s.paper].push(s); });
     const label = { Pure: "Paper 1: Pure Mathematics", Stats: "Paper 2: Statistics", Mech: "Paper 2: Mechanics" };
@@ -101,7 +91,10 @@ const ExamQView = (function () {
     const open = openSet === s.key;
     const shown = msShown[s.key];
     /* which chapters this set serves, and how far through them you are */
-    const chapters = s.chapters.map(function (cid) {
+    const selectedYear = activeYear();
+    const chapters = s.chapters.filter(function (cid) {
+      return selectedYear === "all" || String(CHAPTER_INDEX[cid].year || 1) === selectedYear;
+    }).map(function (cid) {
       const inf = CHAPTER_INDEX[cid];
       const st = Journey.state(cid);
       return { cid: cid, num: inf.chapter.num, name: inf.chapter.name,
@@ -164,7 +157,10 @@ const ExamQView = (function () {
   function handle(action, el) {
     switch (action) {
       case "eq-filter": filter = el.dataset.val; openSet = null; App.render(); return true;
-      case "eq-year": yearFilter = el.dataset.val; openSet = null; App.render(); return true;
+      case "eq-year":
+        Store.mutate(function (st) { st.settings.yearFilter = el.dataset.val; });
+        Scheduler.regenerate("Maths year changed");
+        openSet = null; App.render(); return true;
       case "eq-open":
         openSet = (openSet === el.dataset.key) ? null : el.dataset.key;
         App.render(); return true;

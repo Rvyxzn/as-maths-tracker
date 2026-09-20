@@ -71,11 +71,10 @@ const Journey = (function () {
 
   Lengths are learned one at a time, the player only knows the duration
   of the video currently loaded, so most of the time some are measured
-     and the rest are not. Anything not yet measured is estimated from the
-     average of the ones that are, which means the estimate MOVES as you
-     watch more. That is unavoidable, but it must not look like a precise
-     figure that keeps changing, so this reports the measured part and the
-     estimated part separately and the UI shows which is which.
+     and the rest are not. Unknown episodes keep the chapter's original
+     per-video estimate. Do not extrapolate the average of clicked videos
+     across every unknown episode: opening one long video used to inflate
+     the whole playlist, then inflate it again as more videos were opened.
 
      Only videos that count are included, an advert you excluded is not
      study time. */
@@ -101,18 +100,29 @@ const Journey = (function () {
       }
     }
 
-    /* per-video estimate: the average of what has actually been measured,
-       falling back to the chapter's own figure before anything is known */
+    /* Fixed estimate for each unknown episode. A measured duration replaces
+       only that episode's estimate, so clicking around cannot multiply one
+       long video's duration across the rest of the playlist. */
     const counted = countedVideos(cid);
-    const perVideo = knownCount
-      ? knownMins / knownCount
-      : (CHAPTER_INDEX[cid] && CHAPTER_INDEX[cid].sub.vid
-          ? CHAPTER_INDEX[cid].sub.vid / Math.max(1, counted || 1) : 12);
+    const plannedTotal = CHAPTER_INDEX[cid] && CHAPTER_INDEX[cid].sub.vid;
+    const perVideo = plannedTotal
+      ? plannedTotal / Math.max(1, counted || 1)
+      : 12;
+    const baselineTotal = plannedTotal || counted * perVideo;
+    const knownWatched = knownMins - knownRemaining;
+    const unknownWatched = unknownCount - unknownRemaining;
+    /* Keep the displayed/planned total stable while lengths are still being
+       discovered. Once every episode is known, switch to the exact sum. */
+    const estimatedTotal = unknownCount > 0
+      ? Math.max(baselineTotal, knownMins)
+      : knownMins;
+    const estimatedRemaining = unknownCount > 0
+      ? Math.max(0, estimatedTotal - knownWatched - unknownWatched * perVideo)
+      : knownRemaining;
 
     return {
-      /* best overall figure, measured plus estimate for the rest */
-      total: Math.round(knownMins + unknownCount * perVideo),
-      remaining: Math.round(knownRemaining + unknownRemaining * perVideo),
+      total: Math.round(estimatedTotal),
+      remaining: Math.round(estimatedRemaining),
       /* the part that is actually measured, which never moves */
       knownMins: Math.round(knownMins),
       knownRemaining: Math.round(knownRemaining),
