@@ -139,6 +139,50 @@ const PracticeTest = (function () {
     return allExamBank().filter(function (q) { return /^cf-/.test(q.id) === cfOn; });
   }
 
+  /* Yesterday's Maths stores A-level questions in topic PDFs, so a single
+     set can be attached to both the Year 1 and Year 2 textbook chapters.
+     Chalkface stores many of the same printed questions one-by-one under
+     their exact textbook chapter. Use that duplicate as the authority for
+     the question's year/chapter; this is deliberately a conservative match
+     so an uncertain question stays unfiled rather than entering the wrong
+     year's test. */
+  const ownerCache = {};
+  function questionWords(text) {
+    const words = String(text || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").split(/\s+/);
+    const out = {};
+    words.forEach(function (w) { if (w.length > 1) out[w] = true; });
+    return out;
+  }
+  function wordOverlap(a, b) {
+    let both = 0, total = 0;
+    Object.keys(a).forEach(function (w) { total++; if (b[w]) both++; });
+    Object.keys(b).forEach(function (w) { if (!a[w]) total++; });
+    return total ? both / total : 0;
+  }
+  function exactQuestionOwner(q) {
+    if (!q || q.year || /^cf-/.test(q.id)) return null;
+    if (Object.prototype.hasOwnProperty.call(ownerCache, q.id)) return ownerCache[q.id];
+    const cf = typeof CF_MATHS_EXAM_QUESTIONS !== "undefined" ? CF_MATHS_EXAM_QUESTIONS : [];
+    const mine = q.chapters || [];
+    const sourceWords = questionWords(q.text);
+    const matches = cf.filter(function (other) {
+      return other.inOtherBank && String(other.num) === String(q.num) &&
+        +other.marks === +q.marks && (other.chapters || []).some(function (cid) {
+          return mine.indexOf(cid) >= 0;
+        });
+    }).map(function (other) {
+      return { q: other, score: wordOverlap(sourceWords, questionWords(other.text)) };
+    }).sort(function (a, b) { return b.score - a.score; });
+    const best = matches[0], next = matches[1];
+    /* Extraction noise can damage equations, hence 0.55 rather than an
+       exact-text check; the large lead over the runner-up prevents a common
+       question number/tariff from creating a false match. */
+    const owner = best && best.score >= 0.55 && best.score - (next ? next.score : 0) >= 0.18
+      ? best.q : null;
+    ownerCache[q.id] = owner;
+    return owner;
+  }
+
   function mathsExamPool() {
     const bank = examBank();
     if (!bank.length) return [];
@@ -150,7 +194,9 @@ const PracticeTest = (function () {
          twice, but it BELONGS to all of them, so every chapter it covers can
          filter for it. Filing it under the first alone quietly made fifteen
          chapters unpickable: they served real questions and offered none. */
-      const cids = q.chapters.filter(function (c) { return CHAPTER_INDEX[c]; });
+      const claimedCids = q.chapters.filter(function (c) { return CHAPTER_INDEX[c]; });
+      const owner = exactQuestionOwner(q);
+      const cids = owner ? owner.chapters.filter(function (c) { return CHAPTER_INDEX[c]; }) : claimedCids;
       const cid = cids[0];
       if (!cid) return;
       const inf = CHAPTER_INDEX[cid];
@@ -171,8 +217,9 @@ const PracticeTest = (function () {
          wording was tried and is not good enough to bet a revision session
          on: half the splits it made were arbitrary. */
       const years = {};
-      cids.forEach(function (c) { years[CHAPTER_INDEX[c].year || 1] = true; });
+      claimedCids.forEach(function (c) { years[CHAPTER_INDEX[c].year || 1] = true; });
       const spread = Object.keys(years);
+      const exactYear = q.year || (owner && owner.year) || (spread.length === 1 ? +spread[0] : null);
 
       out.push({
         key: "mex:" + q.id,
@@ -187,8 +234,9 @@ const PracticeTest = (function () {
            in those sets is Year 1 whatever chapters the set covers.
            The A level sets have no such guarantee and fall back to the
            chapters, which is why a set spanning both years has none. */
-        year: q.year || (spread.length === 1 ? +spread[0] : null),
-        years: q.year ? [q.year] : spread.map(Number),
+        year: exactYear,
+        years: exactYear ? [exactYear] : spread.map(Number),
+        yearExact: exactYear != null,
         /* Chalkface questions say which paper they came from. */
         label: q.source ? q.source + " · " + q.topic : q.topic + " · Q" + q.num,
         topic: inf.chapter.name,
@@ -546,6 +594,11 @@ const PracticeTest = (function () {
         if (m.year == null || String(m.year) !== String(o.year)) return false;
       }
       if (byChapter) {
+        /* A mixed-year topic PDF is not evidence that each question belongs
+           to every chapter on that topic. Only an AS question, a chapter-
+           specific source, or a confidently matched duplicate may enter a
+           chapter-filtered test. */
+        if (m.source === "exam" && m.yearExact === false) return false;
         const mine = m.cids && m.cids.length ? m.cids : [m.cid];
         const hit = mine.some(function (c) { return o.chapters.indexOf(c) >= 0; });
         if (!hit) return false;

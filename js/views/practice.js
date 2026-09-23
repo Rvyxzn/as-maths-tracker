@@ -176,9 +176,9 @@ const PracticeView = (function () {
     if (picked.year === "all") return "";
     const on = Object.keys(picked.chapters).filter(function (k) { return picked.chapters[k]; });
     if (on.length) {
-      return '<div class="tiny faint" style="margin-top:7px">You have picked chapters, so the ' +
-        'Year ' + picked.year + ' filter is not also applied: the chapters are the more specific ' +
-        'choice.</div>';
+      return '<div class="tiny faint" style="margin-top:7px">Questions are matched to the exact ' +
+        'textbook year of the chapters you picked. Mixed-year topic questions are left out unless ' +
+        'their chapter can be verified.</div>';
     }
     const held = PracticeTest.pool(true).filter(function (m) {
       return m.source === "exam" && m.year == null &&
