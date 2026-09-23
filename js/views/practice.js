@@ -471,7 +471,7 @@ const PracticeView = (function () {
     const tot = PracticeTest.totals(t);
     const q = PracticeTest.question(it.key);
     const m = PracticeTest.meta(it.key);
-    const inf = it.cid ? CHAPTER_INDEX[it.cid] : null;
+    const inf = m && m.cid ? CHAPTER_INDEX[m.cid] : (it.cid ? CHAPTER_INDEX[it.cid] : null);
     const show = !!revealed[it.key];
     const s = PracticeTest.scoreOf(t, it.key);
 

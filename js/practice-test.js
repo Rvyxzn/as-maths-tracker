@@ -139,50 +139,6 @@ const PracticeTest = (function () {
     return allExamBank().filter(function (q) { return /^cf-/.test(q.id) === cfOn; });
   }
 
-  /* Yesterday's Maths stores A-level questions in topic PDFs, so a single
-     set can be attached to both the Year 1 and Year 2 textbook chapters.
-     Chalkface stores many of the same printed questions one-by-one under
-     their exact textbook chapter. Use that duplicate as the authority for
-     the question's year/chapter; this is deliberately a conservative match
-     so an uncertain question stays unfiled rather than entering the wrong
-     year's test. */
-  const ownerCache = {};
-  function questionWords(text) {
-    const words = String(text || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").split(/\s+/);
-    const out = {};
-    words.forEach(function (w) { if (w.length > 1) out[w] = true; });
-    return out;
-  }
-  function wordOverlap(a, b) {
-    let both = 0, total = 0;
-    Object.keys(a).forEach(function (w) { total++; if (b[w]) both++; });
-    Object.keys(b).forEach(function (w) { if (!a[w]) total++; });
-    return total ? both / total : 0;
-  }
-  function exactQuestionOwner(q) {
-    if (!q || q.year || /^cf-/.test(q.id)) return null;
-    if (Object.prototype.hasOwnProperty.call(ownerCache, q.id)) return ownerCache[q.id];
-    const cf = typeof CF_MATHS_EXAM_QUESTIONS !== "undefined" ? CF_MATHS_EXAM_QUESTIONS : [];
-    const mine = q.chapters || [];
-    const sourceWords = questionWords(q.text);
-    const matches = cf.filter(function (other) {
-      return other.inOtherBank && String(other.num) === String(q.num) &&
-        +other.marks === +q.marks && (other.chapters || []).some(function (cid) {
-          return mine.indexOf(cid) >= 0;
-        });
-    }).map(function (other) {
-      return { q: other, score: wordOverlap(sourceWords, questionWords(other.text)) };
-    }).sort(function (a, b) { return b.score - a.score; });
-    const best = matches[0], next = matches[1];
-    /* Extraction noise can damage equations, hence 0.55 rather than an
-       exact-text check; the large lead over the runner-up prevents a common
-       question number/tariff from creating a false match. */
-    const owner = best && best.score >= 0.55 && best.score - (next ? next.score : 0) >= 0.18
-      ? best.q : null;
-    ownerCache[q.id] = owner;
-    return owner;
-  }
-
   function mathsExamPool() {
     const bank = examBank();
     if (!bank.length) return [];
@@ -195,8 +151,16 @@ const PracticeTest = (function () {
          filter for it. Filing it under the first alone quietly made fifteen
          chapters unpickable: they served real questions and offered none. */
       const claimedCids = q.chapters.filter(function (c) { return CHAPTER_INDEX[c]; });
-      const owner = exactQuestionOwner(q);
-      const cids = owner ? owner.chapters.filter(function (c) { return CHAPTER_INDEX[c]; }) : claimedCids;
+      /* Source level is the hard boundary. AS questions are Year 1;
+         Chalkface names its textbook year; A-level topic collections are
+         filed only under their Year 2 chapter. A topic title such as
+         Trigonometry or Differentiation is never allowed to make an A-level
+         question look like Year 1 content. */
+      const sourceYear = q.year || (/^cf-/.test(q.id) ? q.year : 2);
+      const exactCids = claimedCids.filter(function (c) {
+        return String(CHAPTER_INDEX[c].year || 1) === String(sourceYear);
+      });
+      const cids = exactCids.length ? exactCids : claimedCids;
       const cid = cids[0];
       if (!cid) return;
       const inf = CHAPTER_INDEX[cid];
@@ -219,7 +183,7 @@ const PracticeTest = (function () {
       const years = {};
       claimedCids.forEach(function (c) { years[CHAPTER_INDEX[c].year || 1] = true; });
       const spread = Object.keys(years);
-      const exactYear = q.year || (owner && owner.year) || (spread.length === 1 ? +spread[0] : null);
+      const exactYear = exactCids.length ? +sourceYear : null;
 
       out.push({
         key: "mex:" + q.id,
@@ -588,6 +552,11 @@ const PracticeTest = (function () {
          year chip left on from an earlier build should not then remove half
          of what was just picked by hand. */
       const byChapter = o.chapters && o.chapters.length;
+      /* Whole A-level paper questions have machine-inferred topic tags.
+         They are useful in an unrestricted paper, but not trustworthy
+         enough to promise a teaching year or textbook chapter. */
+      if (m.source === "paper" && m.guess &&
+          (byChapter || (o.year && o.year !== "all"))) return false;
       if (!byChapter && o.year && o.year !== "all") {
         /* null means the question could be either year, so it is not this
            one either */
@@ -731,7 +700,37 @@ const PracticeTest = (function () {
   /* The one you are in the middle of. There is only ever one: a test you
      have half-sat is not something to have two of. */
   function live() {
-    return all().filter(function (t) { return !t.finishedAt; })[0] || null;
+    const test = all().filter(function (t) { return !t.finishedAt; })[0] || null;
+    if (test) repairYearOwnership(test);
+    return test;
+  }
+
+  /* Tests are persisted, so correcting the generator alone leaves an old
+     unfinished paper showing the questions it was built with. Repair those
+     papers once on load: swap every now-invalid question for a valid one of
+     the same tariff, or remove it if that tariff has no safe replacement. */
+  function repairYearOwnership(test) {
+    if (test.subject !== "maths" || !test.opts || !test.opts.chapters || !test.opts.chapters.length) return;
+    const allowed = {};
+    eligible(test.opts).forEach(function (m) { allowed[m.key] = true; });
+    const invalid = test.items.filter(function (it) { return !allowed[it.key]; });
+    if (!invalid.length) return;
+    Store.mutate(function () {
+      invalid.forEach(function (it) {
+        const rep = replacement(test, it.key);
+        const pos = test.items.map(function (x) { return x.key; }).indexOf(it.key);
+        if (pos < 0) return;
+        delete test.scores[it.key];
+        if (rep) {
+          test.items[pos] = { key: rep.key, marks: rep.marks, cid: rep.cid, subId: rep.subId || null };
+        } else {
+          test.items.splice(pos, 1);
+        }
+      });
+      test.items = order(test.items);
+      test.targetMins = minutesFor(test.items.reduce(function (sum, it) { return sum + it.marks; }, 0));
+      test.name = nameFor(test.items, test.opts);
+    });
   }
 
   function history() {
