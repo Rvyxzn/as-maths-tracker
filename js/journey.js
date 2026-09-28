@@ -69,7 +69,7 @@ const Journey = (function () {
 
   /* How long the chapter's videos actually take.
 
-  Lengths are learned one at a time, the player only knows the duration
+  Lengths are learned one at a time: the player only knows the duration
   of the video currently loaded, so most of the time some are measured
      and the rest are not. Unknown episodes keep the chapter's original
      per-video estimate. Do not extrapolate the average of clicked videos
