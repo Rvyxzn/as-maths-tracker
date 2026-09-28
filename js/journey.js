@@ -112,9 +112,11 @@ const Journey = (function () {
     const knownWatched = knownMins - knownRemaining;
     const unknownWatched = unknownCount - unknownRemaining;
     /* Keep the displayed/planned total stable while lengths are still being
-       discovered. Once every episode is known, switch to the exact sum. */
+       discovered. Do not let a growing sum of selected episodes change the
+       whole playlist total. Once every episode is known, switch to the exact
+       sum. */
     const estimatedTotal = unknownCount > 0
-      ? Math.max(baselineTotal, knownMins)
+      ? baselineTotal
       : knownMins;
     const estimatedRemaining = unknownCount > 0
       ? Math.max(0, estimatedTotal - knownWatched - unknownWatched * perVideo)

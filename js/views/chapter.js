@@ -434,7 +434,7 @@ const ChapterView = (function () {
           (vm.estimated
             ? '<span class="ep-est" title="A video’s length is only known once it has been loaded. ' +
               vm.knownCount + ' measured, ' + vm.unknownCount + ' still using the chapter estimate. ' +
-              'Loading one video only replaces that videoâ€™s estimate.">' + vm.knownCount + '/' + vm.episodes + ' measured</span>'
+              'The planned total stays fixed until every episode is measured.">' + vm.knownCount + '/' + vm.episodes + ' measured</span>'
             : "") +
         '</span>' +
         (left > 0
