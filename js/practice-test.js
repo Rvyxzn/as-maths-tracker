@@ -314,7 +314,7 @@ const PracticeTest = (function () {
         subId: null,
         source: "exam",
         group: inf ? inf.paper.short : ("Paper " + q.paper),
-        year: null,
+        year: inf ? (inf.chapter.year || 1) : null,
         label: q.series + " · Paper " + q.paper + " · Q" + q.q + (q.part ? "(" + q.part + ")" : ""),
         topic: q.topicCode ? q.topicCode + " " + q.topicName : (inf ? inf.paper.paper : "Synoptic"),
         where: q.topicCode ? q.topicCode + " · " + (inf ? inf.paper.name : "") : (inf ? inf.paper.paper : "Synoptic"),

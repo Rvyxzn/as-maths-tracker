@@ -103,7 +103,7 @@ const Subjects = (function () {
       examFocus: function () { return GEO_EXAM_FOCUS; },
       chapterData: function () { return {}; },
       hasResources: false,
-      usesYears: false,
+      usesYears: true,
       papersLabel: "Topics",
       papers: [
         { key: "phys", name: "Physical Geography", paper: "Paper 1", full: 105, section: 45 },

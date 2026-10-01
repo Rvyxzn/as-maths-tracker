@@ -13,9 +13,10 @@
    NEA      Independent Investigation                          20%
 
    TOPICS KEPT
-   The four topics you sit: Physical (Tectonics, Coasts) and Human
-   (Globalisation, Regenerating Places). Coasts is three EQs, with
-   coastal management filed under EQ3.
+   Year 1 contains Physical (Tectonics, Coasts) and Human
+   (Globalisation, Regenerating Places). Year 2 currently contains
+   Superpowers. Coasts is three EQs, with coastal management filed
+   under EQ3.
 
    NO LEARNING RESOURCES YET
    No videos or question banks are attached. RAG rating, the
@@ -291,6 +292,66 @@ const GEO_SPEC = [
           "Reach a supported judgement on the success of a regeneration scheme you have studied" ]}
       ]}
   ]
+},
+{
+  id: "geo-t7", paper: "Superpowers", short: "T7", group: "Human",
+  name: "Superpowers", code: "9GE0/02", book: "Human geography, Paper 2",
+  examMinutes: 135, marks: 105, flatNumbering: true,
+  note: "Year 2, Paper 2 Section A. Answered alongside Globalisation.",
+  sections: [
+    { id: "geo7-1", num: "7.1", year: 2, name: "EQ1: What are superpowers and how have they changed over time?",
+      desc: "The characteristics and mechanisms of power, changing patterns of dominance and the rise of emerging powers.",
+      subs: [
+        { id: "geo7-1-1", code: "7.1", name: "Characteristics and mechanisms of power", importance: 5, reqs: [
+          "Compare economic, political, military, cultural, demographic and resource power",
+          "Distinguish superpowers, emerging powers and regional powers",
+          "Evaluate hard power, soft power and their changing effectiveness",
+          "Use China's Belt and Road policy as an example of changing power mechanisms" ]},
+        { id: "geo7-1-2", code: "7.2", name: "Changing patterns of global power", importance: 5, reqs: [
+          "Explain uni-polar, bi-polar and multi-polar patterns of power",
+          "Compare direct imperial control with indirect and neo-colonial control",
+          "Explain the Cold War and the emergence of China as a rival to US hegemony",
+          "Assess how different power structures affect geopolitical stability and risk" ]},
+        { id: "geo7-1-3", code: "7.3", name: "Emerging powers and development theories", importance: 5, reqs: [
+          "Assess the growing influence of BRIC countries and other G20 members",
+          "Compare the evolving strengths and weaknesses of emerging powers",
+          "Apply World Systems, Dependency and Modernisation theories to changing power",
+          "Judge which factors could advance or inhibit future superpower status" ]}
+      ]},
+    { id: "geo7-2", num: "7.2", year: 2, name: "EQ2: What are the impacts of superpowers on the global economy, politics and environment?",
+      desc: "Economic control, international decision making, alliances and the disproportionate environmental impact of powerful states.",
+      subs: [
+        { id: "geo7-2-1", code: "7.4", name: "Influence over the global economy", importance: 5, reqs: [
+          "Explain how the World Bank, IMF, WTO and WEF extend superpower influence",
+          "Assess the role of TNCs, technology, patents and trade patterns",
+          "Explain westernisation and cultural influence as forms of power" ]},
+        { id: "geo7-2-2", code: "7.5", name: "International decision making and alliances", importance: 4, reqs: [
+          "Assess superpower roles in crisis response, conflict and climate action",
+          "Compare military, economic and environmental alliances including NATO, USMCA, ASEAN and the IPCC",
+          "Explain the role of the UN in geopolitical stability" ]},
+        { id: "geo7-2-3", code: "7.6", name: "Resources, consumption and environmental impact", importance: 5, reqs: [
+          "Explain how demand for food, fossil fuels and minerals causes environmental degradation",
+          "Compare the willingness of the USA and China to reduce emissions",
+          "Assess how growing middle-class consumption affects resource cost and availability",
+          "Evaluate the disproportionate environmental impact of superpowers" ]}
+      ]},
+    { id: "geo7-3", num: "7.3", year: 2, name: "EQ3: What spheres of influence are contested and what are the implications?",
+      desc: "Contested resources and territories, changing relations with developing nations and challenges to existing powers.",
+      subs: [
+        { id: "geo7-3-1", code: "7.7", name: "Contested spheres of influence", importance: 5, reqs: [
+          "Explain tensions over Arctic oil and gas and disputed ownership",
+          "Explain how counterfeiting and intellectual property disputes strain trade",
+          "Assess tensions in the South and East China Seas and Western Russia/Eastern Europe" ]},
+        { id: "geo7-3-2", code: "7.8", name: "Developing nations and emerging powers", importance: 4, reqs: [
+          "Assess opportunities and challenges created by China-Africa economic ties",
+          "Explain the growing geopolitical influence of China and India in Asia",
+          "Explain tensions in the Middle East arising from ideology and energy resources" ]},
+        { id: "geo7-3-3", code: "7.9", name: "Challenges and the future balance of power", importance: 5, reqs: [
+          "Assess debt, unemployment, restructuring and social costs in the USA and EU",
+          "Evaluate the cost of maintaining military power and space exploration",
+          "Compare possible uni-polar, bi-polar and multi-polar futures for 2030 and 2050" ]}
+      ]}
+  ]
 }
 ];
 
@@ -349,5 +410,17 @@ const GEO_EXAM_FOCUS = {
   "geo4-4": { weight: 5, marks: "Typically 12 to 20 marks, usually the topic essay",
     summary: "Pure evaluation. Success has to be measured against stated criteria and from more than one group's point of view.",
     core: ["Economic, social and environmental measures of success", "Short term against long term outcomes", "Why groups judge success differently", "A supported judgement on a studied scheme"],
-    traps: ["Concluding 'it was successful' with no criteria", "Using only economic measures"] }
+    traps: ["Concluding 'it was successful' with no criteria", "Using only economic measures"] },
+  "geo7-1": { weight: 5, marks: "4, 12 or 16 marks",
+    summary: "The most frequently tested Superpowers EQ. Build comparisons around measurable characteristics, then distinguish hard from soft power and relate both to changing uni-, bi- and multi-polar structures.",
+    core: ["Characteristics and indexes of power", "Hard and soft power", "Changing polarity and hegemony", "BRIC strengths, weaknesses and development theories"],
+    traps: ["Equating power with military size alone", "Listing characteristics without comparing their importance"] },
+  "geo7-2": { weight: 5, marks: "4 or 12 marks",
+    summary: "Links superpower status to IGOs, TNCs, alliances, resource consumption and environmental damage. Questions reward chains from rising consumption to global consequences.",
+    core: ["IGOs and TNCs in the global economy", "Alliances and the UN", "Resource demand and middle-class consumption", "Emissions and environmental governance"],
+    traps: ["Describing environmental damage without linking it to power", "Treating all superpowers as equally willing to cooperate"] },
+  "geo7-3": { weight: 4, marks: "Typically 12 marks",
+    summary: "The contest and tension EQ. Use named places and identify the economic, political and environmental implications for every player involved.",
+    core: ["Contested resources and territory", "Intellectual property and trade tensions", "China and the developing world", "Challenges to existing powers and future scenarios"],
+    traps: ["Writing a generic conflict answer with no named sphere", "Ignoring implications for people and the physical environment"] }
 };

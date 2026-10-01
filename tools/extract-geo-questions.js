@@ -336,9 +336,9 @@ function topicFor(p) {
 /* The options this student sits, from the header of js/geo-data.js. Parts
    on the others are kept in the data -- a friend might sit Glaciated --
    and flagged so the app can leave them out by default. */
-/* The four topics sat: Tectonics and Coasts (Physical), Globalisation and
-   Regenerating Places (Human). Everything else is kept in the data, off. */
-const IN_SPEC = { "geo-t1": 1, "geo-t2b": 1, "geo-t3": 1, "geo-t4a": 1 };
+/* The topics currently tracked: the four Year 1 topics plus Year 2
+   Superpowers. Everything else is kept in the data, off. */
+const IN_SPEC = { "geo-t1": 1, "geo-t2b": 1, "geo-t3": 1, "geo-t4a": 1, "geo-t7": 1 };
 
 /* ---------- enquiry question ----------
    Like Economics' 1.2.1 codes: every part is filed under the EQ it is
@@ -382,10 +382,20 @@ const EQ_KW = {
              /vacant/, /priorit/, /contrasting views/],
   "geo4-3": [/government/, /polic/, /rebrand/, /strateg/, /infrastructure/, /investment/, /players/, /controversial/,
              /limitations/, /managed/],
-  "geo4-4": [/(?<!less )success/, /improves?\b/, /effective/, /measur/, /attractiveness/]
+  "geo4-4": [/(?<!less )success/, /improves?\b/, /effective/, /measur/, /attractiveness/],
+  "geo7-1": [/characteristics?/, /hard power|soft power/, /defen[cs]e spending|military spending/, /military power/,
+              /superpower status/, /emerging powers?/, /strengths? and weaknesses?/, /multipolar|bipolar|unipolar/,
+              /hegemony|dominance/, /power index/, /bric|g20/, /development theor/],
+  "geo7-2": [/tncs?\b|transnational/, /global econom/, /world bank|\bimf\b|\bwto\b|world economic forum/,
+              /alliance/, /united nations|\bun\b|nato|asean|usmca|ipcc/, /resource demands?|resource needs?/,
+              /middle.class consumption/, /environmental damage|environmental degradation/, /carbon emissions?/],
+  "geo7-3": [/tensions?/, /political implications?/, /contested|disputed/, /sphere of influence/, /arctic/,
+              /china seas?|eastern europe|western russia/, /intellectual property|counterfeit/,
+              /developing (world|nations?)/, /china.{0,20}africa/, /future balance/]
 };
 const PRIORITY = ["geo1-3", "geo1-2", "geo1-1", "geo2-3", "geo2-1", "geo2-2",
-                  "geo3-3", "geo3-1", "geo3-2", "geo4-4", "geo4-3", "geo4-2", "geo4-1"];
+                  "geo3-3", "geo3-1", "geo3-2", "geo4-4", "geo4-3", "geo4-2", "geo4-1",
+                  "geo7-3", "geo7-1", "geo7-2"];
 const SPEC_EQ = (function () {
   const src = fs.readFileSync(path.join(ROOT, "js", "geo-data.js"), "utf8");
   const spec = new Function(src + "; return GEO_SPEC;")();
